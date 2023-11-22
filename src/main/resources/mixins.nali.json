@@ -1,0 +1,13 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.nali.mixin",
+  "refmap": "refmap.nali.json",
+  "mixins": [
+  ],
+  "client": [
+    "MixinActiveRenderInfo",
+    "MixinEntityRenderer",
+    "MixinMinecraft"
+  ],
+  "server": []
+}

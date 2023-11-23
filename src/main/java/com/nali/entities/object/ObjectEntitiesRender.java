@@ -68,9 +68,9 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         M4x4 temp_m4x4 = new M4x4();
 
         temp_m4x4.scale(0.2F/* * this.s*/, 0.3F/* * this.s*/, 1.0F);
-        objectdata.m4x4_array[2].multiply(temp_m4x4.mat);
-        objectdata.m4x4_array[3] = new M4x4();
-        objectdata.m4x4_array[3].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
+        objectdata.m4x4_array[1].multiply(temp_m4x4.mat);
+        objectdata.m4x4_array[2] = new M4x4();
+        objectdata.m4x4_array[2].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
 
         for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
         {

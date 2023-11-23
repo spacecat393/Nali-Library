@@ -13,7 +13,7 @@ public abstract class MixinMinecraft
     @Inject(method = "runGameLoop", at = @At(value = "HEAD"))
     private void runGameLoop(CallbackInfo callbackinfo)
     {
-        long current_time = System.currentTimeMillis();
+        long current_time = Minecraft.getSystemTime();//System.currentTimeMillis();
         DataLoader.DELTA = current_time - DataLoader.LAST_TIME;
         DataLoader.LAST_TIME = current_time;
         DataLoader.TD = DataLoader.TICK * DataLoader.DELTA;

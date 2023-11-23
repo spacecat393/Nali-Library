@@ -44,7 +44,7 @@ public class DataLoader
     public static long LAST_TIME;
     public static long DELTA;
     public static float TD;
-    public static float TICK = 0.1F;
+    public static float TICK = 0.05F;
 
 //    public static void setServerConfig(String mod_id_string)
 //    {

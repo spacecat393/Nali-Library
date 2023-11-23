@@ -4,7 +4,6 @@ import com.nali.entities.data.ObjectData;
 import com.nali.math.*;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.drawing.OpenGLObjectDrawing;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -55,21 +54,22 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         super.doRender(objectentities, ox, oy, oz, entityYaw, partialTicks);
     }
 
-    public void renderOnScreen(T objectentities, float height, float x, float y)
+    public void renderOnScreen(T objectentities, float width, float height, float x, float y)
     {
         ObjectData objectdata = (ObjectData)objectentities.client_object;
-        Minecraft minecraft = Minecraft.getMinecraft();
-        float max = 4F;
-        float image_aspect_ratio = (float)minecraft.displayWidth / (float)minecraft.displayHeight;
-        float r = max * image_aspect_ratio;
-        objectdata.m4x4_array[1] = M4x4.getOrthographic(-max, max, -r, r, 0.1F, 100.0F);
+        float max = 1.0F;
+
+        objectdata.m4x4_array[0] = M4x4.getOrthographic(-max, max, -max, max, 0.1F, 100.0F);
+        objectdata.m4x4_array[1] = new M4x4();
         objectdata.m4x4_array[2] = new M4x4();
-        objectdata.m4x4_array[3] = new M4x4();
-        objectdata.m4x4_array[3].translate(x, 450.0F / height + y / height, -10.0F);
+        float new_x = (2.0F * x) / width - 1.0F;
+        float new_y = 1.0F - (2.0F * y) / height;
+        objectdata.m4x4_array[1].translate(new_x, new_y, -10.0F);
         M4x4 temp_m4x4 = new M4x4();
-        float hs = 300.0F / height;
-        temp_m4x4.scale(hs, hs, hs);
-        objectdata.m4x4_array[3].multiply(temp_m4x4.mat);
+
+        temp_m4x4.scale(0.2F/* * this.s*/, 0.3F/* * this.s*/, 1.0F);
+        objectdata.m4x4_array[2].multiply(temp_m4x4.mat);
+        objectdata.m4x4_array[3] = new M4x4();
         objectdata.m4x4_array[3].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
 
         for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)

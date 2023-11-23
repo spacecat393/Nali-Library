@@ -11,6 +11,16 @@ run/logs
 run/saves
 run/crash-reports
 run/options.txt
+run/world
+run/banned-ips.json
+run/banned-players.json
+run/eula.txt
+run/ops.json
+run/server.properties
+run/servers.dat
+run/whitelist.json
+run/screenshots
+run/server
 defaultconfigs
 mods
 resourcepacks

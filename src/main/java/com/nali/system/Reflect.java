@@ -1,8 +1,6 @@
 package com.nali.system;
 
 import com.nali.Nali;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
 public class Reflect
 {
     public static List<Class> getClasses(String package_name)

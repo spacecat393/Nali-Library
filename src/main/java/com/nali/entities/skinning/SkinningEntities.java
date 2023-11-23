@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class SkinningEntities extends EntityCreature
 {
+    @SideOnly(Side.CLIENT)
     public Object client_object;
 
     public SkinningEntities(World world)

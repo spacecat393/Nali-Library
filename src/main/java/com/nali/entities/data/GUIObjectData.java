@@ -13,7 +13,7 @@ public abstract class GUIObjectData
 {
     public DataLoader dataloader;
     public float[] float_array; // body_rot head_rot net_head_yaw head_pitch
-//    public float[] rgb_float_array;
+    public float[] screen_rgba_float_array;
     public Object[] model_address_object_array;
     public int[] texture_index_int_array;
     public M4x4[] m4x4_array; // world view
@@ -33,7 +33,7 @@ public abstract class GUIObjectData
         int max_part = this.getMaxPart();
         int step_models = this.getStepModels();
 
-//        this.rgb_float_array = new float[3];
+        this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.float_array = new float[2];
         this.texture_index_int_array = new int[max_part];
         this.m4x4_array = new M4x4[3];

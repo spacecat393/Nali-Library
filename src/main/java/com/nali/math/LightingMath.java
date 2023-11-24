@@ -23,7 +23,7 @@ public class LightingMath
     {
         Minecraft minecraft = Minecraft.getMinecraft();
         EntityPlayerSP entityplayersp = minecraft.player;
-
+//
         if (entityplayersp.isPotionActive(MobEffects.NIGHT_VISION) || entity.isBurning())
         {
             rgb_float_array[0] = 1.0F;
@@ -32,6 +32,29 @@ public class LightingMath
         }
         else
         {
+////            World world = entity.world;
+////            BlockPos blockpos = entity.getPosition().up(1);
+////            BlockInfo blockinfo = new BlockInfo(minecraft.getBlockColors());
+////            blockinfo.setWorld(world);
+////            blockinfo.setBlockPos(blockpos);
+////            blockinfo.setState(world.getBlockState(blockpos));
+////            blockinfo.updateShift();
+////            blockinfo.updateFlatLighting();
+////
+////            int up_side_brightness = blockinfo.getPackedLight()[1];
+////            float block = ((float)((up_side_brightness >> 0x04) & 0xF) * 0x20) / 0xFFFF;//block?
+////            float sky = ((float)((up_side_brightness >> 0x14) & 0xF) * 0x20) / 0xFFFF;//sky?
+//////            float sky_light = 0.0F;
+//////            float block_light = 0.0F;
+//////            float light = 0.0F;
+//////            if (lightmap0 > block_light) block_light = lightmap0;
+//////            if (lightmap1 > sky_light) sky_light = lightmap1;
+//////            light = (lightmap0 + lightmap1) / 2.0F;
+////            float light = (block + sky) / 2.0F;
+////            rgb_float_array[0] = light;
+////            rgb_float_array[1] = light;
+////            rgb_float_array[2] = light;
+//
             int light = entity.getBrightnessForRender();
             // int sky_light = entity.getLevel().getLightLevel(LightType.SKY, entity.getBlockPos()); // get current sky light level
             // int block_light = entity.getLevel().getLightLevel(LightType.BLOCK, entity.getBlockPos());
@@ -41,7 +64,7 @@ public class LightingMath
             World world = entity.getEntityWorld();
             float sun_light = world.getSunBrightnessFactor(partialTicks);
 
-            float r = (float)MyConfig.COLOR.r;//WorldMath.RGB_FLOAT_ARRAY[0];
+            float r = (float) MyConfig.COLOR.r;//WorldMath.RGB_FLOAT_ARRAY[0];
             float g = (float)MyConfig.COLOR.g;//WorldMath.RGB_FLOAT_ARRAY[1];
             float b = (float)MyConfig.COLOR.b;//WorldMath.RGB_FLOAT_ARRAY[2];
 
@@ -109,8 +132,6 @@ public class LightingMath
 //                rgb_float_array[1] = (g * light_level + ((block_light / 15.0F) / 4.0F)) * 0.75F;
 //                rgb_float_array[2] = (b * light_level - ((block_light / 15.0F) / 16.0F)) * 0.75F;
 //            }
-
-            //
 
 //        world.provider.getLightmapColors(partialTicks, world.getSunBrightness(1.0F), sky_light, block_light, rgb_float_array);
 

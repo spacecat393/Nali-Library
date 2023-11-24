@@ -12,7 +12,8 @@ public class SkinningData
 {
     public DataLoader dataloader;
     public float[] float_array = null; // body_rot head_rot net_head_yaw head_pitch
-    public float[] rgb_float_array = null;
+    public float[] rgba_float_array = null;
+    public float[] screen_rgba_float_array = null;
     public Object[] model_address_object_array = null;
 //    public Object[] animation_address_object_array = null;
 //    public int index = 0;
@@ -32,7 +33,8 @@ public class SkinningData
         int step_models = skinningentities.getStepModels();
         int max_array_length = skinningentities.getIntegerDataParameterArray().length - max_part;
 
-        this.rgb_float_array = new float[3];
+        this.rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
+        this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.float_array = new float[4];
         this.texture_index_int_array = new int[max_part];
         this.m4x4_array = new M4x4[4];

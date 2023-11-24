@@ -12,7 +12,8 @@ public class ObjectData
 {
     public DataLoader dataloader;
     public float[] float_array; // body_rot head_rot net_head_yaw head_pitch
-    public float[] rgb_float_array;
+    public float[] rgba_float_array;
+    public float[] screen_rgba_float_array;
     public Object[] model_address_object_array;
 //    public int index;
     public int[] texture_index_int_array;
@@ -26,7 +27,8 @@ public class ObjectData
         int max_part = objectentities.getMaxPart();
         int step_models = objectentities.getStepModels();
 
-        this.rgb_float_array = new float[3];
+        this.rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
+        this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.float_array = new float[2];
         this.texture_index_int_array = new int[max_part];
         this.m4x4_array = new M4x4[4];

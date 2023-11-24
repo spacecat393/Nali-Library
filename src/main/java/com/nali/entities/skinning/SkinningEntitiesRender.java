@@ -123,7 +123,15 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
 
         //
 
-        LightingMath.set(skinningentities, skinningdata.rgb_float_array, partialTicks);
+        LightingMath.set(skinningentities, skinningdata.rgba_float_array, partialTicks);
+//        int color = (Minecraft.getMinecraft().entityRenderer.tex).lightmapColors()[0];
+//        float alpha = ((color >> 24) & 0xFF) / 255.0F;
+//        float red = ((color >> 16) & 0xFF) / 255.0F;
+//        float green = ((color >> 8) & 0xFF) / 255.0F;
+//        float blue = (color & 0xFF) / 255.0F;
+//        skinningdata.rgb_float_array[0] = red;
+//        skinningdata.rgb_float_array[1] = green;
+//        skinningdata.rgb_float_array[2] = blue;
 
         int max_bones = (int)((Object[])((Object[])((Object[])skinningdata.model_address_object_array[0])[6])[0])[4];
 

@@ -1,5 +1,7 @@
 package com.nali.entities.skinning;
 
+import com.nali.entities.data.SkinningData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -7,6 +9,8 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Arrays;
 
 public abstract class SkinningEntities extends EntityCreature
 {
@@ -107,9 +111,34 @@ public abstract class SkinningEntities extends EntityCreature
 //    }
 
     @Override
+    public void onUpdate()
+    {
+        super.onUpdate();
+
+        if (this.getEntityWorld().isRemote)
+        {
+            this.setInvisibility(this.client_object);
+        }
+    }
+
+    @Override
     public double getYOffset()
     {
         return 0.3D;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setInvisibility(Object object)
+    {
+        if (this.isInvisible() || this.isInvisibleToPlayer(Minecraft.getMinecraft().player))
+        {
+            SkinningData skinningdata = (SkinningData)object;
+            Arrays.fill(skinningdata.model_boolean_array, false);
+        }
+        else
+        {
+            this.setBooleanArraylist(object);
+        }
     }
 
     public abstract int getMaxPart();

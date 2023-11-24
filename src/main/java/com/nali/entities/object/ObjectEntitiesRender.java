@@ -37,7 +37,15 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         // head_pitch
         objectdata.float_array[1] = (float)Math.toRadians(objectentities.prevRotationPitch + (objectentities.rotationPitch - objectentities.prevRotationPitch) * partialTicks);
 
-        LightingMath.set(objectentities, objectdata.rgb_float_array, partialTicks);
+        LightingMath.set(objectentities, objectdata.rgba_float_array, partialTicks);
+//        int color = ((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapColors()[0];
+//        float alpha = ((color >> 24) & 0xFF) / 255.0F;
+//        float red = ((color >> 16) & 0xFF) / 255.0F;
+//        float green = ((color >> 8) & 0xFF) / 255.0F;
+//        float blue = (color & 0xFF) / 255.0F;
+//        objectdata.rgb_float_array[0] = red;
+//        objectdata.rgb_float_array[1] = green;
+//        objectdata.rgb_float_array[2] = blue;
 
         this.multiplyAnimation(objectentities);
 
@@ -59,18 +67,18 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         ObjectData objectdata = (ObjectData)objectentities.client_object;
         float max = 1.0F;
 
-        objectdata.m4x4_array[0] = M4x4.getOrthographic(-max, max, -max, max, 0.1F, 100.0F);
-        objectdata.m4x4_array[1] = new M4x4();
+        objectdata.m4x4_array[1] = M4x4.getOrthographic(-max, max, -max, max, 0.1F, 100.0F);
         objectdata.m4x4_array[2] = new M4x4();
+        objectdata.m4x4_array[3] = new M4x4();
         float new_x = (2.0F * x) / width - 1.0F;
         float new_y = 1.0F - (2.0F * y) / height;
-        objectdata.m4x4_array[1].translate(new_x, new_y, -10.0F);
+        objectdata.m4x4_array[2].translate(new_x, new_y, -10.0F);
         M4x4 temp_m4x4 = new M4x4();
 
         temp_m4x4.scale(0.2F/* * this.s*/, 0.3F/* * this.s*/, 1.0F);
-        objectdata.m4x4_array[1].multiply(temp_m4x4.mat);
-        objectdata.m4x4_array[2] = new M4x4();
-        objectdata.m4x4_array[2].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
+        objectdata.m4x4_array[2].multiply(temp_m4x4.mat);
+        objectdata.m4x4_array[3] = new M4x4();
+        objectdata.m4x4_array[3].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
 
         for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
         {

@@ -2,6 +2,8 @@ package com.nali.system;
 
 import com.nali.Nali;
 import com.nali.config.MyConfig;
+import com.nali.entities.object.ObjectEntities;
+import com.nali.entities.skinning.SkinningEntities;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.drawing.OpenGLObjectDrawing;
 import com.nali.system.opengl.drawing.OpenGLSkinningDrawing;
@@ -15,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 @SideOnly(Side.CLIENT)
 public class DataLoader
@@ -36,6 +39,9 @@ public class DataLoader
     public static long DELTA;
     public static float TD;
     public static float TICK = 0.05F;
+
+    public static ArrayList<SkinningEntities> SKINNINGENTITIES_ARRAYLIST;
+    public static ArrayList<ObjectEntities> OBJECTENTITIES_ARRAYLIST;
 
 //    public static void setServerConfig(String mod_id_string)
 //    {
@@ -192,6 +198,9 @@ public class DataLoader
     //    public static void setBy(Object[] client_object_array)
     public static void setBy()
     {
+        SKINNINGENTITIES_ARRAYLIST = new ArrayList<>();
+        OBJECTENTITIES_ARRAYLIST = new ArrayList<>();
+
         if (MyConfig.FRAME.using_frame_buffer_index)
         {
             OpenGLSkinningDrawing.setTUsingFrameBufferIndex();

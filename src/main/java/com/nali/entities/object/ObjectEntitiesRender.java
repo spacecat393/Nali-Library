@@ -49,15 +49,16 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
 
         this.multiplyAnimation(objectentities);
 
-        for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
-        {
-            if (objectdata.model_boolean_array[DataLoader.SCREEN_INDEX])
-            {
-                objectdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(objectentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
-
-                OpenGLObjectDrawing.startObjectGL(objectentities);
-            }
-        }
+        DataLoader.OBJECTENTITIES_ARRAYLIST.add(objectentities);
+//        for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
+//        {
+//            if (objectdata.model_boolean_array[DataLoader.SCREEN_INDEX])
+//            {
+//                objectdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(objectentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
+//
+//                OpenGLObjectDrawing.startObjectGL(objectentities);
+//            }
+//        }
 
         super.doRender(objectentities, ox, oy, oz, entityYaw, partialTicks);
     }

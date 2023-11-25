@@ -4,17 +4,18 @@ import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
 import com.nali.math.WorldMath;
 import com.nali.system.DataLoader;
+import com.nali.system.opengl.buffer.OpenGLObjectBuffer;
 import com.nali.system.opengl.drawing.OpenGLGUIObjectDrawing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class GUIObjectData
+public abstract class GUIObjectData extends MainData
 {
     public DataLoader dataloader;
     public float[] float_array; // body_rot head_rot net_head_yaw head_pitch
     public float[] screen_rgba_float_array;
-    public Object[] model_address_object_array;
+//    public Object[] model_address_object_array;
     public int[] texture_index_int_array;
     public M4x4[] m4x4_array; // world view
     public boolean[] model_boolean_array;
@@ -93,6 +94,12 @@ public abstract class GUIObjectData
                 OpenGLGUIObjectDrawing.startScreenObjectGL(this);
             }
         }
+    }
+
+    @Override
+    public void set(Object[] object_array)
+    {
+        OpenGLObjectBuffer.set(object_array);
     }
 
     public abstract int getMaxPart();

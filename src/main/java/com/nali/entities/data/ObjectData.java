@@ -4,17 +4,18 @@ import com.nali.entities.object.ObjectEntities;
 import com.nali.math.M4x4;
 import com.nali.math.WorldMath;
 import com.nali.system.DataLoader;
+import com.nali.system.opengl.buffer.OpenGLObjectBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ObjectData
+public class ObjectData extends MainData
 {
     public DataLoader dataloader;
     public float[] float_array; // body_rot head_rot net_head_yaw head_pitch
     public float[] rgba_float_array;
     public float[] screen_rgba_float_array;
-    public Object[] model_address_object_array;
+//    public Object[] model_address_object_array;
 //    public int index;
     public int[] texture_index_int_array;
     public M4x4[] m4x4_array; // world view
@@ -52,5 +53,11 @@ public class ObjectData
         WorldMath.WORLD_M4X4.cloneMat(this.m4x4_array[0].mat, 0);
         objectentities.setGlow(this);
         objectentities.setBooleanArraylist(this);
+    }
+
+    @Override
+    public void set(Object[] object_array)
+    {
+        OpenGLObjectBuffer.set(object_array);
     }
 }

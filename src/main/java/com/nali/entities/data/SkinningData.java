@@ -4,17 +4,18 @@ import com.nali.entities.skinning.SkinningEntities;
 import com.nali.math.M4x4;
 import com.nali.math.WorldMath;
 import com.nali.system.DataLoader;
+import com.nali.system.opengl.buffer.OpenGLSkinningBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class SkinningData
+public class SkinningData extends MainData
 {
     public DataLoader dataloader;
     public float[] float_array = null; // body_rot head_rot net_head_yaw head_pitch
     public float[] rgba_float_array = null;
     public float[] screen_rgba_float_array = null;
-    public Object[] model_address_object_array = null;
+//    public Object[] model_address_object_array = null;
 //    public Object[] animation_address_object_array = null;
 //    public int index = 0;
     public int[] frame_int_array = null;
@@ -92,5 +93,11 @@ public class SkinningData
         WorldMath.WORLD_M4X4.cloneMat(this.m4x4_array[0].mat, 0);
         skinningentities.setGlow(this);
         skinningentities.setBooleanArraylist(this);
+    }
+
+    @Override
+    public void set(Object[] object_array)
+    {
+        OpenGLSkinningBuffer.set(object_array);
     }
 }

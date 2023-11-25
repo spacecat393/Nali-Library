@@ -18,6 +18,7 @@ public class OpenGLObjectMemory
         int shader_id = Integer.parseInt(model_string_array[2]);
         // byte shader_state = (byte)Integer.parseInt(model_string_array[2]);
         byte culling = (byte)Integer.parseInt(model_string_array[3]);
+//        byte depth_mask = (byte)Integer.parseInt(model_string_array[4]);
 
         Object[] object_array = new Object[7];
         object_array[0] = FileDataReader.getIntArray(model_folder_path + "/Index");
@@ -48,6 +49,7 @@ public class OpenGLObjectMemory
         // }
 
         object_array[3] = ((int[])object_array[0]).length;
+//        object_array[4] = (byte)(culling + depth_mask * 2);
         object_array[4] = culling;
         object_array[5] = texture_state;
         object_array[6] = new Object[4];

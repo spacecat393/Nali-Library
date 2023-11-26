@@ -53,7 +53,6 @@ public abstract class MainData
 //        if (!GL11.glIsEnabled(GL11.GL_CULL_FACE))
 //        {
         opengl_object_array[6] = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-
         if ((byte)((Object[])maindata.model_address_object_array[DataLoader.SCREEN_INDEX])[4] == 0)
         {
             GL11.glDisable(GL11.GL_CULL_FACE);
@@ -62,6 +61,10 @@ public abstract class MainData
         {
             GL11.glEnable(GL11.GL_CULL_FACE);
         }
+
+        opengl_object_array[7] = GL11.glIsEnabled(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_BLEND);
+
 //        switch ((byte)((Object[])maindata.model_address_object_array[DataLoader.SCREEN_INDEX])[4])
 //        {
 //            case 0:
@@ -70,6 +73,7 @@ public abstract class MainData
 ////                GL11.glEnable(GL11.GL_ALPHA_TEST);
 ////                GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
 ////                GL11.glFrontFace(GL11.GL_CW);
+//                GL11.glDisable(GL11.GL_BLEND);
 //                GL11.glDisable(GL11.GL_CULL_FACE);
 //                break;
 //            }
@@ -79,18 +83,21 @@ public abstract class MainData
 ////                GL11.glEnable(GL11.GL_ALPHA_TEST);
 ////                GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
 ////                GL11.glFrontFace(GL11.GL_CW);
+//                GL11.glDisable(GL11.GL_BLEND);
 //                GL11.glEnable(GL11.GL_CULL_FACE);
 //                break;
 //            }
 //            case 2:
 //            {
 ////                GL11.glDepthMask(true);
+//                GL11.glEnable(GL11.GL_BLEND);
 //                GL11.glDisable(GL11.GL_CULL_FACE);
 //                break;
 //            }
 //            case 3:
 //            {
 ////                GL11.glDepthMask(true);
+//                GL11.glEnable(GL11.GL_BLEND);
 //                GL11.glEnable(GL11.GL_CULL_FACE);
 //                break;
 //            }
@@ -100,9 +107,6 @@ public abstract class MainData
 //            }
 //        }
 //        }
-
-        opengl_object_array[7] = GL11.glIsEnabled(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_BLEND);
 
         GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, opengl_intbuffer);
         int i0 = opengl_intbuffer.get(0);

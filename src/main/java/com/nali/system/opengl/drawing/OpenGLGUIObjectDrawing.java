@@ -32,11 +32,16 @@ public class OpenGLGUIObjectDrawing
 
 //        if (guiobjectdata.screen_rgba_float_array[3] < 1.0F)
 //        {
+//            GL11.glEnable(GL11.GL_BLEND);
 ////            GL11.glEnable(GL11.GL_ALPHA_TEST);
 ////            GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
 ////            GL11.glFrontFace(GL11.GL_CW);
 ////            GL11.glDepthMask(false);
 //        }
+////        else
+////        {
+////            GL11.glDisable(GL11.GL_BLEND);
+////        }
 
         DataLoader.setFloatBuffer(guiobjectdata.screen_rgba_float_array);
 

@@ -57,11 +57,16 @@ public class OpenGLSkinningDrawing
 
 //        if (skinningdata.rgba_float_array[3] < 1.0F)
 //        {
+//            GL11.glEnable(GL11.GL_BLEND);
 ////            GL11.glEnable(GL11.GL_ALPHA_TEST);
 ////            GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
 ////            GL11.glFrontFace(GL11.GL_CW);
 ////            GL11.glDepthMask(false);
 //        }
+////        else
+////        {
+////            GL11.glDisable(GL11.GL_BLEND);
+////        }
 
 //        DataLoader.OPENGL_FLOATBUFFER.limit(4);
         if (skinningdata.glow_boolean_array[DataLoader.SCREEN_INDEX])
@@ -136,11 +141,16 @@ public class OpenGLSkinningDrawing
 //        DataLoader.OPENGL_FLOATBUFFER.limit(4);
 //        if (skinningdata.screen_rgba_float_array[3] < 1.0F)
 //        {
+//            GL11.glEnable(GL11.GL_BLEND);
 ////            GL11.glEnable(GL11.GL_ALPHA_TEST);
 ////            GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
 ////            GL11.glFrontFace(GL11.GL_CW);
 ////            GL11.glDepthMask(false);
 //        }
+////        else
+////        {
+////            GL11.glDisable(GL11.GL_BLEND);
+////        }
 
         DataLoader.setFloatBuffer(skinningdata.screen_rgba_float_array);
 

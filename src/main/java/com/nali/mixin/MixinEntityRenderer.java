@@ -13,11 +13,11 @@ public abstract class MixinEntityRenderer
 //    @Shadow
 //    private int rendererUpdateCount;
 
-    @Inject(method = "renderWorld", at = @At("TAIL"))
-    private void renderWorldLater(float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
-    {
-        EntitiesRender.DRAW_FUNCTION.accept(partialTicks);
-    }
+//    @Inject(method = "renderWorld", at = @At("TAIL"))
+//    private void renderWorldLater(float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
+//    {
+//        EntitiesRender.DRAW_FUNCTION.accept(partialTicks);
+//    }
 
     @Inject(method = "renderWorld", at = @At("HEAD"))
     private void renderWorld(float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)

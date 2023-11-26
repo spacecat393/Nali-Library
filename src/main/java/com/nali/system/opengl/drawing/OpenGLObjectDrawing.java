@@ -43,11 +43,16 @@ public class OpenGLObjectDrawing
 
 //        if (objectdata.rgba_float_array[3] < 1.0F)
 //        {
+//            GL11.glEnable(GL11.GL_BLEND);
 ////            GL11.glEnable(GL11.GL_ALPHA_TEST);
 ////            GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
 ////            GL11.glFrontFace(GL11.GL_CW);
 ////            GL11.glDepthMask(false);
 //        }
+////        else
+////        {
+////            GL11.glDisable(GL11.GL_BLEND);
+////        }
 
 //        DataLoader.OPENGL_FLOATBUFFER.limit(4);
         if (objectdata.glow_boolean_array[DataLoader.SCREEN_INDEX])
@@ -107,14 +112,18 @@ public class OpenGLObjectDrawing
 
 //        if (objectdata.screen_rgba_float_array[3] < 1.0F)
 //        {
+//            GL11.glEnable(GL11.GL_BLEND);
 ////            GL11.glEnable(GL11.GL_ALPHA_TEST);
 ////            GL11.glAlphaFunc(GL11.GL_LESS, 1.0F);
 ////            GL11.glFrontFace(GL11.GL_CW);
 ////            GL11.glDepthMask(false);
 //        }
+////        else
+////        {
+////            GL11.glDisable(GL11.GL_BLEND);
+////        }
 
         DataLoader.setFloatBuffer(objectdata.screen_rgba_float_array);
-
 
         GL20.glUniform4((int)temp_uniform_object_array[3], DataLoader.OPENGL_FLOATBUFFER);
 //        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], false, OpenGLBuffer.createFloatBuffer(objectdata.m4x4_array[2].mat, true));

@@ -251,29 +251,29 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
         // this.multiplyAnimation(entity);
 
         //!
-        DataLoader.SKINNINGENTITIES_ARRAYLIST.add(skinningentities);
-//        for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < skinningdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
-//        {
-//            if (skinningdata.model_boolean_array[DataLoader.SCREEN_INDEX])
-//            {
-//                skinningdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(skinningentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
-//
-//                // for (int i = 0; i < skinning_bones_integer_arraylist.size(); ++i)
-//                // {
-//                //     int index = entity.frame * 9;
-//                //     float[] animation_float_array = animation_float_array_arraylist.get(animation_bones_integer_arraylist.get(i));
-//                //     M4x4 temp_m4x4 = new Quaternion(animation_float_array[index + 3], animation_float_array[index + 4], animation_float_array[index + 5]).getM4x4();
-//                //     M4x4 scale_m4x4 = new M4x4();
-//                //     scale_m4x4.scale(animation_float_array[index + 6], animation_float_array[index + 7], animation_float_array[index + 8]);
-//                //     temp_m4x4.multiply(scale_m4x4.mat);
-//                //     temp_m4x4.translate(animation_float_array[index], animation_float_array[index + 1], animation_float_array[index + 2]);
-//                //     temp_m4x4.cloneMat(skinning_float_array, skinning_bones_integer_arraylist.get(i) * 16);
-//                //     // System.arraycopy(temp_m4x4.mat, 0, entity.skinning_float_array_arraylist.get(x), skinning_bones_integer_arraylist.get(i) * 16, 16);
-//                // }
-//
-//                OpenGLSkinningDrawing.startSkinningGL(skinningentities);
-//            }
-//        }
+//        DataLoader.SKINNINGENTITIES_ARRAYLIST.add(skinningentities);
+        for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < skinningdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
+        {
+            if (skinningdata.model_boolean_array[DataLoader.SCREEN_INDEX])
+            {
+                skinningdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(skinningentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
+
+                // for (int i = 0; i < skinning_bones_integer_arraylist.size(); ++i)
+                // {
+                //     int index = entity.frame * 9;
+                //     float[] animation_float_array = animation_float_array_arraylist.get(animation_bones_integer_arraylist.get(i));
+                //     M4x4 temp_m4x4 = new Quaternion(animation_float_array[index + 3], animation_float_array[index + 4], animation_float_array[index + 5]).getM4x4();
+                //     M4x4 scale_m4x4 = new M4x4();
+                //     scale_m4x4.scale(animation_float_array[index + 6], animation_float_array[index + 7], animation_float_array[index + 8]);
+                //     temp_m4x4.multiply(scale_m4x4.mat);
+                //     temp_m4x4.translate(animation_float_array[index], animation_float_array[index + 1], animation_float_array[index + 2]);
+                //     temp_m4x4.cloneMat(skinning_float_array, skinning_bones_integer_arraylist.get(i) * 16);
+                //     // System.arraycopy(temp_m4x4.mat, 0, entity.skinning_float_array_arraylist.get(x), skinning_bones_integer_arraylist.get(i) * 16, 16);
+                // }
+
+                OpenGLSkinningDrawing.startSkinningGL(skinningentities);
+            }
+        }
 
 //        float max = 4F;
 //        float image_aspect_ratio = (float)100.0F / (float)100.0F;

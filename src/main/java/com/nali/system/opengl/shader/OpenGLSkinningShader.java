@@ -29,8 +29,12 @@ public class OpenGLSkinningShader
         int status = GL20.glGetProgrami(program, GL20.GL_LINK_STATUS);
         if (status == GL11.GL_FALSE)
         {
-            String log = GL20.glGetProgramInfoLog(program, 1024);
-            Nali.LOGGER.error("OpenGLSkinningShader:\n" + log);
+//            int error = GL11.glGetError();
+//            if (error != GL11.GL_NO_ERROR)
+//            {
+//                Nali.LOGGER.error(error);
+//            }
+            Nali.LOGGER.error(GL20.glGetProgramInfoLog(program, 1024));
             FMLCommonHandler.instance().exitJava(-1, true);
         }
 

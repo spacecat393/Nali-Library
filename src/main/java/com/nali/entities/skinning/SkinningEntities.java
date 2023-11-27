@@ -41,21 +41,21 @@ public abstract class SkinningEntities extends EntityLivingBase
         super.entityInit();
 
         DataParameter<Byte>[] byte_dataparameter_array = this.getByteDataParameterArray();
-        for (DataParameter<Byte> byteDataParameter : byte_dataparameter_array)
+        for (DataParameter<Byte> bytedataparameter : byte_dataparameter_array)
         {
-            this.dataManager.register(byteDataParameter, (byte) 0);
+            this.dataManager.register(bytedataparameter, (byte) 0);
         }
 
         DataParameter<Integer>[] integer_dataparameter_array = this.getIntegerDataParameterArray();
-        for (DataParameter<Integer> integerDataParameter : integer_dataparameter_array)
+        for (DataParameter<Integer> integerdataparameter : integer_dataparameter_array)
         {
-            this.dataManager.register(integerDataParameter, 0);
+            this.dataManager.register(integerdataparameter, 0);
         }
 
         DataParameter<Float>[] float_dataparameter_array = this.getFloatDataParameterArray();
-        for (DataParameter<Float> floatDataParameter : float_dataparameter_array)
+        for (DataParameter<Float> floatdataparameter : float_dataparameter_array)
         {
-            this.dataManager.register(floatDataParameter, 0.0F);
+            this.dataManager.register(floatdataparameter, 0.0F);
         }
     }
 

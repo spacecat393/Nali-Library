@@ -6,7 +6,6 @@ import com.nali.system.DataLoader;
 import com.nali.system.opengl.drawing.OpenGLObjectDrawing;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -22,20 +21,20 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
     public void doRender(T objectentities, double ox, double oy, double oz, float entityYaw, float partialTicks)
     {
         ObjectData objectdata = (ObjectData)objectentities.client_object;
-        EntityDataManager entitydatamanager = objectentities.getDataManager();
+//        EntityDataManager entitydatamanager = objectentities.getDataManager();
 
         WorldMath.WORLD_M4X4.cloneMat(objectdata.m4x4_array[0].mat, 0);
         M4x4 scale_m4x4 = new M4x4();
-        float scale = entitydatamanager.get(objectentities.getFloatDataParameterArray()[0]);
+        float scale = objectdata.float_array[0];
         scale_m4x4.scale(scale, scale, scale);
         objectdata.m4x4_array[0].multiply(scale_m4x4.mat);
 
         objectdata.m4x4_array[0].translate((float)ox, (float)oy/* - eye_height + 0.03F/* - (player_sleep ? 0.3F : 0.0F)*/, (float)oz); // world
 
-        // body_rot
-        objectdata.float_array[0] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(objectentities.rotationYaw, objectentities.prevRotationYaw, partialTicks)));
+        // head_rot
+        objectdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(objectentities.rotationYaw, objectentities.prevRotationYaw, partialTicks)));
         // head_pitch
-        objectdata.float_array[1] = (float)Math.toRadians(objectentities.prevRotationPitch + (objectentities.rotationPitch - objectentities.prevRotationPitch) * partialTicks);
+        objectdata.float_array[2] = (float)Math.toRadians(objectentities.prevRotationPitch + (objectentities.rotationPitch - objectentities.prevRotationPitch) * partialTicks);
 
         LightingMath.set(objectentities, objectdata.rgba_float_array, partialTicks);
 //        int color = ((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapColors()[0];
@@ -54,8 +53,7 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         {
             if (objectdata.model_boolean_array[DataLoader.SCREEN_INDEX])
             {
-                objectdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(objectentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
-
+//                objectdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(objectentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
                 OpenGLObjectDrawing.startObjectGL(objectentities);
             }
         }

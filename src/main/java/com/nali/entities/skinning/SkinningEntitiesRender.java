@@ -6,7 +6,6 @@ import com.nali.system.DataLoader;
 import com.nali.system.opengl.drawing.OpenGLSkinningDrawing;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -57,7 +56,7 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
 
         //
 
-        EntityDataManager entitydatamanager = skinningentities.getDataManager();
+//        EntityDataManager entitydatamanager = skinningentities.getDataManager();
 
         // MinecraftClient.getInstance().execute(() ->
 //        RenderManager rendermanager = minecraft.getRenderManager();
@@ -65,7 +64,7 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
 
         WorldMath.WORLD_M4X4.cloneMat(skinningdata.m4x4_array[0].mat, 0);
         M4x4 scale_m4x4 = new M4x4();
-        float scale = entitydatamanager.get(skinningentities.getFloatDataParameterArray()[0]);
+        float scale = skinningdata.float_array[0];
         scale_m4x4.scale(scale, scale, scale);
         skinningdata.m4x4_array[0].multiply(scale_m4x4.mat);
 
@@ -108,18 +107,18 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
         // entity.m4x4_array[2].mat[15] = (float)FieldsReflectLoader.getField(temp_object_array, 15, project_matrix4f);
 
         // body_rot
-        skinningdata.float_array[0] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRenderYawOffset, skinningentities.renderYawOffset, partialTicks)));
+        skinningdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRenderYawOffset, skinningentities.renderYawOffset, partialTicks)));
         // head_rot
-        skinningdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRotationYawHead, skinningentities.rotationYawHead, partialTicks)));
+        skinningdata.float_array[2] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRotationYawHead, skinningentities.rotationYawHead, partialTicks)));
         // net_head_yaw
-        skinningdata.float_array[2] = skinningdata.float_array[1] - skinningdata.float_array[0];
+        skinningdata.float_array[3] = skinningdata.float_array[2] - skinningdata.float_array[1];
         // head_pitch
-        skinningdata.float_array[3] = (float)Math.toRadians(skinningentities.prevRotationPitch + (skinningentities.rotationPitch - skinningentities.prevRotationPitch) * partialTicks);
+        skinningdata.float_array[4] = (float)Math.toRadians(skinningentities.prevRotationPitch + (skinningentities.rotationPitch - skinningentities.prevRotationPitch) * partialTicks);
 
-        for (int i = 0; i < skinningdata.frame_int_array.length; ++i)
-        {
-            skinningdata.frame_int_array[i] = entitydatamanager.get(skinningentities.getIntegerDataParameterArray()[skinningentities.getMaxPart() + i]);
-        }
+//        for (int i = 0; i < skinningdata.frame_int_array.length; ++i)
+//        {
+//            skinningdata.frame_int_array[i] = entitydatamanager.get(skinningentities.getIntegerDataParameterArray()[skinningentities.getMaxPart() + i]);
+//        }
 
         //
 
@@ -256,8 +255,7 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
         {
             if (skinningdata.model_boolean_array[DataLoader.SCREEN_INDEX])
             {
-                skinningdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(skinningentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
-
+//                skinningdata.texture_index_int_array[DataLoader.SCREEN_INDEX] = entitydatamanager.get(skinningentities.getIntegerDataParameterArray()[DataLoader.SCREEN_INDEX]);
                 // for (int i = 0; i < skinning_bones_integer_arraylist.size(); ++i)
                 // {
                 //     int index = entity.frame * 9;
@@ -270,7 +268,6 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
                 //     temp_m4x4.cloneMat(skinning_float_array, skinning_bones_integer_arraylist.get(i) * 16);
                 //     // System.arraycopy(temp_m4x4.mat, 0, entity.skinning_float_array_arraylist.get(x), skinning_bones_integer_arraylist.get(i) * 16, 16);
                 // }
-
                 OpenGLSkinningDrawing.startSkinningGL(skinningentities);
             }
         }

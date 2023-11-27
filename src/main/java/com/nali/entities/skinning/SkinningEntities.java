@@ -33,21 +33,21 @@ public abstract class SkinningEntities extends EntityCreature
         super.entityInit();
 
         DataParameter<Byte>[] byte_dataparameter_array = this.getByteDataParameterArray();
-        for (int i = 0; i < byte_dataparameter_array.length; ++i)
+        for (DataParameter<Byte> byteDataParameter : byte_dataparameter_array)
         {
-            this.dataManager.register(byte_dataparameter_array[i], (byte)0);
+            this.dataManager.register(byteDataParameter, (byte) 0);
         }
 
         DataParameter<Integer>[] integer_dataparameter_array = this.getIntegerDataParameterArray();
-        for (int i = 0; i < integer_dataparameter_array.length; ++i)
+        for (DataParameter<Integer> integerDataParameter : integer_dataparameter_array)
         {
-            this.dataManager.register(integer_dataparameter_array[i], 0);
+            this.dataManager.register(integerDataParameter, 0);
         }
 
         DataParameter<Float>[] float_dataparameter_array = this.getFloatDataParameterArray();
-        for (int i = 0; i < float_dataparameter_array.length; ++i)
+        for (DataParameter<Float> floatDataParameter : float_dataparameter_array)
         {
-            this.dataManager.register(float_dataparameter_array[i], 0.0F);
+            this.dataManager.register(floatDataParameter, 0.0F);
         }
     }
 
@@ -117,6 +117,7 @@ public abstract class SkinningEntities extends EntityCreature
 
         if (this.getEntityWorld().isRemote)
         {
+            this.updateClientObject();
             this.setInvisibility(this.client_object);
         }
     }
@@ -141,10 +142,33 @@ public abstract class SkinningEntities extends EntityCreature
         }
     }
 
+    public void updateClientObject()
+    {
+        SkinningData skinningdata = (SkinningData)this.client_object;
+        EntityDataManager entitydatamanager = this.getDataManager();
+
+        skinningdata.float_array[0] = entitydatamanager.get(this.getFloatDataParameterArray()[0]);
+
+        DataParameter<Integer>[] integer_dataparameter = this.getIntegerDataParameterArray();
+        for (int i = 0; i < skinningdata.texture_index_int_array.length; ++i)
+        {
+            skinningdata.texture_index_int_array[i] = entitydatamanager.get(integer_dataparameter[i]);
+        }
+
+        for (int i = 0; i < skinningdata.frame_int_array.length; ++i)
+        {
+            skinningdata.frame_int_array[i] = entitydatamanager.get(integer_dataparameter[this.getMaxPart() + i]);
+        }
+    }
+
     public abstract int getMaxPart();
+    @SideOnly(Side.CLIENT)
     public abstract int getStepModels();
+    @SideOnly(Side.CLIENT)
     public abstract void setBooleanArraylist(Object object);
+    @SideOnly(Side.CLIENT)
     public abstract void setGlow(Object object);
+    @SideOnly(Side.CLIENT)
     public abstract void setUniform(Object[] object_array);
     public abstract DataParameter<Byte>[] getByteDataParameterArray();
     public abstract DataParameter<Integer>[] getIntegerDataParameterArray();

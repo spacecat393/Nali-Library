@@ -2,18 +2,26 @@ package com.nali.entities.skinning;
 
 import com.nali.entities.data.SkinningData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 
-public abstract class SkinningEntities extends EntityCreature
+public abstract class SkinningEntities extends EntityLivingBase
 {
+    public NonNullList<ItemStack> hands_itemstack_nonnulllist = NonNullList.<ItemStack>withSize(2, ItemStack.EMPTY);
+    public NonNullList<ItemStack> armor_itemstack_nonnulllist = NonNullList.<ItemStack>withSize(4, ItemStack.EMPTY);
+
     @SideOnly(Side.CLIENT)
     public Object client_object;
 
@@ -51,6 +59,7 @@ public abstract class SkinningEntities extends EntityCreature
         }
     }
 
+    //NBTBase.NBT_TYPES
     @Override
     public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
@@ -63,6 +72,36 @@ public abstract class SkinningEntities extends EntityCreature
         {
             nbttagcompound.setByte("byte_" + i, entitydatamanager.get(byte_dataparameter_array[i]));
         }
+
+        NBTTagList nbttaglist = new NBTTagList();
+        for (ItemStack itemstack : this.armor_itemstack_nonnulllist)
+        {
+            NBTTagCompound new_nbttagcompound = new NBTTagCompound();
+
+            if (!itemstack.isEmpty())
+            {
+                itemstack.writeToNBT(new_nbttagcompound);
+            }
+
+            nbttaglist.appendTag(new_nbttagcompound);
+        }
+
+        nbttagcompound.setTag("ArmorItems", nbttaglist);
+        nbttaglist = new NBTTagList();
+
+        for (ItemStack itemstack1 : this.hands_itemstack_nonnulllist)
+        {
+            NBTTagCompound new_nbttagcompound = new NBTTagCompound();
+
+            if (!itemstack1.isEmpty())
+            {
+                itemstack1.writeToNBT(new_nbttagcompound);
+            }
+
+            nbttaglist.appendTag(new_nbttagcompound);
+        }
+
+        nbttagcompound.setTag("HandItems", nbttaglist);
     }
 
     @Override
@@ -77,6 +116,71 @@ public abstract class SkinningEntities extends EntityCreature
         {
             entitydatamanager.set(byte_dataparameter_array[i], nbttagcompound.getByte("byte_" + i));
         }
+
+        if (nbttagcompound.hasKey("ArmorItems", 9))
+        {
+            NBTTagList nbttaglist = nbttagcompound.getTagList("ArmorItems", 10);
+
+            for (int i = 0; i < this.armor_itemstack_nonnulllist.size(); ++i)
+            {
+                this.armor_itemstack_nonnulllist.set(i, new ItemStack(nbttaglist.getCompoundTagAt(i)));
+            }
+        }
+
+        if (nbttagcompound.hasKey("HandItems", 9))
+        {
+            NBTTagList nbttaglist1 = nbttagcompound.getTagList("HandItems", 10);
+
+            for (int j = 0; j < this.hands_itemstack_nonnulllist.size(); ++j)
+            {
+                this.hands_itemstack_nonnulllist.set(j, new ItemStack(nbttaglist1.getCompoundTagAt(j)));
+            }
+        }
+    }
+
+    @Override
+    public Iterable<ItemStack> getHeldEquipment()
+    {
+        return this.hands_itemstack_nonnulllist;
+    }
+
+    @Override
+    public Iterable<ItemStack> getArmorInventoryList()
+    {
+        return this.armor_itemstack_nonnulllist;
+    }
+
+    @Override
+    public ItemStack getItemStackFromSlot(EntityEquipmentSlot entityequipmentslot)
+    {
+        switch (entityequipmentslot.getSlotType())
+        {
+            case HAND:
+                return this.hands_itemstack_nonnulllist.get(entityequipmentslot.getIndex());
+            case ARMOR:
+                return this.armor_itemstack_nonnulllist.get(entityequipmentslot.getIndex());
+            default:
+                return ItemStack.EMPTY;
+        }
+    }
+
+    @Override
+    public void setItemStackToSlot(EntityEquipmentSlot entityequipmentslot, ItemStack itemstack)
+    {
+        switch (entityequipmentslot.getSlotType())
+        {
+            case HAND:
+                this.hands_itemstack_nonnulllist.set(entityequipmentslot.getIndex(), itemstack);
+                break;
+            case ARMOR:
+                this.armor_itemstack_nonnulllist.set(entityequipmentslot.getIndex(), itemstack);
+        }
+    }
+
+    @Override
+    public EnumHandSide getPrimaryHand()
+    {
+        return EnumHandSide.RIGHT;
     }
 
 //    @Override

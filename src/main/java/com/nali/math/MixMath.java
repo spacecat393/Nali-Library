@@ -9,6 +9,22 @@ public class MixMath
 //        return s + t * (e - s);
 //    }
 
+    public static int signum(int i)
+    {
+        if (i > 0)
+        {
+            return 1;
+        }
+        else if (i < 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public static float wrapDegrees(float f0)
     {
         float f = f0 % 360.0F;

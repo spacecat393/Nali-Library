@@ -22,6 +22,8 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
     {
 //        Minecraft minecraft = Minecraft.getMinecraft();
         SkinningData skinningdata = (SkinningData)skinningentities.client_object;
+        this.shadowOpaque *= skinningdata.float_array[0];
+        this.shadowSize *= skinningdata.float_array[0];
 
 //        FloatBuffer project_floatbuffer = (FloatBuffer)FieldsReflectLoader.getField(FieldsReflectLoader.CLIENT_REFLECT_OBJECTS_ARRAY, 0, null);
         //

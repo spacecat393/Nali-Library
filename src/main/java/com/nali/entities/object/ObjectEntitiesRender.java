@@ -22,6 +22,8 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
     {
         ObjectData objectdata = (ObjectData)objectentities.client_object;
 //        EntityDataManager entitydatamanager = objectentities.getDataManager();
+        this.shadowOpaque *= objectdata.float_array[0];
+        this.shadowSize *= objectdata.float_array[0];
 
         WorldMath.WORLD_M4X4.cloneMat(objectdata.m4x4_array[0].mat, 0);
         M4x4 scale_m4x4 = new M4x4();

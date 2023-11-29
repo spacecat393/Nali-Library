@@ -76,7 +76,7 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         objectdata.m4x4_array[2].translate(new_x, new_y, -10.0F);
         M4x4 temp_m4x4 = new M4x4();
 
-        temp_m4x4.scale(0.2F/* * this.s*/, 0.3F/* * this.s*/, 1.0F);
+        temp_m4x4.scale(0.2F/* * this.s*/, 0.35F/* * this.s*/, 1.0F);
         objectdata.m4x4_array[2].multiply(temp_m4x4.mat);
         objectdata.m4x4_array[3] = new M4x4();
         objectdata.m4x4_array[3].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);

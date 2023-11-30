@@ -9,19 +9,15 @@ public class MixMath
 //        return s + t * (e - s);
 //    }
 
-    public static int signum(int i)
+    public static byte signum(double i)
     {
-        if (i > 0)
+        if (i > 0.0D)
         {
-            return 1;
-        }
-        else if (i < 0)
-        {
-            return -1;
+            return (byte)1;
         }
         else
         {
-            return 0;
+            return i < 0.0D ? (byte)-1 : (byte)0;
         }
     }
 

@@ -62,6 +62,10 @@ public abstract class GUIObjectData extends MainData
 
     public void render(float width, float height)
     {
+//        ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft());
+//        width = (float)scaledresolution.getScaledWidth_double();
+//        height = (float)scaledresolution.getScaledHeight_double();
+
         // body_rot
         this.float_array[0] = 0.0F;
         // head_pitch
@@ -71,16 +75,22 @@ public abstract class GUIObjectData extends MainData
 //        float image_aspect_ratio = width / height;
 //        float r = max * image_aspect_ratio;
 
-        this.m4x4_array[0] = M4x4.getOrthographic(-max, max, -max, max, 0.1F, 100.0F);
+        float image_aspect_ratio = width / height;
+        float r = max * image_aspect_ratio;
+        this.m4x4_array[0] = M4x4.getOrthographic(-max, max, -r, r, 0.1F, 100.0F);
         this.m4x4_array[1] = new M4x4();
         this.m4x4_array[2] = new M4x4();
         float new_x = (2.0F * this.x) / width - 1.0F;
         float new_y = 1.0F - (2.0F * this.y) / height;
-        this.m4x4_array[1].translate(new_x, new_y, -1.0F);
+        this.m4x4_array[1].translate(new_x * image_aspect_ratio, new_y, -1.0F);
         M4x4 temp_m4x4 = new M4x4();
         M4x4 temp2_m4x4 = new Quaternion(this.rx, this.ry, this.rz).getM4x4();
 
-        temp_m4x4.scale(0.2F * this.s, 0.35F * this.s, 1.0F);
+//        float scale_factor = 0.2F / scaled_resolution.getScaleFactor();
+//        float scale_factor = (0.2F * this.s) * scaledResolution.getScaleFactor();
+
+        float scale = 0.2F * this.s * image_aspect_ratio;
+        temp_m4x4.scale(scale, scale, scale);
         this.m4x4_array[2].multiply(temp_m4x4.mat);
         this.m4x4_array[2].multiply(temp2_m4x4.mat);
 //        this.m4x4_array[2].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);

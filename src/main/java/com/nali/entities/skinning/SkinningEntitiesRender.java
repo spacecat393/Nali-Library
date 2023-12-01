@@ -326,19 +326,20 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
 //        }
 
         float max = 1.0F;
-//        float image_aspect_ratio = width / height;
-//        float r = max * image_aspect_ratio;
+        float image_aspect_ratio = width / height;
+        float r = max * image_aspect_ratio;
 
-        skinningdata.m4x4_array[1] = M4x4.getOrthographic(-max, max, -max, max, 0.1F, 100.0F);
+        skinningdata.m4x4_array[1] = M4x4.getOrthographic(-max, max, -r, r, 0.1F, 100.0F);
         skinningdata.m4x4_array[2] = new M4x4();
         skinningdata.m4x4_array[3] = new M4x4();
         float new_x = (2.0F * x) / width - 1.0F;
         float new_y = 1.0F - (2.0F * y) / height;
-        skinningdata.m4x4_array[2].translate(new_x, new_y, -10.0F);
+        skinningdata.m4x4_array[2].translate(new_x * image_aspect_ratio, new_y, -10.0F);
         M4x4 temp_m4x4 = new M4x4();
 //        M4x4 temp2_m4x4 = new Quaternion(this.rx, this.ry, this.rz).getM4x4();
 
-        temp_m4x4.scale(0.2F/* * this.s*/, 0.35F/* * this.s*/, 1.0F);
+        float scale = 0.2F * image_aspect_ratio;
+        temp_m4x4.scale(scale, scale, scale);
         skinningdata.m4x4_array[2].multiply(temp_m4x4.mat);
 //        skinningdata.m4x4_array[2].multiply(temp2_m4x4.mat);
         skinningdata.m4x4_array[3] = new M4x4();

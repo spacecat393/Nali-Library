@@ -71,13 +71,13 @@ public abstract class GUIObjectData extends MainData
         // head_pitch
         this.float_array[1] = 0.0F;
 
-        float max = 1.0F;
+//        float max = 1.0F;
 //        float image_aspect_ratio = width / height;
 //        float r = max * image_aspect_ratio;
 
         float image_aspect_ratio = width / height;
-        float r = max * image_aspect_ratio;
-        this.m4x4_array[0] = M4x4.getOrthographic(-max, max, -r, r, 0.1F, 100.0F);
+//        float r = max * image_aspect_ratio;
+        this.m4x4_array[0] = M4x4.getOrthographic(-1.0F, 1.0F, -image_aspect_ratio, image_aspect_ratio, 0.1F, 100.0F);
         this.m4x4_array[1] = new M4x4();
         this.m4x4_array[2] = new M4x4();
         float new_x = (2.0F * this.x) / width - 1.0F;
@@ -89,7 +89,7 @@ public abstract class GUIObjectData extends MainData
 //        float scale_factor = 0.2F / scaled_resolution.getScaleFactor();
 //        float scale_factor = (0.2F * this.s) * scaledResolution.getScaleFactor();
 
-        float scale = 0.2F * this.s * image_aspect_ratio;
+        float scale = 0.2F * this.s;// * image_aspect_ratio;
         temp_m4x4.scale(scale, scale, scale);
         this.m4x4_array[2].multiply(temp_m4x4.mat);
         this.m4x4_array[2].multiply(temp2_m4x4.mat);

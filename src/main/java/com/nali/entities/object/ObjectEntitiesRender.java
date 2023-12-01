@@ -63,14 +63,14 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         super.doRender(objectentities, ox, oy, oz, entityYaw, partialTicks);
     }
 
-    public void renderOnScreen(T objectentities, float width, float height, float x, float y)
+    public void renderOnScreen(T objectentities, float width, float height, float x, float y, float s)
     {
         ObjectData objectdata = (ObjectData)objectentities.client_object;
-        float max = 1.0F;
+//        float max = 1.0F;
         float image_aspect_ratio = width / height;
-        float r = max * image_aspect_ratio;
+//        float r = max * image_aspect_ratio;
 
-        objectdata.m4x4_array[1] = M4x4.getOrthographic(-max, max, -r, r, 0.1F, 100.0F);
+        objectdata.m4x4_array[1] = M4x4.getOrthographic(-1.0F, 1.0F, -image_aspect_ratio, image_aspect_ratio, 0.1F, 100.0F);
         objectdata.m4x4_array[2] = new M4x4();
         objectdata.m4x4_array[3] = new M4x4();
         float new_x = (2.0F * x) / width - 1.0F;
@@ -78,8 +78,8 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         objectdata.m4x4_array[2].translate(new_x * image_aspect_ratio, new_y, -10.0F);
         M4x4 temp_m4x4 = new M4x4();
 
-        float scale = 0.2F * image_aspect_ratio;
-        temp_m4x4.scale(scale, scale, scale);
+//        float scale = s;// * image_aspect_ratio;
+        temp_m4x4.scale(s, s, s);
         objectdata.m4x4_array[2].multiply(temp_m4x4.mat);
         objectdata.m4x4_array[3] = new M4x4();
         objectdata.m4x4_array[3].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);

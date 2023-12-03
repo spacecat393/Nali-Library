@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class SkinningData extends MainData
 {
     public DataLoader dataloader;
+    public boolean should_render;
     public float[] float_array = null; // scale body_rot head_rot net_head_yaw head_pitch
     public float[] rgba_float_array = null;
     public float[] screen_rgba_float_array = null;

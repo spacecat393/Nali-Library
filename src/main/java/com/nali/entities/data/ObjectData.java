@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class ObjectData extends MainData
 {
     public DataLoader dataloader;
+    public boolean should_render;
     public float[] float_array; // scale head_rot head_pitch
     public float[] rgba_float_array;
     public float[] screen_rgba_float_array;

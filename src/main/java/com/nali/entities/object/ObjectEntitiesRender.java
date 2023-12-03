@@ -4,6 +4,7 @@ import com.nali.entities.data.ObjectData;
 import com.nali.math.*;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.drawing.OpenGLObjectDrawing;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,6 +16,14 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
     public ObjectEntitiesRender(RenderManager rendermanager)
     {
         super(rendermanager);
+    }
+
+    @Override
+    public boolean shouldRender(T objectentities, ICamera camera, double camX, double camY, double camZ)
+    {
+        ObjectData objectdata = (ObjectData)objectentities.client_object;
+        objectdata.should_render = super.shouldRender(objectentities, camera, camX, camY, camZ);
+        return objectdata.should_render;
     }
 
     @Override
@@ -33,11 +42,6 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
 
         objectdata.m4x4_array[0].translate((float)ox, (float)oy/* - eye_height + 0.03F/* - (player_sleep ? 0.3F : 0.0F)*/, (float)oz); // world
 
-        // head_rot
-        objectdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(objectentities.rotationYaw, objectentities.prevRotationYaw, partialTicks)));
-        // head_pitch
-        objectdata.float_array[2] = (float)Math.toRadians(objectentities.prevRotationPitch + (objectentities.rotationPitch - objectentities.prevRotationPitch) * partialTicks);
-
         LightingMath.set(objectentities, objectdata.rgba_float_array, partialTicks);
 //        int color = ((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapColors()[0];
 //        float alpha = ((color >> 24) & 0xFF) / 255.0F;
@@ -48,7 +52,7 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
 //        objectdata.rgb_float_array[1] = green;
 //        objectdata.rgb_float_array[2] = blue;
 
-        this.multiplyAnimation(objectentities);
+        this.updateData(objectentities, objectdata, partialTicks);
 
 //        DataLoader.OBJECTENTITIES_ARRAYLIST.add(objectentities);
         for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
@@ -91,6 +95,16 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
                 OpenGLObjectDrawing.startScreenObjectGL(objectentities);
             }
         }
+    }
+
+    public void updateData(T objectentities, ObjectData objectdata, float partialTicks)
+    {
+        // head_rot
+        objectdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(objectentities.rotationYaw, objectentities.prevRotationYaw, partialTicks)));
+        // head_pitch
+        objectdata.float_array[2] = (float)Math.toRadians(objectentities.prevRotationPitch + (objectentities.rotationPitch - objectentities.prevRotationPitch) * partialTicks);
+
+        this.multiplyAnimation(objectentities);
     }
 
     public abstract void multiplyAnimation(T skinningentities);

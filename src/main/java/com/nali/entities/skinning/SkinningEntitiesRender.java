@@ -4,6 +4,7 @@ import com.nali.entities.data.SkinningData;
 import com.nali.math.*;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.drawing.OpenGLSkinningDrawing;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,6 +16,14 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
     public SkinningEntitiesRender(RenderManager rendermanager)
     {
         super(rendermanager);
+    }
+
+    @Override
+    public boolean shouldRender(T skinningentities, ICamera camera, double camX, double camY, double camZ)
+    {
+        SkinningData skinningdata = (SkinningData)skinningentities.client_object;
+        skinningdata.should_render = super.shouldRender(skinningentities, camera, camX, camY, camZ);
+        return skinningdata.should_render;
     }
 
     @Override
@@ -108,15 +117,6 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
         // entity.m4x4_array[2].mat[14] = (float)FieldsReflectLoader.getField(temp_object_array, 11, project_matrix4f);
         // entity.m4x4_array[2].mat[15] = (float)FieldsReflectLoader.getField(temp_object_array, 15, project_matrix4f);
 
-        // body_rot
-        skinningdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRenderYawOffset, skinningentities.renderYawOffset, partialTicks)));
-        // head_rot
-        skinningdata.float_array[2] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRotationYawHead, skinningentities.rotationYawHead, partialTicks)));
-        // net_head_yaw
-        skinningdata.float_array[3] = skinningdata.float_array[2] - skinningdata.float_array[1];
-        // head_pitch
-        skinningdata.float_array[4] = (float)Math.toRadians(skinningentities.prevRotationPitch + (skinningentities.rotationPitch - skinningentities.prevRotationPitch) * partialTicks);
-
 //        for (int i = 0; i < skinningdata.frame_int_array.length; ++i)
 //        {
 //            skinningdata.frame_int_array[i] = entitydatamanager.get(skinningentities.getIntegerDataParameterArray()[skinningentities.getMaxPart() + i]);
@@ -134,122 +134,7 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
 //        skinningdata.rgb_float_array[1] = green;
 //        skinningdata.rgb_float_array[2] = blue;
 
-        int max_bones = (int)((Object[])((Object[])((Object[])skinningdata.model_address_object_array[0])[6])[0])[4];
-
-        //
-
-        float[] animation_float_array = (float[])skinningdata.animation_object_array[0];
-        byte[] bones_byte_array = (byte[])skinningdata.animation_object_array[1];
-        int max_key = (int)skinningdata.animation_object_array[2];
-
-        // for (skinningdata.index = 0; skinningdata.index < entity.model_object_array.length; ++skinningdata.index)
-        // {
-            // if (entity.model_boolean_array[skinningdata.index])
-            // {
-                // int[] skinning_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[15];
-
-                for (int i = 0; i < max_bones; ++i)
-                {
-                    System.arraycopy(M4x4.IDENTITY, 0, skinningdata.skinning_float_array, i * 16, 16);
-                }
-            // }
-        // }
-
-        this.multiplyAnimation(skinningentities);
-
-        // ArrayList<M4x4> visualbones_m4x4_arraylist = (ArrayList<M4x4>)entity.object_array_arraylist.get(x)[17];
-
-        // int[] skinning_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[15];
-        // int[] animation_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[16];
-
-        for (int z = 0; z < bones_byte_array.length; ++z)
-        {
-            if (bones_byte_array[z] != 0)
-            {
-                // Object[] object_array = entity.free_skinning_object_array_arraylist.get(0); // we need more id for do more free idle but it won't worth
-                ((M4x4)WorldMath.FREE_SKINNING_OBJECT_ARRAY[6]).multiply(skinningdata.skinning_float_array, z * 16);
-            }
-        }
-
-        // this.animate(entity);
-
-        for (int i = 0; i < max_bones; ++i)
-        {
-            // M4x4[] animation_m4x4_array = animation_m4x4_array_arraylist.get(animation_bones_int_array[i]);
-            // M4x4 temp0_m4x4 = new M4x4();
-            // M4x4 temp1_m4x4 = new M4x4();
-
-            M4x4.multiply(animation_float_array, skinningdata.skinning_float_array, (skinningdata.frame_int_array[0] + max_key * i) * 16, i * 16);
-
-            // animation_m4x4_array[entity.int_array[1]].multiply(skinning_float_array, skinning_bones_int_array[i]);
-            // animation_m4x4_array[entity.int_array[1]].multiply(skinning_float_array, skinning_bones_integer_arraylist.get(i));
-            // animation_m4x4_array[entity.frame_int_array[0]].cloneMat(temp0_m4x4.mat, 0);
-            // temp0_m4x4.inverse();
-            // temp0_m4x4.mat[3] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[3];
-            // temp0_m4x4.mat[7] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[7];
-            // temp0_m4x4.mat[11] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[11];
-            // temp0_m4x4.inverse();
-
-            for (int f = 1; f < skinningdata.frame_int_array.length; ++f)
-            {
-                if (skinningdata.frame_boolean_array[f - 1])
-                {
-                    M4x4.multiply(animation_float_array, skinningdata.skinning_float_array, (skinningdata.frame_int_array[f] + max_key * i) * 16, i * 16);
-                    // animation_m4x4_array[entity.int_array[f]].multiply(skinning_float_array, skinning_bones_int_array[i]);
-                }
-            }
-            // animation_m4x4_array[entity.frame_int_array[1]].cloneMat(temp1_m4x4.mat, 0);
-            // temp1_m4x4.inverse();
-            // temp1_m4x4.mat[3] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[3];
-            // temp1_m4x4.mat[7] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[7];
-            // temp1_m4x4.mat[11] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[11];
-            // temp1_m4x4.inverse();
-            // M4x4.inverse(skinning_float_array, skinning_bones_integer_arraylist.get(i));
-            // temp0_m4x4.multiply(temp1_m4x4.mat);
-
-            // temp0_m4x4.multiply(skinning_float_array, skinning_bones_integer_arraylist.get(i));
-            // System.arraycopy(temp_m4x4.mat, 0, entity.skinning_float_array_arraylist.get(x), skinning_bones_integer_arraylist.get(i) * 16, 16);
-        }
-
-        // float[] bindposes_float_array = (float[])((Object[])entity.model_object_array[skinningdata.index])[13];
-        // Object[] bindposes_bones_object_array = (Object[])((Object[])entity.model_object_array[skinningdata.index])[14];
-
-        // float[] new_skinning_float_array = new float[skinning_float_array.length];
-
-        // for (int i = 0; i < skinning_bones_int_array.length; ++i)
-        // {
-        //     int[] bindposes_bones_int_array = (int[])bindposes_bones_object_array[skinning_bones_int_array[i] / 16];//i
-        //     int index = skinning_bones_int_array[i];//i * 16
-
-        //     System.arraycopy(M4x4.IDENTITY, 0, new_skinning_float_array, index, 16);
-
-        //     for (int x = 0; x < bindposes_bones_int_array.length; ++x)
-        //     {
-        //         M4x4.multiply(bindposes_float_array, new_skinning_float_array, bindposes_bones_int_array[x] * 16, index);
-        //         // M4x4.multiply(skinning_float_array, new_skinning_float_array, bindposes_bones_int_array[x] * 16, index);
-        //         // M4x4.inverse(new_skinning_float_array, index);
-        //     }
-        // }
-
-        // entity.skinning_object_array[skinningdata.index] = new_skinning_float_array;
-
-
-
-        // for (skinningdata.index = 0; skinningdata.index < entity.model_object_array.length; ++skinningdata.index)
-        // {
-        //     if (entity.model_boolean_array[skinningdata.index])
-        //     {
-        //         int[] skinning_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[15];
-
-        //         for (int i = 0; i < skinning_bones_int_array.length; ++i)
-        //         {
-        //             float[] skinning_float_array = (float[])entity.skinning_object_array[skinningdata.index];
-        //             System.arraycopy(M4x4.IDENTITY, 0, skinning_float_array, i * 16, 16);
-        //         }
-        //     }
-        // }
-
-        // this.multiplyAnimation(entity);
+        this.updateData(skinningentities, skinningdata, partialTicks);
 
         //!
 //        DataLoader.SKINNINGENTITIES_ARRAYLIST.add(skinningentities);
@@ -359,6 +244,135 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
     //     RenderSystem.setShaderTexture(0, this.getEntityTexture(skinningentities));
     //     GuiComponent.blit(posestack, x + 152, y + 28, 0, 0, 0, 27, 27, 27, 27);
     // }
+
+    public void updateData(T skinningentities, SkinningData skinningdata, float partialTicks)
+    {
+        // body_rot
+        skinningdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRenderYawOffset, skinningentities.renderYawOffset, partialTicks)));
+        // head_rot
+        skinningdata.float_array[2] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRotationYawHead, skinningentities.rotationYawHead, partialTicks)));
+        // net_head_yaw
+        skinningdata.float_array[3] = skinningdata.float_array[2] - skinningdata.float_array[1];
+        // head_pitch
+        skinningdata.float_array[4] = (float)Math.toRadians(skinningentities.prevRotationPitch + (skinningentities.rotationPitch - skinningentities.prevRotationPitch) * partialTicks);
+
+        int max_bones = (int)((Object[])((Object[])((Object[])skinningdata.model_address_object_array[0])[6])[0])[4];
+
+        //
+
+        float[] animation_float_array = (float[])skinningdata.animation_object_array[0];
+        byte[] bones_byte_array = (byte[])skinningdata.animation_object_array[1];
+        int max_key = (int)skinningdata.animation_object_array[2];
+
+        // for (skinningdata.index = 0; skinningdata.index < entity.model_object_array.length; ++skinningdata.index)
+        // {
+        // if (entity.model_boolean_array[skinningdata.index])
+        // {
+        // int[] skinning_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[15];
+
+        for (int i = 0; i < max_bones; ++i)
+        {
+            System.arraycopy(M4x4.IDENTITY, 0, skinningdata.skinning_float_array, i * 16, 16);
+        }
+        // }
+        // }
+
+        this.multiplyAnimation(skinningentities);
+
+        // ArrayList<M4x4> visualbones_m4x4_arraylist = (ArrayList<M4x4>)entity.object_array_arraylist.get(x)[17];
+
+        // int[] skinning_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[15];
+        // int[] animation_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[16];
+
+        for (int z = 0; z < bones_byte_array.length; ++z)
+        {
+            if (bones_byte_array[z] != 0)
+            {
+                // Object[] object_array = entity.free_skinning_object_array_arraylist.get(0); // we need more id for do more free idle but it won't worth
+                ((M4x4)WorldMath.FREE_SKINNING_OBJECT_ARRAY[6]).multiply(skinningdata.skinning_float_array, z * 16);
+            }
+        }
+
+        // this.animate(entity);
+
+        for (int i = 0; i < max_bones; ++i)
+        {
+            // M4x4[] animation_m4x4_array = animation_m4x4_array_arraylist.get(animation_bones_int_array[i]);
+            // M4x4 temp0_m4x4 = new M4x4();
+            // M4x4 temp1_m4x4 = new M4x4();
+
+            M4x4.multiply(animation_float_array, skinningdata.skinning_float_array, (skinningdata.frame_int_array[0] + max_key * i) * 16, i * 16);
+
+            // animation_m4x4_array[entity.int_array[1]].multiply(skinning_float_array, skinning_bones_int_array[i]);
+            // animation_m4x4_array[entity.int_array[1]].multiply(skinning_float_array, skinning_bones_integer_arraylist.get(i));
+            // animation_m4x4_array[entity.frame_int_array[0]].cloneMat(temp0_m4x4.mat, 0);
+            // temp0_m4x4.inverse();
+            // temp0_m4x4.mat[3] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[3];
+            // temp0_m4x4.mat[7] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[7];
+            // temp0_m4x4.mat[11] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[11];
+            // temp0_m4x4.inverse();
+
+            for (int f = 1; f < skinningdata.frame_int_array.length; ++f)
+            {
+                if (skinningdata.frame_boolean_array[f - 1])
+                {
+                    M4x4.multiply(animation_float_array, skinningdata.skinning_float_array, (skinningdata.frame_int_array[f] + max_key * i) * 16, i * 16);
+                    // animation_m4x4_array[entity.int_array[f]].multiply(skinning_float_array, skinning_bones_int_array[i]);
+                }
+            }
+            // animation_m4x4_array[entity.frame_int_array[1]].cloneMat(temp1_m4x4.mat, 0);
+            // temp1_m4x4.inverse();
+            // temp1_m4x4.mat[3] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[3];
+            // temp1_m4x4.mat[7] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[7];
+            // temp1_m4x4.mat[11] -= visualbones_m4x4_arraylist.get(skinning_bones_integer_arraylist.get(i) / 16).mat[11];
+            // temp1_m4x4.inverse();
+            // M4x4.inverse(skinning_float_array, skinning_bones_integer_arraylist.get(i));
+            // temp0_m4x4.multiply(temp1_m4x4.mat);
+
+            // temp0_m4x4.multiply(skinning_float_array, skinning_bones_integer_arraylist.get(i));
+            // System.arraycopy(temp_m4x4.mat, 0, entity.skinning_float_array_arraylist.get(x), skinning_bones_integer_arraylist.get(i) * 16, 16);
+        }
+
+        // float[] bindposes_float_array = (float[])((Object[])entity.model_object_array[skinningdata.index])[13];
+        // Object[] bindposes_bones_object_array = (Object[])((Object[])entity.model_object_array[skinningdata.index])[14];
+
+        // float[] new_skinning_float_array = new float[skinning_float_array.length];
+
+        // for (int i = 0; i < skinning_bones_int_array.length; ++i)
+        // {
+        //     int[] bindposes_bones_int_array = (int[])bindposes_bones_object_array[skinning_bones_int_array[i] / 16];//i
+        //     int index = skinning_bones_int_array[i];//i * 16
+
+        //     System.arraycopy(M4x4.IDENTITY, 0, new_skinning_float_array, index, 16);
+
+        //     for (int x = 0; x < bindposes_bones_int_array.length; ++x)
+        //     {
+        //         M4x4.multiply(bindposes_float_array, new_skinning_float_array, bindposes_bones_int_array[x] * 16, index);
+        //         // M4x4.multiply(skinning_float_array, new_skinning_float_array, bindposes_bones_int_array[x] * 16, index);
+        //         // M4x4.inverse(new_skinning_float_array, index);
+        //     }
+        // }
+
+        // entity.skinning_object_array[skinningdata.index] = new_skinning_float_array;
+
+
+
+        // for (skinningdata.index = 0; skinningdata.index < entity.model_object_array.length; ++skinningdata.index)
+        // {
+        //     if (entity.model_boolean_array[skinningdata.index])
+        //     {
+        //         int[] skinning_bones_int_array = (int[])((Object[])entity.model_object_array[skinningdata.index])[15];
+
+        //         for (int i = 0; i < skinning_bones_int_array.length; ++i)
+        //         {
+        //             float[] skinning_float_array = (float[])entity.skinning_object_array[skinningdata.index];
+        //             System.arraycopy(M4x4.IDENTITY, 0, skinning_float_array, i * 16, 16);
+        //         }
+        //     }
+        // }
+
+        // this.multiplyAnimation(entity);
+    }
 
     public abstract void multiplyAnimation(T skinningentities);
 }

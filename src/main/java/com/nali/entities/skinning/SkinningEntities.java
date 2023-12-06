@@ -45,7 +45,7 @@ public abstract class SkinningEntities extends EntityLivingBase
         DataParameter<Byte>[] byte_dataparameter_array = this.getByteDataParameterArray();
         for (DataParameter<Byte> bytedataparameter : byte_dataparameter_array)
         {
-            this.dataManager.register(bytedataparameter, (byte) 0);
+            this.dataManager.register(bytedataparameter, (byte)0);
         }
 
         DataParameter<Integer>[] integer_dataparameter_array = this.getIntegerDataParameterArray();

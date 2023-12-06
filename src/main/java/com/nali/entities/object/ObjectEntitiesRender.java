@@ -52,7 +52,7 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
 //        objectdata.rgb_float_array[1] = green;
 //        objectdata.rgb_float_array[2] = blue;
 
-        this.updateData(objectentities, objectdata, partialTicks);
+        this.updateData(objectentities, partialTicks);
 
 //        DataLoader.OBJECTENTITIES_ARRAYLIST.add(objectentities);
         for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
@@ -67,26 +67,27 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         super.doRender(objectentities, ox, oy, oz, entityYaw, partialTicks);
     }
 
-    public void renderOnScreen(T objectentities, float width, float height, float x, float y, float s)
+    public void renderOnScreen(T objectentities)
     {
         ObjectData objectdata = (ObjectData)objectentities.client_object;
 //        float max = 1.0F;
-        float image_aspect_ratio = width / height;
+        float image_aspect_ratio = objectdata.screen_float_array[0] / objectdata.screen_float_array[1];
 //        float r = max * image_aspect_ratio;
 
         objectdata.m4x4_array[1] = M4x4.getOrthographic(-1.0F, 1.0F, -image_aspect_ratio, image_aspect_ratio, 0.1F, 100.0F);
         objectdata.m4x4_array[2] = new M4x4();
         objectdata.m4x4_array[3] = new M4x4();
-        float new_x = (2.0F * x) / width - 1.0F;
-        float new_y = 1.0F - (2.0F * y) / height;
-        objectdata.m4x4_array[2].translate(new_x * image_aspect_ratio, new_y, -10.0F);
+        float new_x = (2.0F * objectdata.screen_float_array[2]) / objectdata.screen_float_array[0] - 1.0F;
+        float new_y = 1.0F - (2.0F * objectdata.screen_float_array[3]) / objectdata.screen_float_array[1];
+        objectdata.m4x4_array[2].translate(new_x * image_aspect_ratio, new_y, objectdata.screen_float_array[4]/*-10.0F*/);
         M4x4 temp_m4x4 = new M4x4();
 
 //        float scale = s;// * image_aspect_ratio;
-        temp_m4x4.scale(s, s, s);
+        temp_m4x4.scale(objectdata.screen_float_array[8], objectdata.screen_float_array[9], objectdata.screen_float_array[10]);
         objectdata.m4x4_array[2].multiply(temp_m4x4.mat);
-        objectdata.m4x4_array[3] = new M4x4();
-        objectdata.m4x4_array[3].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
+//        objectdata.m4x4_array[3] = new M4x4();
+//        objectdata.m4x4_array[3].translate(objectdata.screen_float_array[11], objectdata.screen_float_array[12], 0.0F);
+        objectdata.m4x4_array[3].multiply(new Quaternion(/*-1.57079632679F + */objectdata.screen_float_array[5], objectdata.screen_float_array[6], objectdata.screen_float_array[7]).getM4x4().mat);
 
         for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < objectdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
         {
@@ -97,8 +98,9 @@ public abstract class ObjectEntitiesRender<T extends ObjectEntities> extends Ren
         }
     }
 
-    public void updateData(T objectentities, ObjectData objectdata, float partialTicks)
+    public void updateData(T objectentities, float partialTicks)
     {
+        ObjectData objectdata = (ObjectData)objectentities.client_object;
         // head_rot
         objectdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(objectentities.rotationYaw, objectentities.prevRotationYaw, partialTicks)));
         // head_pitch

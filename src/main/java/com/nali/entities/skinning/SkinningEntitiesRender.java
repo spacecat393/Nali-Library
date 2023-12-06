@@ -134,7 +134,7 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
 //        skinningdata.rgb_float_array[1] = green;
 //        skinningdata.rgb_float_array[2] = blue;
 
-        this.updateData(skinningentities, skinningdata, partialTicks);
+        this.updateData(skinningentities, partialTicks);
 
         //!
 //        DataLoader.SKINNINGENTITIES_ARRAYLIST.add(skinningentities);
@@ -186,9 +186,10 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
         super.doRender(skinningentities, ox, oy, oz, entityYaw, partialTicks);
     }
 
-    public void renderOnScreen(T skinningentities, float width, float height, float x, float y, float s)
+    public void renderOnScreen(T skinningentities)
     {
         SkinningData skinningdata = (SkinningData)skinningentities.client_object;
+//        float width, float height, float x, float y, float s;
 //        float max = 4F;
 //        float image_aspect_ratio = (float)minecraft.displayWidth / (float)minecraft.displayHeight;
 //        float r = max * image_aspect_ratio;
@@ -211,24 +212,25 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
 //        }
 
 //        float max = 1.0F;
-        float image_aspect_ratio = width / height;
+        float image_aspect_ratio = skinningdata.screen_float_array[0] / skinningdata.screen_float_array[1];
 //        float r = max * image_aspect_ratio;
 
         skinningdata.m4x4_array[1] = M4x4.getOrthographic(-1.0F, 1.0F, -image_aspect_ratio, image_aspect_ratio, 0.1F, 100.0F);
         skinningdata.m4x4_array[2] = new M4x4();
         skinningdata.m4x4_array[3] = new M4x4();
-        float new_x = (2.0F * x) / width - 1.0F;
-        float new_y = 1.0F - (2.0F * y) / height;
-        skinningdata.m4x4_array[2].translate(new_x * image_aspect_ratio, new_y, -10.0F);
+        float new_x = (2.0F * skinningdata.screen_float_array[2]) / skinningdata.screen_float_array[0] - 1.0F;
+        float new_y = 1.0F - (2.0F * skinningdata.screen_float_array[3]) / skinningdata.screen_float_array[1];
+        skinningdata.m4x4_array[2].translate(new_x * image_aspect_ratio, new_y, /*-10.0F*/skinningdata.screen_float_array[4]);
         M4x4 temp_m4x4 = new M4x4();
 //        M4x4 temp2_m4x4 = new Quaternion(this.rx, this.ry, this.rz).getM4x4();
 
         //float scale = s;// * image_aspect_ratio;
-        temp_m4x4.scale(s, s, s);
+        temp_m4x4.scale(skinningdata.screen_float_array[8], skinningdata.screen_float_array[9], skinningdata.screen_float_array[10]);
         skinningdata.m4x4_array[2].multiply(temp_m4x4.mat);
 //        skinningdata.m4x4_array[2].multiply(temp2_m4x4.mat);
-        skinningdata.m4x4_array[3] = new M4x4();
-        skinningdata.m4x4_array[3].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
+//        skinningdata.m4x4_array[3] = new M4x4();
+//        skinningdata.m4x4_array[3].translate(skinningdata.screen_float_array[11], skinningdata.screen_float_array[12], 0.0F);
+        skinningdata.m4x4_array[3].multiply(new Quaternion(/*-1.57079632679F + */skinningdata.screen_float_array[5], skinningdata.screen_float_array[6], skinningdata.screen_float_array[7]).getM4x4().mat);
 
         for (DataLoader.SCREEN_INDEX = 0; DataLoader.SCREEN_INDEX < skinningdata.model_address_object_array.length; ++DataLoader.SCREEN_INDEX)
         {
@@ -245,8 +247,10 @@ public abstract class SkinningEntitiesRender<T extends SkinningEntities> extends
     //     GuiComponent.blit(posestack, x + 152, y + 28, 0, 0, 0, 27, 27, 27, 27);
     // }
 
-    public void updateData(T skinningentities, SkinningData skinningdata, float partialTicks)
+    public void updateData(T skinningentities, float partialTicks)
     {
+        SkinningData skinningdata = (SkinningData)skinningentities.client_object;
+
         // body_rot
         skinningdata.float_array[1] = (float)Math.toRadians(MixMath.invert(MixMath.interpolateRotation(skinningentities.prevRenderYawOffset, skinningentities.renderYawOffset, partialTicks)));
         // head_rot

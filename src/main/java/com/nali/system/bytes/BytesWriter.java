@@ -25,8 +25,9 @@ public class BytesWriter
 
         for (int i = index; i < 8 + index; ++i)
         {
-            byte_array[i] = (byte) (most >> (8 * (7 - i - index)));
-            byte_array[8 + i] = (byte) (least >> (8 * (7 - i - index)));
+            int shift = 8 * (-i - 1 + index);
+            byte_array[i] = (byte) (most >> shift);
+            byte_array[8 + i] = (byte) (least >> shift);
         }
     }
 }

@@ -16,6 +16,7 @@ public class SkinningData extends MainData
     public float[] float_array = null; // scale body_rot head_rot net_head_yaw head_pitch
     public float[] rgba_float_array = null;
     public float[] screen_rgba_float_array = null;
+    public float[] screen_float_array;//width height x y z rx ry rz sx sy sz
 //    public Object[] model_address_object_array = null;
 //    public Object[] animation_address_object_array = null;
 //    public int index = 0;
@@ -34,6 +35,8 @@ public class SkinningData extends MainData
         int max_part = skinningentities.getMaxPart();
         int step_models = skinningentities.getStepModels();
         int max_array_length = skinningentities.getIntegerDataParameterArray().length - max_part;
+
+        this.screen_float_array = new float[11];
 
         this.rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};

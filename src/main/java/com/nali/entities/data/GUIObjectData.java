@@ -21,18 +21,21 @@ public abstract class GUIObjectData extends MainData
     public boolean[] model_boolean_array;
     public boolean[] glow_boolean_array;
 
-    public float s = 0.5F;
-    public float rx;
-    public float ry;
-    public float rz;
-    public float x;
-    public float y;
+    public float[] screen_float_array;//width height x y z rx ry rz sx sy sz
+//    public float s = 0.5F;
+//    public float rx;
+//    public float ry;
+//    public float rz;
+//    public float x;
+//    public float y;
 
     public GUIObjectData(DataLoader dataloader)
     {
         this.dataloader = dataloader;
         int max_part = this.getMaxPart();
         int step_models = this.getStepModels();
+
+        this.screen_float_array = new float[11];
 
         this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.float_array = new float[2];
@@ -60,7 +63,7 @@ public abstract class GUIObjectData extends MainData
         this.setBooleanArraylist();
     }
 
-    public void render(float width, float height)
+    public void render()
     {
 //        ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft());
 //        width = (float)scaledresolution.getScaledWidth_double();
@@ -75,22 +78,22 @@ public abstract class GUIObjectData extends MainData
 //        float image_aspect_ratio = width / height;
 //        float r = max * image_aspect_ratio;
 
-        float image_aspect_ratio = width / height;
+        float image_aspect_ratio = this.screen_float_array[0] / this.screen_float_array[1];
 //        float r = max * image_aspect_ratio;
         this.m4x4_array[0] = M4x4.getOrthographic(-1.0F, 1.0F, -image_aspect_ratio, image_aspect_ratio, 0.1F, 100.0F);
         this.m4x4_array[1] = new M4x4();
         this.m4x4_array[2] = new M4x4();
-        float new_x = (2.0F * this.x) / width - 1.0F;
-        float new_y = 1.0F - (2.0F * this.y) / height;
-        this.m4x4_array[1].translate(new_x * image_aspect_ratio, new_y, -1.0F);
+        float new_x = (2.0F * this.screen_float_array[2]) / this.screen_float_array[0] - 1.0F;
+        float new_y = 1.0F - (2.0F * this.screen_float_array[3]) / this.screen_float_array[1];
+        this.m4x4_array[1].translate(new_x * image_aspect_ratio, new_y, /*-1.0F*/this.screen_float_array[4]);
         M4x4 temp_m4x4 = new M4x4();
-        M4x4 temp2_m4x4 = new Quaternion(this.rx, this.ry, this.rz).getM4x4();
+        M4x4 temp2_m4x4 = new Quaternion(this.screen_float_array[5], this.screen_float_array[6], this.screen_float_array[7]).getM4x4();
 
 //        float scale_factor = 0.2F / scaled_resolution.getScaleFactor();
 //        float scale_factor = (0.2F * this.s) * scaledResolution.getScaleFactor();
 
-        float scale = 0.2F * this.s;// * image_aspect_ratio;
-        temp_m4x4.scale(scale, scale, scale);
+//        float scale = 0.2F * this.s;// * image_aspect_ratio;
+        temp_m4x4.scale(this.screen_float_array[8], this.screen_float_array[9], this.screen_float_array[10]);
         this.m4x4_array[2].multiply(temp_m4x4.mat);
         this.m4x4_array[2].multiply(temp2_m4x4.mat);
 //        this.m4x4_array[2].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);

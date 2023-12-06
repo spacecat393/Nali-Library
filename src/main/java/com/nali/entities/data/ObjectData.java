@@ -16,6 +16,7 @@ public class ObjectData extends MainData
     public float[] float_array; // scale head_rot head_pitch
     public float[] rgba_float_array;
     public float[] screen_rgba_float_array;
+    public float[] screen_float_array;//width height x y z rx ry rz sx sy sz
 //    public Object[] model_address_object_array;
 //    public int index;
     public int[] texture_index_int_array;
@@ -28,6 +29,8 @@ public class ObjectData extends MainData
         this.dataloader = dataloader;
         int max_part = objectentities.getMaxPart();
         int step_models = objectentities.getStepModels();
+
+        this.screen_float_array = new float[11];
 
         this.rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};

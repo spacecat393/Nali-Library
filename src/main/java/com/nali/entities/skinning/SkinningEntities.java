@@ -368,6 +368,12 @@ public abstract class SkinningEntities extends EntityLivingBase
         }
     }
 
+    @Override
+    public boolean isPushedByWater()
+    {
+        return false;
+    }
+
     public abstract int getMaxPart();
     @SideOnly(Side.CLIENT)
     public abstract int getStepModels();

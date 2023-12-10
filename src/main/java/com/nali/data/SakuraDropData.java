@@ -61,7 +61,7 @@ public class SakuraDropData extends ObjectData
         this.screen_float_array[6] -= this.mry * DataLoader.TD;
         this.screen_float_array[7] -= this.mrz * DataLoader.TD;
 
-        if (System.currentTimeMillis() - this.time >= this.max_time)
+        if (Minecraft.getSystemTime()/*System.currentTimeMillis()*/ - this.time >= this.max_time)
         {
             SakuraDropData.SAKURADROPGUIDATA_MAP.remove(this.id);
         }

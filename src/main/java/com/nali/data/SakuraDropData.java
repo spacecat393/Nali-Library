@@ -47,8 +47,6 @@ public class SakuraDropData extends ObjectData
 
         this.id = INDEX;
         SakuraDropData.SAKURADROPGUIDATA_MAP.put(this.id, this);
-
-        this.texture_index_int_array[0] = RANDOM.nextInt(dataloader.texture_object_array.length);
     }
 
     @Override

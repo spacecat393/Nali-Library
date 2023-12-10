@@ -1,5 +1,6 @@
-package com.nali.entities.data;
+package com.nali.data;
 
+import com.nali.math.M4x4;
 import com.nali.system.DataLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -10,7 +11,25 @@ import java.nio.IntBuffer;
 @SideOnly(Side.CLIENT)
 public abstract class MainData
 {
+    public DataLoader dataloader;
     public Object[] model_address_object_array;
+    public BothData bothdata;
+
+    public boolean should_render;
+    public float[] float_array = null; // scale body_rot head_rot net_head_yaw head_pitch
+    public float[] rgba_float_array = null;
+    public float[] screen_rgba_float_array;
+    public int[] texture_index_int_array;
+    public float[] screen_float_array;//width height x y z rx ry rz sx sy sz
+    public M4x4[] m4x4_array; // world view
+    public boolean[] model_boolean_array;
+    public boolean[] glow_boolean_array;
+
+    public MainData(BothData bothdata, DataLoader dataloader)
+    {
+        this.bothdata = bothdata;
+        this.dataloader = dataloader;
+    }
 
     public static void takeDefault(MainData maindata)
     {
@@ -202,4 +221,8 @@ public abstract class MainData
     }
 
     public abstract void set(Object[] object_array);
+    public abstract void setBooleanArraylist();
+    public abstract void setGlow();
+    public abstract void multiplyAnimation();
+    public abstract void setUniform(Object[] object_array);
 }

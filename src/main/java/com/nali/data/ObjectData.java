@@ -1,4 +1,4 @@
-package com.nali.entities.data;
+package com.nali.data;
 
 import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
@@ -10,37 +10,22 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class GUIObjectData extends MainData
+public abstract class ObjectData extends MainData
 {
-    public DataLoader dataloader;
-    public float[] float_array; // body_rot head_rot net_head_yaw head_pitch
-    public float[] screen_rgba_float_array;
-//    public Object[] model_address_object_array;
-    public int[] texture_index_int_array;
-    public M4x4[] m4x4_array; // world view
-    public boolean[] model_boolean_array;
-    public boolean[] glow_boolean_array;
-
-    public float[] screen_float_array;//width height x y z rx ry rz sx sy sz
-//    public float s = 0.5F;
-//    public float rx;
-//    public float ry;
-//    public float rz;
-//    public float x;
-//    public float y;
-
-    public GUIObjectData(DataLoader dataloader)
+    public ObjectData(BothData bothdata, DataLoader dataloader)
     {
-        this.dataloader = dataloader;
-        int max_part = this.getMaxPart();
-        int step_models = this.getStepModels();
+        super(bothdata, dataloader);
+
+        int max_part = bothdata.MaxPart();
+        int step_models = bothdata.StepModels();
 
         this.screen_float_array = new float[11];
 
+        this.rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
-        this.float_array = new float[2];
+        this.float_array = new float[3];
         this.texture_index_int_array = new int[max_part];
-        this.m4x4_array = new M4x4[3];
+        this.m4x4_array = new M4x4[4];
 
         this.model_address_object_array = new Object[max_part];
         this.model_boolean_array = new boolean[max_part];
@@ -69,10 +54,10 @@ public abstract class GUIObjectData extends MainData
 //        width = (float)scaledresolution.getScaledWidth_double();
 //        height = (float)scaledresolution.getScaledHeight_double();
 
-        // body_rot
-        this.float_array[0] = 0.0F;
-        // head_pitch
-        this.float_array[1] = 0.0F;
+//        // body_rot
+//        this.float_array[0] = 0.0F;
+//        // head_pitch
+//        this.float_array[1] = 0.0F;
 
 //        float max = 1.0F;
 //        float image_aspect_ratio = width / height;
@@ -114,11 +99,4 @@ public abstract class GUIObjectData extends MainData
     {
         OpenGLObjectBuffer.set(object_array);
     }
-
-    public abstract int getMaxPart();
-    public abstract int getStepModels();
-    public abstract void setBooleanArraylist();
-    public abstract void setGlow();
-    public abstract void multiplyAnimation();
-    public abstract void setUniform(Object[] object_array);
 }

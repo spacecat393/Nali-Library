@@ -1,6 +1,5 @@
-package com.nali.entities.data;
+package com.nali.data;
 
-import com.nali.entities.skinning.SkinningEntities;
 import com.nali.math.M4x4;
 import com.nali.math.WorldMath;
 import com.nali.system.DataLoader;
@@ -9,32 +8,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class SkinningData extends MainData
+public abstract class SkinningData extends MainData
 {
-    public DataLoader dataloader;
-    public boolean should_render;
-    public float[] float_array = null; // scale body_rot head_rot net_head_yaw head_pitch
-    public float[] rgba_float_array = null;
-    public float[] screen_rgba_float_array = null;
-    public float[] screen_float_array;//width height x y z rx ry rz sx sy sz
-//    public Object[] model_address_object_array = null;
 //    public Object[] animation_address_object_array = null;
-//    public int index = 0;
     public int[] frame_int_array = null;
-    public int[] texture_index_int_array = null;
-    public M4x4[] m4x4_array = null; // world view
     public float[] skinning_float_array = null;
-    public boolean[] model_boolean_array = null;
     public boolean[] frame_boolean_array = null;
-    public boolean[] glow_boolean_array = null;
     public Object[] animation_object_array = null;
 
-    public SkinningData(DataLoader dataloader, SkinningEntities skinningentities)
+    public SkinningData(BothData bothdata, DataLoader dataloader)
     {
-        this.dataloader = dataloader;
-        int max_part = skinningentities.getMaxPart();
-        int step_models = skinningentities.getStepModels();
-        int max_array_length = skinningentities.getIntegerDataParameterArray().length - max_part;
+        super(bothdata, dataloader);
+
+        int max_part = bothdata.MaxPart();
+        int step_models = bothdata.StepModels();
+        int max_array_length = bothdata.MaxFrame();
 
         this.screen_float_array = new float[11];
 
@@ -95,8 +83,8 @@ public class SkinningData extends MainData
         }
 
         WorldMath.WORLD_M4X4.cloneMat(this.m4x4_array[0].mat, 0);
-        skinningentities.setGlow(this);
-        skinningentities.setBooleanArraylist(this);
+        this.setGlow();
+        this.setBooleanArraylist();
     }
 
     @Override

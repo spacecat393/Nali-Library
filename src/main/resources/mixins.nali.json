@@ -5,7 +5,7 @@
   "mixins": [
   ],
   "client": [
-    "MixinActiveRenderInfo",
+    "IMixinActiveRenderInfo",
     "MixinEntityRenderer",
     "MixinMinecraft"
   ],

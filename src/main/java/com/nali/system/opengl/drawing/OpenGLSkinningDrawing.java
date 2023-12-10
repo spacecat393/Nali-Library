@@ -1,10 +1,9 @@
 package com.nali.system.opengl.drawing;
 
 import com.nali.config.MyConfig;
-import com.nali.entities.data.MainData;
-import com.nali.entities.data.SkinningData;
-import com.nali.entities.skinning.SkinningEntities;
-import com.nali.mixin.MixinActiveRenderInfo;
+import com.nali.data.MainData;
+import com.nali.data.SkinningData;
+import com.nali.mixin.IMixinActiveRenderInfo;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,11 +26,10 @@ public class OpenGLSkinningDrawing
 //    public static Consumer<SkinningEntities> SET_UNIFORM_SCREEN_CONSUMER;
     public static BiConsumer<float[], Object[]> SET_UNIFORM_BICONSUMER;
 
-    public static void startSkinningGL(SkinningEntities skinningentities)
+    public static void startSkinningGL(SkinningData skinningdata)
     {
 //        if (!DataLoader.REINIT_OPENGL_BUFFER)
 //        {
-        SkinningData skinningdata = (SkinningData)skinningentities.client_object;
         MainData.takeDefault(skinningdata);
 
         Object[] temp_uniform_object_array = (Object[])((Object[])((Object[])((Object[])((Object[])skinningdata.model_address_object_array[DataLoader.SCREEN_INDEX])[6])[0])[0])[3];
@@ -44,8 +42,8 @@ public class OpenGLSkinningDrawing
 
         SET_UNIFORM_BICONSUMER.accept(skinningdata.skinning_float_array, temp_uniform_object_array);
 
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, MixinActiveRenderInfo.PROJECTION());
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, MixinActiveRenderInfo.MODELVIEW());
+        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, IMixinActiveRenderInfo.PROJECTION());
+        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, IMixinActiveRenderInfo.MODELVIEW());
 
 //                GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, (FloatBuffer)FieldsReflectLoader.getField(FieldsReflectLoader.CLIENT_REFLECT_OBJECTS_ARRAY, 0, null));
 //                DataLoader.setFloatBuffer(WorldMath.VIEW_M4X4.mat);
@@ -111,7 +109,7 @@ public class OpenGLSkinningDrawing
 
         GL20.glUniform1i((int)temp_uniform_object_array[4], 0);
 
-        skinningentities.setUniform(temp_uniform_object_array);
+        skinningdata.setUniform(temp_uniform_object_array);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)((Object[])skinningdata.dataloader.texture_object_array[1])[skinningdata.texture_index_int_array[DataLoader.SCREEN_INDEX]], (byte)((Object[])skinningdata.model_address_object_array[DataLoader.SCREEN_INDEX])[5]);
@@ -122,9 +120,8 @@ public class OpenGLSkinningDrawing
 //        }
     }
 
-    public static void startScreenSkinningGL(SkinningEntities skinningentities)
+    public static void startScreenSkinningGL(SkinningData skinningdata)
     {
-        SkinningData skinningdata = (SkinningData)skinningentities.client_object;
         MainData.takeDefault(skinningdata);
 
         Object[] temp_uniform_object_array = (Object[])((Object[])((Object[])((Object[])((Object[])skinningdata.model_address_object_array[DataLoader.SCREEN_INDEX])[6])[0])[0])[3];
@@ -173,7 +170,7 @@ public class OpenGLSkinningDrawing
 
         GL20.glUniform1i((int)temp_uniform_object_array[4], 0);
 
-        skinningentities.setUniform(temp_uniform_object_array);
+        skinningdata.setUniform(temp_uniform_object_array);
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);

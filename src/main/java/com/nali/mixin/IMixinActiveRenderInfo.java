@@ -8,18 +8,18 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.nio.FloatBuffer;
 
 @Mixin(ActiveRenderInfo.class)
-public interface MixinActiveRenderInfo
+public interface IMixinActiveRenderInfo
 {
     @Accessor("MODELVIEW")
     @Final
-    public static FloatBuffer MODELVIEW()
+    static FloatBuffer MODELVIEW()
     {
         throw new AssertionError();
     };
 
     @Accessor("PROJECTION")
     @Final
-    public static FloatBuffer PROJECTION()
+    static FloatBuffer PROJECTION()
     {
         throw new AssertionError();
     };

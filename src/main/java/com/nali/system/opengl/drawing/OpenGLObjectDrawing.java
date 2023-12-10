@@ -1,10 +1,9 @@
 package com.nali.system.opengl.drawing;
 
 import com.nali.config.MyConfig;
-import com.nali.entities.data.MainData;
-import com.nali.entities.data.ObjectData;
-import com.nali.entities.object.ObjectEntities;
-import com.nali.mixin.MixinActiveRenderInfo;
+import com.nali.data.MainData;
+import com.nali.data.ObjectData;
+import com.nali.mixin.IMixinActiveRenderInfo;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,19 +23,18 @@ public class OpenGLObjectDrawing
 //    public static Consumer<ObjectEntities> SET_UNIFORM_WORLD_CONSUMER;
 //    public static Consumer<ObjectEntities> SET_UNIFORM_SCREEN_CONSUMER;
 
-    public static void startObjectGL(ObjectEntities objectentities)
+    public static void startObjectGL(ObjectData objectdata)
     {
 //        if (!DataLoader.REINIT_OPENGL_BUFFER)
 //        {
-        ObjectData objectdata = (ObjectData)objectentities.client_object;
         MainData.takeDefault(objectdata);
 
         Object[] temp_uniform_object_array = (Object[])((Object[])((Object[])((Object[])((Object[])objectdata.model_address_object_array[DataLoader.SCREEN_INDEX])[6])[0])[0])[3];
 
 //        SET_UNIFORM_WORLD_CONSUMER.accept(objectentities);
 
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, MixinActiveRenderInfo.PROJECTION());
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, MixinActiveRenderInfo.MODELVIEW());
+        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, IMixinActiveRenderInfo.PROJECTION());
+        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, IMixinActiveRenderInfo.MODELVIEW());
 //        DataLoader.OPENGL_FLOATBUFFER.limit(16);
         DataLoader.setFloatBuffer(objectdata.m4x4_array[0].mat);
         GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
@@ -80,7 +78,7 @@ public class OpenGLObjectDrawing
 
         GL20.glUniform1i((int)temp_uniform_object_array[4], 0);
 
-        objectentities.setUniform(temp_uniform_object_array);
+        objectdata.setUniform(temp_uniform_object_array);
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
@@ -92,10 +90,8 @@ public class OpenGLObjectDrawing
 //        }
     }
 
-    public static void startScreenObjectGL(ObjectEntities objectentities)
+    public static void startScreenObjectGL(ObjectData objectdata)
     {
-        ObjectData objectdata = (ObjectData)objectentities.client_object;
-
         MainData.takeDefault(objectdata);
 
         Object[] temp_uniform_object_array = (Object[])((Object[])((Object[])((Object[])((Object[])objectdata.model_address_object_array[DataLoader.SCREEN_INDEX])[6])[0])[0])[3];
@@ -133,7 +129,7 @@ public class OpenGLObjectDrawing
 
         GL20.glUniform1i((int)temp_uniform_object_array[4], 0);
 
-        objectentities.setUniform(temp_uniform_object_array);
+        objectdata.setUniform(temp_uniform_object_array);
 
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)((Object[])objectdata.dataloader.texture_object_array[1])[objectdata.texture_index_int_array[DataLoader.SCREEN_INDEX]], (byte)((Object[])objectdata.model_address_object_array[DataLoader.SCREEN_INDEX])[5]);

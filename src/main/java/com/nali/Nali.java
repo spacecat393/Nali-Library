@@ -1,8 +1,8 @@
 package com.nali;
 
 import com.nali.config.MyConfig;
+import com.nali.key.KeyRegistryHelper;
 import com.nali.system.Reference;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -29,6 +29,10 @@ public class Nali
         LOGGER = event.getModLog();
         CONFIGURATION = new Configuration(event.getSuggestedConfigurationFile());
         MyConfig.registerConfig();
-        MinecraftForge.EVENT_BUS.register(this);
+
+        if (event.getSide().isClient())
+        {
+            KeyRegistryHelper.set();
+        }
     }
 }

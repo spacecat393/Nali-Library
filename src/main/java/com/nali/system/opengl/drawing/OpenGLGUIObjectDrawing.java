@@ -1,7 +1,7 @@
 package com.nali.system.opengl.drawing;
 
-import com.nali.entities.data.GUIObjectData;
-import com.nali.entities.data.MainData;
+import com.nali.data.ObjectData;
+import com.nali.data.MainData;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,7 +14,7 @@ public class OpenGLGUIObjectDrawing
 {
 //    public static Consumer<GUIObjectData> SET_UNIFORM_SCREEN_CONSUMER;
 
-    public static void startScreenObjectGL(GUIObjectData guiobjectdata)
+    public static void startScreenObjectGL(ObjectData guiobjectdata)
     {
         MainData.takeDefault(guiobjectdata);
 

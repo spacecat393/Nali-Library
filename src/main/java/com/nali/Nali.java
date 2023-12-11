@@ -16,7 +16,7 @@ import java.util.Random;
 public class Nali
 {
     @Instance
-    public static Nali NALI;
+    public static Nali I;
     public static Configuration CONFIGURATION;
 
     public static Logger LOGGER;

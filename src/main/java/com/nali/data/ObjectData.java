@@ -9,8 +9,10 @@ import com.nali.system.opengl.drawing.OpenGLGUIObjectDrawing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
+
 @SideOnly(Side.CLIENT)
-public abstract class ObjectData extends MainData
+public class ObjectData extends MainData
 {
     public ObjectData(BothData bothdata, DataLoader dataloader)
     {
@@ -98,5 +100,29 @@ public abstract class ObjectData extends MainData
     public void set(Object[] object_array)
     {
         OpenGLObjectBuffer.set(object_array);
+    }
+
+    @Override
+    public void setBooleanArraylist()
+    {
+        Arrays.fill(this.model_boolean_array, true);
+    }
+
+    @Override
+    public void setGlow()
+    {
+
+    }
+
+    @Override
+    public void multiplyAnimation()
+    {
+
+    }
+
+    @Override
+    public void setUniform(Object[] object_array)
+    {
+
     }
 }

@@ -66,28 +66,4 @@ public class SakuraDropData extends ObjectData
 
         super.render();
     }
-
-    @Override
-    public void setBooleanArraylist()
-    {
-        this.model_boolean_array[0] = true;
-    }
-
-    @Override
-    public void setGlow()
-    {
-
-    }
-
-    @Override
-    public void multiplyAnimation()
-    {
-
-    }
-
-    @Override
-    public void setUniform(Object[] object_array)
-    {
-
-    }
 }

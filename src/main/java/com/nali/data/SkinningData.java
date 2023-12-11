@@ -7,8 +7,10 @@ import com.nali.system.opengl.buffer.OpenGLSkinningBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.Arrays;
+
 @SideOnly(Side.CLIENT)
-public abstract class SkinningData extends MainData
+public class SkinningData extends MainData
 {
 //    public Object[] animation_address_object_array = null;
     public int[] frame_int_array = null;
@@ -91,5 +93,29 @@ public abstract class SkinningData extends MainData
     public void set(Object[] object_array)
     {
         OpenGLSkinningBuffer.set(object_array);
+    }
+
+    @Override
+    public void setBooleanArraylist()
+    {
+        Arrays.fill(this.model_boolean_array, true);
+    }
+
+    @Override
+    public void setGlow()
+    {
+
+    }
+
+    @Override
+    public void multiplyAnimation()
+    {
+
+    }
+
+    @Override
+    public void setUniform(Object[] object_array)
+    {
+
     }
 }

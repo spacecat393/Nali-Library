@@ -4,7 +4,8 @@ public interface BothData
 {
     int MaxPart();
     int StepModels();
-    int Width();
-    int Height();
+    float Width();
+    float Height();
+    float Scale();
     int MaxFrame();
 }

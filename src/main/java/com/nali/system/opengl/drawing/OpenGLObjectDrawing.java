@@ -3,7 +3,6 @@ package com.nali.system.opengl.drawing;
 import com.nali.config.MyConfig;
 import com.nali.data.MainData;
 import com.nali.data.ObjectData;
-import com.nali.mixin.IMixinActiveRenderInfo;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,11 +32,19 @@ public class OpenGLObjectDrawing
 
 //        SET_UNIFORM_WORLD_CONSUMER.accept(objectentities);
 
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, IMixinActiveRenderInfo.PROJECTION());
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, IMixinActiveRenderInfo.MODELVIEW());
-//        DataLoader.OPENGL_FLOATBUFFER.limit(16);
-        DataLoader.setFloatBuffer(objectdata.m4x4_array[0].mat);
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, IMixinActiveRenderInfo.PROJECTION());
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, IMixinActiveRenderInfo.MODELVIEW());
+////        DataLoader.OPENGL_FLOATBUFFER.limit(16);
+//        DataLoader.setFloatBuffer(objectdata.m4x4_array[0].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
+
+//        DataLoader.setFloatBuffer(objectdata.m4x4_array[0].mat);
+//        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
+        DataLoader.OPENGL_FLOATBUFFER.limit(16);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
 
 //        if (objectdata.rgba_float_array[3] < 1.0F)
 //        {
@@ -97,13 +104,17 @@ public class OpenGLObjectDrawing
         Object[] temp_uniform_object_array = (Object[])((Object[])((Object[])((Object[])((Object[])objectdata.model_address_object_array[DataLoader.SCREEN_INDEX])[6])[0])[0])[3];
 
 //        SET_UNIFORM_SCREEN_CONSUMER.accept(objectentities);
-        //            DataLoader.OPENGL_FLOATBUFFER.limit(16);
-        DataLoader.setFloatBuffer(objectdata.m4x4_array[1].mat);
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
-        DataLoader.setFloatBuffer(objectdata.m4x4_array[2].mat);
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
-        DataLoader.setFloatBuffer(objectdata.m4x4_array[3].mat);
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
+        DataLoader.OPENGL_FLOATBUFFER.limit(16);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
+//        DataLoader.setFloatBuffer(objectdata.m4x4_array[1].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
+//        DataLoader.setFloatBuffer(objectdata.m4x4_array[2].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
+//        DataLoader.setFloatBuffer(objectdata.m4x4_array[3].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
 //            DataLoader.OPENGL_FLOATBUFFER.limit(4);
 
 //        if (objectdata.screen_rgba_float_array[3] < 1.0F)
@@ -120,7 +131,6 @@ public class OpenGLObjectDrawing
 ////        }
 
         DataLoader.setFloatBuffer(objectdata.screen_rgba_float_array);
-
         GL20.glUniform4((int)temp_uniform_object_array[3], DataLoader.OPENGL_FLOATBUFFER);
 //        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], false, OpenGLBuffer.createFloatBuffer(objectdata.m4x4_array[2].mat, true));
 //        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], false, OpenGLBuffer.createFloatBuffer(objectdata.m4x4_array[3].mat, true));

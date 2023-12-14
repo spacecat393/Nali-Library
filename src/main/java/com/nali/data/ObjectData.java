@@ -1,13 +1,11 @@
 package com.nali.data;
 
-import com.nali.math.M4x4;
-import com.nali.math.Quaternion;
-import com.nali.math.WorldMath;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLObjectBuffer;
-import com.nali.system.opengl.drawing.OpenGLGUIObjectDrawing;
+import com.nali.system.opengl.drawing.OpenGLObjectDrawing;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
 
@@ -27,7 +25,7 @@ public class ObjectData extends MainData
         this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.float_array = new float[3];
         this.texture_index_int_array = new int[max_part];
-        this.m4x4_array = new M4x4[4];
+//        this.m4x4_array = new M4x4[4];
 
         this.model_address_object_array = new Object[max_part];
         this.model_boolean_array = new boolean[max_part];
@@ -40,50 +38,59 @@ public class ObjectData extends MainData
 
         System.arraycopy(this.dataloader.model_object_array, step_models, this.model_address_object_array, 0, max_part);
 
-        for (int i = 0; i < this.m4x4_array.length; ++i)
-        {
-            this.m4x4_array[i] = new M4x4();
-        }
-
-        WorldMath.WORLD_M4X4.cloneMat(this.m4x4_array[0].mat, 0);
+//        for (int i = 0; i < this.m4x4_array.length; ++i)
+//        {
+//            this.m4x4_array[i] = new M4x4();
+//        }
+//
+//        WorldMath.WORLD_M4X4.cloneMat(this.m4x4_array[0].mat, 0);
         this.setGlow();
         this.setBooleanArraylist();
     }
 
     public void render()
     {
-//        ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft());
-//        width = (float)scaledresolution.getScaledWidth_double();
-//        height = (float)scaledresolution.getScaledHeight_double();
+////        ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft());
+////        width = (float)scaledresolution.getScaledWidth_double();
+////        height = (float)scaledresolution.getScaledHeight_double();
+//
+////        // body_rot
+////        this.float_array[0] = 0.0F;
+////        // head_pitch
+////        this.float_array[1] = 0.0F;
+//
+////        float max = 1.0F;
+////        float image_aspect_ratio = width / height;
+////        float r = max * image_aspect_ratio;
+//
+//        float image_aspect_ratio = this.screen_float_array[0] / this.screen_float_array[1];
+////        float r = max * image_aspect_ratio;
+//        this.m4x4_array[0] = M4x4.getOrthographic(-1.0F, 1.0F, -image_aspect_ratio, image_aspect_ratio, 0.1F, 100.0F);
+//        this.m4x4_array[1] = new M4x4();
+//        this.m4x4_array[2] = new M4x4();
+//        float new_x = (2.0F * this.screen_float_array[2]) / this.screen_float_array[0] - 1.0F;
+//        float new_y = 1.0F - (2.0F * this.screen_float_array[3]) / this.screen_float_array[1];
+//        this.m4x4_array[1].translate(new_x * image_aspect_ratio, new_y, /*-1.0F*/this.screen_float_array[4]);
+//        M4x4 temp_m4x4 = new M4x4();
+//        M4x4 temp2_m4x4 = new Quaternion(this.screen_float_array[5], this.screen_float_array[6], this.screen_float_array[7]).getM4x4();
+//
+////        float scale_factor = 0.2F / scaled_resolution.getScaleFactor();
+////        float scale_factor = (0.2F * this.s) * scaledResolution.getScaleFactor();
+//
+////        float scale = 0.2F * this.s;// * image_aspect_ratio;
+//        temp_m4x4.scale(this.screen_float_array[8], this.screen_float_array[9], this.screen_float_array[10]);
+//        this.m4x4_array[2].multiply(temp_m4x4.mat);
+//        this.m4x4_array[2].multiply(temp2_m4x4.mat);
+////        this.m4x4_array[2].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
 
-//        // body_rot
-//        this.float_array[0] = 0.0F;
-//        // head_pitch
-//        this.float_array[1] = 0.0F;
-
-//        float max = 1.0F;
-//        float image_aspect_ratio = width / height;
-//        float r = max * image_aspect_ratio;
-
-        float image_aspect_ratio = this.screen_float_array[0] / this.screen_float_array[1];
-//        float r = max * image_aspect_ratio;
-        this.m4x4_array[0] = M4x4.getOrthographic(-1.0F, 1.0F, -image_aspect_ratio, image_aspect_ratio, 0.1F, 100.0F);
-        this.m4x4_array[1] = new M4x4();
-        this.m4x4_array[2] = new M4x4();
-        float new_x = (2.0F * this.screen_float_array[2]) / this.screen_float_array[0] - 1.0F;
-        float new_y = 1.0F - (2.0F * this.screen_float_array[3]) / this.screen_float_array[1];
-        this.m4x4_array[1].translate(new_x * image_aspect_ratio, new_y, /*-1.0F*/this.screen_float_array[4]);
-        M4x4 temp_m4x4 = new M4x4();
-        M4x4 temp2_m4x4 = new Quaternion(this.screen_float_array[5], this.screen_float_array[6], this.screen_float_array[7]).getM4x4();
-
-//        float scale_factor = 0.2F / scaled_resolution.getScaleFactor();
-//        float scale_factor = (0.2F * this.s) * scaledResolution.getScaleFactor();
-
-//        float scale = 0.2F * this.s;// * image_aspect_ratio;
-        temp_m4x4.scale(this.screen_float_array[8], this.screen_float_array[9], this.screen_float_array[10]);
-        this.m4x4_array[2].multiply(temp_m4x4.mat);
-        this.m4x4_array[2].multiply(temp2_m4x4.mat);
-//        this.m4x4_array[2].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
+        float rx = (this.screen_float_array[8] == 0 ? 1.0F : this.screen_float_array[8]);
+        float ry = (this.screen_float_array[9] == 0 ? 1.0F : this.screen_float_array[9]);
+        float rz = (this.screen_float_array[10] == 0 ? 1.0F : this.screen_float_array[10]);
+        GL11.glTranslatef(this.screen_float_array[2], this.screen_float_array[3], 1.0F);
+        GL11.glScalef(rx, ry, rz);
+        GL11.glRotatef(this.screen_float_array[5], 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(this.screen_float_array[6], 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(this.screen_float_array[7], 0.0F, 0.0F, 1.0F);
 
         this.multiplyAnimation();
 
@@ -91,9 +98,15 @@ public class ObjectData extends MainData
         {
             if (this.model_boolean_array[DataLoader.SCREEN_INDEX])
             {
-                OpenGLGUIObjectDrawing.startScreenObjectGL(this);
+                OpenGLObjectDrawing.startScreenObjectGL(this);
             }
         }
+
+        GL11.glRotatef(-this.screen_float_array[7], 0.0F, 0.0F, 1.0F);
+        GL11.glRotatef(-this.screen_float_array[6], 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(-this.screen_float_array[5], 1.0F, 0.0F, 0.0F);
+        GL11.glScalef(1.0F / rx, 1.0F / ry, 1.0F / rz);
+        GL11.glTranslatef(-this.screen_float_array[2], -this.screen_float_array[3], -this.screen_float_array[4]);
     }
 
     @Override

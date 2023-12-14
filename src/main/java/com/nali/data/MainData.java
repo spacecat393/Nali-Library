@@ -1,6 +1,5 @@
 package com.nali.data;
 
-import com.nali.math.M4x4;
 import com.nali.system.DataLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,7 +20,7 @@ public abstract class MainData
     public float[] screen_rgba_float_array;
     public int[] texture_index_int_array;
     public float[] screen_float_array;//width height x y z rx ry rz sx sy sz
-    public M4x4[] m4x4_array; // world view
+//    public M4x4[] m4x4_array; // world view
     public boolean[] model_boolean_array;
     public boolean[] glow_boolean_array;
 

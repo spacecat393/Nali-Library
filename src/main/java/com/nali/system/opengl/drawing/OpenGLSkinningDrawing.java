@@ -3,7 +3,6 @@ package com.nali.system.opengl.drawing;
 import com.nali.config.MyConfig;
 import com.nali.data.MainData;
 import com.nali.data.SkinningData;
-import com.nali.mixin.IMixinActiveRenderInfo;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,16 +41,19 @@ public class OpenGLSkinningDrawing
 
         SET_UNIFORM_BICONSUMER.accept(skinningdata.skinning_float_array, temp_uniform_object_array);
 
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, IMixinActiveRenderInfo.PROJECTION());
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, IMixinActiveRenderInfo.MODELVIEW());
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, IMixinActiveRenderInfo.PROJECTION());
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], true, IMixinActiveRenderInfo.MODELVIEW());
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
 
 //                GL20.glUniformMatrix4((int)temp_uniform_object_array[0], true, (FloatBuffer)FieldsReflectLoader.getField(FieldsReflectLoader.CLIENT_REFLECT_OBJECTS_ARRAY, 0, null));
 //                DataLoader.setFloatBuffer(WorldMath.VIEW_M4X4.mat);
 //                GL20.glUniformMatrix4((int)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
 //        DataLoader.OPENGL_FLOATBUFFER.limit(16);
-        DataLoader.setFloatBuffer(skinningdata.m4x4_array[0].mat);
-
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
+//        DataLoader.setFloatBuffer(skinningdata.m4x4_array[0].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
 
 //        if (skinningdata.rgba_float_array[3] < 1.0F)
 //        {
@@ -129,12 +131,16 @@ public class OpenGLSkinningDrawing
         // GL20.glUniformMatrix4fv((int)temp_uniform_object_array[0], false, (float[])skinningdata.skinning_object_array[SkinningEntities.SCREEN_INDEX]);
         SET_UNIFORM_BICONSUMER.accept(skinningdata.skinning_float_array, temp_uniform_object_array);
 
-        DataLoader.setFloatBuffer(skinningdata.m4x4_array[1].mat);
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
-        DataLoader.setFloatBuffer(skinningdata.m4x4_array[2].mat);
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
-        DataLoader.setFloatBuffer(skinningdata.m4x4_array[3].mat);
-        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
+//        DataLoader.setFloatBuffer(skinningdata.m4x4_array[1].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
+//        DataLoader.setFloatBuffer(skinningdata.m4x4_array[2].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
+//        DataLoader.setFloatBuffer(skinningdata.m4x4_array[3].mat);
+//        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, DataLoader.OPENGL_FLOATBUFFER);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[0], false, DataLoader.OPENGL_FLOATBUFFER);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, DataLoader.OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4((Integer)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
 //        DataLoader.OPENGL_FLOATBUFFER.limit(4);
 //        if (skinningdata.screen_rgba_float_array[3] < 1.0F)
 //        {
@@ -150,7 +156,6 @@ public class OpenGLSkinningDrawing
 ////        }
 
         DataLoader.setFloatBuffer(skinningdata.screen_rgba_float_array);
-
         GL20.glUniform4((int)temp_uniform_object_array[3], DataLoader.OPENGL_FLOATBUFFER);
 //        SET_UNIFORM_SCREEN_CONSUMER.accept(skinningentities);
 
@@ -494,6 +499,7 @@ public class OpenGLSkinningDrawing
 //            DataLoader.OPENGL_FLOATBUFFER.limit(skinning_float_array.length);
             DataLoader.setFloatBuffer(skinning_float_array);
             GL20.glUniformMatrix4((int)temp_uniform_object_array[5], false, DataLoader.OPENGL_FLOATBUFFER);
+            DataLoader.OPENGL_FLOATBUFFER.limit(16);
         };
 
 //        OpenGLSkinningDrawing.SET_UNIFORM_WORLD_CONSUMER = (skinningentities) ->

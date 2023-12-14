@@ -33,7 +33,7 @@ public class EntitiesRender
             EntitiesRender.FREE_FUNCTION = EntitiesRender::setFreeSkinning;
 //            EntitiesRender.DRAW_FUNCTION = EntitiesRender::setDraw;
 
-            WorldMath.WORLD_M4X4 = new Quaternion(1.57079632679F, -3.14159265359F, 0.0F).getM4x4();
+//            WorldMath.WORLD_M4X4 = new Quaternion(1.57079632679F, -3.14159265359F, 0.0F).getM4x4();
 //        WorldMath.PROJECT_M4X4 = new M4x4();
 //        WorldMath.RGB_FLOAT_ARRAY = new float[3];
 //            WorldMath.SCREEN_RGBA_FLOAT_ARRAY = new float[]{1.0F, 1.0F, 1.0F, 1.0F};

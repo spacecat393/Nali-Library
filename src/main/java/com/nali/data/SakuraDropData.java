@@ -27,13 +27,13 @@ public class SakuraDropData extends ObjectData
         super(bothdata, dataloader);
         this.time = Minecraft.getSystemTime();//System.currentTimeMillis();
         this.ms = 1.0F / (RANDOM.nextInt(3) + 8);
-        this.mrx = (1.0F / (RANDOM.nextInt(3) + 5)) - (1.0F / (RANDOM.nextInt(3) + 5));
-        this.mry = (1.0F / (RANDOM.nextInt(3) + 5)) - (1.0F / (RANDOM.nextInt(3) + 5));
-        this.mrz = (1.0F / (RANDOM.nextInt(3) + 5)) - (1.0F / (RANDOM.nextInt(3) + 5));
+        this.mrx = (45.0F / (RANDOM.nextInt(3) + 5)) - (45.0F / (RANDOM.nextInt(3) + 5));
+        this.mry = (45.0F / (RANDOM.nextInt(3) + 5)) - (45.0F / (RANDOM.nextInt(3) + 5));
+        this.mrz = (45.0F / (RANDOM.nextInt(3) + 5)) - (45.0F / (RANDOM.nextInt(3) + 5));
         this.max_time = 1000 + RANDOM.nextInt(2500);
         this.fy = -3.0F / (RANDOM.nextInt(3) + 1);
-        float s = 0.5F / (RANDOM.nextInt(3) + 1);
-        this.screen_float_array[4] = -1.0F;
+        float s = 25.0F / (RANDOM.nextInt(3) + 1);
+        this.screen_float_array[4] = -10.0F;
         this.screen_float_array[8] = s;
         this.screen_float_array[9] = s;
         this.screen_float_array[10] = s;

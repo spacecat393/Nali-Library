@@ -1,7 +1,5 @@
 package com.nali.data;
 
-import com.nali.math.M4x4;
-import com.nali.math.WorldMath;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLSkinningBuffer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,7 +30,7 @@ public class SkinningData extends MainData
         this.screen_rgba_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
         this.float_array = new float[5];
         this.texture_index_int_array = new int[max_part];
-        this.m4x4_array = new M4x4[4];
+//        this.m4x4_array = new M4x4[4];
         this.frame_int_array = new int[max_array_length];
 
         this.animation_object_array = (Object[])this.dataloader.model_object_array[step_models - 1];
@@ -79,12 +77,12 @@ public class SkinningData extends MainData
         // free_skinning_object_array[4] = 0.0F;
         // free_skinning_object_array[5] = 0.0F;
 
-        for (int i = 0; i < this.m4x4_array.length; ++i)
-        {
-            this.m4x4_array[i] = new M4x4();
-        }
-
-        WorldMath.WORLD_M4X4.cloneMat(this.m4x4_array[0].mat, 0);
+//        for (int i = 0; i < this.m4x4_array.length; ++i)
+//        {
+//            this.m4x4_array[i] = new M4x4();
+//        }
+//
+//        WorldMath.WORLD_M4X4.cloneMat(this.m4x4_array[0].mat, 0);
         this.setGlow();
         this.setBooleanArraylist();
     }

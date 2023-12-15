@@ -56,13 +56,13 @@ public class OpenGLObjectShader
             uniform_length = uniform_string_object_array.length;
         }
 
-        Object[] uniform_object_array = new Object[5 + uniform_length];
+        Object[] uniform_object_array = new Object[1 + uniform_length];
 
-        uniform_object_array[0] = GL20.glGetUniformLocation(program, "project");
-        uniform_object_array[1] = GL20.glGetUniformLocation(program, "view");
-        uniform_object_array[2] = GL20.glGetUniformLocation(program, "world");
-        uniform_object_array[3] = GL20.glGetUniformLocation(program, "light_color");
-        uniform_object_array[4] = GL20.glGetUniformLocation(program, "texture_sampler");
+//        uniform_object_array[0] = GL20.glGetUniformLocation(program, "project");
+//        uniform_object_array[1] = GL20.glGetUniformLocation(program, "view");
+//        uniform_object_array[2] = GL20.glGetUniformLocation(program, "world");
+//        uniform_object_array[3] = GL20.glGetUniformLocation(program, "light_color");
+        uniform_object_array[0] = GL20.glGetUniformLocation(program, "texture_sampler");
 
         // uniform_object_array[0] = 0;
         // uniform_object_array[1] = 1;
@@ -73,7 +73,7 @@ public class OpenGLObjectShader
         for (int i = 0; i < uniform_length; ++i)
         {
             String[] string_array = (String[])uniform_string_object_array[i];
-            uniform_object_array[5 + i] = GL20.glGetUniformLocation(program, string_array[0]);
+            uniform_object_array[1 + i] = GL20.glGetUniformLocation(program, string_array[0]);
             // uniform_object_array[5 + i] = 5 + i;
         }
 

@@ -83,14 +83,15 @@ public class ObjectData extends MainData
 //        this.m4x4_array[2].multiply(temp2_m4x4.mat);
 ////        this.m4x4_array[2].multiply(new Quaternion(-1.57079632679F, 0.0F, 0.0F).getM4x4().mat);
 
-        float rx = (this.screen_float_array[8] == 0 ? 1.0F : this.screen_float_array[8]);
-        float ry = (this.screen_float_array[9] == 0 ? 1.0F : this.screen_float_array[9]);
-        float rz = (this.screen_float_array[10] == 0 ? 1.0F : this.screen_float_array[10]);
-        GL11.glTranslatef(this.screen_float_array[2], this.screen_float_array[3], 1.0F);
-        GL11.glScalef(rx, ry, rz);
+        float sx = (this.screen_float_array[8] == 0 ? 1.0F : this.screen_float_array[8]);
+        float sy = (this.screen_float_array[9] == 0 ? 1.0F : this.screen_float_array[9]);
+        float sz = (this.screen_float_array[10] == 0 ? 1.0F : this.screen_float_array[10]);
+        GL11.glTranslatef(this.screen_float_array[2], this.screen_float_array[3], this.screen_float_array[4]);
+        GL11.glScalef(sx, sy, sz);
         GL11.glRotatef(this.screen_float_array[5], 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(this.screen_float_array[6], 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(this.screen_float_array[7], 0.0F, 0.0F, 1.0F);
+        GL11.glColor4f(this.screen_rgba_float_array[0], this.screen_rgba_float_array[1], this.screen_rgba_float_array[2], this.screen_rgba_float_array[3]);
 
         this.multiplyAnimation();
 
@@ -102,10 +103,11 @@ public class ObjectData extends MainData
             }
         }
 
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glRotatef(-this.screen_float_array[7], 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(-this.screen_float_array[6], 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-this.screen_float_array[5], 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(1.0F / rx, 1.0F / ry, 1.0F / rz);
+        GL11.glScalef(1.0F / sx, 1.0F / sy, 1.0F / sz);
         GL11.glTranslatef(-this.screen_float_array[2], -this.screen_float_array[3], -this.screen_float_array[4]);
     }
 

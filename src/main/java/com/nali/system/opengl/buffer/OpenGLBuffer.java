@@ -6,7 +6,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -214,12 +213,12 @@ public class OpenGLBuffer
         return buffer;
     }
 
-    public static void setIntBuffer(int id, int buffer, int size)
-    {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-        GL30.glVertexAttribIPointer(id, size, GL11.GL_INT, 0, 0);
-        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-    }
+//    public static void setIntBuffer(int id, int buffer, int size)
+//    {
+//        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
+//        GL30.glVertexAttribIPointer(id, size, GL11.GL_INT, 0, 0);
+//        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+//    }
 
     public static void setFloatBuffer(int id, int buffer, int size)
     {

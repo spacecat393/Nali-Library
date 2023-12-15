@@ -10,6 +10,7 @@ import java.util.Arrays;
 @SideOnly(Side.CLIENT)
 public class SkinningData extends MainData
 {
+    public static Object[] FREE_SKINNING_OBJECT_ARRAY;
 //    public Object[] animation_address_object_array = null;
     public int[] frame_int_array = null;
     public float[] skinning_float_array = null;

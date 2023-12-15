@@ -6,11 +6,11 @@ ShaderLoader
                 1 FragmentShader
                 2 Program
                 3 Uniform
-                    0 Project
-                    1 View
-                    2 World
-                    3 LightColor
-                    4 TextureSampler
+                    -0 Project
+                    -1 View
+                    -2 World
+                    -3 LightColor
+                    0 TextureSampler
                     ...
                 4 AttribLocation
                     0 vertices
@@ -25,11 +25,11 @@ ShaderLoader
                 1 FragmentShader
                 2 Program
                 3 Uniform
-                    0 Project
-                    1 View
-                    2 World
-                    3 LightColor
-                    4 TextureSampler
+                    -0 Project
+                    -1 View
+                    -2 World
+                    -3 LightColor
+                    0 TextureSampler
                     ...
                 4 AttribLocation
                     0 vertices

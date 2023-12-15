@@ -67,14 +67,14 @@ public class OpenGLSkinningShader
 
         int max_bones = ((int)object_array[4]);
         // Object[] uniform_object_array = new Object[6];
-        Object[] uniform_object_array = new Object[5 + (multi_uniform ? max_bones : 1)];
+        Object[] uniform_object_array = new Object[1 + (multi_uniform ? max_bones : 1)];
 
 //        uniform_object_array[0] = GL20.glGetUniformLocation(program, "bindposes");
-        uniform_object_array[0] = GL20.glGetUniformLocation(program, "project");
-        uniform_object_array[1] = GL20.glGetUniformLocation(program, "view");
-        uniform_object_array[2] = GL20.glGetUniformLocation(program, "world");
-        uniform_object_array[3] = GL20.glGetUniformLocation(program, "light_color");
-        uniform_object_array[4] = GL20.glGetUniformLocation(program, "texture_sampler");
+//        uniform_object_array[0] = GL20.glGetUniformLocation(program, "project");
+//        uniform_object_array[1] = GL20.glGetUniformLocation(program, "view");
+//        uniform_object_array[2] = GL20.glGetUniformLocation(program, "world");
+//        uniform_object_array[3] = GL20.glGetUniformLocation(program, "light_color");
+        uniform_object_array[0] = GL20.glGetUniformLocation(program, "texture_sampler");
 
         // uniform_object_array[0] = 0;
         // uniform_object_array[1] = 1;
@@ -86,26 +86,26 @@ public class OpenGLSkinningShader
         {
             for (int i = 0; i < max_bones; ++i)
             {
-                uniform_object_array[i + 5] = GL20.glGetUniformLocation(program, "animation" + i);
+                uniform_object_array[i + 1] = GL20.glGetUniformLocation(program, "animation" + i);
                 // uniform_object_array[i + 5] = 5 + i;
             }
 
             for (int i = 0; i < uniform_length; ++i)
             {
                 String[] string_array = (String[])uniform_string_object_array[i];
-                uniform_object_array[5 + max_bones + i] = GL20.glGetUniformLocation(program, string_array[0]);
+                uniform_object_array[1 + max_bones + i] = GL20.glGetUniformLocation(program, string_array[0]);
                 // uniform_object_array[i + 5] = 5 + max_bones + i;
             }
         }
         else
         {
-            uniform_object_array[5] = GL20.glGetUniformLocation(program, "animation");
+            uniform_object_array[1] = GL20.glGetUniformLocation(program, "animation");
             // uniform_object_array[5] = 5;
 
             for (int i = 0; i < uniform_length; ++i)
             {
                 String[] string_array = (String[])uniform_string_object_array[i];
-                uniform_object_array[5 + i] = GL20.glGetUniformLocation(program, string_array[0]);
+                uniform_object_array[1 + i] = GL20.glGetUniformLocation(program, string_array[0]);
                 // uniform_object_array[5 + i] = 5 + i;
             }
         }
@@ -125,13 +125,19 @@ public class OpenGLSkinningShader
 
     public static String getVertexHeaderShaderString(Object[] object_array, boolean vulkan_shader)
     {
-        return "#version 430\n" +
+//        return "#version 430\n" +
+        return "#version 120\n" +
         "precision highp float;\n" +
 
-        "layout(location = 0) in vec3 vertices;\n" +
-        "layout(location = 1) in vec2 texcoord;\n" +
+//        "layout(location = 0) in vec3 vertices;\n" +
+//        "layout(location = 1) in vec2 texcoord;\n" +
+//
+//        "layout(location = 2) in ivec4 joints;\n" +
+//        "layout(location = 3) in vec4 weights;\n";
+        "attribute vec3 vertices;\n" +
+        "attribute vec2 texcoord;\n" +
 
-        "layout(location = 2) in ivec4 joints;\n" +
-        "layout(location = 3) in vec4 weights;\n";
+        "attribute vec4 joints;\n" +
+        "attribute vec4 weights;\n";
     }
 }

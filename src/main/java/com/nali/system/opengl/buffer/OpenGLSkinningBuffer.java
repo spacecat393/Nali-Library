@@ -26,7 +26,7 @@ public class OpenGLSkinningBuffer
 
         // buffer_object_array[8] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[11]);
 //        buffer_object_array[5] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[7]);
-        buffer_object_array[4] = OpenGLBuffer.loadIntBuffer((IntBuffer)object_array[7]);
+        buffer_object_array[4] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[7]);
         buffer_object_array[5] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[8]);
 
 //        set(object_array);
@@ -45,7 +45,7 @@ public class OpenGLSkinningBuffer
 
         // OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[8], (byte)object_array[18]);
 //        OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[5], 4);
-        OpenGLBuffer.setIntBuffer(2, (int)buffer_object_array[4], 4);
+        OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[4], 4);
         OpenGLBuffer.setFloatBuffer(3, (int)buffer_object_array[5], 4);
     }
     public static void delete(Object[] object_array)

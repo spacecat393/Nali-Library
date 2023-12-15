@@ -51,48 +51,49 @@ public class OpenGLSkinningMemory
         object_array[6] = new Object[6];
         ((Object[])object_array[6])[0] = shader_id;
         // object_array[10] = new Object[13];
-//        float[] joints_float_array = FileDataReader.getFloatArray(model_folder_path + "/Joints");
-        int[] joints_int_array = FileDataReader.getIntArray(model_folder_path + "/Joints");
+        float[] joints_float_array = FileDataReader.getFloatArray(model_folder_path + "/Joints");
+//        int[] joints_int_array = FileDataReader.getIntArray(model_folder_path + "/Joints");
         float[] weights_float_array = FileDataReader.getFloatArray(model_folder_path + "/Weights");
         // object_array[13] = FileDataReader.getFloatArray(model_folder_path + "/BindPoses");
 
         if (max_joints == 4)
         {
-//            object_array[7] = joints_float_array;
-            object_array[7] = joints_int_array;
+            object_array[7] = joints_float_array;
+//            object_array[7] = joints_int_array;
             object_array[8] = weights_float_array;
         }
         else
         {
             int step = 4 - max_joints;
-//            int joints_float_array_length = joints_float_array.length;
-            int joints_int_array_length = joints_int_array.length;
-            int new_size = joints_int_array_length + (joints_int_array_length / max_joints) * step;
-//            float[] temp_joints_float_array = new float[new_size];
-            int[] temp_joints_int_array = new int[new_size];
+            int joints_float_array_length = joints_float_array.length;
+//            int joints_int_array_length = joints_int_array.length;
+//            int new_size = joints_int_array_length + (joints_int_array_length / max_joints) * step;
+            int new_size = joints_float_array_length + (joints_float_array_length / max_joints) * step;
+            float[] temp_joints_float_array = new float[new_size];
+//            int[] temp_joints_int_array = new int[new_size];
             float[] temp_weights_float_array = new float[new_size];
             int index = 0;
             int temp_index = 0;
-//            for (int x = 0; x < temp_joints_float_array.length; x += 4)
-            for (int x = 0; x < temp_joints_int_array.length; x += 4)
+            for (int x = 0; x < temp_joints_float_array.length; x += 4)
+//            for (int x = 0; x < temp_joints_int_array.length; x += 4)
             {
                 for (int y = 0; y < max_joints; ++y)
                 {
-//                    temp_joints_float_array[temp_index] = joints_float_array[index];
-                    temp_joints_int_array[temp_index] = joints_int_array[index];
+                    temp_joints_float_array[temp_index] = joints_float_array[index];
+//                    temp_joints_int_array[temp_index] = joints_int_array[index];
                     temp_weights_float_array[temp_index++] = weights_float_array[index++];
                 }
 
                 for (int y = 0; y < step; ++y)
                 {
-//                    temp_joints_float_array[temp_index] = -1;
-                    temp_joints_int_array[temp_index] = -1;
+                    temp_joints_float_array[temp_index] = -1;
+//                    temp_joints_int_array[temp_index] = -1;
                     temp_weights_float_array[temp_index++] = 0.0F;
                 }
             }
 
-//            object_array[7] = temp_joints_float_array;
-            object_array[7] = temp_joints_int_array;
+            object_array[7] = temp_joints_float_array;
+//            object_array[7] = temp_joints_int_array;
             object_array[8] = temp_weights_float_array;
         }
 
@@ -451,8 +452,8 @@ public class OpenGLSkinningMemory
         object_array[2] = OpenGLBuffer.createFloatBuffer((float[]) object_array[2], true);
         // OpenGLBuffer.setFloatBuffer(object_array, 3, 3, true);
 
-//        object_array[7] = OpenGLBuffer.createFloatBuffer((float[])object_array[7], true);
-        OpenGLBuffer.createIntBuffer(object_array, 7, true);
+        object_array[7] = OpenGLBuffer.createFloatBuffer((float[])object_array[7], true);
+//        OpenGLBuffer.createIntBuffer(object_array, 7, true);
         object_array[8] = OpenGLBuffer.createFloatBuffer((float[])object_array[8], true);
         // OpenGLBuffer.setM4x4FloatBuffer(object_array, 13, true);
 

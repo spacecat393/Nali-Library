@@ -15,8 +15,8 @@ public abstract class MainData
     public BothData bothdata;
 
     public boolean should_render;
-    public float[] float_array = null; // scale body_rot head_rot net_head_yaw head_pitch
-    public float[] rgba_float_array = null;
+    public float[] float_array; // scale body_rot head_rot net_head_yaw head_pitch
+    public float[] rgba_float_array;
     public float[] screen_rgba_float_array;
     public int[] texture_index_int_array;
     public float[] screen_float_array;//width height x y z rx ry rz sx sy sz

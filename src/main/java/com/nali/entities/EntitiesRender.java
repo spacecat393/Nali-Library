@@ -1,7 +1,6 @@
 package com.nali.entities;
 
 import com.nali.math.Quaternion;
-import com.nali.math.WorldMath;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLObjectBuffer;
 import com.nali.system.opengl.buffer.OpenGLSkinningBuffer;
@@ -17,6 +16,8 @@ import org.lwjgl.opengl.GL15;
 
 import java.util.Random;
 import java.util.function.Consumer;
+
+import static com.nali.data.SkinningData.FREE_SKINNING_OBJECT_ARRAY;
 
 @SideOnly(Side.CLIENT)
 public class EntitiesRender
@@ -38,13 +39,13 @@ public class EntitiesRender
 //        WorldMath.RGB_FLOAT_ARRAY = new float[3];
 //            WorldMath.SCREEN_RGBA_FLOAT_ARRAY = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 
-            WorldMath.FREE_SKINNING_OBJECT_ARRAY = new Object[7];
-            WorldMath.FREE_SKINNING_OBJECT_ARRAY[0] = 0.0F;
-            WorldMath.FREE_SKINNING_OBJECT_ARRAY[1] = 0.0F;
-            WorldMath.FREE_SKINNING_OBJECT_ARRAY[2] = 0.0F;
-            WorldMath.FREE_SKINNING_OBJECT_ARRAY[3] = 0.0F;
-            WorldMath.FREE_SKINNING_OBJECT_ARRAY[4] = 0.0F;
-            WorldMath.FREE_SKINNING_OBJECT_ARRAY[5] = 0.0F;
+            FREE_SKINNING_OBJECT_ARRAY = new Object[7];
+            FREE_SKINNING_OBJECT_ARRAY[0] = 0.0F;
+            FREE_SKINNING_OBJECT_ARRAY[1] = 0.0F;
+            FREE_SKINNING_OBJECT_ARRAY[2] = 0.0F;
+            FREE_SKINNING_OBJECT_ARRAY[3] = 0.0F;
+            FREE_SKINNING_OBJECT_ARRAY[4] = 0.0F;
+            FREE_SKINNING_OBJECT_ARRAY[5] = 0.0F;
 
 //        DataLoader.setClientConfig(Reference.MOD_ID);
             DataLoader.setBy();
@@ -201,7 +202,7 @@ public class EntitiesRender
         if (TIME - time != 0)
         {
 //            Main.LOGGER.info(time);
-            Object[] object_array = WorldMath.FREE_SKINNING_OBJECT_ARRAY;
+            Object[] object_array = FREE_SKINNING_OBJECT_ARRAY;
             float x = (float)object_array[0];
             float y = (float)object_array[1];
             float z = (float)object_array[2];

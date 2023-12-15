@@ -51,7 +51,7 @@ public class OpenGLSkinningMemory
         object_array[6] = new Object[6];
         ((Object[])object_array[6])[0] = shader_id;
         // object_array[10] = new Object[13];
-        float[] joints_float_array = FileDataReader.getFloatArray(model_folder_path + "/Joints");
+        float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_path + "/Joints");
 //        int[] joints_int_array = FileDataReader.getIntArray(model_folder_path + "/Joints");
         float[] weights_float_array = FileDataReader.getFloatArray(model_folder_path + "/Weights");
         // object_array[13] = FileDataReader.getFloatArray(model_folder_path + "/BindPoses");
@@ -449,7 +449,7 @@ public class OpenGLSkinningMemory
         OpenGLBuffer.createIntBuffer(object_array, 0, true);
 
         object_array[1] = OpenGLBuffer.createFloatBuffer((float[])object_array[1], true);
-        object_array[2] = OpenGLBuffer.createFloatBuffer((float[]) object_array[2], true);
+        object_array[2] = OpenGLBuffer.createFloatBuffer((float[])object_array[2], true);
         // OpenGLBuffer.setFloatBuffer(object_array, 3, 3, true);
 
         object_array[7] = OpenGLBuffer.createFloatBuffer((float[])object_array[7], true);

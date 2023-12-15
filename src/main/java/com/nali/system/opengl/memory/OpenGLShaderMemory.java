@@ -3,6 +3,7 @@ package com.nali.system.opengl.memory;
 import com.nali.Nali;
 import com.nali.config.MyConfig;
 import com.nali.system.DataLoader;
+import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.shader.OpenGLSkinningShader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -64,24 +65,24 @@ public class OpenGLShaderMemory
                 object_array[2] = vertex_stringbuilder;
                 vertex_stringbuilder.append(OpenGLSkinningShader.getVertexHeaderShaderString(object_array, vulkan_shader) + "\n");
 
-                for (int j = 0; j < bones_file_array_length; ++j)
-                {
-                    int[] bones = (int[])bones_object_array[j];
-
-                    vertex_stringbuilder.append("int bones" + j + "[" + bones.length + "]" + " = int[](");
-
-                    for (int b = bones.length - 1; b > -1; --b)
-                    {
-                        vertex_stringbuilder.append("" + bones[b]);
-
-                        if (b > 0)
-                        {
-                            vertex_stringbuilder.append(", ");
-                        }
-                    }
-
-                    vertex_stringbuilder.append(");\n");
-                }
+//                for (int j = 0; j < bones_file_array_length; ++j)
+//                {
+//                    int[] bones = (int[])bones_object_array[j];
+//
+//                    vertex_stringbuilder.append("int bones" + StringReader.convertNumberToLetter(j) + "[" + bones.length + "]" + " = int[](");
+//
+//                    for (int b = bones.length - 1; b > -1; --b)
+//                    {
+//                        vertex_stringbuilder.append("" + bones[b]);
+//
+//                        if (b > 0)
+//                        {
+//                            vertex_stringbuilder.append(", ");
+//                        }
+//                    }
+//
+//                    vertex_stringbuilder.append(");\n");
+//                }
 
                 // float[] bones_float_array = (float[])object_array[3];
                 // int bones_size = bones_float_array.length / 16;
@@ -157,7 +158,7 @@ public class OpenGLShaderMemory
                 {
                     for (int i = 0; i < max_bones; ++i)
                     {
-                        vertex_stringbuilder.append("uniform mat4 animation" + i + ";\n");
+                        vertex_stringbuilder.append("uniform mat4 animation" + StringReader.convertNumberToLetter(i) + ";\n");
                     }
                 }
                 else
@@ -173,39 +174,74 @@ public class OpenGLShaderMemory
                 }
                 vertex_bufferedreader.close();
 
-                if (multi_uniform)
-                {
-                    vertex_stringbuilder.append("\nmat4 getAnimation(int b)\n{\n");
-                    for (int j = 0; j < bindposes_size; ++j)
-                    {
-                        String head = "else if";
+                //120 error
+//                if (multi_uniform)
+//                {
+//                    vertex_stringbuilder.append("\nmat4 getAnimation(int b)\n{\n");
+//                    for (int j = 0; j < bindposes_size; ++j)
+//                    {
+//                        String head = "else if";
+//
+//                        if (j == 0)
+//                        {
+//                            head = "if";
+//                        }
+//
+//                        if (vulkan_shader)
+//                        {
+//                            vertex_stringbuilder.append(head + " (b == " + j + ")\n{return objectuniform.animation" + j + ";\n}\n");
+//                        }
+//                        else
+//                        {
+//                            vertex_stringbuilder.append(head + " (b == " + j + ")\n{return animation" + StringReader.convertNumberToLetter(j) + ";\n}\n");
+//                        }
+//                    }
+//                    vertex_stringbuilder.append("return mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);\n}\n");
+//                }
+                //end
 
-                        if (j == 0)
-                        {
-                            head = "if";
-                        }
-
-                        if (vulkan_shader)
-                        {
-                            vertex_stringbuilder.append(head + " (b == " + j + ")\n{return objectuniform.animation" + j + ";\n}\n");
-                        }
-                        else
-                        {
-                            vertex_stringbuilder.append(head + " (b == " + j + ")\n{return animation" + j + ";\n}\n");
-                        }
-                    }
-                    vertex_stringbuilder.append("return mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);\n}\n");
-                }
-
-                String transform_vec_string = "\nvec4 transformVec(int b, vec4 vertices_vec4)\n" +
+                //work on 430
+//                String transform_vec_string = "\nvec4 transformVec(int b, vec4 vertices_vec4)\n" +
+//                "{\n" +
+//                "mat4 skinning_mat4 = bindposes[b];\n" +
+//                "vertices_vec4 *= skinning_mat4;\n";
+//                // temp_normals_vec4 *= skinning_mat4;
+//
+//                if (multi_uniform)
+//                {
+//                    transform_vec_string += "skinning_mat4 *= getAnimation(b);\n";
+//                }
+//                else
+//                {
+//                    if (vulkan_shader)
+//                    {
+//                        transform_vec_string += "skinning_mat4 *= objectuniform.animation[b];\n";
+//                    }
+//                    else
+//                    {
+//                        transform_vec_string += "skinning_mat4 *= animation[b];\n";
+//                    }
+//                }
+//
+//                // skinning_mat4 *= animation[b];
+//                transform_vec_string += "skinning_mat4 = inverse(skinning_mat4);\n" +
+//                "vertices_vec4 *= skinning_mat4;\n" +
+//                // temp_normals_vec4 *= skinning_mat4;
+//
+//                "return vertices_vec4;\n" +
+//                "}\n";
+//
+//                vertex_stringbuilder.append(transform_vec_string);
+                //end
+                String transform_vec_string = "\nvec4 transformVec(mat4 bindpose, vec4 vertices_vec4, mat4 animation)\n" +
                 "{\n" +
-                "mat4 skinning_mat4 = bindposes[b];\n" +
+                "mat4 skinning_mat4 = bindpose;\n" +
                 "vertices_vec4 *= skinning_mat4;\n";
                 // temp_normals_vec4 *= skinning_mat4;
 
                 if (multi_uniform)
                 {
-                    transform_vec_string += "skinning_mat4 *= getAnimation(b);\n";
+                    transform_vec_string += "skinning_mat4 *= animation;\n";
                 }
                 else
                 {
@@ -223,10 +259,8 @@ public class OpenGLShaderMemory
                 transform_vec_string += "skinning_mat4 = inverse(skinning_mat4);\n" +
                 "vertices_vec4 *= skinning_mat4;\n" +
                 // temp_normals_vec4 *= skinning_mat4;
-
                 "return vertices_vec4;\n" +
                 "}\n";
-
                 vertex_stringbuilder.append(transform_vec_string);
 
                 vertex_bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Vertex" + shader_state + 1));
@@ -251,9 +285,42 @@ public class OpenGLShaderMemory
                 // vertex_stringbuilder.append("int joint = " + (max_joints == 1 || max_joints > 4 ? "joints" : "joints[i]") + ";\n");
                 // vertex_stringbuilder.append("float weight = " + (max_joints == 1 || max_joints > 4 ? "weights" : "weights[i]") + ";\n");
 
-                for (int j = 0; j < bones_object_array.length; ++j)
+//                vertex_stringbuilder.append("float please_work = weights[3]");
+//                if (multi_uniform)
+//                {
+//                    for (int i = 0; i < bindposes_size; ++i)
+//                    {
+//                        vertex_stringbuilder.append(" + animation" + StringReader.convertNumberToLetter(i) + "[3].y");
+//                    }
+//                }
+//                vertex_stringbuilder.append(";\n");
+
+//                vertex_stringbuilder.append("for (int i = 0; i < 4; ++i)\n" +
+//                        "    {\n" +
+//                        "        vec4 temp_vertices_vec4 = vec4(vertices, 1.0);\n");
+//
+////                vertex_stringbuilder.append("int joint = int(joints[i]) + int(please_work);\n");
+//                vertex_stringbuilder.append("int joint = int(joints[0]);\n");
+//                vertex_stringbuilder.append("float weight = weights[0];\n");
+
+                Object[] back_bones = new Object[bones_file_array_length];
+
+                for (int j = 0; j < bones_file_array_length; ++j)
                 {
                     int[] bones = (int[])bones_object_array[j];
+                    back_bones[j] = new int[bones.length];
+
+                    int b_index = 0;
+                    for (int b = bones.length - 1; b > -1; --b)
+                    {
+                        int[] b_bones = (int[])back_bones[j];
+                        b_bones[b_index++] = bones[b];
+                    }
+                }
+
+                for (int j = 0; j < bones_object_array.length; ++j)
+                {
+                    int[] bones = (int[])back_bones[j];
                     String head = "else if";
 
                     if (j == 0)
@@ -261,7 +328,77 @@ public class OpenGLShaderMemory
                         head = "if";
                     }
 
-                    vertex_stringbuilder.append(head + " (joints[i] == " + j + ")\n{\nfor (int b = 0; b < " + bones.length + "; ++b)\n{\ntemp_vertices_vec4 = transformVec(bones" + j + "[b], temp_vertices_vec4);\n}\n}\n");
+//                    vertex_stringbuilder.append(head + " (joint == " + j + ")\n{\nfor (int b = 0; b < " + bones.length + "; ++b)\n{\ntemp_vertices_vec4 = transformVec(bones" + StringReader.convertNumberToLetter(j) + "[b], temp_vertices_vec4);\n}\n}\n");
+
+                    vertex_stringbuilder.append(head + " (joint == " + j + ")\n{\n");
+                    for (int b = 0; b < bones.length; ++b)
+                    {
+                        vertex_stringbuilder.append("temp_vertices_vec4 = transformVec(bindposes[" + bones[b] + "], temp_vertices_vec4, animation" + StringReader.convertNumberToLetter(bones[b]) + ");\n");
+                    }
+                    vertex_stringbuilder.append("}\n");
+                    //
+
+//                    vertex_stringbuilder.append(head + " (joint == " + j + ")\n{\n");
+//                    for (int b = 0; b < bones.length; ++b)
+//                    {
+//                        String transform_vec_string = "{\nmat4 skinning_mat4 = bindposes[bones" + StringReader.convertNumberToLetter(j) + "[" + b + "]];\n" +
+//                                "temp_vertices_vec4 *= skinning_mat4;\n";
+//                        // temp_normals_vec4 *= skinning_mat4;
+//
+//                        if (multi_uniform)
+//                        {
+//                            transform_vec_string += "skinning_mat4 *= animation" + StringReader.convertNumberToLetter(bones[b]) + ";\n";
+//                        }
+//                        else
+//                        {
+//                            if (vulkan_shader)
+//                            {
+//                                transform_vec_string += "skinning_mat4 *= objectuniform.animation[b];\n";
+//                            }
+//                            else
+//                            {
+//                                transform_vec_string += "skinning_mat4 *= animation[b];\n";
+//                            }
+//                        }
+//
+//                        // skinning_mat4 *= animation[b];
+//                        transform_vec_string += "skinning_mat4 = inverse(skinning_mat4);\n" +
+//                                "temp_vertices_vec4 *= skinning_mat4;\n}\n";
+//                                // temp_normals_vec4 *= skinning_mat4;
+//                        vertex_stringbuilder.append(transform_vec_string);
+//                    }
+//                    vertex_stringbuilder.append("}\n");
+
+                    //
+//                    vertex_stringbuilder.append(head + " (joint == " + j + ")\n{\nfor (int b = 0; b < " + bones.length + "; ++b)\n{\n");
+//                    String transform_vec_string = "mat4 skinning_mat4 = bindposes[b];\n" +
+//                            "temp_vertices_vec4 *= skinning_mat4;\n";
+//                    // temp_normals_vec4 *= skinning_mat4;
+//
+//                    if (multi_uniform)
+//                    {
+//                        transform_vec_string += "skinning_mat4 *= getAnimation(b);\n";
+//                    }
+//                    else
+//                    {
+//                        if (vulkan_shader)
+//                        {
+//                            transform_vec_string += "skinning_mat4 *= objectuniform.animation[b];\n";
+//                        }
+//                        else
+//                        {
+//                            transform_vec_string += "skinning_mat4 *= animation[b];\n";
+//                        }
+//                    }
+//
+//                    // skinning_mat4 *= animation[b];
+//                    transform_vec_string += "skinning_mat4 = inverse(skinning_mat4);\n" +
+//                            "temp_vertices_vec4 *= skinning_mat4;\n" +
+//                            // temp_normals_vec4 *= skinning_mat4;
+//                            "\n}\n}\n";
+//
+//                    vertex_stringbuilder.append(transform_vec_string);
+//                    //
                 }
 
                 vertex_bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Vertex" + shader_state + 2));

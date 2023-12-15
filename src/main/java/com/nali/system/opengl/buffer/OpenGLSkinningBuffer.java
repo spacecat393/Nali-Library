@@ -34,19 +34,20 @@ public class OpenGLSkinningBuffer
     public static void set(Object[] object_array)
     {
         Object[] buffer_object_array = (Object[])object_array[6];
+        Object[] attriblocation_object_array = (Object[])((Object[])((Object[])buffer_object_array[0])[0])[4];
 
 //        GL30.glBindVertexArray((int)buffer_object_array[1]);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, (int)buffer_object_array[1]);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)object_array[0], GL15.GL_STATIC_DRAW);
 
-        OpenGLBuffer.setFloatBuffer(0, (int)buffer_object_array[2], 3);
-        OpenGLBuffer.setFloatBuffer(1, (int)buffer_object_array[3], 2);
+        OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[0], (int)buffer_object_array[2], 3);
+        OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[1], (int)buffer_object_array[3], 2);
         // OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[3], 3);
 
         // OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[8], (byte)object_array[18]);
 //        OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[5], 4);
-        OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[4], 4);
-        OpenGLBuffer.setFloatBuffer(3, (int)buffer_object_array[5], 4);
+        OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[2], (int)buffer_object_array[4], 4);
+        OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[3], (int)buffer_object_array[5], 4);
     }
     public static void delete(Object[] object_array)
     {

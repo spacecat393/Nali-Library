@@ -101,6 +101,49 @@ public class FileDataReader
         return null;
     }
 
+    public static float[] getFloatIntArray(String path_string)
+    {
+        try
+        {
+//            String data_string = new String(Files.readAllBytes(Paths.get(path_string)));
+//            String[] space_string_array = data_string.split(" ");
+//            int[] int_array = new int[space_string_array.length];
+            byte[] byte_array = Files.readAllBytes(Paths.get(path_string));
+            int byte_array_length = byte_array.length;
+            float[] float_int_array = new float[byte_array_length / 4];
+//            String number_string = "";
+//            int index = 0;
+
+//            for (int i = 0; i < data_string.length(); ++i)
+            for (int i = 0; i < byte_array_length; i += 4)
+            {
+                float_int_array[i / 4] = ((byte_array[i + 3] & 0xFF) << 24) |
+                        ((byte_array[i + 2] & 0xFF) << 16) |
+                        ((byte_array[i + 1] & 0xFF) << 8) |
+                        (byte_array[i] & 0xFF);
+//                if (data_string.charAt(i) == ' ')
+//                {
+//                    int_array[index] = Integer.parseInt(number_string);
+//                    number_string = "";
+//                    ++index;
+//                }
+//                else
+//                {
+//                    number_string += data_string.charAt(i);
+//                }
+            }
+
+//            int_array[index] = Integer.parseInt(number_string);
+            return float_int_array;
+        }
+        catch (IOException ioexception)
+        {
+            Nali.LOGGER.error(ioexception.getMessage(), ioexception);
+        }
+
+        return null;
+    }
+
 //    public static Object[] getMixXIntArray(String path_string)
 //    {
 //        Object[] object_array = null;

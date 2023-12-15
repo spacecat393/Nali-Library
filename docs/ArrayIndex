@@ -15,6 +15,7 @@ ShaderLoader
                 4 AttribLocation
                     0 vertices
                     1 texcoord
+                    2 normal
             1 UniformName
             2 Vertex
             3 Fragment
@@ -34,8 +35,9 @@ ShaderLoader
                 4 AttribLocation
                     0 vertices
                     1 texcoord
-                    2 weights
-                    3 joints
+                    2 normal
+                    3 weights
+                    4 joints
             1 UniformName
             2 Vertex
             3 Fragment

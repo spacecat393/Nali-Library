@@ -23,4 +23,23 @@ public class StringReader
         new_name_stringbuilder.append(class_name_string, i, class_name_string.length());
         return new String[]{new_name_stringbuilder.toString().toLowerCase(), mod_id_stringbuilder.toString().toLowerCase()};
     }
+
+    public static String convertNumberToLetter(int number)
+    {
+        StringBuilder stringbuilder = new StringBuilder();
+
+        while (number >= 0)
+        {
+            int remainder = number % 26;
+            stringbuilder.insert(0, (char) ('a' + remainder));
+            number = (number / 26) - 1; // Subtract 1 to convert to 0-based indexing
+
+            if (number < 0)
+            {
+                break;
+            }
+        }
+
+        return stringbuilder.toString();
+    }
 }

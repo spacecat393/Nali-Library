@@ -44,8 +44,8 @@ public class OpenGLObjectShader
         // attriblocation_object_array[0] = 0;
         // attriblocation_object_array[1] = 1;
 
-        GL20.glBindAttribLocation(program, 0, "vertices");
-        GL20.glBindAttribLocation(program, 1, "texcoord");
+        GL20.glBindAttribLocation(program, (int)attriblocation_object_array[0], "vertices");
+        GL20.glBindAttribLocation(program, (int)attriblocation_object_array[1], "texcoord");
         // GL20.glBindAttribLocation(program, 2, "normals");
 
         Object[] uniform_string_object_array = (Object[])object_array[1];

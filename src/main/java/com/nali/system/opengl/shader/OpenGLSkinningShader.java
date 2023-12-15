@@ -2,6 +2,7 @@ package com.nali.system.opengl.shader;
 
 import com.nali.Nali;
 import com.nali.config.MyConfig;
+import com.nali.system.StringReader;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,19 +42,20 @@ public class OpenGLSkinningShader
         attriblocation_object_array[0] = GL20.glGetAttribLocation(program, "vertices");
         attriblocation_object_array[1] = GL20.glGetAttribLocation(program, "texcoord");
         // GL20.glGetAttribLocation(program, "normals");
-        attriblocation_object_array[2] = GL20.glGetAttribLocation(program, "weights");
-        attriblocation_object_array[3] = GL20.glGetAttribLocation(program, "joints");
+        attriblocation_object_array[2] = GL20.glGetAttribLocation(program, "joints");
+        attriblocation_object_array[3] = GL20.glGetAttribLocation(program, "weights");
+//        attriblocation_object_array[3] = 3;
 
         // attriblocation_object_array[0] = 0;
         // attriblocation_object_array[1] = 1;
         // attriblocation_object_array[2] = 2;
         // attriblocation_object_array[3] = 3;
 
-        GL20.glBindAttribLocation(program, 0, "vertices");
-        GL20.glBindAttribLocation(program, 1, "texcoord");
+        GL20.glBindAttribLocation(program, (int)attriblocation_object_array[0], "vertices");
+        GL20.glBindAttribLocation(program, (int)attriblocation_object_array[1], "texcoord");
         // GL20.glBindAttribLocation(program, 2, "normals");
-        GL20.glBindAttribLocation(program, 2, "joints");
-        GL20.glBindAttribLocation(program, 3, "weights");
+        GL20.glBindAttribLocation(program, (int)attriblocation_object_array[2], "joints");
+        GL20.glBindAttribLocation(program, (int)attriblocation_object_array[3], "weights");
 
         Object[] uniform_string_object_array = (Object[])object_array[1];
         int uniform_length = 0;
@@ -86,7 +88,7 @@ public class OpenGLSkinningShader
         {
             for (int i = 0; i < max_bones; ++i)
             {
-                uniform_object_array[i + 1] = GL20.glGetUniformLocation(program, "animation" + i);
+                uniform_object_array[i + 1] = GL20.glGetUniformLocation(program, "animation" + StringReader.convertNumberToLetter(i));
                 // uniform_object_array[i + 5] = 5 + i;
             }
 

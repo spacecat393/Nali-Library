@@ -6,7 +6,8 @@
   ],
   "client": [
     "MixinEntityRenderer",
-    "MixinMinecraft"
+    "MixinMinecraft",
+    "IMixinEntityRenderer"
   ],
   "server": []
 }

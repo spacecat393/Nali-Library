@@ -3,8 +3,10 @@ package com.nali.system.opengl.drawing;
 import com.nali.config.MyConfig;
 import com.nali.data.MainData;
 import com.nali.data.ObjectData;
+import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLBuffer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -85,13 +87,20 @@ public class OpenGLObjectDrawing
 //            GL20.glUniform3((int)temp_uniform_object_array[3], OpenGLBuffer.createFloatBuffer(objectdata.rgb_float_array, true));
 //        }
 
+//        float bx = OpenGlHelper.lastBrightnessX;
+//        float by = OpenGlHelper.lastBrightnessY;
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, 1.0F, 1.0F);
+        GL20.glUniform1i((int)temp_uniform_object_array[1], 1);
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        OpenGLBuffer.setTextureBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId(), (byte)2);
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, bx, by);
+
         GL20.glUniform1i((int)temp_uniform_object_array[0], 0);
-
-        objectdata.setUniform(temp_uniform_object_array);
-
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)((Object[])objectdata.dataloader.texture_object_array[1])[objectdata.texture_index_int_array[DataLoader.SCREEN_INDEX]], (byte)((Object[])objectdata.model_address_object_array[DataLoader.SCREEN_INDEX])[5]);
+
+        objectdata.setUniform(temp_uniform_object_array);
 
         DRAW_CONSUMER.accept(objectdata);
 
@@ -139,12 +148,20 @@ public class OpenGLObjectDrawing
 //        GL20.glUniformMatrix4((int)temp_uniform_object_array[2], false, OpenGLBuffer.createFloatBuffer(objectdata.m4x4_array[4].mat, true));
 //        GL20.glUniform3((int)temp_uniform_object_array[3], OpenGLBuffer.createFloatBuffer(WorldMath.SCREEN_RGB_FLOAT_ARRAY, true));
 
+//        float bx = OpenGlHelper.lastBrightnessX;
+//        float by = OpenGlHelper.lastBrightnessY;
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, 1.0F, 1.0F);
+        GL20.glUniform1i((int)temp_uniform_object_array[1], 1);
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        OpenGLBuffer.setTextureBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId(), (byte)2);
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, bx, by);
+
         GL20.glUniform1i((int)temp_uniform_object_array[0], 0);
-
-        objectdata.setUniform(temp_uniform_object_array);
-
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)((Object[])objectdata.dataloader.texture_object_array[1])[objectdata.texture_index_int_array[DataLoader.SCREEN_INDEX]], (byte)((Object[])objectdata.model_address_object_array[DataLoader.SCREEN_INDEX])[5]);
+
+        objectdata.setUniform(temp_uniform_object_array);
 
         GL11.glDrawElements(GL11.GL_TRIANGLES, (int)((Object[])objectdata.model_address_object_array[DataLoader.SCREEN_INDEX])[3], GL11.GL_UNSIGNED_INT, 0);
         MainData.setDefault(objectdata);

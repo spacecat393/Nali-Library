@@ -44,6 +44,7 @@ public class OpenGLSkinningShader
         // GL20.glGetAttribLocation(program, "normals");
         attriblocation_object_array[2] = GL20.glGetAttribLocation(program, "joints");
         attriblocation_object_array[3] = GL20.glGetAttribLocation(program, "weights");
+        attriblocation_object_array[4] = GL20.glGetAttribLocation(program, "normals");
 //        attriblocation_object_array[3] = 3;
 
         // attriblocation_object_array[0] = 0;
@@ -56,6 +57,7 @@ public class OpenGLSkinningShader
         // GL20.glBindAttribLocation(program, 2, "normals");
         GL20.glBindAttribLocation(program, (int)attriblocation_object_array[2], "joints");
         GL20.glBindAttribLocation(program, (int)attriblocation_object_array[3], "weights");
+        GL20.glBindAttribLocation(program, (int)attriblocation_object_array[4], "normals");
 
         Object[] uniform_string_object_array = (Object[])object_array[1];
         int uniform_length = 0;
@@ -69,7 +71,7 @@ public class OpenGLSkinningShader
 
         int max_bones = ((int)object_array[4]);
         // Object[] uniform_object_array = new Object[6];
-        Object[] uniform_object_array = new Object[1 + (multi_uniform ? max_bones : 1)];
+        Object[] uniform_object_array = new Object[3 + (multi_uniform ? max_bones : 1)];
 
 //        uniform_object_array[0] = GL20.glGetUniformLocation(program, "bindposes");
 //        uniform_object_array[0] = GL20.glGetUniformLocation(program, "project");
@@ -77,6 +79,8 @@ public class OpenGLSkinningShader
 //        uniform_object_array[2] = GL20.glGetUniformLocation(program, "world");
 //        uniform_object_array[3] = GL20.glGetUniformLocation(program, "light_color");
         uniform_object_array[0] = GL20.glGetUniformLocation(program, "texture_sampler");
+        uniform_object_array[1] = GL20.glGetUniformLocation(program, "lightmap_sampler");
+        uniform_object_array[2] = GL20.glGetUniformLocation(program, "ligcoord");
 
         // uniform_object_array[0] = 0;
         // uniform_object_array[1] = 1;
@@ -88,26 +92,26 @@ public class OpenGLSkinningShader
         {
             for (int i = 0; i < max_bones; ++i)
             {
-                uniform_object_array[i + 1] = GL20.glGetUniformLocation(program, "animation" + StringReader.convertNumberToLetter(i));
+                uniform_object_array[i + 3] = GL20.glGetUniformLocation(program, "animation" + StringReader.convertNumberToLetter(i));
                 // uniform_object_array[i + 5] = 5 + i;
             }
 
             for (int i = 0; i < uniform_length; ++i)
             {
                 String[] string_array = (String[])uniform_string_object_array[i];
-                uniform_object_array[1 + max_bones + i] = GL20.glGetUniformLocation(program, string_array[0]);
+                uniform_object_array[3 + max_bones + i] = GL20.glGetUniformLocation(program, string_array[0]);
                 // uniform_object_array[i + 5] = 5 + max_bones + i;
             }
         }
         else
         {
-            uniform_object_array[1] = GL20.glGetUniformLocation(program, "animation");
+            uniform_object_array[3] = GL20.glGetUniformLocation(program, "animation");
             // uniform_object_array[5] = 5;
 
             for (int i = 0; i < uniform_length; ++i)
             {
                 String[] string_array = (String[])uniform_string_object_array[i];
-                uniform_object_array[1 + i] = GL20.glGetUniformLocation(program, string_array[0]);
+                uniform_object_array[3 + i] = GL20.glGetUniformLocation(program, string_array[0]);
                 // uniform_object_array[5 + i] = 5 + i;
             }
         }
@@ -140,6 +144,7 @@ public class OpenGLSkinningShader
         "attribute vec2 texcoord;\n" +
 
         "attribute vec4 joints;\n" +
-        "attribute vec4 weights;\n";
+        "attribute vec4 weights;\n" +
+        "attribute vec3 normals;\n";
     }
 }

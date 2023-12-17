@@ -3,8 +3,10 @@ package com.nali.system.opengl.drawing;
 import com.nali.config.MyConfig;
 import com.nali.data.MainData;
 import com.nali.data.SkinningData;
+import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.buffer.OpenGLBuffer;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -111,13 +113,23 @@ public class OpenGLSkinningDrawing
 //                GL20.glUniform3((int)temp_uniform_object_array[3], DataLoader.OPENGL_FLOATBUFFER);
 //            }
 
-        GL20.glUniform1i((int)temp_uniform_object_array[0], 0);
+//        float bx = OpenGlHelper.lastBrightnessX;
+//        float by = OpenGlHelper.lastBrightnessY;
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, 1.0F, 1.0F);
+        GL20.glUniform1i((int)temp_uniform_object_array[1], 1);
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        OpenGLBuffer.setTextureBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId(), (byte)2);
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, bx, by);
 
-        skinningdata.setUniform(temp_uniform_object_array);
+
+        GL20.glUniform1i((int)temp_uniform_object_array[0], 0);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)((Object[])skinningdata.dataloader.texture_object_array[1])[skinningdata.texture_index_int_array[DataLoader.SCREEN_INDEX]], (byte)((Object[])skinningdata.model_address_object_array[DataLoader.SCREEN_INDEX])[5]);
 
+        skinningdata.setUniform(temp_uniform_object_array);
+//        // Switch back to the default texture unit (GL_TEXTURE0)
+//        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
         DRAW_CONSUMER.accept(skinningdata);
 
         MainData.setDefault(skinningdata);
@@ -175,13 +187,20 @@ public class OpenGLSkinningDrawing
 //            nglUniformMatrix4fv(location, matrices.remaining() >> 4, transpose, MemoryUtil.getAddress(matrices), function_pointer);
 //        }
 
+//        float bx = OpenGlHelper.lastBrightnessX;
+//        float by = OpenGlHelper.lastBrightnessY;
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, 1.0F, 1.0F);
+        GL20.glUniform1i((int)temp_uniform_object_array[1], 1);
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        OpenGLBuffer.setTextureBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId(), (byte)2);
+//        OpenGlHelper.setLightmapTextureCoords(GL13.GL_TEXTURE1, bx, by);
+
         GL20.glUniform1i((int)temp_uniform_object_array[0], 0);
-
-        skinningdata.setUniform(temp_uniform_object_array);
-
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         // GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)((Object[])skinningdata.dataloader.texture_object_array[1])[skinningdata.texture_index_int_array[DataLoader.SCREEN_INDEX]], (byte)((Object[])skinningdata.model_address_object_array[DataLoader.SCREEN_INDEX])[5]);
+
+        skinningdata.setUniform(temp_uniform_object_array);
 
 //        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, (int)((Object[])skinningdata.model_address_object_array[DataLoader.SCREEN_INDEX])[3]);
         GL11.glDrawElements(GL11.GL_TRIANGLES, (int)((Object[])skinningdata.model_address_object_array[DataLoader.SCREEN_INDEX])[3], GL11.GL_UNSIGNED_INT, 0);
@@ -444,7 +463,7 @@ public class OpenGLSkinningDrawing
                 System.arraycopy(skinning_float_array, i, float_array, 0, 16);
                 // }
                 DataLoader.setFloatBuffer(float_array);
-                GL20.glUniformMatrix4((int)temp_uniform_object_array[(i / 16) + 1], false, DataLoader.OPENGL_FLOATBUFFER);
+                GL20.glUniformMatrix4((int)temp_uniform_object_array[(i / 16) + 3], false, DataLoader.OPENGL_FLOATBUFFER);
             }
         };
 
@@ -500,7 +519,7 @@ public class OpenGLSkinningDrawing
         {
 //            DataLoader.OPENGL_FLOATBUFFER.limit(skinning_float_array.length);
             DataLoader.setFloatBuffer(skinning_float_array);
-            GL20.glUniformMatrix4((int)temp_uniform_object_array[1], false, DataLoader.OPENGL_FLOATBUFFER);
+            GL20.glUniformMatrix4((int)temp_uniform_object_array[3], false, DataLoader.OPENGL_FLOATBUFFER);
 //            DataLoader.OPENGL_FLOATBUFFER.limit(16);
         };
 

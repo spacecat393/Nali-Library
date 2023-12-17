@@ -11,6 +11,7 @@ ShaderLoader
                     -2 World
                     -3 LightColor
                     0 TextureSampler
+                    1 LightMapSampler
                     ...
                 4 AttribLocation
                     0 vertices
@@ -31,6 +32,7 @@ ShaderLoader
                     -2 World
                     -3 LightColor
                     0 TextureSampler
+                    1 LightMapSampler
                     ...
                 4 AttribLocation
                     0 vertices

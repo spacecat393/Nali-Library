@@ -111,12 +111,12 @@ public class EntitiesRender
                 {
                     switch (object_array.length)
                     {
-                        case 7:
+                        case 8:
                         {
                             OpenGLObjectBuffer.delete(object_array);
                             break;
                         }
-                        case 9:
+                        case 10:
                         {
                             OpenGLSkinningBuffer.delete(object_array);
                             break;
@@ -169,12 +169,12 @@ public class EntitiesRender
                 {
                     switch (object_array.length)
                     {
-                        case 7:
+                        case 8:
                         {
                             OpenGLObjectBuffer.load(object_array);
                             break;
                         }
-                        case 9:
+                        case 10:
                         {
                             OpenGLSkinningBuffer.load(object_array);
                             break;

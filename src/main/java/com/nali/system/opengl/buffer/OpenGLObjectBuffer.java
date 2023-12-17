@@ -21,6 +21,7 @@ public class OpenGLObjectBuffer
         buffer_object_array[1] = buffer;
         buffer_object_array[2] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[1]);
         buffer_object_array[3] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[2]);
+        buffer_object_array[4] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[7]);
         // buffer_object_array[!3] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[3]);
 
 //        set(object_array);
@@ -37,6 +38,7 @@ public class OpenGLObjectBuffer
 
         OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[0], (int)buffer_object_array[2], 3);
         OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[1], (int)buffer_object_array[3], 2);
+        OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[2], (int)buffer_object_array[4], 3);
         // OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[3], 3);
     }
 
@@ -49,6 +51,7 @@ public class OpenGLObjectBuffer
             // OpenGLObjectShader.delete(object_array);
             GL15.glDeleteBuffers((int)buffer_object_array[2]);
             GL15.glDeleteBuffers((int)buffer_object_array[3]);
+            GL15.glDeleteBuffers((int)buffer_object_array[4]);
             GL15.glDeleteBuffers((int)buffer_object_array[1]);
 //            GL30.glDeleteVertexArrays((int)buffer_object_array[-1]);
 

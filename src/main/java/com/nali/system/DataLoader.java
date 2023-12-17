@@ -155,7 +155,7 @@ public class DataLoader
             {
                 switch (temp_model_object_array.length)
                 {
-                    case 7: case 9:
+                    case 8: case 10:
                     {
                         int shader_id = (int)((Object[])temp_model_object_array[6])[0];
                         ((Object[])temp_model_object_array[6])[0] = dataloader.shader_object_array[shader_id];

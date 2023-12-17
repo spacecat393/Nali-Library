@@ -21,12 +21,12 @@ public class OpenGLSkinningMemory
 //        byte blend = (byte)Integer.parseInt(model_string_array[4]);
         byte max_joints = (byte)Integer.parseInt(model_string_array[4]);
 
-        Object[] object_array = new Object[9];
+        Object[] object_array = new Object[10];
         object_array[0] = FileDataReader.getIntArray(model_folder_path + "/Index");
         object_array[1] = FileDataReader.getFloatArray(model_folder_path + "/Vertices");
         object_array[2] = FileDataReader.getFloatArray(model_folder_path + "/Texcoord");
         // object_array[3] = new ArrayList<float[]>();
-        // FileDataReader.getXFloatArrayList(model_folder_path + "/Normals", object_array[3], 3);
+        object_array[9] = FileDataReader.getFloatArray(model_folder_path + "/Normals");
         // FileDataReader.getFloatArray(model_folder_path + "/BonesM4x4", object_array, 3);
 
         // object_array[5] = new StringBuilder();
@@ -48,7 +48,7 @@ public class OpenGLSkinningMemory
 //        object_array[4] = (byte)(culling + blend * 2);
         object_array[4] = culling;
         object_array[5] = texture_state;
-        object_array[6] = new Object[6];
+        object_array[6] = new Object[7];
         ((Object[])object_array[6])[0] = shader_id;
         // object_array[10] = new Object[13];
         float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_path + "/Joints");
@@ -450,6 +450,7 @@ public class OpenGLSkinningMemory
 
         object_array[1] = OpenGLBuffer.createFloatBuffer((float[])object_array[1], true);
         object_array[2] = OpenGLBuffer.createFloatBuffer((float[])object_array[2], true);
+        object_array[9] = OpenGLBuffer.createFloatBuffer((float[])object_array[9], true);
         // OpenGLBuffer.setFloatBuffer(object_array, 3, 3, true);
 
         object_array[7] = OpenGLBuffer.createFloatBuffer((float[])object_array[7], true);

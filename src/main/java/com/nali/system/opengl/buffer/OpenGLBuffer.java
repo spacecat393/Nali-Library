@@ -300,6 +300,19 @@ public class OpenGLBuffer
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
                 break;
             }
+            case 2:
+            {
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+
+//                GL11.glTexParameteri(3553, 10241, 9729);
+//                GL11.glTexParameteri(3553, 10240, 9729);
+//                GL11.glTexParameteri(3553, 10242, 10496);
+//                GL11.glTexParameteri(3553, 10243, 10496);
+                break;
+            }
             default:
             {
                 Nali.LOGGER.error("No Texture State Engine");

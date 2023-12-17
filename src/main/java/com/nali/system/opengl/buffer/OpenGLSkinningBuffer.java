@@ -28,6 +28,7 @@ public class OpenGLSkinningBuffer
 //        buffer_object_array[5] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[7]);
         buffer_object_array[4] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[7]);
         buffer_object_array[5] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[8]);
+        buffer_object_array[6] = OpenGLBuffer.loadFloatBuffer((FloatBuffer)object_array[9]);
 
 //        set(object_array);
     }
@@ -48,6 +49,7 @@ public class OpenGLSkinningBuffer
 //        OpenGLBuffer.setFloatBuffer(2, (int)buffer_object_array[5], 4);
         OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[2], (int)buffer_object_array[4], 4);
         OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[3], (int)buffer_object_array[5], 4);
+        OpenGLBuffer.setFloatBuffer((int)attriblocation_object_array[4], (int)buffer_object_array[6], 3);
     }
     public static void delete(Object[] object_array)
     {
@@ -59,6 +61,7 @@ public class OpenGLSkinningBuffer
             GL15.glDeleteBuffers((int)buffer_object_array[3]);
             GL15.glDeleteBuffers((int)buffer_object_array[4]);
             GL15.glDeleteBuffers((int)buffer_object_array[5]);
+            GL15.glDeleteBuffers((int)buffer_object_array[6]);
             GL15.glDeleteBuffers((int)buffer_object_array[1]);
 //                GL30.glDeleteVertexArrays((int)buffer_object_array[-1]);
 

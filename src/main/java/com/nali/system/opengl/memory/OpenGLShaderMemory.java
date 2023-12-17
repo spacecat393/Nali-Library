@@ -37,7 +37,7 @@ public class OpenGLShaderMemory
 
         if (have_animation_folder)
         {
-            ((Object[])object_array[0])[4] = new Object[4];
+            ((Object[])object_array[0])[4] = new Object[5];
             float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
 
             int bones_file_array_length = new File(model_folder_path + animation_string + "Bones").listFiles().length;
@@ -63,7 +63,7 @@ public class OpenGLShaderMemory
             {
                 StringBuilder vertex_stringbuilder = new StringBuilder();
                 object_array[2] = vertex_stringbuilder;
-                vertex_stringbuilder.append(OpenGLSkinningShader.getVertexHeaderShaderString(object_array, vulkan_shader) + "\n");
+                vertex_stringbuilder.append(OpenGLSkinningShader.getVertexHeaderShaderString(object_array, vulkan_shader));
 
 //                for (int j = 0; j < bones_file_array_length; ++j)
 //                {
@@ -115,7 +115,7 @@ public class OpenGLShaderMemory
                 // object_array[3] = null;
 
                 int bindposes_size = bind_poses_float_array.length / 16;
-                vertex_stringbuilder.append("mat4 bindposes" + "[" + bindposes_size + "]" + " = mat4[](");
+                vertex_stringbuilder.append("mat4 bindposes[").append(String.valueOf(bindposes_size)).append("] = mat4[](");
 
                 for (int j = 0; j < bindposes_size; ++j)
                 {
@@ -158,19 +158,19 @@ public class OpenGLShaderMemory
                 {
                     for (int i = 0; i < max_bones; ++i)
                     {
-                        vertex_stringbuilder.append("uniform mat4 animation" + StringReader.convertNumberToLetter(i) + ";\n");
+                        vertex_stringbuilder.append("uniform mat4 animation").append(StringReader.convertNumberToLetter(i)).append(";\n");
                     }
                 }
                 else
                 {
-                    vertex_stringbuilder.append("uniform mat4[" + max_bones + "] animation;\n");
+                    vertex_stringbuilder.append("uniform mat4[").append(String.valueOf(max_bones)).append("] animation;\n");
                 }
 
                 String line = null;
                 BufferedReader vertex_bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Vertex" + shader_state + 0));
                 while ((line = vertex_bufferedreader.readLine()) != null)
                 {
-                    vertex_stringbuilder.append(line + "\n");
+                    vertex_stringbuilder.append(line).append("\n");
                 }
                 vertex_bufferedreader.close();
 
@@ -266,7 +266,7 @@ public class OpenGLShaderMemory
                 vertex_bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Vertex" + shader_state + 1));
                 while ((line = vertex_bufferedreader.readLine()) != null)
                 {
-                    vertex_stringbuilder.append(line + "\n");
+                    vertex_stringbuilder.append(line).append("\n");
                 }
                 vertex_bufferedreader.close();
 
@@ -330,10 +330,11 @@ public class OpenGLShaderMemory
 
 //                    vertex_stringbuilder.append(head + " (joint == " + j + ")\n{\nfor (int b = 0; b < " + bones.length + "; ++b)\n{\ntemp_vertices_vec4 = transformVec(bones" + StringReader.convertNumberToLetter(j) + "[b], temp_vertices_vec4);\n}\n}\n");
 
-                    vertex_stringbuilder.append(head + " (joint == " + j + ")\n{\n");
+                    vertex_stringbuilder.append(head).append(" (joint == ").append(String.valueOf(j)).append(")\n{\n");
                     for (int b = 0; b < bones.length; ++b)
                     {
-                        vertex_stringbuilder.append("temp_vertices_vec4 = transformVec(bindposes[" + bones[b] + "], temp_vertices_vec4, animation" + StringReader.convertNumberToLetter(bones[b]) + ");\n");
+                        vertex_stringbuilder.append("temp_vertices_vec4 = transformVec(bindposes[").append(String.valueOf(bones[b])).append("], temp_vertices_vec4, animation").append(StringReader.convertNumberToLetter(bones[b])).append(");\n");
+                        vertex_stringbuilder.append("temp_normals_vec4 *= temp_vertices_vec4;\n");
                     }
                     vertex_stringbuilder.append("}\n");
                     //
@@ -404,7 +405,7 @@ public class OpenGLShaderMemory
                 vertex_bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Vertex" + shader_state + 2));
                 while ((line = vertex_bufferedreader.readLine()) != null)
                 {
-                    vertex_stringbuilder.append(line + "\n");
+                    vertex_stringbuilder.append(line).append("\n");
                 }
                 vertex_bufferedreader.close();
             }
@@ -420,14 +421,14 @@ public class OpenGLShaderMemory
                 return;
             }
 
-            ((Object[])object_array[0])[4] = new Object[2];
+            ((Object[])object_array[0])[4] = new Object[3];
             object_array[2] = new StringBuilder();
             try (BufferedReader bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Vertex" + shader_state)))
             {
                 String line = null;
                 while ((line = bufferedreader.readLine()) != null)
                 {
-                    ((StringBuilder)object_array[2]).append(line + "\n");
+                    ((StringBuilder)object_array[2]).append(line).append("\n");
                 }
                 bufferedreader.close();
             }
@@ -443,7 +444,7 @@ public class OpenGLShaderMemory
             String line = null;
             while ((line = bufferedreader.readLine()) != null)
             {
-                ((StringBuilder)object_array[3]).append(line + "\n");
+                ((StringBuilder)object_array[3]).append(line).append("\n");
             }
             bufferedreader.close();
         }

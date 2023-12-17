@@ -20,11 +20,12 @@ public class OpenGLObjectMemory
         byte culling = (byte)Integer.parseInt(model_string_array[3]);
 //        byte blend = (byte)Integer.parseInt(model_string_array[4]);
 
-        Object[] object_array = new Object[7];
+        Object[] object_array = new Object[8];
         object_array[0] = FileDataReader.getIntArray(model_folder_path + "/Index");
         object_array[1] = FileDataReader.getFloatArray(model_folder_path + "/Vertices");
         object_array[2] = FileDataReader.getFloatArray(model_folder_path + "/Texcoord");
         // object_array[3] = new ArrayList<float[]>();
+        object_array[7] = FileDataReader.getFloatArray(model_folder_path + "/Normals");
         // FileDataReader.getXFloatArrayList(model_folder_path + "/Normals", object_array[3], 3);
 
         // if (new File(model_folder_path + "/List").exists())
@@ -52,7 +53,7 @@ public class OpenGLObjectMemory
 //        object_array[4] = (byte)(culling + blend * 2);
         object_array[4] = culling;
         object_array[5] = texture_state;
-        object_array[6] = new Object[4];
+        object_array[6] = new Object[5];
         ((Object[])object_array[6])[0] = shader_id;
         // object_array[10] = new Object[13];
 
@@ -75,6 +76,7 @@ public class OpenGLObjectMemory
 
         object_array[1] = OpenGLBuffer.createFloatBuffer((float[])object_array[1], true);
         object_array[2] = OpenGLBuffer.createFloatBuffer((float[])object_array[2], true);
+        object_array[7] = OpenGLBuffer.createFloatBuffer((float[])object_array[7], true);
 
         dataloader.model_object_array[object_index] = object_array;
     }

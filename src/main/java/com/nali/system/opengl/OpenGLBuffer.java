@@ -1,4 +1,4 @@
-package com.nali.system.opengl.buffer;
+package com.nali.system.opengl;
 
 import com.nali.Nali;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,10 +15,8 @@ import java.nio.IntBuffer;
 @SideOnly(Side.CLIENT)
 public class OpenGLBuffer
 {
-    public static void createIntBuffer(Object[] object_array, int id, boolean native_memory)
+    public static IntBuffer createIntBuffer(int[] int_array, boolean native_memory)
     {
-        int[] int_array = (int[])object_array[id];
-
         IntBuffer intbuffer = null;
 
         if (native_memory)
@@ -33,7 +31,7 @@ public class OpenGLBuffer
         intbuffer.put(int_array);
         intbuffer.flip();
 
-        object_array[id] = intbuffer;
+        return intbuffer;
     }
 
     public static FloatBuffer createFloatBuffer(float[] float_array, boolean native_memory)
@@ -155,15 +153,15 @@ public class OpenGLBuffer
     //     object_array[id] = intbuffer;
     // }
 
-    public static void setTextureByteBuffer(Object[] object_array, int id, byte[] byte_array, int width, int height)
-    {
-        ByteBuffer bytebuffer = ByteBuffer.allocateDirect(width * height * 4);
-
-        bytebuffer.put(byte_array);
-        bytebuffer.flip();
-
-        object_array[id] = bytebuffer;
-    }
+//    public static void setTextureByteBuffer(Object[] object_array, int id, byte[] byte_array, int width, int height)
+//    {
+//        ByteBuffer bytebuffer = ByteBuffer.allocateDirect(width * height * 4);
+//
+//        bytebuffer.put(byte_array);
+//        bytebuffer.flip();
+//
+//        object_array[id] = bytebuffer;
+//    }
 
     // public static void setByteBuffer(Object[] object_array, int id, BufferedImage bufferedimage)
     // {
@@ -197,18 +195,11 @@ public class OpenGLBuffer
     //     object_array[id] = bytebuffer;
     // }
 
-    public static int loadFloatBuffer(/*int id, */FloatBuffer floatbuffer/*, boolean pointer, int size*/)
+    public static int loadFloatBuffer(FloatBuffer floatbuffer)
     {
         int buffer = GL15.glGenBuffers();
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, floatbuffer, GL15.GL_STATIC_DRAW);
-
-        // if (pointer)
-        // {
-        //     GL20.glVertexAttribPointer(id, size, GL11.GL_FLOAT, false, 0, 0);
-        // }
-
-//        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         return buffer;
     }
@@ -217,107 +208,67 @@ public class OpenGLBuffer
 //    {
 //        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
 //        GL30.glVertexAttribIPointer(id, size, GL11.GL_INT, 0, 0);
-//        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 //    }
 
     public static void setFloatBuffer(int id, int buffer, int size)
     {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
         GL20.glVertexAttribPointer(id, size, GL11.GL_FLOAT, false, 0, 0);
-        //GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
-    public static int loadIntBuffer(/*int id, */IntBuffer intbuffer/*, boolean pointer, int size*/)
+//    public static int loadIntBuffer(IntBuffer intbuffer)
+//    {
+//        int buffer = GL15.glGenBuffers();
+//        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
+//        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, intbuffer, GL15.GL_STATIC_DRAW);
+//
+//        return buffer;
+//    }
+
+    public static int loadTextureBuffer(ByteBuffer bytebuffer, int width, int height)
     {
-        int buffer = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, intbuffer, GL15.GL_STATIC_DRAW);
-
-        // if (pointer)
-        // {
-        //     GL20.glVertexAttribPointer(id, size, GL11.GL_INT, false, 0, 0);
-        // }
-
-//        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-
-        return buffer;
-    }
-
-    public static int loadTextureBuffer(ByteBuffer bytebuffer, int width, int height, byte texture_state)
-    {
-        // GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-        // GL11.glPixelStorei(GL11.GL_PACK_ALIGNMENT, 1);
         int buffer = GL11.glGenTextures();
-//        GlStateManager.bindTexture(buffer);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-
-        switch (texture_state)
-        {
-            case 0:
-            {
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-                break;
-            }
-            case 1:
-            {
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-                break;
-            }
-            default:
-            {
-                // Summer.LOGGER.severe("No Texture State Engine");
-                break;
-            }
-        }
-
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, bytebuffer);
-
         return buffer;
     }
 
     public static void setTextureBuffer(int buffer, byte texture_state)
     {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer);
-//        GlStateManager.bindTexture(buffer);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
         switch (texture_state)
         {
             case 0:
             {
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
                 break;
             }
             case 1:
             {
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
                 GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-                break;
-            }
-            case 2:
-            {
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-                GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-
-//                GL11.glTexParameteri(3553, 10241, 9729);
-//                GL11.glTexParameteri(3553, 10240, 9729);
-//                GL11.glTexParameteri(3553, 10242, 10496);
-//                GL11.glTexParameteri(3553, 10243, 10496);
                 break;
             }
             default:
             {
-                Nali.LOGGER.error("No Texture State Engine");
+                Nali.error("TEXTURE_LEAK");
                 break;
             }
         }
+    }
+
+    public static void setLightMapBuffer(int buffer)
+    {
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
     }
 }

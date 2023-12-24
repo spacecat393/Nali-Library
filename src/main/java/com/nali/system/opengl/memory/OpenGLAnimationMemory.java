@@ -1,7 +1,6 @@
 package com.nali.system.opengl.memory;
 
 import com.nali.Nali;
-import com.nali.system.DataLoader;
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,29 +13,30 @@ import java.nio.file.Paths;
 @SideOnly(Side.CLIENT)
 public class OpenGLAnimationMemory
 {
-    public static void set(DataLoader dataloader, String[] model_string_array, String folder_path, int object_index)
+    //mat4[F*B*N]
+    public float[] transforms_float_array;
+    public byte[] idlebones_byte_array;
+    public int length;
+
+    public OpenGLAnimationMemory(String[] model_string_array, String folder_path)
     {
         String model_folder_path = folder_path + "Models/" + model_string_array[0];
         String animation_string = "/Animation/";
 
         if (new File(model_folder_path + animation_string).isDirectory())
         {
-            Object[] object_array = new Object[3];
-
-            object_array[0] = FileDataReader.getFloatArray(model_folder_path + animation_string + "/Transforms");
+            this.transforms_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "/Transforms");
 
             try
             {
-                object_array[1] = Files.readAllBytes(Paths.get(model_folder_path + "/IdleBones"));
+                this.idlebones_byte_array = Files.readAllBytes(Paths.get(model_folder_path + "/IdleBones"));
             }
-            catch (IOException ioexception)
+            catch (IOException e)
             {
-                Nali.LOGGER.error(ioexception.getMessage(), ioexception);
+                Nali.error(e);
             }
 
-            object_array[2] = (((float[])object_array[0]).length / 16) / ((byte[])object_array[1]).length;
-
-            dataloader.model_object_array[object_index] = object_array;
+            this.length = (this.transforms_float_array.length / 16) / this.idlebones_byte_array.length;
         }
     }
 }

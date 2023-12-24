@@ -1,5 +1,12 @@
 package com.nali.system;
 
+import com.nali.Nali;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class StringReader
 {
     public static String[] get(Class clasz)
@@ -41,5 +48,46 @@ public class StringReader
         }
 
         return stringbuilder.toString();
+    }
+
+    public static void append(StringBuilder stringbuilder, String file_string)
+    {
+        BufferedReader bufferedreader = null;
+
+        try
+        {
+            bufferedreader = new BufferedReader(new FileReader(file_string));
+        }
+        catch (FileNotFoundException e)
+        {
+            Nali.error(e);
+        }
+
+        try
+        {
+            String line;
+            while ((line = bufferedreader.readLine()) != null)
+            {
+                stringbuilder.append(line).append("\n");
+            }
+        }
+        catch (IOException e)
+        {
+            Nali.error(e);
+        }
+        finally
+        {
+            if (bufferedreader != null)
+            {
+                try
+                {
+                    bufferedreader.close();
+                }
+                catch (IOException e)
+                {
+                    Nali.error(e);
+                }
+            }
+        }
     }
 }

@@ -31,7 +31,7 @@ public class KeyRegistryHelper
             }
             catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e)
             {
-                Nali.LOGGER.error(e.getMessage(), e);
+                Nali.error(e);
             }
         }
     }

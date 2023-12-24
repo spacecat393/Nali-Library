@@ -50,9 +50,9 @@ public class FileDataReader
 //            float_array[index] = Float.parseFloat(number_string);
             return float_array;
         }
-        catch (IOException ioexception)
+        catch (IOException e)
         {
-            Nali.LOGGER.error(ioexception.getMessage(), ioexception);
+            Nali.error(e);
         }
 
         return null;
@@ -93,9 +93,9 @@ public class FileDataReader
 //            int_array[index] = Integer.parseInt(number_string);
             return int_array;
         }
-        catch (IOException ioexception)
+        catch (IOException e)
         {
-            Nali.LOGGER.error(ioexception.getMessage(), ioexception);
+            Nali.error(e);
         }
 
         return null;
@@ -136,9 +136,9 @@ public class FileDataReader
 //            int_array[index] = Integer.parseInt(number_string);
             return float_int_array;
         }
-        catch (IOException ioexception)
+        catch (IOException e)
         {
-            Nali.LOGGER.error(ioexception.getMessage(), ioexception);
+            Nali.error(e);
         }
 
         return null;
@@ -228,27 +228,26 @@ public class FileDataReader
 //        }
 //    }
 
-    public static Object[] getMixXStringArray(String path_string)
+    public static String[][] getMixXStringArray(String path_string)
     {
-        Object[] object_array = null;
+        String[][] string_2d_array = null;
 
         try
         {
             String data_string = new String(Files.readAllBytes(Paths.get(path_string)));
             String[] newline_string_array = data_string.split("\n");
-            object_array = new Object[newline_string_array.length];
+            string_2d_array = new String[newline_string_array.length][];
 
             for (int i = 0; i < newline_string_array.length; ++i)
             {
-                String[] space_string_array = newline_string_array[i].split(" ");
-                object_array[i] = space_string_array;
+                string_2d_array[i] = newline_string_array[i].split(" ");
             }
         }
-        catch (IOException ioexception)
+        catch (IOException e)
         {
-            Nali.LOGGER.error(ioexception.getMessage(), ioexception);
+            Nali.error(e);
         }
 
-        return object_array;
+        return string_2d_array;
     }
 }

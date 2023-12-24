@@ -20,9 +20,6 @@ public class BytesReader
 
     public static UUID getUUID(byte[] byte_array, int index)
     {
-//        if (byte_array.length != 16)
-//        {
-//        }
         long most = 0;
         long least = 0;
 

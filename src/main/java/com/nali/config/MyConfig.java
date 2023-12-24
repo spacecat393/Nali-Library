@@ -4,7 +4,6 @@ import com.nali.Nali;
 import com.nali.system.Reference;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -13,10 +12,10 @@ import net.minecraftforge.fml.relauncher.Side;
 @Config(modid = Reference.MOD_ID)
 public class MyConfig
 {
-    @Config.Name("Using Multi Uniform")
-    @Config.Comment("Rendering")
-    @Config.RequiresMcRestart
-    public static boolean USING_MULTI_UNIFORM = true;
+//    @Config.Name("Using Multi Uniform")
+//    @Config.Comment("Rendering")
+//    @Config.RequiresMcRestart
+//    public static boolean USING_MULTI_UNIFORM = true;
 
 //    public static final Color COLOR = new Color();
 //    public static final Light LIGHT = new Light();
@@ -82,7 +81,7 @@ public class MyConfig
 //        LIGHT.moon_light = Nali.CONFIGURATION.getFloat("Moon Light", "light", (float)LIGHT.moon_light, Float.MIN_VALUE, Float.MAX_VALUE, comment);
         ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
         String comment = "Rendering";
-        USING_MULTI_UNIFORM = Nali.CONFIGURATION.getBoolean("Using Multi Uniform", Configuration.CATEGORY_GENERAL, USING_MULTI_UNIFORM, comment);
+//        USING_MULTI_UNIFORM = Nali.CONFIGURATION.getBoolean("Using Multi Uniform", Configuration.CATEGORY_GENERAL, USING_MULTI_UNIFORM, comment);
         FRAME.using_frame_buffer_index = Nali.CONFIGURATION.getBoolean("Using Frame Buffer Index", "frame", FRAME.using_frame_buffer_index, comment);
         FRAME.frame_buffer_index = Nali.CONFIGURATION.getInt("Frame Buffer Index", "frame", FRAME.frame_buffer_index, Integer.MIN_VALUE, Integer.MAX_VALUE, comment);
     }

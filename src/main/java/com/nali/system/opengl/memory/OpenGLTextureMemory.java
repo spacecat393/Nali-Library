@@ -1,9 +1,10 @@
 package com.nali.system.opengl.memory;
 
 import com.nali.Nali;
-import com.nali.system.DataLoader;
+import com.nali.system.opengl.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -11,29 +12,30 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+import static com.nali.system.opengl.memory.OpenGLCurrentMemory.OPENGL_INTBUFFER;
+
 @SideOnly(Side.CLIENT)
 public class OpenGLTextureMemory
 {
-    public static void set(DataLoader dataloader, String mod_id_string)
+    //ByteBuffer -> TextureBuffer
+    public Object[] texture_array;
+    public int[] width_int_array;
+    public int[] height_int_array;
+
+    public OpenGLTextureMemory(String mod_id_string)
     {
-        Object[] object_array = new Object[2];
-
         File[] file_array = new File(mod_id_string + "/Textures/").listFiles();
-        Object[] texture_object_array = new Object[file_array.length];
-        for (int i = 0; i < file_array.length; ++i)
-        {
-//            FileInputStream fileinputstream = null;
+        int size = file_array.length;
+        this.texture_array = new Object[size];
+        this.width_int_array = new int[size];
+        this.height_int_array = new int[size];
 
+        for (File file : file_array)
+        {
             try
             {
-
-                File file = file_array[i];
                 BufferedImage bufferedimage = ImageIO.read(file);
-//                String[] string_array = file.getName().split(" ");
 
-//                fileinputstream = new FileInputStream(file);
-//                byte[] byte_array = new byte[fileinputstream.available()];
-//                fileinputstream.read(byte_array);
                 int index = Integer.parseInt(file.getName());
                 int width = bufferedimage.getWidth();
                 int height = bufferedimage.getHeight();
@@ -53,46 +55,42 @@ public class OpenGLTextureMemory
 
                 for (int pixel : new_pixels)
                 {
-                    bytebuffer.put((byte) ((pixel >> 16) & 0xFF));
-                    bytebuffer.put((byte) ((pixel >> 8) & 0xFF));
-                    bytebuffer.put((byte) (pixel & 0xFF));
-                    bytebuffer.put((byte) ((pixel >> 24) & 0xFF));
+                    bytebuffer.put((byte)((pixel >> 16) & 0xFF));
+                    bytebuffer.put((byte)((pixel >> 8) & 0xFF));
+                    bytebuffer.put((byte)(pixel & 0xFF));
+                    bytebuffer.put((byte)((pixel >> 24) & 0xFF));
                 }
 
                 bytebuffer.flip();
 
-//                int index = Integer.parseInt(string_array[0]);
-//                int width = Integer.parseInt(string_array[1]);
-//                int height = Integer.parseInt(string_array[2]);
-                Object[] temp_texture_object_array = new Object[3];
-//                OpenGLBuffer.setTextureByteBuffer(temp_texture_object_array, 0, byte_array, width, height);
-                temp_texture_object_array[0] = bytebuffer;
-                temp_texture_object_array[1] = width;
-                temp_texture_object_array[2] = height;
-
-                texture_object_array[index] = temp_texture_object_array;
+                this.texture_array[index] = bytebuffer;
+                this.width_int_array[index] = width;
+                this.height_int_array[index] = height;
             }
             catch (IOException e)
             {
-                Nali.LOGGER.error(e.getMessage(), e);
+                Nali.error(e);
             }
-//            finally
-//            {
-//                if (fileinputstream != null)
-//                {
-//                    try
-//                    {
-//                        fileinputstream.close();
-//                    }
-//                    catch (IOException ioexception)
-//                    {
-//                        Main.LOGGER.error(ioexception.getMessage(), ioexception);
-//                    }
-//                }
-//            }
         }
 
-        object_array[0] = texture_object_array;
-        dataloader.texture_object_array = object_array;
+        GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
+        loadBuffer();
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, OPENGL_INTBUFFER.get(0));
+    }
+
+    public void loadBuffer()
+    {
+        for (int i = 0; i < this.texture_array.length; ++i)
+        {
+            this.texture_array[i] = OpenGLBuffer.loadTextureBuffer((ByteBuffer)this.texture_array[i], this.width_int_array[i], this.height_int_array[i]);
+        }
+    }
+
+    public void deleteBuffer()
+    {
+        for (Object o : this.texture_array)
+        {
+            GL11.glDeleteTextures((int)o);
+        }
     }
 }

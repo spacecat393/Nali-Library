@@ -1,83 +1,70 @@
 package com.nali.system.opengl.memory;
 
-import com.nali.system.DataLoader;
 import com.nali.system.file.FileDataReader;
-import com.nali.system.opengl.buffer.OpenGLBuffer;
+import com.nali.system.opengl.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+
+import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
 
 @SideOnly(Side.CLIENT)
 public class OpenGLObjectMemory
 {
-    public static void set(DataLoader dataloader, String[] model_string_array, String folder_path, int object_index)
+    public ArrayList<OpenGLAttribMemory> openglattribmemory_arraylist = new ArrayList<OpenGLAttribMemory>();
+    //int[N] -> IntBuffer
+    public Object index;
+    public int index_length;
+    public byte culling;
+    public byte texture_state;
+    //shader_id_int -> OpenGLShaderData
+    public Object shader;
+    public int element_array_buffer;
+
+    public OpenGLObjectMemory(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path)
     {
-        String model_folder_path = folder_path + "Models/" + model_string_array[0];
-        // String shaders_folder_path = "/Shaders/";
+        GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+        GL_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
+        GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+        this.createBufferFromFile(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+    }
 
-        byte texture_state = (byte)Integer.parseInt(model_string_array[1]);
+    public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path)
+    {
+        String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
+        this.texture_state = (byte)Integer.parseInt(model_string_array[1]);
         int shader_id = Integer.parseInt(model_string_array[2]);
-        // byte shader_state = (byte)Integer.parseInt(model_string_array[2]);
-        byte culling = (byte)Integer.parseInt(model_string_array[3]);
-//        byte blend = (byte)Integer.parseInt(model_string_array[4]);
+        this.culling = (byte)Integer.parseInt(model_string_array[3]);
 
-        Object[] object_array = new Object[8];
-        object_array[0] = FileDataReader.getIntArray(model_folder_path + "/Index");
-        object_array[1] = FileDataReader.getFloatArray(model_folder_path + "/Vertices");
-        object_array[2] = FileDataReader.getFloatArray(model_folder_path + "/Texcoord");
-        // object_array[3] = new ArrayList<float[]>();
-        object_array[7] = FileDataReader.getFloatArray(model_folder_path + "/Normals");
-        // FileDataReader.getXFloatArrayList(model_folder_path + "/Normals", object_array[3], 3);
+        this.shader = shader_id;
 
-        // if (new File(model_folder_path + "/List").exists())
-        // {
-        //     Object[] uniform_object_array = FileDataReader.getMixXStringArray(model_folder_path + "/List");
-        //     object_array[7] = uniform_object_array;
-        // }
+        this.element_array_buffer = GL15.glGenBuffers();
+        this.index = FileDataReader.getIntArray(model_folder_string + "/Index");
+        this.index_length = ((int[])this.index).length;
+        this.index = OpenGLBuffer.createIntBuffer((int[])this.index, true);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
+        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)this.index, GL15.GL_STATIC_DRAW);
 
-        // object_array[5] = new StringBuilder();
-        // try (BufferedReader bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Fragment" + shader_state)))
-        // {
-        //     String line = null;
-        //     while ((line = bufferedreader.readLine()) != null)
-        //     {
-        //         ((StringBuilder)object_array[5]).append(line + "\n");
-        //     }
-        //     bufferedreader.close();
-        // }
-        // catch (IOException ioexception)
-        // {
-        //     Main.LOGGER.error(ioexception.getMessage(), ioexception);
-        // }
+        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + shaders_folder_path + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
+        this.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path, attriblocation_string_2d_array, attriblocation_string_2d_array.length);
+    }
 
-        object_array[3] = ((int[])object_array[0]).length;
-//        object_array[4] = (byte)(culling + blend * 2);
-        object_array[4] = culling;
-        object_array[5] = texture_state;
-        object_array[6] = new Object[5];
-        ((Object[])object_array[6])[0] = shader_id;
-        // object_array[10] = new Object[13];
+    public void createBufferAttribLocation(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path, String[][] attriblocation_string_2d_array, int length)
+    {
+        String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
 
-        // object_array[4] = new StringBuilder();
-        // try (BufferedReader bufferedreader = new BufferedReader(new FileReader(folder_path + shaders_folder_path + "Vertex" + shader_state)))
-        // {
-        //     String line = null;
-        //     while ((line = bufferedreader.readLine()) != null)
-        //     {
-        //         ((StringBuilder)object_array[4]).append(line + "\n");
-        //     }
-        //     bufferedreader.close();
-        // }
-        // catch (IOException ioexception)
-        // {
-        //     Main.LOGGER.error(ioexception.getMessage(), ioexception);
-        // }
-
-        OpenGLBuffer.createIntBuffer(object_array, 0, true);
-
-        object_array[1] = OpenGLBuffer.createFloatBuffer((float[])object_array[1], true);
-        object_array[2] = OpenGLBuffer.createFloatBuffer((float[])object_array[2], true);
-        object_array[7] = OpenGLBuffer.createFloatBuffer((float[])object_array[7], true);
-
-        dataloader.model_object_array[object_index] = object_array;
+        for (int i = 0; i < length; ++i)
+        {
+            String[] attriblocation_string_array = attriblocation_string_2d_array[i];
+            String attriblocation_name_string = attriblocation_string_array[0];
+            this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), (byte)Integer.parseInt(attriblocation_string_array[1])));
+        }
     }
 }

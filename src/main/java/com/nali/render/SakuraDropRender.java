@@ -1,28 +1,30 @@
-package com.nali.data;
+package com.nali.render;
 
+import com.nali.data.BothData;
 import com.nali.system.DataLoader;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import static com.nali.Nali.RANDOM;
+import static com.nali.system.Timing.TD;
 
-public class SakuraDropData extends ObjectData
+@SideOnly(Side.CLIENT)
+public class SakuraDropRender extends ObjectRender
 {
-    public static Map<Integer, SakuraDropData> SAKURADROPGUIDATA_MAP = new WeakHashMap<>();
+    public static Map<Integer, SakuraDropRender> SAKURADROPGUIDATA_MAP = new WeakHashMap<>();
     public static int INDEX;
     public int id;
 
-    public long time;
-    public long max_time;
-    public float mrx;
-    public float mry;
-    public float mrz;
+    public long time, max_time;
+    public float mrx, mry, mrz;
     public float ms;
     public float fy;
 
-    public SakuraDropData(BothData bothdata, DataLoader dataloader)
+    public SakuraDropRender(BothData bothdata, DataLoader dataloader)
     {
         super(bothdata, dataloader);
         this.time = Minecraft.getSystemTime();//System.currentTimeMillis();
@@ -33,10 +35,10 @@ public class SakuraDropData extends ObjectData
         this.max_time = 1000 + RANDOM.nextInt(2500);
         this.fy = -3.0F / (RANDOM.nextInt(3) + 1);
         float s = 25.0F / (RANDOM.nextInt(3) + 1);
-        this.screen_float_array[4] = -10.0F;
-        this.screen_float_array[8] = s;
-        this.screen_float_array[9] = s;
-        this.screen_float_array[10] = s;
+        this.z = -10.0F;
+        this.sx = s;
+        this.sy = s;
+        this.sz = s;
 
         ++INDEX;
 
@@ -46,24 +48,23 @@ public class SakuraDropData extends ObjectData
         }
 
         this.id = INDEX;
-        SakuraDropData.SAKURADROPGUIDATA_MAP.put(this.id, this);
+        SakuraDropRender.SAKURADROPGUIDATA_MAP.put(this.id, this);
     }
 
-    @Override
-    public void render()
+    public void fastDraw(float new_r, float new_g, float new_b, float new_a)
     {
-        this.fy += 0.1F * DataLoader.TD;
-        this.screen_float_array[3] += this.fy * DataLoader.TD;
-//        this.s -= this.ms * DataLoader.TD;
-        this.screen_float_array[5] -= this.mrx * DataLoader.TD;
-        this.screen_float_array[6] -= this.mry * DataLoader.TD;
-        this.screen_float_array[7] -= this.mrz * DataLoader.TD;
+        this.fy += 0.1F * TD;
+        this.y += this.fy * TD;
+//        this.s -= this.ms * TD;
+        this.rx -= this.mrx * TD;
+        this.ry -= this.mry * TD;
+        this.rz -= this.mrz * TD;
 
         if (Minecraft.getSystemTime()/*System.currentTimeMillis()*/ - this.time >= this.max_time)
         {
-            SakuraDropData.SAKURADROPGUIDATA_MAP.remove(this.id);
+            SakuraDropRender.SAKURADROPGUIDATA_MAP.remove(this.id);
         }
 
-        super.render();
+        this.objectscreendraw.renderScreen(new_r, new_g, new_b, new_a);
     }
 }

@@ -8,7 +8,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.glu.GLU;
 
 @SideOnly(Side.CLIENT)
 public class OpenGLObjectShaderMemory
@@ -87,12 +86,11 @@ public class OpenGLObjectShaderMemory
 
         if (GL20.glGetProgrami(this.program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE)
         {
-            int error = GL11.glGetError();
-            if (error != GL11.GL_NO_ERROR)
-            {
-                Nali.error(GLU.gluErrorString(error));
-            }
-
+//            int error = GL11.glGetError();
+//            if (error != GL11.GL_NO_ERROR)
+//            {
+//                Nali.error(GLU.gluErrorString(error));
+//            }
             Nali.error(GL20.glGetProgramInfoLog(this.program, 1024));
         }
     }

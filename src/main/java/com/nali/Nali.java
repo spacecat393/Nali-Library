@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
@@ -22,14 +23,13 @@ public class Nali
     public static Nali I;
     public static Configuration CONFIGURATION;
 
-    public static Logger LOGGER;
+    public static Logger LOGGER = LogManager.getLogger(Reference.MOD_ID);
 
     public static Random RANDOM = new Random();
 
     @EventHandler
     public void onFMLPreInitializationEvent(FMLPreInitializationEvent event)
     {
-        LOGGER = event.getModLog();
         CONFIGURATION = new Configuration(event.getSuggestedConfigurationFile());
 
         if (event.getSide().isClient())
@@ -42,13 +42,13 @@ public class Nali
 
     public static void error(Throwable t)
     {
-        Nali.LOGGER.error(t);
+        LOGGER.error(t);
         FMLCommonHandler.instance().exitJava(-1, true);
     }
 
     public static void error(String s)
     {
-        Nali.LOGGER.error(s);
+        LOGGER.error(s);
         FMLCommonHandler.instance().exitJava(-1, true);
     }
 }

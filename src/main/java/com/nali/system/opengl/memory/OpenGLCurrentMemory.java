@@ -1,12 +1,8 @@
 package com.nali.system.opengl.memory;
 
-import com.nali.Nali;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -38,18 +34,18 @@ public class OpenGLCurrentMemory
     public static boolean GL_CULL_FACE;
     public static boolean GL_BLEND;
 
-    public static Object COLORSTATE_INSTANCE;
-    public static Field RED_FIELD, GREEN_FIELD, BLUE_FIELD, ALPHA_FIELD;
-    public static float RED, GREEN, BLUE, ALPHA;
+//    public static Object COLORSTATE_INSTANCE;
+//    public static Field RED_FIELD, GREEN_FIELD, BLUE_FIELD, ALPHA_FIELD;
+//    public static float RED, GREEN, BLUE, ALPHA;
 
-    static
-    {
-        COLORSTATE_INSTANCE = ObfuscationReflectionHelper.getPrivateValue(GlStateManager.class, null, "colorState");
-        RED_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "red");
-        GREEN_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "green");
-        BLUE_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "blue");
-        ALPHA_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "alpha");
-    }
+//    static
+//    {
+//        COLORSTATE_INSTANCE = ObfuscationReflectionHelper.getPrivateValue(GlStateManager.class, null, "colorState");
+//        RED_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "red");
+//        GREEN_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "green");
+//        BLUE_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "blue");
+//        ALPHA_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "alpha");
+//    }
 
     public static void setFloatBuffer(float[] float_array)
     {
@@ -59,18 +55,18 @@ public class OpenGLCurrentMemory
         OPENGL_FLOATBUFFER.flip();
     }
 
-    public static void takeColor()
-    {
-        try
-        {
-            RED = RED_FIELD.getFloat(COLORSTATE_INSTANCE);
-            GREEN = GREEN_FIELD.getFloat(COLORSTATE_INSTANCE);
-            BLUE = BLUE_FIELD.getFloat(COLORSTATE_INSTANCE);
-            ALPHA = ALPHA_FIELD.getFloat(COLORSTATE_INSTANCE);
-        }
-        catch (IllegalAccessException e)
-        {
-            Nali.error(e);
-        }
-    }
+//    public static void takeColor()
+//    {
+//        try
+//        {
+//            RED = RED_FIELD.getFloat(COLORSTATE_INSTANCE);
+//            GREEN = GREEN_FIELD.getFloat(COLORSTATE_INSTANCE);
+//            BLUE = BLUE_FIELD.getFloat(COLORSTATE_INSTANCE);
+//            ALPHA = ALPHA_FIELD.getFloat(COLORSTATE_INSTANCE);
+//        }
+//        catch (IllegalAccessException e)
+//        {
+//            Nali.error(e);
+//        }
+//    }
 }

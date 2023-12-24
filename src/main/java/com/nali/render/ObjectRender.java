@@ -139,7 +139,7 @@ public class ObjectRender
 
     public void takeDefault(OpenGLObjectMemory openglobjectmemory)
     {
-        takeColor();
+//        takeColor();
 
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
 
@@ -252,6 +252,7 @@ public class ObjectRender
         GL20.glBlendEquationSeparate(GL_BLEND_EQUATION_RGB, GL_BLEND_EQUATION_ALPHA);
         GL14.glBlendFuncSeparate(GL_BLEND_SRC_RGB, GL_BLEND_DST_RGB, GL_BLEND_SRC_ALPHA, GL_BLEND_DST_ALPHA);
 
-        GL11.glColor4f(RED, GREEN, BLUE, ALPHA);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GL11.glColor4f(RED, GREEN, BLUE, ALPHA);
     }
 }

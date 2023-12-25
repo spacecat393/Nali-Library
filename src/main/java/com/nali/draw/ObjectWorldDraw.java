@@ -52,7 +52,13 @@ public class ObjectWorldDraw
 
         if (this.objectrender.glow_boolean_array[index])
         {
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, this.objectrender.a);
+            this.objectrender.lig_b = 208.0F;
+            this.objectrender.lig_s = 240.0F;
+//            GL11.glColor4f(1.0F, 1.0F, 1.0F, this.objectrender.a);
+        }
+        else
+        {
+            this.objectrender.updateLightCoord();
         }
 
         this.objectrender.setUniform(openglobjectmemory, openglobjectshadermemory, index);

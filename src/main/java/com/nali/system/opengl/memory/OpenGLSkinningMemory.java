@@ -25,7 +25,7 @@ public class OpenGLSkinningMemory extends OpenGLObjectMemory
         float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
         float[] weights_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
 
-        byte limit_max_joints = (byte)Integer.parseInt(attriblocation_string_2d_array[(int)this.shader][1]);
+        byte limit_max_joints = 4;
 
         if (max_joints != limit_max_joints)
         {

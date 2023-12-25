@@ -31,6 +31,7 @@ public class ObjectRender
     public boolean should_render;
     public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
     public float width, height;
+    public float lig_b = 208.0F, lig_s = 240.0F;
     public float x, y, z = 10.0F;
     public float rx = -90.0F, ry, rz;
     public float sx = -25.0F, sy = -25.0F, sz = -25.0F;
@@ -111,6 +112,7 @@ public class ObjectRender
     {
         this.setTextureUniform(openglobjectmemory, openglobjectshadermemory, index);
         this.setLightMapUniform(openglobjectshadermemory);
+        this.setLightCoord(openglobjectshadermemory);
     }
 
     public void setTextureUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
@@ -125,6 +127,16 @@ public class ObjectRender
         GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[1], 1);
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
         OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer) Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
+    }
+
+    public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
+    {
+        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[2], this.lig_b, this.lig_s);
+    }
+
+    public void updateLightCoord()
+    {
+
     }
 
     public ObjectScreenDraw getObjectScreenDraw()
@@ -252,7 +264,7 @@ public class ObjectRender
         GL20.glBlendEquationSeparate(GL_BLEND_EQUATION_RGB, GL_BLEND_EQUATION_ALPHA);
         GL14.glBlendFuncSeparate(GL_BLEND_SRC_RGB, GL_BLEND_DST_RGB, GL_BLEND_SRC_ALPHA, GL_BLEND_DST_ALPHA);
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GL11.glColor4f(RED, GREEN, BLUE, ALPHA);
     }
 }

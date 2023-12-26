@@ -30,7 +30,7 @@ public class ObjectRender
 
     public boolean should_render;
     public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
-    public float width, height;
+//    public float width, height;
     public float lig_b = 208.0F, lig_s = 240.0F;
     public float x, y, z = 10.0F;
     public float rx = -90.0F, ry, rz;

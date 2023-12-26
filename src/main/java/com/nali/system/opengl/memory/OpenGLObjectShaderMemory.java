@@ -24,7 +24,7 @@ public class OpenGLObjectShaderMemory
     {
         this.readVertShader(shader_string_array, folder_path, shaders_folder_path, vulkan_shader);
         this.readFragShader(shader_string_array, folder_path, shaders_folder_path, vulkan_shader);
-        this.createBuffer(folder_path + shaders_folder_path + shader_string_array[0]);
+        this.createBuffer(shader_string_array, folder_path, shaders_folder_path, 0);
     }
 
     public void readVertShader(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
@@ -53,11 +53,11 @@ public class OpenGLObjectShaderMemory
         return FileDataReader.getMixXStringArray(shader_data_folder_string + "/Uniform");
     }
 
-    public void createBuffer(String model_folder_string)
+    public void createBuffer(String[] shader_string_array, String folder_path, String shaders_folder_path, int max_bones)
     {
+        String model_folder_string = folder_path + shaders_folder_path + shader_string_array[0];
         this.createShaderBuffer();
         String[][] attriblocation_string_2d_array = this.getAttribLocationString2DArray(model_folder_string);
-        int max_bones = this.getMaxBones();
         this.attriblocation_int_array = new int[attriblocation_string_2d_array.length];
         for (int i = 0; i < attriblocation_string_2d_array.length; ++i)
         {
@@ -102,8 +102,8 @@ public class OpenGLObjectShaderMemory
         OpenGLShader.delete((int)this.frag_shader);
     }
 
-    public int getMaxBones()
-    {
-        return 0;
-    }
+//    public int getMaxBones()
+//    {
+//        return 0;
+//    }
 }

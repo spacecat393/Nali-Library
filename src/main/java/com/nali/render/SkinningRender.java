@@ -15,7 +15,7 @@ import static com.nali.system.opengl.memory.OpenGLCurrentMemory.setFloatBuffer;
 @SideOnly(Side.CLIENT)
 public class SkinningRender extends ObjectRender
 {
-    public static Object[] FREE_SKINNING_OBJECT_ARRAY;
+//    public static Object[] FREE_SKINNING_OBJECT_ARRAY;
     public int[] frame_int_array;
     public float[] skinning_float_array;
     public boolean[] frame_boolean_array;
@@ -38,7 +38,7 @@ public class SkinningRender extends ObjectRender
             this.frame_boolean_array[i] = false;
         }
 
-        this.skinning_float_array = new float[this.openglanimationmemory.idlebones_byte_array.length * 16];
+        this.skinning_float_array = new float[this.openglanimationmemory.bones * 16];
 
         this.setFrame();
     }
@@ -53,7 +53,7 @@ public class SkinningRender extends ObjectRender
     {
         super.setUniform(openglobjectmemory, openglobjectshadermemory, index);
 
-        int start_index = openglobjectshadermemory.uniformlocation_int_array.length - openglobjectshadermemory.getMaxBones();
+        int start_index = openglobjectshadermemory.uniformlocation_int_array.length - this.openglanimationmemory.bones;
         for (int i = 0; i < this.skinning_float_array.length; i += 16)
         {
             float[] float_array = new float[16];

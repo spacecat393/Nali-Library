@@ -11,7 +11,7 @@ import java.io.File;
 @SideOnly(Side.CLIENT)
 public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 {
-    public int max_bones;
+//    public int max_bones;
 
     public OpenGLSkinningShaderMemory(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
     {
@@ -28,14 +28,12 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
         float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
 
-        int bones_file_array_length = new File(model_folder_path + animation_string + "Bones").listFiles().length;
-        Object[] bones_object_array = new Object[bones_file_array_length];
-        for (int i = 0; i < bones_file_array_length; ++i)
+        int max_bones = bind_poses_float_array.length / 16;//new File(model_folder_path + animation_string + "Bones").listFiles().length;
+        Object[] bones_object_array = new Object[max_bones];
+        for (int i = 0; i < max_bones; ++i)
         {
             bones_object_array[i] = FileDataReader.getIntArray(model_folder_path + animation_string + "Bones/" + i);
         }
-
-        this.max_bones = bind_poses_float_array.length / 16;
 
         StringBuilder vertex_stringbuilder = new StringBuilder();
         this.vert_shader = vertex_stringbuilder;
@@ -74,7 +72,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
             vertex_stringbuilder.append("layout(binding = 0) uniform ObjectUniform\n{\n");
         }
 
-        for (int i = 0; i < this.max_bones; ++i)
+        for (int i = 0; i < max_bones; ++i)
         {
             vertex_stringbuilder.append("uniform mat4 animation").append(StringReader.convertNumberToLetter(i)).append(";\n");
         }
@@ -82,9 +80,9 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 0);
         StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 1);
 
-        Object[] back_bones = new Object[bones_file_array_length];
+        Object[] back_bones = new Object[max_bones];
 
-        for (int j = 0; j < bones_file_array_length; ++j)
+        for (int j = 0; j < max_bones; ++j)
         {
             int[] bones = (int[])bones_object_array[j];
             back_bones[j] = new int[bones.length];
@@ -120,22 +118,23 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
     }
 
     @Override
-    public void createBuffer(String model_folder_string)
+    public void createBuffer(String[] shader_string_array, String folder_path, String shaders_folder_path, int max_bones)
     {
-        super.createBuffer(model_folder_string);
+        max_bones = new File(folder_path + "Models/" + shader_string_array[2] + "/Animation/Bones").listFiles().length;
+        super.createBuffer(shader_string_array, folder_path, shaders_folder_path, max_bones);
 
-        int start_index = this.uniformlocation_int_array.length - this.max_bones;
-        for (int i = 0; i < this.max_bones; ++i)
+        int start_index = this.uniformlocation_int_array.length - max_bones;
+        for (int i = 0; i < max_bones; ++i)
         {
             this.uniformlocation_int_array[start_index + i] = GL20.glGetUniformLocation(program, "animation" + StringReader.convertNumberToLetter(i));
         }
     }
 
-    @Override
-    public int getMaxBones()
-    {
-        return this.max_bones;
-    }
+//    @Override
+//    public int getMaxBones()
+//    {
+//        return this.max_bones;
+//    }
 
     public static String getVertexHeaderShaderString()
     {

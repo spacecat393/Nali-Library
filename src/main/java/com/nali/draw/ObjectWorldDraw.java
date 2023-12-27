@@ -24,6 +24,7 @@ public class ObjectWorldDraw
 
     public void renderWorld(double ox, double oy, double oz, float scale)
     {
+        GL11.glPushMatrix();
         GL11.glTranslated(ox, oy, oz);
 
         float rx = -90.0F;
@@ -38,10 +39,11 @@ public class ObjectWorldDraw
             }
         }
 
-        GL11.glRotatef(-rx, 1.0F, 0.0F, 0.0F);
-        GL11.glScalef(1.0F / scale, 1.0F / scale, 1.0F / scale);
-
-        GL11.glTranslated(-ox, -oy, -oz);
+//        GL11.glRotatef(-rx, 1.0F, 0.0F, 0.0F);
+//        GL11.glScalef(1.0F / scale, 1.0F / scale, 1.0F / scale);
+//
+//        GL11.glTranslated(-ox, -oy, -oz);
+        GL11.glPopMatrix();
     }
 
     public void drawWorld(int index)

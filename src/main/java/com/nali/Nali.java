@@ -1,6 +1,5 @@
 package com.nali;
 
-import com.nali.config.MyConfig;
 import com.nali.draw.ObjectWorldDraw;
 import com.nali.key.KeyRegistryHelper;
 import com.nali.system.Reference;
@@ -30,11 +29,11 @@ public class Nali
     @EventHandler
     public void onFMLPreInitializationEvent(FMLPreInitializationEvent event)
     {
-        CONFIGURATION = new Configuration(event.getSuggestedConfigurationFile());
-
         if (event.getSide().isClient())
         {
-            MyConfig.registerConfig();
+            CONFIGURATION = new Configuration(event.getSuggestedConfigurationFile());
+            Nali.CONFIGURATION.load();
+//            MyConfig.registerConfig();
             ObjectWorldDraw.loadWithConfig();
             KeyRegistryHelper.set();
         }

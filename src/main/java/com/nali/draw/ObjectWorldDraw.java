@@ -22,13 +22,13 @@ public class ObjectWorldDraw
         this.objectrender = objectrender;
     }
 
-    public void renderWorld(double ox, double oy, double oz, float scale)
+    public void renderWorld(/*double ox, double oy, double oz, float scale*/)
     {
         GL11.glPushMatrix();
-        GL11.glTranslated(ox, oy, oz);
+//        GL11.glTranslated(ox, oy, oz);
 
         float rx = -90.0F;
-        GL11.glScalef(scale, scale, scale);
+//        GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(rx, 1.0F, 0.0F, 0.0F);
 
         for (int i = 0; i < this.objectrender.memory_object_array.length; ++i)

@@ -12,6 +12,8 @@ import java.io.File;
 public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 {
 //    public int max_bones;
+//    public float[] bind_poses_float_array;
+//    public int[][] back_bones;
 
     public OpenGLSkinningShaderMemory(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
     {
@@ -29,10 +31,10 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
 
         int max_bones = bind_poses_float_array.length / 16;//new File(model_folder_path + animation_string + "Bones").listFiles().length;
-        Object[] bones_object_array = new Object[max_bones];
+        int[][] bones_2d_int_array = new int[max_bones][];
         for (int i = 0; i < max_bones; ++i)
         {
-            bones_object_array[i] = FileDataReader.getIntArray(model_folder_path + animation_string + "Bones/" + i);
+            bones_2d_int_array[i] = FileDataReader.getIntArray(model_folder_path + animation_string + "Bones/" + i);
         }
 
         StringBuilder vertex_stringbuilder = new StringBuilder();
@@ -80,24 +82,24 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 0);
         StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 1);
 
-        Object[] back_bones = new Object[max_bones];
+        int[][] back_bones_2d_int_array = new int[max_bones][];
 
         for (int j = 0; j < max_bones; ++j)
         {
-            int[] bones = (int[])bones_object_array[j];
-            back_bones[j] = new int[bones.length];
+            int[] bones = bones_2d_int_array[j];
+            back_bones_2d_int_array[j] = new int[bones.length];
 
             int b_index = 0;
             for (int b = bones.length - 1; b > -1; --b)
             {
-                int[] b_bones = (int[])back_bones[j];
+                int[] b_bones = back_bones_2d_int_array[j];
                 b_bones[b_index++] = bones[b];
             }
         }
 
-        for (int j = 0; j < bones_object_array.length; ++j)
+        for (int j = 0; j < bones_2d_int_array.length; ++j)
         {
-            int[] bones = (int[])back_bones[j];
+            int[] bones = back_bones_2d_int_array[j];
             String head = "else if";
 
             if (j == 0)
@@ -126,7 +128,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         int start_index = this.uniformlocation_int_array.length - max_bones;
         for (int i = 0; i < max_bones; ++i)
         {
-            this.uniformlocation_int_array[start_index + i] = GL20.glGetUniformLocation(program, "animation" + StringReader.convertNumberToLetter(i));
+            this.uniformlocation_int_array[start_index + i] = GL20.glGetUniformLocation(this.program, "animation" + StringReader.convertNumberToLetter(i));
         }
     }
 

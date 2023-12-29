@@ -1,6 +1,8 @@
 package com.nali.system;
 
 import com.nali.Nali;
+import com.nali.data.GuiObjectData;
+import com.nali.render.ObjectRender;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.memory.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -82,6 +84,19 @@ public class DataLoader
                 OpenGLObjectMemory openglobjectmemorydata = (OpenGLObjectMemory)dataloader.memory_object_array[i];
                 int shader_id = (int)openglobjectmemorydata.shader;
                 openglobjectmemorydata.shader = dataloader.openglobjectshadermemory_array[shader_id];
+
+                new ObjectRender(new GuiObjectData(i, 1), dataloader)
+                {
+                    @Override
+                    public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
+                    {
+                    }
+
+                    @Override
+                    public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
+                    {
+                    }
+                }.objectscreendraw.renderScreen(0.0F, 0.0F, 0.0F, 0.0F);
             }
         }
     }

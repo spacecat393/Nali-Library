@@ -1,5 +1,7 @@
 package com.nali.math;
 
+import net.minecraft.entity.Entity;
+
 public class MixMath
 {
     // public static float TIME = 0.6662F;
@@ -8,6 +10,18 @@ public class MixMath
 //    {
 //        return s + t * (e - s);
 //    }
+
+    public static double getClose(Entity entity0, Entity entity1, double minimum_distance)
+    {
+        double width = (entity0.width + entity1.width) / 2.0D;
+        double height = (entity0.height + entity1.height) / 2.0D;
+        return (width + height + minimum_distance) * (width + height + minimum_distance);
+    }
+
+    public static boolean isTooClose(Entity entity0, Entity entity1, double minimum_distance)
+    {
+        return entity0.getDistanceSq(entity1) < getClose(entity0, entity1, minimum_distance);
+    }
 
     public static byte signum(double i)
     {

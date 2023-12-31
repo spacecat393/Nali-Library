@@ -1,5 +1,6 @@
 package com.nali.system.opengl.memory;
 
+import com.nali.math.M4x4;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -69,6 +70,34 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
         vertex_stringbuilder.append(");\n");
 
+        vertex_stringbuilder.append("mat4 inverse_bindposes[").append(String.valueOf(bindposes_size)).append("] = mat4[](");
+
+        for (int j = 0; j < bindposes_size; ++j)
+        {
+            vertex_stringbuilder.append("mat4(");
+
+            M4x4.inverse(bind_poses_float_array, j * 16);
+            int bindposes_index = (j + 1) * 16;
+            for (int b = j * 16; b < bindposes_index; ++b)
+            {
+                vertex_stringbuilder.append(String.valueOf(bind_poses_float_array[b]));
+
+                if (b < bindposes_index - 1)
+                {
+                    vertex_stringbuilder.append(", ");
+                }
+            }
+
+            vertex_stringbuilder.append(")");
+
+            if (j < bindposes_size - 1)
+            {
+                vertex_stringbuilder.append(", ");
+            }
+        }
+
+        vertex_stringbuilder.append(");\n");
+
         if (vulkan_shader)
         {
             vertex_stringbuilder.append("layout(binding = 0) uniform ObjectUniform\n{\n");
@@ -110,8 +139,13 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
             vertex_stringbuilder.append(head).append(" (joint == ").append(String.valueOf(j)).append(")\n{\n");
             for (int bone : bones)
             {
-                vertex_stringbuilder.append("temp_vertices_vec4 = transformVec(bindposes[").append(String.valueOf(bone)).append("], temp_vertices_vec4, animation").append(StringReader.convertNumberToLetter(bone)).append(");\n");
-                vertex_stringbuilder.append("temp_normals_vec4 *= temp_vertices_vec4;\n");
+                vertex_stringbuilder.append("temp_vertices_vec4 *= bindposes[").append(String.valueOf(bone)).append("];\n");
+                vertex_stringbuilder.append("temp_vertices_vec4 *= animation").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+                vertex_stringbuilder.append("temp_vertices_vec4 *= inverse_bindposes[").append(String.valueOf(bone)).append("];\n");
+                vertex_stringbuilder.append("temp_normals_vec4 *= bindposes[").append(String.valueOf(bone)).append("];\n");
+                vertex_stringbuilder.append("temp_normals_vec4 *= animation").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+                vertex_stringbuilder.append("temp_normals_vec4 *= inverse_bindposes[").append(String.valueOf(bone)).append("];\n");
+//                vertex_stringbuilder.append("temp_normals_vec4 *= temp_vertices_vec4;\n");
             }
             vertex_stringbuilder.append("}\n");
         }

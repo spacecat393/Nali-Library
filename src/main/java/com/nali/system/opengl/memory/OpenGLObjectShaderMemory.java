@@ -91,6 +91,11 @@ public class OpenGLObjectShaderMemory
 //            {
 //                Nali.error(GLU.gluErrorString(error));
 //            }
+//            String string = GL20.glGetProgramInfoLog(this.program, 1024);
+//            if (!string.isEmpty())
+//            {
+//                Nali.error(string);
+//            }
             Nali.error(GL20.glGetProgramInfoLog(this.program, 1024));
         }
     }

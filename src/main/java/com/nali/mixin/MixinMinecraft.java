@@ -1,6 +1,5 @@
 package com.nali.mixin;
 
-import com.nali.system.DataLoader;
 import com.nali.system.Timing;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;

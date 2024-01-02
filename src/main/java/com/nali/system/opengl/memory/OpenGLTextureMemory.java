@@ -36,7 +36,8 @@ public class OpenGLTextureMemory
             {
                 BufferedImage bufferedimage = ImageIO.read(file);
 
-                int index = Integer.parseInt(file.getName());
+                byte[] byte_array = file.getName().getBytes();
+                int index = Integer.parseInt(new String(byte_array, 0, byte_array.length - 4));
                 int width = bufferedimage.getWidth();
                 int height = bufferedimage.getHeight();
 

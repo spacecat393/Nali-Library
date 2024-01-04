@@ -40,7 +40,8 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
         StringBuilder vertex_stringbuilder = new StringBuilder();
         this.vert_shader = vertex_stringbuilder;
-        vertex_stringbuilder.append(getVertexHeaderShaderString());
+        StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 0);
+//        vertex_stringbuilder.append(getVertexHeaderShaderString());
 
         int bindposes_size = bind_poses_float_array.length / 16;
         vertex_stringbuilder.append("mat4 bindposes[").append(String.valueOf(bindposes_size)).append("] = mat4[](");
@@ -108,7 +109,6 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
             vertex_stringbuilder.append("uniform mat4 animation").append(StringReader.convertNumberToLetter(i)).append(";\n");
         }
 
-        StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 0);
         StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 1);
 
         int[][] back_bones_2d_int_array = new int[max_bones][];
@@ -172,14 +172,14 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 //        return this.max_bones;
 //    }
 
-    public static String getVertexHeaderShaderString()
-    {
-        return "#version 120\n" +
-                "precision highp float;\n" +
-                "attribute vec3 vertices;\n" +
-                "attribute vec2 texcoord;\n" +
-                "attribute vec4 joints;\n" +
-                "attribute vec4 weights;\n" +
-                "attribute vec3 normals;\n";
-    }
+//    public static String getVertexHeaderShaderString()
+//    {
+//        return "#version 120\n" +
+//                "precision highp float;\n" +
+//                "attribute vec3 vertices;\n" +
+//                "attribute vec2 texcoord;\n" +
+//                "attribute vec4 joints;\n" +
+//                "attribute vec4 weights;\n" +
+//                "attribute vec3 normals;\n";
+//    }
 }

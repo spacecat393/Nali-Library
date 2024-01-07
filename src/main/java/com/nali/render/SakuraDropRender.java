@@ -2,6 +2,7 @@ package com.nali.render;
 
 import com.nali.data.BothData;
 import com.nali.system.DataLoader;
+import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,8 +35,7 @@ public class SakuraDropRender extends ObjectRender
         this.mrz = (45.0F / (RANDOM.nextInt(3) + 5)) - (45.0F / (RANDOM.nextInt(3) + 5));
         this.max_time = 1000 + RANDOM.nextInt(2500);
         this.fy = -3.0F / (RANDOM.nextInt(3) + 1);
-        float s = 25.0F / (RANDOM.nextInt(3) + 1);
-        this.z = -10.0F;
+        float s = -25.0F / (RANDOM.nextInt(3) + 1);
         this.sx = s;
         this.sy = s;
         this.sz = s;
@@ -66,5 +66,15 @@ public class SakuraDropRender extends ObjectRender
         }
 
         this.objectscreendraw.renderScreen(new_r, new_g, new_b, new_a);
+    }
+
+    @Override
+    public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
+    {
+    }
+
+    @Override
+    public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
+    {
     }
 }

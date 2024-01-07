@@ -56,10 +56,11 @@ public class ObjectWorldDraw
         {
             this.objectrender.lig_b = 208.0F;
             this.objectrender.lig_s = 240.0F;
-//            GL11.glColor4f(1.0F, 1.0F, 1.0F, this.objectrender.a);
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, this.objectrender.a);
         }
         else
         {
+            GL11.glColor4f(this.objectrender.r, this.objectrender.g, this.objectrender.b, this.objectrender.a);
             this.objectrender.updateLightCoord();
         }
 
@@ -67,6 +68,7 @@ public class ObjectWorldDraw
 
         DRAW_CONSUMER.accept(openglobjectmemory);
 
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.objectrender.setDefault(openglobjectmemory);
     }
 

@@ -62,7 +62,7 @@ public class ObjectRender
         System.arraycopy(this.dataloader.memory_object_array, step_models, this.memory_object_array, 0, max_part);
 
         this.setGlow();
-        this.setModel();
+        Arrays.fill(this.model_boolean_array, true);
 
         this.objectscreendraw = this.getObjectScreenDraw();
         this.objectworlddraw = this.getObjectWorldDraw();

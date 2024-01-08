@@ -17,7 +17,7 @@ public class DataLoader
     public OpenGLTextureMemory opengltexturememorydata;
     public OpenGLObjectShaderMemory[] openglobjectshadermemory_array;
 
-    public static void setModels(DataLoader dataloader, String mod_id_string, String shaders_folder_path, boolean vulkan_shader)
+    public static void setModels(DataLoader dataloader, String mod_id_string)
     {
         mod_id_string = Reference.MOD_ID + '/' + mod_id_string;
         DataLoader.check(mod_id_string);
@@ -44,12 +44,12 @@ public class DataLoader
                 }
                 case 4:
                 {
-                    dataloader.memory_object_array[i] = new OpenGLObjectMemory(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path);
+                    dataloader.memory_object_array[i] = new OpenGLObjectMemory(model_string_array, folder_path, shader_string_2d_array);
                     break;
                 }
                 case 5:
                 {
-                    dataloader.memory_object_array[i] = new OpenGLSkinningMemory(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path);
+                    dataloader.memory_object_array[i] = new OpenGLSkinningMemory(model_string_array, folder_path, shader_string_2d_array);
                     break;
                 }
                 default:
@@ -69,11 +69,11 @@ public class DataLoader
 
             if (shader_string_array.length == 3)
             {
-                dataloader.openglobjectshadermemory_array[i] = new OpenGLSkinningShaderMemory(shader_string_array, folder_path, shaders_folder_path, vulkan_shader);
+                dataloader.openglobjectshadermemory_array[i] = new OpenGLSkinningShaderMemory(shader_string_array, folder_path);
             }
             else
             {
-                dataloader.openglobjectshadermemory_array[i] = new OpenGLObjectShaderMemory(shader_string_array, folder_path, shaders_folder_path, vulkan_shader);
+                dataloader.openglobjectshadermemory_array[i] = new OpenGLObjectShaderMemory(shader_string_array, folder_path);
             }
         }
 

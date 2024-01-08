@@ -25,18 +25,18 @@ public class OpenGLObjectMemory
     public Object shader;
     public int element_array_buffer;
 
-    public OpenGLObjectMemory(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path)
+    public OpenGLObjectMemory(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
         GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
         GL_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
         GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
         GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-        this.createBufferFromFile(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path);
+        this.createBufferFromFile(model_string_array, folder_path, shader_string_2d_array);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
     }
 
-    public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path)
+    public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
         String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
         this.texture_state = (byte)Integer.parseInt(model_string_array[1]);
@@ -52,11 +52,11 @@ public class OpenGLObjectMemory
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)this.index, GL15.GL_STATIC_DRAW);
 
-        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + shaders_folder_path + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
-        this.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path, attriblocation_string_2d_array, attriblocation_string_2d_array.length);
+        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
+        this.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, attriblocation_string_2d_array, attriblocation_string_2d_array.length);
     }
 
-    public void createBufferAttribLocation(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path, String[][] attriblocation_string_2d_array, int length)
+    public void createBufferAttribLocation(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int length)
     {
         String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
 

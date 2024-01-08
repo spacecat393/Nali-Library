@@ -17,10 +17,10 @@ public class ObjectScreenDraw
     public void renderScreen(float new_r, float new_g, float new_b, float new_a)
     {
         GL11.glPushMatrix();
-        float r = this.objectrender.r;
-        float g = this.objectrender.g;
-        float b = this.objectrender.b;
-        float a = this.objectrender.a;
+//        float r = this.objectrender.r;
+//        float g = this.objectrender.g;
+//        float b = this.objectrender.b;
+//        float a = this.objectrender.a;
 
 //        this.objectrender.r = new_r;
 //        this.objectrender.g = new_g;
@@ -53,10 +53,10 @@ public class ObjectScreenDraw
 //        GL11.glScalef(1.0F / sx, 1.0F / sy, 1.0F / sz);
 //        GL11.glTranslatef(-this.objectrender.x, -this.objectrender.y, -this.objectrender.z);
 
-        this.objectrender.r = r;
-        this.objectrender.g = g;
-        this.objectrender.b = b;
-        this.objectrender.a = a;
+//        this.objectrender.r = r;
+//        this.objectrender.g = g;
+//        this.objectrender.b = b;
+//        this.objectrender.a = a;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glPopMatrix();
     }

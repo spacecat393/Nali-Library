@@ -20,27 +20,27 @@ public class OpenGLObjectShaderMemory
     //StringBuilder->ShaderBuffer
     public Object frag_shader;
 
-    public OpenGLObjectShaderMemory(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
+    public OpenGLObjectShaderMemory(String[] shader_string_array, String folder_path)
     {
-        this.readVertShader(shader_string_array, folder_path, shaders_folder_path, vulkan_shader);
-        this.readFragShader(shader_string_array, folder_path, shaders_folder_path, vulkan_shader);
-        this.createBuffer(shader_string_array, folder_path, shaders_folder_path, 0);
+        this.readVertShader(shader_string_array, folder_path);
+        this.readFragShader(shader_string_array, folder_path);
+        this.createBuffer(shader_string_array, folder_path/*, 0*/);
     }
 
-    public void readVertShader(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
+    public void readVertShader(String[] shader_string_array, String folder_path)
     {
         byte shader_state = (byte)Integer.parseInt(shader_string_array[1]);
 
         this.vert_shader = new StringBuilder();
-        StringReader.append((StringBuilder)this.vert_shader, folder_path + shaders_folder_path + "Vertex" + shader_state);
+        StringReader.append((StringBuilder)this.vert_shader, folder_path + "Shaders/Vertex" + shader_state);
     }
 
-    public void readFragShader(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
+    public void readFragShader(String[] shader_string_array, String folder_path)
     {
         byte shader_state = (byte)Integer.parseInt(shader_string_array[1]);
 
         this.frag_shader = new StringBuilder();
-        StringReader.append((StringBuilder)this.frag_shader, folder_path + shaders_folder_path + "Fragment" + shader_state);
+        StringReader.append((StringBuilder)this.frag_shader, folder_path + "Shaders/Fragment" + shader_state);
     }
 
     public String[][] getAttribLocationString2DArray(String shader_data_folder_string)
@@ -53,9 +53,9 @@ public class OpenGLObjectShaderMemory
         return FileDataReader.getMixXStringArray(shader_data_folder_string + "/Uniform");
     }
 
-    public void createBuffer(String[] shader_string_array, String folder_path, String shaders_folder_path, int max_bones)
+    public void createBuffer(String[] shader_string_array, String folder_path/*, int max_bones*/)
     {
-        String model_folder_string = folder_path + shaders_folder_path + shader_string_array[0];
+        String model_folder_string = folder_path + "Shaders/" + shader_string_array[0];
         this.createShaderBuffer();
         String[][] attriblocation_string_2d_array = this.getAttribLocationString2DArray(model_folder_string);
         this.attriblocation_int_array = new int[attriblocation_string_2d_array.length];
@@ -65,7 +65,7 @@ public class OpenGLObjectShaderMemory
         }
 
         String[][] uniform_string_2d_array = this.getUniformString2DArray(model_folder_string);
-        this.uniformlocation_int_array = new int[uniform_string_2d_array.length + max_bones];
+        this.uniformlocation_int_array = new int[uniform_string_2d_array.length/* + max_bones*/];
         for (int i = 0; i < uniform_string_2d_array.length; ++i)
         {
             this.uniformlocation_int_array[i] = GL20.glGetUniformLocation(this.program, uniform_string_2d_array[i][0]);

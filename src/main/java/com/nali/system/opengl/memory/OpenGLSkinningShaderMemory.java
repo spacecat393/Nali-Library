@@ -5,9 +5,6 @@ import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL20;
-
-import java.io.File;
 
 @SideOnly(Side.CLIENT)
 public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
@@ -16,13 +13,13 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 //    public float[] bind_poses_float_array;
 //    public int[][] back_bones;
 
-    public OpenGLSkinningShaderMemory(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
+    public OpenGLSkinningShaderMemory(String[] shader_string_array, String folder_path)
     {
-        super(shader_string_array, folder_path, shaders_folder_path, vulkan_shader);
+        super(shader_string_array, folder_path);
     }
 
     @Override
-    public void readVertShader(String[] shader_string_array, String folder_path, String shaders_folder_path, boolean vulkan_shader)
+    public void readVertShader(String[] shader_string_array, String folder_path)
     {
         byte shader_state = (byte)Integer.parseInt(shader_string_array[1]);
 
@@ -40,7 +37,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
         StringBuilder vertex_stringbuilder = new StringBuilder();
         this.vert_shader = vertex_stringbuilder;
-        StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 0);
+        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 0);
 //        vertex_stringbuilder.append(getVertexHeaderShaderString());
 
         int bindposes_size = bind_poses_float_array.length / 16;
@@ -99,17 +96,13 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
         vertex_stringbuilder.append(");\n");
 
-        if (vulkan_shader)
-        {
-            vertex_stringbuilder.append("layout(binding = 0) uniform ObjectUniform\n{\n");
-        }
+//        for (int i = 0; i < max_bones; ++i)
+//        {
+//            vertex_stringbuilder.append("uniform mat4 animation").append(StringReader.convertNumberToLetter(i)).append(";\n");
+//        }
+        vertex_stringbuilder.append("uniform mat4 animation[").append(String.valueOf(max_bones)).append("];\n");
 
-        for (int i = 0; i < max_bones; ++i)
-        {
-            vertex_stringbuilder.append("uniform mat4 animation").append(StringReader.convertNumberToLetter(i)).append(";\n");
-        }
-
-        StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 1);
+        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 1);
 
         int[][] back_bones_2d_int_array = new int[max_bones][];
 
@@ -140,31 +133,33 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
             for (int bone : bones)
             {
                 vertex_stringbuilder.append("temp_vertices_vec4 *= bindposes[").append(String.valueOf(bone)).append("];\n");
-                vertex_stringbuilder.append("temp_vertices_vec4 *= animation").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+//                vertex_stringbuilder.append("temp_vertices_vec4 *= animation").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+                vertex_stringbuilder.append("temp_vertices_vec4 *= animation[").append(String.valueOf(bone)).append("];\n");
                 vertex_stringbuilder.append("temp_vertices_vec4 *= inverse_bindposes[").append(String.valueOf(bone)).append("];\n");
                 vertex_stringbuilder.append("temp_normals_vec4 *= bindposes[").append(String.valueOf(bone)).append("];\n");
-                vertex_stringbuilder.append("temp_normals_vec4 *= animation").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+//                vertex_stringbuilder.append("temp_normals_vec4 *= animation").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+                vertex_stringbuilder.append("temp_normals_vec4 *= animation[").append(String.valueOf(bone)).append("];\n");
                 vertex_stringbuilder.append("temp_normals_vec4 *= inverse_bindposes[").append(String.valueOf(bone)).append("];\n");
 //                vertex_stringbuilder.append("temp_normals_vec4 *= temp_vertices_vec4;\n");
             }
             vertex_stringbuilder.append("}\n");
         }
 
-        StringReader.append(vertex_stringbuilder, folder_path + shaders_folder_path + "Vertex" + shader_state + 2);
+        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 2);
     }
 
-    @Override
-    public void createBuffer(String[] shader_string_array, String folder_path, String shaders_folder_path, int max_bones)
-    {
-        max_bones = new File(folder_path + "Models/" + shader_string_array[2] + "/Animation/Bones").listFiles().length;
-        super.createBuffer(shader_string_array, folder_path, shaders_folder_path, max_bones);
-
-        int start_index = this.uniformlocation_int_array.length - max_bones;
-        for (int i = 0; i < max_bones; ++i)
-        {
-            this.uniformlocation_int_array[start_index + i] = GL20.glGetUniformLocation(this.program, "animation" + StringReader.convertNumberToLetter(i));
-        }
-    }
+//    @Override
+//    public void createBuffer(String[] shader_string_array, String folder_path, int max_bones)
+//    {
+//        max_bones = new File(folder_path + "Models/" + shader_string_array[2] + "/Animation/Bones").listFiles().length;
+//        super.createBuffer(shader_string_array, folder_path, max_bones);
+//
+//        int start_index = this.uniformlocation_int_array.length - max_bones;
+//        for (int i = 0; i < max_bones; ++i)
+//        {
+//            this.uniformlocation_int_array[start_index + i] = GL20.glGetUniformLocation(this.program, "animation" + StringReader.convertNumberToLetter(i));
+//        }
+//    }
 
 //    @Override
 //    public int getMaxBones()

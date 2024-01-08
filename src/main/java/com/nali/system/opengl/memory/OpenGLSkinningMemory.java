@@ -10,15 +10,15 @@ import java.nio.FloatBuffer;
 @SideOnly(Side.CLIENT)
 public class OpenGLSkinningMemory extends OpenGLObjectMemory
 {
-    public OpenGLSkinningMemory(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path)
+    public OpenGLSkinningMemory(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
-        super(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path);
+        super(model_string_array, folder_path, shader_string_2d_array);
     }
 
     @Override
-    public void createBufferAttribLocation(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String shaders_folder_path, String[][] attriblocation_string_2d_array, int length)
+    public void createBufferAttribLocation(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int length)
     {
-        super.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, shaders_folder_path, attriblocation_string_2d_array, length - 2);
+        super.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, attriblocation_string_2d_array, length - 2);
         String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
         byte max_joints = (byte)Integer.parseInt(model_string_array[4]);
 

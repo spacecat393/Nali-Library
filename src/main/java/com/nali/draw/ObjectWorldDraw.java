@@ -27,9 +27,9 @@ public class ObjectWorldDraw
         GL11.glPushMatrix();
 //        GL11.glTranslated(ox, oy, oz);
 
-        float rx = -90.0F;
 //        GL11.glScalef(scale, scale, scale);
-        GL11.glRotatef(rx, 1.0F, 0.0F, 0.0F);
+
+        GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 
         for (int i = 0; i < this.objectrender.memory_object_array.length; ++i)
         {

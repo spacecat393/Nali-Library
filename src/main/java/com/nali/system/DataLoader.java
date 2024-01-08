@@ -14,7 +14,7 @@ import java.io.File;
 public class DataLoader
 {
     public Object[] memory_object_array;
-    public OpenGLTextureMemory opengltexturememorydata;
+    public OpenGLTextureMemory opengltexturememory;
     public OpenGLObjectShaderMemory[] openglobjectshadermemory_array;
 
     public static void setModels(DataLoader dataloader, String mod_id_string)
@@ -24,7 +24,7 @@ public class DataLoader
 
         String folder_path = mod_id_string + '/';
 
-        dataloader.opengltexturememorydata = new OpenGLTextureMemory(mod_id_string);
+        dataloader.opengltexturememory = new OpenGLTextureMemory(mod_id_string);
 
         Object[] model_object_array = FileDataReader.getMixXStringArray(folder_path + "ModelsList");
         int model_length = model_object_array.length;

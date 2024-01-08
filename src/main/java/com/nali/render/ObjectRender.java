@@ -119,7 +119,7 @@ public class ObjectRender
     {
         GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[0], 0);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememorydata.texture_array[this.texture_index_int_array[index]], openglobjectmemory.texture_state);
+        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], openglobjectmemory.texture_state);
     }
 
     public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)

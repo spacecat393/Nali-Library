@@ -1,6 +1,7 @@
 package com.nali.system.opengl.memory;
 
 import com.nali.Nali;
+import com.nali.config.MyConfig;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.OpenGLShader;
@@ -22,9 +23,17 @@ public class OpenGLObjectShaderMemory
 
     public OpenGLObjectShaderMemory(String[] shader_string_array, String folder_path)
     {
-        this.readVertShader(shader_string_array, folder_path);
-        this.readFragShader(shader_string_array, folder_path);
-        this.createBuffer(shader_string_array, folder_path/*, 0*/);
+        if (OpenGLCurrentMemory.SHADERS < MyConfig.SHADER.max_shaders)
+        {
+            ++OpenGLCurrentMemory.SHADERS;
+            this.readVertShader(shader_string_array, folder_path);
+            this.readFragShader(shader_string_array, folder_path);
+            this.createBuffer(shader_string_array, folder_path/*, 0*/);
+        }
+        else
+        {
+            Nali.error("MAX_SHADERS");
+        }
     }
 
     public void readVertShader(String[] shader_string_array, String folder_path)

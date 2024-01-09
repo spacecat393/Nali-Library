@@ -14,6 +14,7 @@ public class OpenGLCurrentMemory
     public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
     public static FloatBuffer OPENGL_FLOATBUFFER;
     public static int OPENGL_FLOATBUFFER_SIZE;
+    public static int SHADERS;
     public static int GL_CURRENT_PROGRAM;
     public static int GL_ELEMENT_ARRAY_BUFFER_BINDING;
     public static int GL_TEXTURE_BINDING_2D;

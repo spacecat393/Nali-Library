@@ -18,7 +18,10 @@ public class MyConfig
 
 //    public static final Color COLOR = new Color();
 //    public static final Light LIGHT = new Light();
+    @Config.Name("Frame Settings")
     public static final Frame FRAME = new Frame();
+    @Config.Name("Shader Settings")
+    public static final Shader SHADER = new Shader();
 
 //    public static class Color
 //    {
@@ -57,14 +60,22 @@ public class MyConfig
     public static class Frame
     {
         @Config.Name("Using Frame Buffer Index")
-        @Config.Comment("Rendering")
+        @Config.Comment("When other rendering mod use own frame-buffer.")
         @Config.RequiresMcRestart
         public boolean using_frame_buffer_index = false;
 
         @Config.Name("Frame Buffer Index")
-        @Config.Comment("Rendering")
+        @Config.Comment("Match which frame-buffer is rendering.")
         @Config.RequiresMcRestart
         public int frame_buffer_index = 5;
+    }
+
+    public static class Shader
+    {
+        @Config.Name("Max Shaders")
+        @Config.Comment("Limit pre-shader if you run on Integrated GPU then try to Add More until it launch to main menu. [Add More is up on your Ram that can pre-shader how much on launch]")
+        @Config.RequiresMcRestart
+        public int max_shaders = Integer.MAX_VALUE;
     }
 
 //    public static void registerConfig()

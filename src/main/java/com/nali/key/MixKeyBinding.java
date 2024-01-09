@@ -6,6 +6,6 @@ public class MixKeyBinding extends KeyBinding
 {
     public MixKeyBinding(String name, int key, String mod_id)
     {
-        super("key." + name, key, "key.categories." + mod_id);
+        super("key." + mod_id + "." + name, key, "key.categories." + mod_id);
     }
 }

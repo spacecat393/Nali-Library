@@ -35,7 +35,7 @@ public class Nali
         if (event.getSide().isClient())
         {
             CONFIGURATION = new Configuration(event.getSuggestedConfigurationFile());
-            Nali.CONFIGURATION.load();
+            CONFIGURATION.load();
 //            MyConfig.registerConfig();
             ObjectWorldDraw.loadWithConfig();
             KeyRegistryHelper.set();

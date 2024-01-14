@@ -1,7 +1,5 @@
 package com.nali.math;
 
-import net.minecraft.entity.Entity;
-
 public class MixMath
 {
     // public static float TIME = 0.6662F;
@@ -11,17 +9,17 @@ public class MixMath
 //        return s + t * (e - s);
 //    }
 
-    public static double getClose(Entity entity0, Entity entity1, double minimum_distance)
-    {
-        double width = (entity0.width + entity1.width) / 2.0D;
-        double height = (entity0.height + entity1.height) / 2.0D;
-        return (width + height + minimum_distance) * (width + height + minimum_distance);
-    }
-
-    public static boolean isTooClose(Entity entity0, Entity entity1, double minimum_distance)
-    {
-        return entity0.getDistanceSq(entity1) < getClose(entity0, entity1, minimum_distance);
-    }
+//    public static double getClose(Entity entity0, Entity entity1, double minimum_distance)
+//    {
+//        double width = (entity0.width + entity1.width) / 2.0D;
+//        double height = (entity0.height + entity1.height) / 2.0D;
+//        return (width + height + minimum_distance) * (width + height + minimum_distance);
+//    }
+//
+//    public static boolean isTooClose(Entity entity0, Entity entity1, double minimum_distance)
+//    {
+//        return entity0.getDistanceSq(entity1) < getClose(entity0, entity1, minimum_distance);
+//    }
 
     public static byte signum(double i)
     {
@@ -35,47 +33,47 @@ public class MixMath
         }
     }
 
-    public static float wrapDegrees(float f0)
-    {
-        float f = f0 % 360.0F;
-
-        if (f >= 180.0F)
-        {
-            f -= 360.0F;
-        }
-
-        if (f < -180.0F)
-        {
-            f += 360.0F;
-        }
-
-        return f;
-    }
+//    public static float wrapDegrees(float f0)
+//    {
+//        float f = f0 % 360.0F;
+//
+//        if (f >= 180.0F)
+//        {
+//            f -= 360.0F;
+//        }
+//
+//        if (f < -180.0F)
+//        {
+//            f += 360.0F;
+//        }
+//
+//        return f;
+//    }
 
 //    public static float rotLerp(float f0, float f1, float f2)
 //    {
 //        return f1 + f0 * wrapDegrees(f2 - f1);
 //    }
 
-    public static float invert(float rotation)
-    {
-        rotation += 180.0F;
-        rotation %= 360.0F;
-
-        if (rotation < 0)
-        {
-            rotation += 360.0F;
-        }
-
-        if (rotation > 180.0f)
-        {
-            rotation -= 360.0F;
-        }
-
-        rotation %= 360.0F;
-
-        return rotation;
-    }
+//    public static float invert(float rotation)
+//    {
+//        rotation += 180.0F;
+//        rotation %= 360.0F;
+//
+//        if (rotation < 0)
+//        {
+//            rotation += 360.0F;
+//        }
+//
+//        if (rotation > 180.0f)
+//        {
+//            rotation -= 360.0F;
+//        }
+//
+//        rotation %= 360.0F;
+//
+//        return rotation;
+//    }
 
     // public static float wave(float amplitude, float frequency, float time, float phase_shift)
     // {
@@ -109,20 +107,20 @@ public class MixMath
     //     return (max0 - value) / (max0 - min0) * min1 + (min0 - value) / (min0 - max0) * max1;
     // }
 
-    public static float interpolateRotation(float prevYawOffset, float yawOffset, float partialTicks)
-    {
-        float f;
-
-        for (f = yawOffset - prevYawOffset; f < -180.0F; f += 360.0F)
-        {
-            ;
-        }
-
-        while (f >= 180.0F)
-        {
-            f -= 360.0F;
-        }
-
-        return prevYawOffset + partialTicks * f;
-    }
+//    public static float interpolateRotation(float prevYawOffset, float yawOffset, float partialTicks)
+//    {
+//        float f;
+//
+//        for (f = yawOffset - prevYawOffset; f < -180.0F; f += 360.0F)
+//        {
+//            ;
+//        }
+//
+//        while (f >= 180.0F)
+//        {
+//            f -= 360.0F;
+//        }
+//
+//        return prevYawOffset + partialTicks * f;
+//    }
 }

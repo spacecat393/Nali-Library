@@ -1,8 +1,8 @@
 [
 	{
 		"modid": "nali",
-		"name": "Nali",
-		"description": "Rendering / Math",
+		"name": "NaliLibrary",
+		"description": "Rendering & Data Loader",
 		"version": "${version}",
 		"mcversion": "1.12.2",
 		"url": "https://twitter.com/Nali36687751",

@@ -1,6 +1,7 @@
 package com.nali.render;
 
 import com.nali.data.BothData;
+import com.nali.math.M4x4;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.memory.OpenGLAnimationMemory;
 import com.nali.system.opengl.memory.OpenGLObjectMemory;
@@ -65,5 +66,39 @@ public class SkinningRender extends ObjectRender
 //            setFloatBuffer(float_array);
 //            GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[start_index + i / 16], false, OPENGL_FLOATBUFFER);
 //        }
+    }
+
+    public void initSkinning()
+    {
+        int max_bones = this.openglanimationmemory.bones;
+
+        for (int i = 0; i < max_bones; ++i)
+        {
+            System.arraycopy(M4x4.IDENTITY, 0, this.skinning_float_array, i * 16, 16);
+        }
+
+        for (int i = 0; i < max_bones; ++i)
+        {
+            System.arraycopy(M4x4.IDENTITY, 0, this.skinning_float_array, i * 16, 16);
+        }
+    }
+
+    public void setSkinning()
+    {
+        int max_key = this.openglanimationmemory.length;
+
+        for (int i = 0; i < this.openglanimationmemory.bones; ++i)
+        {
+            M4x4.multiply(this.openglanimationmemory.transforms_float_array, this.skinning_float_array, (this.frame_int_array[0] + max_key * i) * 16, i * 16);
+
+            for (int f = 1; f < this.frame_int_array.length; ++f)
+            {
+                if (this.frame_boolean_array[f - 1])
+                {
+                    M4x4.multiply(this.openglanimationmemory.transforms_float_array, this.skinning_float_array, (this.frame_int_array[f] + max_key * i) * 16, i * 16);
+                }
+            }
+            M4x4.inverse(this.skinning_float_array, i * 16);
+        }
     }
 }

@@ -13,7 +13,7 @@ public class OpenGLCurrentMemory
 {
     public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
     public static FloatBuffer OPENGL_FLOATBUFFER;
-    public static int OPENGL_FLOATBUFFER_SIZE;
+//    public static int OPENGL_FLOATBUFFER_SIZE;
     public static int SHADERS;
     public static int GL_CURRENT_PROGRAM;
     public static int GL_ELEMENT_ARRAY_BUFFER_BINDING;
@@ -56,6 +56,62 @@ public class OpenGLCurrentMemory
         OPENGL_FLOATBUFFER.put(float_array);
         OPENGL_FLOATBUFFER.flip();
     }
+
+//    public static void setBones(int max_bone)
+//    {
+//        if (OPENGL_FLOATBUFFER_SIZE < max_bone)
+//        {
+//            OPENGL_FLOATBUFFER_SIZE = max_bone;
+////            Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
+////            if (OPENGL_FLOATBUFFER != null)
+////            {
+////                cleanFloatBuffer(OPENGL_FLOATBUFFER);
+////            }
+//
+//            OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//        }
+//    }
+
+//    public static void cleanFloatBuffer(FloatBuffer buffer)
+//    {
+//        if (buffer.isDirect())
+//        {
+//            try
+//            {
+//                Field buffer_field = buffer.getClass().getDeclaredField("hb");
+//                buffer_field.setAccessible(true);
+//                ByteBuffer byteBuffer = (ByteBuffer)buffer_field.get(buffer);
+//
+//                Field cleaner_field = byteBuffer.getClass().getDeclaredField("cleaner");
+//                cleaner_field.setAccessible(true);
+//                sun.misc.Cleaner cleaner = (sun.misc.Cleaner)cleaner_field.get(byteBuffer);
+//
+//                cleaner.clean();
+//            }
+//            catch (Exception e)
+//            {
+//                Nali.error(e);
+//            }
+//        }
+//    }
+
+//    public static void cleanDirectBuffer(ByteBuffer buffer)
+//    {
+//        if (buffer.isDirect())
+//        {
+//            try
+//            {
+//                Field field = buffer.getClass().getDeclaredField("cleaner");
+//                field.setAccessible(true);
+//                sun.misc.Cleaner cleaner = (sun.misc.Cleaner)field.get(buffer);
+//                cleaner.clean();
+//            }
+//            catch (Exception e)
+//            {
+//                Nali.error(e);
+//            }
+//        }
+//    }
 
 //    public static void takeColor()
 //    {

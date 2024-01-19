@@ -76,6 +76,11 @@ public class MyConfig
         @Config.Comment("Limit pre-shader if you run on Integrated GPU then try to Add More until it launch to main menu. [Add More is up on your Ram that can pre-shader how much on launch]")
         @Config.RequiresMcRestart
         public int max_shaders = Integer.MAX_VALUE;
+
+        @Config.Name("Max Bones")
+        @Config.Comment("M4x4 Buffer for Animation.")
+        @Config.RequiresMcRestart
+        public int max_bones = 214 * 16;
     }
 
 //    public static void registerConfig()

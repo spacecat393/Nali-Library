@@ -25,7 +25,12 @@ public class SkinningRender extends ObjectRender
     public SkinningRender(BothData bothdata, DataLoader dataloader)
     {
         super(bothdata, dataloader);
+    }
 
+    @Override
+    public void init(BothData bothdata, DataLoader dataloader)
+    {
+        super.init(bothdata, dataloader);
         int step_models = bothdata.StepModels();
         int max_array_length = bothdata.MaxFrame();
 

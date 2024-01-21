@@ -42,6 +42,11 @@ public class ObjectRender
 
     public ObjectRender(BothData bothdata, DataLoader dataloader)
     {
+        this.init(bothdata, dataloader);
+    }
+
+    public void init(BothData bothdata, DataLoader dataloader)
+    {
         this.bothdata = bothdata;
         this.dataloader = dataloader;
 

@@ -16,6 +16,7 @@ import java.util.List;
 public class KeyRegistryHelper
 {
     public static List<Class> KEY_CLASS_LIST = Reflect.getClasses("com.nali.list.key");
+    public static List<Class> FUNCTION_CLASS_LIST = Reflect.getClasses("com.nali.list.function");
     static
     {
         KEY_CLASS_LIST.sort(Comparator.comparing(Class::getName));
@@ -30,6 +31,18 @@ public class KeyRegistryHelper
                 ClientRegistry.registerKeyBinding((KeyBinding)clasz.getConstructor(String.class).newInstance(StringReader.get(clasz)[0]));
             }
             catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e)
+            {
+                Nali.error(e);
+            }
+        }
+
+        for (Class clasz : FUNCTION_CLASS_LIST)
+        {
+            try
+            {
+                clasz.getConstructor().newInstance();
+            }
+            catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
             {
                 Nali.error(e);
             }

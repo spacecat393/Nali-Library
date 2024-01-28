@@ -85,6 +85,8 @@ public class DataLoader
                 int shader_id = (int)openglobjectmemorydata.shader;
                 openglobjectmemorydata.shader = dataloader.openglobjectshadermemory_array[shader_id];
 
+//                if (MyConfig.SHADER.pre_shader)
+//                {
                 new ObjectRender(new GuiObjectData(i, 1), dataloader)
                 {
                     @Override
@@ -97,6 +99,7 @@ public class DataLoader
                     {
                     }
                 }.objectscreendraw.renderScreen(0.0F, 0.0F, 0.0F, 0.0F);
+//                }
             }
         }
     }

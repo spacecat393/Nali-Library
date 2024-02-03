@@ -85,7 +85,7 @@ public class MyConfig
         @Config.Name("Max Bones")
         @Config.Comment("M4x4 Buffer for Animation.")
         @Config.RequiresMcRestart
-        public int max_bones = 218 * 16;
+        public int max_bones = 220 * 16;
     }
 
 //    public static void registerConfig()

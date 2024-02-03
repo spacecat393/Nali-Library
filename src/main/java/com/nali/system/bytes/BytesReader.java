@@ -31,4 +31,16 @@ public class BytesReader
 
         return new UUID(most, least);
     }
+
+    public static long getLong(byte[] byte_array, int index)
+    {
+        long l = 0;
+
+        for (int i = 0; i < 8; i++)
+        {
+            l |= (long)(byte_array[i + index] & 0xFF) << (i * 8);
+        }
+
+        return l;
+    }
 }

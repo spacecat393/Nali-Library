@@ -30,4 +30,12 @@ public class BytesWriter
             byte_array[8 + i] = (byte) (least >> shift);
         }
     }
+
+    public static void set(byte[] byte_array, long l, int index)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            byte_array[index + i] = (byte) ((l >> (i * 8)) & 0xFF);
+        }
+    }
 }

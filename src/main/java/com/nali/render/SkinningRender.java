@@ -60,7 +60,7 @@ public class SkinningRender extends ObjectRender
         super.setUniform(openglobjectmemory, openglobjectshadermemory, index);
 
         setFloatBuffer(this.skinning_float_array);
-        GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[3], false, OPENGL_FLOATBUFFER);
+        GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
 
 //        int start_index = openglobjectshadermemory.uniformlocation_int_array.length - this.openglanimationmemory.bones;
 //        for (int i = 0; i < this.skinning_float_array.length; i += 16)

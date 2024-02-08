@@ -1,6 +1,7 @@
 package com.nali.system;
 
 import com.nali.Nali;
+import com.nali.config.MyConfig;
 import com.nali.data.GuiObjectData;
 import com.nali.render.ObjectRender;
 import com.nali.system.file.FileDataReader;
@@ -85,21 +86,21 @@ public class DataLoader
                 int shader_id = (int)openglobjectmemorydata.shader;
                 openglobjectmemorydata.shader = dataloader.openglobjectshadermemory_array[shader_id];
 
-//                if (MyConfig.SHADER.pre_shader)
-//                {
-                new ObjectRender(new GuiObjectData(i, 1), dataloader)
+                if (MyConfig.SHADER.pre_shader)
                 {
-                    @Override
-                    public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
+                    new ObjectRender(new GuiObjectData(i, 1), dataloader)
                     {
-                    }
+                        @Override
+                        public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
+                        {
+                        }
 
-                    @Override
-                    public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
-                    {
-                    }
-                }.objectscreendraw.renderScreen(0.0F, 0.0F, 0.0F, 0.0F);
-//                }
+                        @Override
+                        public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
+                        {
+                        }
+                    }.objectscreendraw.renderScreen(0.0F, 0.0F, 0.0F, 0.0F);
+                }
             }
         }
     }

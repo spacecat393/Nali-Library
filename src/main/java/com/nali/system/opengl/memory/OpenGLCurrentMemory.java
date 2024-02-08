@@ -12,6 +12,7 @@ import java.nio.IntBuffer;
 public class OpenGLCurrentMemory
 {
     public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
+    public static FloatBuffer OPENGL_FIXED_PIPE_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     public static FloatBuffer OPENGL_FLOATBUFFER;
 //    public static int OPENGL_FLOATBUFFER_SIZE;
     public static int SHADERS;
@@ -51,7 +52,7 @@ public class OpenGLCurrentMemory
 
     public static void setFloatBuffer(float[] float_array)
     {
-//        OPENGL_FLOATBUFFER.limit(float_array.length);
+        OPENGL_FLOATBUFFER.limit(float_array.length);
         OPENGL_FLOATBUFFER.clear();
         OPENGL_FLOATBUFFER.put(float_array);
         OPENGL_FLOATBUFFER.flip();

@@ -115,28 +115,43 @@ public class ObjectRender
 
     public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
     {
+        this.setFixedPipe(openglobjectshadermemory);
         this.setTextureUniform(openglobjectmemory, openglobjectshadermemory, index);
         this.setLightMapUniform(openglobjectshadermemory);
         this.setLightCoord(openglobjectshadermemory);
     }
 
+    public void setFixedPipe(OpenGLObjectShaderMemory openglobjectshadermemory)
+    {
+        OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
+        GL20.glUniform4(openglobjectshadermemory.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        GL20.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
+    }
+
     public void setTextureUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
     {
-        GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[0], 0);
+        GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], openglobjectmemory.texture_state);
     }
 
     public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
     {
-        GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[1], 1);
+        GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
         OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer) Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
     }
 
     public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
     {
-        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[2], this.lig_b, this.lig_s);
+        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], this.lig_b, this.lig_s);
     }
 
     public void updateLightCoord()

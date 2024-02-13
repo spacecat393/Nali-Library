@@ -28,6 +28,8 @@ public class OpenGLCurrentMemory
     public static int GL_BLEND_DST_RGB;
     public static int GL_BLEND_DST_ALPHA;
 
+//    public static int GL_MATRIX_MODE;
+
     public static int GL_TEXTURE_WRAP_S;
     public static int GL_TEXTURE_WRAP_T;
     public static int GL_TEXTURE_MIN_FILTER;

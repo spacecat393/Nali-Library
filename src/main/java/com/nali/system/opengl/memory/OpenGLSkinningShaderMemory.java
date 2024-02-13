@@ -9,9 +9,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 {
-//    public int max_bones;
-//    public float[] bind_poses_float_array;
-//    public int[][] back_bones;
+    public int max_bones;
+    public float[] bind_poses_float_array;
+    public int[][] back_bones_2d_int_array;
+//    public int[][] bones_2d_int_array;
 
     public OpenGLSkinningShaderMemory(String[] shader_string_array, String folder_path)
     {
@@ -26,11 +27,13 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         String model_folder_path = folder_path + "Models/" + shader_string_array[2];
         String animation_string = "/Animation/";
 
-        float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
+//        float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
+        this.bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
 
-        int max_bones = bind_poses_float_array.length / 16;//new File(model_folder_path + animation_string + "Bones").listFiles().length;
+//        int max_bones = this.bind_poses_float_array.length / 16;
+        this.max_bones = this.bind_poses_float_array.length / 16;
         int[][] bones_2d_int_array = new int[max_bones][];
-        for (int i = 0; i < max_bones; ++i)
+        for (int i = 0; i < this.max_bones; ++i)
         {
             bones_2d_int_array[i] = FileDataReader.getIntArray(model_folder_path + animation_string + "Bones/" + i);
         }
@@ -40,7 +43,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 0);
 //        vertex_stringbuilder.append(getVertexHeaderShaderString());
 
-        int bindposes_size = bind_poses_float_array.length / 16;
+        int bindposes_size = this.bind_poses_float_array.length / 16;
         vertex_stringbuilder.append("mat4 bindposes[").append(String.valueOf(bindposes_size)).append("] = mat4[](");
 
         for (int j = 0; j < bindposes_size; ++j)
@@ -50,7 +53,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
             int bindposes_index = (j + 1) * 16;
             for (int b = j * 16; b < bindposes_index; ++b)
             {
-                vertex_stringbuilder.append(String.valueOf(bind_poses_float_array[b]));
+                vertex_stringbuilder.append(String.valueOf(this.bind_poses_float_array[b]));
 
                 if (b < bindposes_index - 1)
                 {
@@ -74,11 +77,11 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         {
             vertex_stringbuilder.append("mat4(");
 
-            M4x4.inverse(bind_poses_float_array, j * 16);
+            M4x4.inverse(this.bind_poses_float_array, j * 16);
             int bindposes_index = (j + 1) * 16;
             for (int b = j * 16; b < bindposes_index; ++b)
             {
-                vertex_stringbuilder.append(String.valueOf(bind_poses_float_array[b]));
+                vertex_stringbuilder.append(String.valueOf(this.bind_poses_float_array[b]));
 
                 if (b < bindposes_index - 1)
                 {
@@ -100,28 +103,29 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 //        {
 //            vertex_stringbuilder.append("uniform mat4 animation").append(StringReader.convertNumberToLetter(i)).append(";\n");
 //        }
-        vertex_stringbuilder.append("uniform mat4 animation[").append(String.valueOf(max_bones)).append("];\n");
+        vertex_stringbuilder.append("uniform mat4 animation[").append(String.valueOf(this.max_bones)).append("];\n");
 
         StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 1);
 
-        int[][] back_bones_2d_int_array = new int[max_bones][];
+//        int[][] back_bones_2d_int_array = new int[this.max_bones][];
+        this.back_bones_2d_int_array = new int[this.max_bones][];
 
-        for (int j = 0; j < max_bones; ++j)
+        for (int j = 0; j < this.max_bones; ++j)
         {
             int[] bones = bones_2d_int_array[j];
-            back_bones_2d_int_array[j] = new int[bones.length];
+            this.back_bones_2d_int_array[j] = new int[bones.length];
 
             int b_index = 0;
             for (int b = bones.length - 1; b > -1; --b)
             {
-                int[] b_bones = back_bones_2d_int_array[j];
+                int[] b_bones = this.back_bones_2d_int_array[j];
                 b_bones[b_index++] = bones[b];
             }
         }
 
         for (int j = 0; j < bones_2d_int_array.length; ++j)
         {
-            int[] bones = back_bones_2d_int_array[j];
+            int[] bones = this.back_bones_2d_int_array[j];
             String head = "else if";
 
             if (j == 0)

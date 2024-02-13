@@ -81,11 +81,6 @@ public class SkinningRender extends ObjectRender
         {
             System.arraycopy(M4x4.IDENTITY, 0, this.skinning_float_array, i * 16, 16);
         }
-
-        for (int i = 0; i < max_bones; ++i)
-        {
-            System.arraycopy(M4x4.IDENTITY, 0, this.skinning_float_array, i * 16, 16);
-        }
     }
 
     public void setSkinning()

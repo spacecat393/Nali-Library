@@ -17,10 +17,13 @@ import static com.nali.system.opengl.memory.OpenGLCurrentMemory.setFloatBuffer;
 public class SkinningRender extends ObjectRender
 {
 //    public static Object[] FREE_SKINNING_OBJECT_ARRAY;
-    public int[] frame_int_array;
-    public float[] skinning_float_array;
+    public int[] frame_int_array/*, current_frame_int_array*/;
+    public float[] skinning_float_array/*, current_mat4_float_array, current_mat4 = new float[16]*/;
     public boolean[] frame_boolean_array;
     public OpenGLAnimationMemory openglanimationmemory;
+
+//    public float timeline;
+//    public long last_time = Minecraft.getSystemTime();
 
     public SkinningRender(BothData bothdata, DataLoader dataloader)
     {
@@ -35,6 +38,7 @@ public class SkinningRender extends ObjectRender
         int max_array_length = bothdata.MaxFrame();
 
         this.frame_int_array = new int[max_array_length];
+//        this.current_frame_int_array = new int[max_array_length];
 
         this.openglanimationmemory = (OpenGLAnimationMemory)this.dataloader.memory_object_array[step_models - 1];
         this.frame_boolean_array = new boolean[max_array_length];
@@ -45,6 +49,7 @@ public class SkinningRender extends ObjectRender
         }
 
         this.skinning_float_array = new float[this.openglanimationmemory.bones * 16];
+//        this.current_mat4_float_array = new float[max_array_length * this.openglanimationmemory.bones * 16];
 
         this.setFrame();
     }
@@ -87,17 +92,42 @@ public class SkinningRender extends ObjectRender
     {
         int max_key = this.openglanimationmemory.length;
 
+//        long current_time = Minecraft.getSystemTime();
+//        this.timeline = Math.min((current_time - this.last_time) / 1000.0F, 1.0F);
+////        Nali.LOGGER.info("TIME " + this.timeline);
+//        this.last_time = current_time;
+
+//        int index;
         for (int i = 0; i < this.openglanimationmemory.bones; ++i)
         {
+////            index = i * 16;
+//            //next
+//            System.arraycopy(this.openglanimationmemory.transforms_float_array, (this.frame_int_array[0] + max_key * i) * 16, this.current_mat4, 0, 16);
+//            M4x4.lerp(this.current_mat4, this.openglanimationmemory.transforms_float_array, 0, (this.current_frame_int_array[0] + max_key * i) * 16, this.timeline);
+//            M4x4.multiply(this.current_mat4, this.skinning_float_array, 0, i * 16);
+//            this.current_frame_int_array[0] = this.frame_int_array[0];
+//
+//            //c
+////            M4x4.lerp(this.current_mat4_float_array, this.current_mat4, index, 0, this.timeline);
+////            M4x4.multiply(this.current_mat4_float_array, this.skinning_float_array, index, i * 16);
             M4x4.multiply(this.openglanimationmemory.transforms_float_array, this.skinning_float_array, (this.frame_int_array[0] + max_key * i) * 16, i * 16);
 
             for (int f = 1; f < this.frame_int_array.length; ++f)
             {
                 if (this.frame_boolean_array[f - 1])
                 {
+////                    index = i * 16 + (f * this.bothdata.MaxFrame() * this.openglanimationmemory.bones * 16);
+//                    System.arraycopy(this.openglanimationmemory.transforms_float_array, (this.frame_int_array[f] + max_key * i) * 16, this.current_mat4, 0, 16);
+//                    M4x4.lerp(this.current_mat4, this.openglanimationmemory.transforms_float_array, 0, (this.current_frame_int_array[f] + max_key * i) * 16, this.timeline);
+//                    M4x4.multiply(this.current_mat4, this.skinning_float_array, 0, i * 16);
+//                    this.current_frame_int_array[f] = this.frame_int_array[f];
+//
+////                    M4x4.lerp(this.current_mat4_float_array, this.current_mat4, index, 0, this.timeline);
+////                    M4x4.multiply(this.current_mat4_float_array, this.skinning_float_array, index, i * 16);
                     M4x4.multiply(this.openglanimationmemory.transforms_float_array, this.skinning_float_array, (this.frame_int_array[f] + max_key * i) * 16, i * 16);
                 }
             }
+
             M4x4.inverse(this.skinning_float_array, i * 16);
         }
     }

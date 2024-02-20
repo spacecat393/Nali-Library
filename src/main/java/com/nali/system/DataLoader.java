@@ -99,7 +99,7 @@ public class DataLoader
                         public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
                         {
                         }
-                    }.objectscreendraw.renderScreen(0.0F, 0.0F, 0.0F, 0.0F);
+                    }.objectscreendraw.renderScreen();
                 }
             }
         }

@@ -29,7 +29,8 @@ public class ObjectRender
     public ObjectWorldDraw objectworlddraw;
 
     public boolean should_render;
-    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
+//    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
+//    public float sr = 1.0F, sg = 1.0F, sb = 1.0F, sa = 1.0F;
 //    public float width, height;
     public float lig_b = 208.0F, lig_s = 240.0F;
     public float x, y, z = 50.0F;

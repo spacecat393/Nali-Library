@@ -14,9 +14,10 @@ public class ObjectScreenDraw
         this.objectrender = objectrender;
     }
 
-    public void renderScreen(float new_r, float new_g, float new_b, float new_a)
+    public void renderScreen()
     {
         GL11.glPushMatrix();
+//        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
 //        float r = this.objectrender.r;
 //        float g = this.objectrender.g;
 //        float b = this.objectrender.b;
@@ -26,7 +27,7 @@ public class ObjectScreenDraw
 //        this.objectrender.g = new_g;
 //        this.objectrender.b = new_b;
 //        this.objectrender.a = new_a;
-        GL11.glColor4f(new_r, new_g, new_b, new_a);
+//        GL11.glColor4f(this.objectrender.sr, this.objectrender.sg, this.objectrender.sb, this.objectrender.sa);
 
         float sx = (this.objectrender.sx == 0 ? 1.0F : this.objectrender.sx);
         float sy = (this.objectrender.sy == 0 ? 1.0F : this.objectrender.sy);
@@ -57,7 +58,7 @@ public class ObjectScreenDraw
 //        this.objectrender.g = g;
 //        this.objectrender.b = b;
 //        this.objectrender.a = a;
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GL11.glPopAttrib();
         GL11.glPopMatrix();
     }
 

@@ -48,6 +48,7 @@ public class ObjectWorldDraw
 
     public void drawWorld(int index)
     {
+//        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
         OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index];
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
         this.objectrender.takeDefault(openglobjectmemory);
@@ -56,11 +57,11 @@ public class ObjectWorldDraw
         {
             this.objectrender.lig_b = 208.0F;
             this.objectrender.lig_s = 240.0F;
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, this.objectrender.a);
+//            GL11.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], this.objectrender.a);
         }
         else
         {
-            GL11.glColor4f(this.objectrender.r, this.objectrender.g, this.objectrender.b, this.objectrender.a);
+//            GL11.glColor4f(this.objectrender.r, this.objectrender.g, this.objectrender.b, this.objectrender.a);
             this.objectrender.updateLightCoord();
         }
 
@@ -68,7 +69,7 @@ public class ObjectWorldDraw
 
         DRAW_CONSUMER.accept(openglobjectmemory);
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GL11.glPopAttrib();
         this.objectrender.setDefault(openglobjectmemory);
     }
 

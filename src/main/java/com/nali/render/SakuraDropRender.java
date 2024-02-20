@@ -61,7 +61,7 @@ public class SakuraDropRender
         SakuraDropRender.SAKURADROPGUIDATA_MAP.put(this.id, this);
     }
 
-    public void renderScreen(float new_r, float new_g, float new_b, float new_a)
+    public void renderScreen(float r, float g, float b, float a)
     {
         this.fy += 0.1F * TD;
         this.y += this.fy * TD;
@@ -75,9 +75,17 @@ public class SakuraDropRender
             SakuraDropRender.SAKURADROPGUIDATA_MAP.remove(this.id);
         }
 
+        OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
+        GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        GL_CURRENT_COLOR[0] = OPENGL_FIXED_PIPE_FLOATBUFFER.get(0);
+        GL_CURRENT_COLOR[1] = OPENGL_FIXED_PIPE_FLOATBUFFER.get(1);
+        GL_CURRENT_COLOR[2] = OPENGL_FIXED_PIPE_FLOATBUFFER.get(2);
+        GL_CURRENT_COLOR[3] = OPENGL_FIXED_PIPE_FLOATBUFFER.get(3);
+
         GL11.glPushMatrix();
+//        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
         GL11.glTranslatef(this.x, this.y, this.z);
-        GL11.glColor4f(new_r, new_g, new_b, new_a);
+        GL11.glColor4f(r, g, b, a);
 
 //        GL11.glTranslatef(this.texture_width / 2.0F, this.texture_height / 2.0F, 0);
         GL11.glScalef(this.sx == 0 ? 1.0F : this.sx, this.sy == 0 ? 1.0F : this.sy, this.sz == 0 ? 1.0F : this.sz);
@@ -153,7 +161,8 @@ public class SakuraDropRender
         GL20.glBlendEquationSeparate(GL_BLEND_EQUATION_RGB, GL_BLEND_EQUATION_ALPHA);
         GL14.glBlendFuncSeparate(GL_BLEND_SRC_RGB, GL_BLEND_DST_RGB, GL_BLEND_SRC_ALPHA, GL_BLEND_DST_ALPHA);
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], GL_CURRENT_COLOR[3]);
+//        GL11.glPopAttrib();
         GL11.glPopMatrix();
     }
 

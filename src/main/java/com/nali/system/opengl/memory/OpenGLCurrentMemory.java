@@ -12,9 +12,9 @@ import java.nio.IntBuffer;
 public class OpenGLCurrentMemory
 {
     public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
+//    public static FloatBuffer CPU_OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     public static FloatBuffer OPENGL_FIXED_PIPE_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     public static FloatBuffer OPENGL_FLOATBUFFER;
-//    public static int OPENGL_FLOATBUFFER_SIZE;
     public static int SHADERS;
     public static int GL_CURRENT_PROGRAM;
     public static int GL_ELEMENT_ARRAY_BUFFER_BINDING;
@@ -38,6 +38,8 @@ public class OpenGLCurrentMemory
     public static boolean GL_DEPTH_TEST;
     public static boolean GL_CULL_FACE;
     public static boolean GL_BLEND;
+
+    public static float[] GL_CURRENT_COLOR = new float[4];
 
 //    public static Object COLORSTATE_INSTANCE;
 //    public static Field RED_FIELD, GREEN_FIELD, BLUE_FIELD, ALPHA_FIELD;

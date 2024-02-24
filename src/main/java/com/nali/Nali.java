@@ -49,7 +49,7 @@ public class Nali
 
     public static void error(Throwable t)
     {
-        LOGGER.error(t);
+        LOGGER.error(t, t);
         FMLCommonHandler.instance().exitJava(-1, true);
     }
 

@@ -14,4 +14,5 @@ public interface BothData
     float Height();
     float Scale();
     int MaxFrame();
+    int MaxSync();
 }

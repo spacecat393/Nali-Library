@@ -140,7 +140,7 @@ public class ObjectRender
     {
         GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], openglobjectmemory.texture_state);
+        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemory.state & 1));
     }
 
     public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
@@ -205,7 +205,7 @@ public class ObjectRender
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         GL_CULL_FACE = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        if (openglobjectmemory.culling == 0)
+        if ((byte)(openglobjectmemory.state & 2) == 0)
         {
             GL11.glDisable(GL11.GL_CULL_FACE);
         }

@@ -19,8 +19,9 @@ public class OpenGLObjectMemory
     //int[N] -> IntBuffer
     public Object index;
     public int index_length;
-    public byte culling;
-    public byte texture_state;
+//    public byte culling;
+//    public byte texture_state;
+    public byte state;//culling texture_state
     //shader_id_int -> OpenGLShaderData
     public Object shader;
     public int element_array_buffer;
@@ -42,9 +43,10 @@ public class OpenGLObjectMemory
     public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
         String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
-        this.texture_state = (byte)Integer.parseInt(model_string_array[1]);
+        this.state |= (byte)Integer.parseInt(model_string_array[1]);//texture_state
+
         int shader_id = Integer.parseInt(model_string_array[2]);
-        this.culling = (byte)Integer.parseInt(model_string_array[3]);
+        this.state |= (byte)(2 * Integer.parseInt(model_string_array[3]));//culling
 
         this.shader = shader_id;
 

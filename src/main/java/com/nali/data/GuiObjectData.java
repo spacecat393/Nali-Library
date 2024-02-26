@@ -46,4 +46,10 @@ public class GuiObjectData implements BothData
     {
         return -1;
     }
+
+    @Override
+    public int MaxSync()
+    {
+        return -1;
+    }
 }

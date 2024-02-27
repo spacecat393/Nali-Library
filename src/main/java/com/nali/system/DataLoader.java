@@ -88,13 +88,8 @@ public class DataLoader
 
                 if (MyConfig.SHADER.pre_shader)
                 {
-                    new ObjectRender(new GuiObjectData(i, 1), dataloader)
+                    new ObjectRender(null, new GuiObjectData(i, 1), dataloader)
                     {
-                        @Override
-                        public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
-                        {
-                        }
-
                         @Override
                         public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
                         {

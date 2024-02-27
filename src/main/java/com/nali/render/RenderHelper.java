@@ -24,7 +24,7 @@ public class RenderHelper
         tessellator.draw();
     }
 
-//    public static void blit(int x, int y, float tx, float ty, int txw, int tyw, int w, int h)
+    //    public static void blit(int x, int y, float tx, float ty, int txw, int tyw, int w, int h)
 //    {
 //        blit(x, y, txw, tyw, tx, ty, txw, tyw, w, h);
 //    }
@@ -52,4 +52,6 @@ public class RenderHelper
 //
 //        tessellator.draw();
 //    }
+
+//    public static OpenGLTextureMemory OPENGLTEXTUREMEMORY = new OpenGLTextureMemory(com.nali.system.Reference.MOD_ID + "/" + Reference.MOD_ID);
 }

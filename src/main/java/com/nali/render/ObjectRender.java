@@ -25,29 +25,17 @@ public class ObjectRender
     public Object[] memory_object_array;
     public BothData bothdata;
 
+    public EntitiesRenderMemory entitiesrendermemory;
     public ObjectScreenDraw objectscreendraw;
     public ObjectWorldDraw objectworlddraw;
 
-    public boolean should_render;
-//    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
-//    public float sr = 1.0F, sg = 1.0F, sb = 1.0F, sa = 1.0F;
-//    public float width, height;
-    public float lig_b = 208.0F, lig_s = 240.0F;
-    public float x, y, z = 50.0F;
-    public float rx = -90.0F, ry, rz;
-    public float sx = -25.0F, sy = -25.0F, sz = -25.0F;
-    public float scale, body_rot, head_rot, net_head_yaw, head_pitch;
     public int[] texture_index_int_array;
     public boolean[] model_boolean_array;
     public boolean[] glow_boolean_array;
 
-    public ObjectRender(BothData bothdata, DataLoader dataloader)
+    public ObjectRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader)
     {
-        this.init(bothdata, dataloader);
-    }
-
-    public void init(BothData bothdata, DataLoader dataloader)
-    {
+        this.entitiesrendermemory = entitiesrendermemory;
         this.bothdata = bothdata;
         this.dataloader = dataloader;
 
@@ -114,14 +102,6 @@ public class ObjectRender
 
     }
 
-    public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
-    {
-        this.setFixedPipe(openglobjectshadermemory);
-        this.setTextureUniform(openglobjectmemory, openglobjectshadermemory, index);
-        this.setLightMapUniform(openglobjectshadermemory);
-        this.setLightCoord(openglobjectshadermemory);
-    }
-
     public void setFixedPipe(OpenGLObjectShaderMemory openglobjectshadermemory)
     {
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
@@ -136,6 +116,8 @@ public class ObjectRender
         GL20.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
     }
 
+    public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index) {}
+
     public void setTextureUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
     {
         GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
@@ -147,12 +129,12 @@ public class ObjectRender
     {
         GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
-        OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer) Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
+        OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
     }
 
     public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
     {
-        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], this.lig_b, this.lig_s);
+        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], this.objectworlddraw.lig_b, this.objectworlddraw.lig_s);
     }
 
     public void updateLightCoord()
@@ -205,7 +187,7 @@ public class ObjectRender
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         GL_CULL_FACE = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-        if ((byte)(openglobjectmemory.state & 2) == 0)
+        if ((openglobjectmemory.state & 2) == 0)
         {
             GL11.glDisable(GL11.GL_CULL_FACE);
         }

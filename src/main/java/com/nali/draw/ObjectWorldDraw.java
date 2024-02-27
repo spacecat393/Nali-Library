@@ -17,6 +17,9 @@ public class ObjectWorldDraw
     public static Consumer<OpenGLObjectMemory> DRAW_CONSUMER;
     public ObjectRender objectrender;
 
+    //public float lig_b = 208.0F, lig_s = 240.0F;
+    public float lig_b = -1.0F, lig_s = -1.0F;
+
     public ObjectWorldDraw(ObjectRender objectrender)
     {
         this.objectrender = objectrender;
@@ -55,8 +58,8 @@ public class ObjectWorldDraw
 
         if (this.objectrender.glow_boolean_array[index])
         {
-            this.objectrender.lig_b = 208.0F;
-            this.objectrender.lig_s = 240.0F;
+            this.lig_b = 208.0F;
+            this.lig_s = 240.0F;
 //            GL11.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], this.objectrender.a);
         }
         else
@@ -65,12 +68,21 @@ public class ObjectWorldDraw
             this.objectrender.updateLightCoord();
         }
 
-        this.objectrender.setUniform(openglobjectmemory, openglobjectshadermemory, index);
+        this.setUniform(openglobjectmemory, openglobjectshadermemory, index);
 
         DRAW_CONSUMER.accept(openglobjectmemory);
 
 //        GL11.glPopAttrib();
         this.objectrender.setDefault(openglobjectmemory);
+    }
+
+    public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
+    {
+        this.objectrender.setFixedPipe(openglobjectshadermemory);
+        this.objectrender.setTextureUniform(openglobjectmemory, openglobjectshadermemory, index);
+        this.objectrender.setLightMapUniform(openglobjectshadermemory);
+        this.objectrender.setLightCoord(openglobjectshadermemory);
+        this.objectrender.setUniform(openglobjectmemory, openglobjectshadermemory, index);
     }
 
     public static void setTUsingFrameBufferIndex()

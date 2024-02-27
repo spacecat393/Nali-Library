@@ -8,6 +8,12 @@ import org.lwjgl.opengl.GL11;
 public class ObjectScreenDraw
 {
     public ObjectRender objectrender;
+//    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
+//    public float sr = 1.0F, sg = 1.0F, sb = 1.0F, sa = 1.0F;
+//    public float width, height;
+    public float x, y, z = 50.0F;
+    public float rx = -90.0F, ry, rz;
+    public float sx = -25.0F, sy = -25.0F, sz = -25.0F;
 
     public ObjectScreenDraw(ObjectRender objectrender)
     {
@@ -29,14 +35,11 @@ public class ObjectScreenDraw
 //        this.objectrender.a = new_a;
 //        GL11.glColor4f(this.objectrender.sr, this.objectrender.sg, this.objectrender.sb, this.objectrender.sa);
 
-        float sx = (this.objectrender.sx == 0 ? 1.0F : this.objectrender.sx);
-        float sy = (this.objectrender.sy == 0 ? 1.0F : this.objectrender.sy);
-        float sz = (this.objectrender.sz == 0 ? 1.0F : this.objectrender.sz);
-        GL11.glTranslatef(this.objectrender.x, this.objectrender.y, this.objectrender.z);
-        GL11.glScalef(sx, sy, sz);
-        GL11.glRotatef(this.objectrender.rx, 1.0F, 0.0F, 0.0F);
-        GL11.glRotatef(this.objectrender.ry, 0.0F, 1.0F, 0.0F);
-        GL11.glRotatef(this.objectrender.rz, 0.0F, 0.0F, 1.0F);
+        GL11.glTranslatef(this.x, this.y, this.z);
+        GL11.glScalef(this.sx, this.sy, this.sz);
+        GL11.glRotatef(this.rx, 1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(this.ry, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(this.rz, 0.0F, 0.0F, 1.0F);
 
         this.objectrender.multiplyAnimation();
 
@@ -66,11 +69,24 @@ public class ObjectScreenDraw
     {
         OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index];
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
+
         this.objectrender.takeDefault(openglobjectmemory);
 
-        this.objectrender.setUniform(openglobjectmemory, openglobjectshadermemory, index);
+        this.setUniform(openglobjectmemory, openglobjectshadermemory, index);
 
         GL11.glDrawElements(GL11.GL_TRIANGLES, openglobjectmemory.index_length, GL11.GL_UNSIGNED_INT, 0);
         this.objectrender.setDefault(openglobjectmemory);
+    }
+
+    public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
+    {
+        this.objectrender.setFixedPipe(openglobjectshadermemory);
+        this.objectrender.setTextureUniform(openglobjectmemory, openglobjectshadermemory, index);
+        if (this.objectrender.objectworlddraw.lig_b != -1.0F)
+        {
+            this.objectrender.setLightMapUniform(openglobjectshadermemory);
+        }
+        this.objectrender.setLightCoord(openglobjectshadermemory);
+        this.objectrender.setUniform(openglobjectmemory, openglobjectshadermemory, index);
     }
 }

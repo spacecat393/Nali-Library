@@ -1,6 +1,5 @@
 package com.nali.render;
 
-import com.nali.Nali;
 import com.nali.data.BothData;
 import com.nali.math.M4x4;
 import com.nali.system.DataLoader;
@@ -120,10 +119,10 @@ public class SkinningRender extends ObjectRender
             this.current_frame_int_array[index] = this.frame_int_array[index];
             this.timeline_float_array[index] = this.current_frame_int_array[index];
             timeline = 0;
-            if (after != 0)
-            {
-                Nali.LOGGER.info("Fail");
-            }
+//            if (after != 0)
+//            {
+//                Nali.LOGGER.info("Fail");
+//            }
         }
         else
         {
@@ -136,15 +135,15 @@ public class SkinningRender extends ObjectRender
                 this.timeline_float_array[index] -= timeline;
             }
 
-            Nali.LOGGER.info("TL " + this.timeline_float_array[index]);
-            Nali.LOGGER.info("CF " + this.frame_int_array[index]);
+//            Nali.LOGGER.info("TL " + this.timeline_float_array[index]);
+//            Nali.LOGGER.info("CF " + this.frame_int_array[index]);
 
             int frame = (int)this.timeline_float_array[index];
             timeline = this.timeline_float_array[index] - frame;
             this.current_frame_int_array[index] = frame;
 
-            Nali.LOGGER.info("T " + timeline);
-            Nali.LOGGER.info("F " + frame);
+//            Nali.LOGGER.info("T " + timeline);
+//            Nali.LOGGER.info("F " + frame);
         }
 
         return timeline;

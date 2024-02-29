@@ -38,6 +38,9 @@ public class OpenGLCurrentMemory
     public static boolean GL_DEPTH_TEST;
     public static boolean GL_CULL_FACE;
     public static boolean GL_BLEND;
+    public static boolean GL_TEXTURE_2D;
+
+    public static float GL_LINE_WIDTH;
 
     public static float[] GL_CURRENT_COLOR = new float[4];
 

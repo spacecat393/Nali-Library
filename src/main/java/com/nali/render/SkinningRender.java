@@ -6,11 +6,11 @@ import com.nali.system.DataLoader;
 import com.nali.system.opengl.memory.OpenGLAnimationMemory;
 import com.nali.system.opengl.memory.OpenGLObjectMemory;
 import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL20;
 
+import static com.nali.system.Timing.TIMELINE;
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.OPENGL_FLOATBUFFER;
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.setFloatBuffer;
 
@@ -22,7 +22,7 @@ public class SkinningRender extends ObjectRender
     public boolean[] frame_boolean_array;
     public OpenGLAnimationMemory openglanimationmemory;
 
-    public long last_time = Minecraft.getSystemTime();
+//    public long last_time = Minecraft.getSystemTime();
 
     public SkinningRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader)
     {
@@ -79,13 +79,13 @@ public class SkinningRender extends ObjectRender
     {
         int max_key = this.openglanimationmemory.length;
 
-        long current_time = Minecraft.getSystemTime();
-        float timeline = Math.min((current_time - this.last_time) / 10.0F, 1.0F);
-        this.last_time = current_time;
+//        long current_time = Minecraft.getSystemTime();
+//        float timeline = Math.min((current_time - this.last_time) / 10.0F, 1.0F);
+//        this.last_time = current_time;
 
         for (int f = 0; f < this.frame_int_array.length; ++f)
         {
-            this.final_timeline_float_array[f] = this.getTime(timeline, f);
+            this.final_timeline_float_array[f] = this.getTime(TIMELINE, f);
         }
 
         for (int i = 0; i < this.openglanimationmemory.bones; ++i)

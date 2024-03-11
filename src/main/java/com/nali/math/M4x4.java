@@ -534,4 +534,19 @@ public class M4x4
             s_o_mat4[i + s_index] = s + (t_mat4[i + t_index] - s) * blend_factor;
         }
     }
+
+    public static float[] multiplyVec4Mat4(float[] vec4, float[] mat4)
+    {
+        float[] result = new float[4];
+        for (int i = 0; i < 4; i++)
+        {
+            float sum = 0.0F;
+            for (int j = 0; j < 4; j++)
+            {
+                sum += vec4[j] * mat4[i * 4 + j];
+            }
+            result[i] = sum;
+        }
+        return result;
+    }
 }

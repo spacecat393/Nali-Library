@@ -10,15 +10,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import java.nio.ByteBuffer;
+
+import static com.nali.system.opengl.OpenGLBuffer.getFrom;
+
 @SideOnly(Side.CLIENT)
 public class OpenGLObjectShaderMemory
 {
     public int program;
     public int[] attriblocation_int_array;
     public int[] uniformlocation_int_array;
-    //StringBuilder->ShaderBuffer
+    //StringBuilder->ShaderBuffer->ByteBuffer
     public Object vert_shader;
-    //StringBuilder->ShaderBuffer
+    //StringBuilder->ShaderBuffer->ByteBuffer
     public Object frag_shader;
 
     public OpenGLObjectShaderMemory(String[] shader_string_array, String folder_path)
@@ -84,8 +88,12 @@ public class OpenGLObjectShaderMemory
     public void createShaderBuffer()
     {
         this.program = GL20.glCreateProgram();
-        this.vert_shader = OpenGLShader.loadBuffer((StringBuilder)this.vert_shader, GL20.GL_VERTEX_SHADER);
-        this.frag_shader = OpenGLShader.loadBuffer((StringBuilder)this.frag_shader, GL20.GL_FRAGMENT_SHADER);
+
+        this.vert_shader = getFrom((StringBuilder)this.vert_shader);
+        this.frag_shader = getFrom((StringBuilder)this.frag_shader);
+
+        this.vert_shader = OpenGLShader.loadBuffer((ByteBuffer)this.vert_shader, GL20.GL_VERTEX_SHADER);
+        this.frag_shader = OpenGLShader.loadBuffer((ByteBuffer)this.frag_shader, GL20.GL_FRAGMENT_SHADER);
 
         GL20.glAttachShader(this.program, (int)this.vert_shader);
         GL20.glAttachShader(this.program, (int)this.frag_shader);

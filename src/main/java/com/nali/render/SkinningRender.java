@@ -10,6 +10,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import java.util.Arrays;
+
 import static com.nali.math.M4x4.multiplyVec4Mat4;
 import static com.nali.system.Timing.TIMELINE;
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.OPENGL_FLOATBUFFER;
@@ -20,7 +22,7 @@ public class SkinningRender extends ObjectRender
 {
     public int[] frame_int_array, current_frame_int_array;
     public float[] skinning_float_array, timeline_float_array, final_timeline_float_array, current_mat4 = new float[16];
-    public boolean[] frame_boolean_array;
+    public byte[] frame_byte_array;
     public OpenGLAnimationMemory openglanimationmemory;
 
 //    public long last_time = Minecraft.getSystemTime();
@@ -38,12 +40,7 @@ public class SkinningRender extends ObjectRender
         this.final_timeline_float_array = new float[max_array_length];
 
         this.openglanimationmemory = (OpenGLAnimationMemory)this.dataloader.memory_object_array[step_models - 1];
-        this.frame_boolean_array = new boolean[max_array_length];
-
-        for (int i = 1; i < max_array_length; ++i)
-        {
-            this.frame_boolean_array[i] = false;
-        }
+        this.frame_byte_array = new byte[(int)Math.ceil(max_array_length / 8.0D)];
 
         this.skinning_float_array = new float[this.openglanimationmemory.bones * 16];
 
@@ -52,7 +49,7 @@ public class SkinningRender extends ObjectRender
 
     public void setFrame()
     {
-
+        Arrays.fill(this.frame_byte_array, (byte)255);
     }
 
     @Override
@@ -91,20 +88,13 @@ public class SkinningRender extends ObjectRender
 
         for (int i = 0; i < this.openglanimationmemory.bones; ++i)
         {
-            System.arraycopy(this.openglanimationmemory.transforms_float_array, (this.frame_int_array[0] + max_key * i) * 16, this.current_mat4, 0, 16);
-            M4x4.lerp(this.current_mat4, this.openglanimationmemory.transforms_float_array, 0, (this.current_frame_int_array[0] + max_key * i) * 16, this.final_timeline_float_array[0]);
-            M4x4.multiply(this.current_mat4, this.skinning_float_array, 0, i * 16);
-//            this.current_frame_int_array[0] = this.frame_int_array[0];
-
-            for (int f = 1; f < this.frame_int_array.length; ++f)
+            for (int f = 0; f < this.frame_int_array.length; ++f)
             {
-                if (this.frame_boolean_array[f - 1])
+                if ((this.frame_byte_array[f / 8] >> f % 8 & 1) == 1)
                 {
                     System.arraycopy(this.openglanimationmemory.transforms_float_array, (this.frame_int_array[f] + max_key * i) * 16, this.current_mat4, 0, 16);
                     M4x4.lerp(this.current_mat4, this.openglanimationmemory.transforms_float_array, 0, (this.current_frame_int_array[f] + max_key * i) * 16, this.final_timeline_float_array[f]);
                     M4x4.multiply(this.current_mat4, this.skinning_float_array, 0, i * 16);
-
-//                    this.current_frame_int_array[f] = this.frame_int_array[f];
                 }
             }
 

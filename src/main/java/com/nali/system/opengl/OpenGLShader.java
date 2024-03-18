@@ -6,13 +6,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import java.nio.ByteBuffer;
+
 @SideOnly(Side.CLIENT)
 public class OpenGLShader
 {
-    public static int loadBuffer(StringBuilder stringbuilder, int type)
+    public static int loadBuffer(ByteBuffer bytebuffer, int type)
     {
         int shader = GL20.glCreateShader(type);
-        GL20.glShaderSource(shader, stringbuilder);
+//        GL20.glShaderSource(shader, stringbuilder);
+        GL20.glShaderSource(shader, bytebuffer);
         GL20.glCompileShader(shader);
 
         if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)

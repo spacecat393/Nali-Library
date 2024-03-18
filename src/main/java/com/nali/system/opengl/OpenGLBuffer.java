@@ -271,4 +271,13 @@ public class OpenGLBuffer
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
     }
+
+    public static ByteBuffer getFrom(StringBuilder stringbuilder)
+    {
+        String string = stringbuilder.toString();
+        ByteBuffer bytebuffer = ByteBuffer.allocateDirect(string.length()).order(ByteOrder.nativeOrder());
+        bytebuffer.put(string.getBytes());
+        bytebuffer.flip();
+        return bytebuffer;
+    }
 }

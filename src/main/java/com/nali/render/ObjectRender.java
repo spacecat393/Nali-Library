@@ -30,8 +30,9 @@ public class ObjectRender
     public ObjectWorldDraw objectworlddraw;
 
     public int[] texture_index_int_array;
-    public boolean[] model_boolean_array;
-    public boolean[] glow_boolean_array;
+    public byte[] model_byte_array;
+    public byte[] glow_byte_array;
+    public float lig_b = -1.0F, lig_s = -1.0F;
 
     public ObjectRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader)
     {
@@ -45,18 +46,13 @@ public class ObjectRender
         this.texture_index_int_array = new int[max_part];
 
         this.memory_object_array = new Object[max_part];
-        this.model_boolean_array = new boolean[max_part];
-        this.glow_boolean_array = new boolean[max_part];
-
-        for (int i = 0; i < max_part; ++i)
-        {
-            this.model_boolean_array[i] = false;
-        }
+        this.model_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
+        this.glow_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
 
         System.arraycopy(this.dataloader.memory_object_array, step_models, this.memory_object_array, 0, max_part);
 
         this.setGlow();
-        Arrays.fill(this.model_boolean_array, true);
+        this.setModel();
 
         this.objectscreendraw = this.getObjectScreenDraw();
         this.objectworlddraw = this.getObjectWorldDraw();
@@ -89,7 +85,7 @@ public class ObjectRender
 
     public void setModel()
     {
-        Arrays.fill(this.model_boolean_array, true);
+        Arrays.fill(this.model_byte_array, (byte)255);
     }
 
     public void setGlow()
@@ -134,7 +130,7 @@ public class ObjectRender
 
     public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
     {
-        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], this.objectworlddraw.lig_b, this.objectworlddraw.lig_s);
+        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], this.lig_b, this.lig_s);
     }
 
     public void updateLightCoord()

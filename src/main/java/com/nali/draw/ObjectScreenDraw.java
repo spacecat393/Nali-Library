@@ -45,7 +45,7 @@ public class ObjectScreenDraw
 
         for (int i = 0; i < this.objectrender.memory_object_array.length; ++i)
         {
-            if (this.objectrender.model_boolean_array[i])
+            if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)
             {
                 this.drawScreen(i);
             }
@@ -82,7 +82,7 @@ public class ObjectScreenDraw
     {
         this.objectrender.setFixedPipe(openglobjectshadermemory);
         this.objectrender.setTextureUniform(openglobjectmemory, openglobjectshadermemory, index);
-        if (this.objectrender.objectworlddraw.lig_b != -1.0F)
+        if (this.objectrender.lig_b != -1.0F)
         {
             this.objectrender.setLightMapUniform(openglobjectshadermemory);
         }

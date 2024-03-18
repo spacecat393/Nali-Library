@@ -17,9 +17,6 @@ public class ObjectWorldDraw
     public static Consumer<OpenGLObjectMemory> DRAW_CONSUMER;
     public ObjectRender objectrender;
 
-    //public float lig_b = 208.0F, lig_s = 240.0F;
-    public float lig_b = -1.0F, lig_s = -1.0F;
-
     public ObjectWorldDraw(ObjectRender objectrender)
     {
         this.objectrender = objectrender;
@@ -36,7 +33,7 @@ public class ObjectWorldDraw
 
         for (int i = 0; i < this.objectrender.memory_object_array.length; ++i)
         {
-            if (this.objectrender.model_boolean_array[i])
+            if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)
             {
                 this.drawWorld(i);
             }
@@ -56,10 +53,10 @@ public class ObjectWorldDraw
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
         this.objectrender.takeDefault(openglobjectmemory);
 
-        if (this.objectrender.glow_boolean_array[index])
+        if ((this.objectrender.glow_byte_array[index / 8] >> index % 8 & 1) == 1)
         {
-            this.lig_b = 208.0F;
-            this.lig_s = 240.0F;
+            this.objectrender.lig_b = -1.0F;
+            this.objectrender.lig_s = -1.0F;
 //            GL11.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], this.objectrender.a);
         }
         else

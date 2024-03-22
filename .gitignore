@@ -22,3 +22,7 @@ eclipse
 run
 gradle.properties
 *.gradle
+gradlew
+gradlew.bat
+LICENSE
+gradle

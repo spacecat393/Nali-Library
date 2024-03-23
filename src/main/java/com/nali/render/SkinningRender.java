@@ -23,15 +23,15 @@ public class SkinningRender extends ObjectRender
     public int[] frame_int_array, current_frame_int_array;
     public float[] skinning_float_array, timeline_float_array, final_timeline_float_array, current_mat4 = new float[16];
     public byte[] frame_byte_array;
-    public OpenGLAnimationMemory openglanimationmemory;
+//    public OpenGLAnimationMemory openglanimationmemory;
 
 //    public long last_time = Minecraft.getSystemTime();
 
-    public SkinningRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader)
+    public SkinningRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader, int i)
     {
-        super(entitiesrendermemory, bothdata, dataloader);
+        super(entitiesrendermemory, bothdata, dataloader, i);
 
-        int step_models = bothdata.StepModels();
+//        int step_models = bothdata.StepModels();
         int max_array_length = bothdata.MaxFrame();
 
         this.frame_int_array = new int[max_array_length];
@@ -39,10 +39,11 @@ public class SkinningRender extends ObjectRender
         this.timeline_float_array = new float[max_array_length];
         this.final_timeline_float_array = new float[max_array_length];
 
-        this.openglanimationmemory = (OpenGLAnimationMemory)this.dataloader.memory_object_array[step_models - 1];
+//        this.openglanimationmemory = (OpenGLAnimationMemory)this.dataloader.memory_object_array[step_models - 1];
         this.frame_byte_array = new byte[(int)Math.ceil(max_array_length / 8.0D)];
 
-        this.skinning_float_array = new float[this.openglanimationmemory.bones * 16];
+//        this.skinning_float_array = new float[this.openglanimationmemory.bones * 16];
+        this.skinning_float_array = new float[((OpenGLAnimationMemory)this.memory_object_array[0]).bones * 16];
 
         this.setFrame();
     }
@@ -63,7 +64,8 @@ public class SkinningRender extends ObjectRender
 
     public void initSkinning()
     {
-        int max_bones = this.openglanimationmemory.bones;
+//        int max_bones = this.openglanimationmemory.bones;
+        int max_bones = ((OpenGLAnimationMemory)this.memory_object_array[0]).bones;
 
         for (int i = 0; i < max_bones; ++i)
         {
@@ -75,7 +77,9 @@ public class SkinningRender extends ObjectRender
 
     public void setSkinning()
     {
-        int max_key = this.openglanimationmemory.length;
+//        int max_key = this.openglanimationmemory.length;
+        OpenGLAnimationMemory openglanimationmemory = (OpenGLAnimationMemory)this.memory_object_array[0];
+        int max_key = openglanimationmemory.length;
 
 //        long current_time = Minecraft.getSystemTime();
 //        float timeline = Math.min((current_time - this.last_time) / 10.0F, 1.0F);
@@ -86,14 +90,17 @@ public class SkinningRender extends ObjectRender
             this.final_timeline_float_array[f] = this.getTime(TIMELINE, f);
         }
 
-        for (int i = 0; i < this.openglanimationmemory.bones; ++i)
+//        for (int i = 0; i < this.openglanimationmemory.bones; ++i)
+        for (int i = 0; i < openglanimationmemory.bones; ++i)
         {
             for (int f = 0; f < this.frame_int_array.length; ++f)
             {
                 if ((this.frame_byte_array[f / 8] >> f % 8 & 1) == 1)
                 {
-                    System.arraycopy(this.openglanimationmemory.transforms_float_array, (this.frame_int_array[f] + max_key * i) * 16, this.current_mat4, 0, 16);
-                    M4x4.lerp(this.current_mat4, this.openglanimationmemory.transforms_float_array, 0, (this.current_frame_int_array[f] + max_key * i) * 16, this.final_timeline_float_array[f]);
+//                    System.arraycopy(this.openglanimationmemory.transforms_float_array, (this.frame_int_array[f] + max_key * i) * 16, this.current_mat4, 0, 16);
+                    System.arraycopy(openglanimationmemory.transforms_float_array, (this.frame_int_array[f] + max_key * i) * 16, this.current_mat4, 0, 16);
+//                    M4x4.lerp(this.current_mat4, this.openglanimationmemory.transforms_float_array, 0, (this.current_frame_int_array[f] + max_key * i) * 16, this.final_timeline_float_array[f]);
+                    M4x4.lerp(this.current_mat4, openglanimationmemory.transforms_float_array, 0, (this.current_frame_int_array[f] + max_key * i) * 16, this.final_timeline_float_array[f]);
                     M4x4.multiply(this.current_mat4, this.skinning_float_array, 0, i * 16);
                 }
             }

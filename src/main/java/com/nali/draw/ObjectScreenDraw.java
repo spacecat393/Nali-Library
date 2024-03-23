@@ -3,8 +3,11 @@ package com.nali.draw;
 import com.nali.render.ObjectRender;
 import com.nali.system.opengl.memory.OpenGLObjectMemory;
 import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class ObjectScreenDraw
 {
     public ObjectRender objectrender;
@@ -43,7 +46,7 @@ public class ObjectScreenDraw
 
         this.objectrender.multiplyAnimation();
 
-        for (int i = 0; i < this.objectrender.memory_object_array.length; ++i)
+        for (int i = 0; i < this.objectrender.memory_object_array.length - 1; ++i)
         {
             if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)
             {
@@ -67,7 +70,7 @@ public class ObjectScreenDraw
 
     public void drawScreen(int index)
     {
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index];
+        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index + 1];
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
 
         this.objectrender.takeDefault(openglobjectmemory);

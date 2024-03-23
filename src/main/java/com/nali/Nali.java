@@ -3,6 +3,7 @@ package com.nali;
 import com.nali.config.MyConfig;
 import com.nali.draw.ObjectWorldDraw;
 import com.nali.key.KeyRegistryHelper;
+import com.nali.system.DataLoader;
 import com.nali.system.Reference;
 import com.nali.system.opengl.memory.OpenGLCurrentMemory;
 import net.minecraftforge.common.config.Configuration;
@@ -10,6 +11,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,6 +46,15 @@ public class Nali
 
 //            OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 //            Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
+        }
+    }
+
+    @EventHandler
+    public void onFMLInitializationEvent(FMLInitializationEvent event)
+    {
+        if (event.getSide().isClient())
+        {
+            DataLoader.setMemory();
         }
     }
 

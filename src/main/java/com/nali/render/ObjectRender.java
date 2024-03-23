@@ -16,6 +16,7 @@ import org.lwjgl.opengl.*;
 
 import java.util.Arrays;
 
+import static com.nali.system.DataLoader.MIX_MEMORY_OBJECT_ARRAY;
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
 
 @SideOnly(Side.CLIENT)
@@ -34,25 +35,43 @@ public class ObjectRender
     public byte[] glow_byte_array;
     public float lig_b = -1.0F, lig_s = -1.0F;
 
-    public ObjectRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader)
+    public ObjectRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader, int i)
     {
         this.entitiesrendermemory = entitiesrendermemory;
         this.bothdata = bothdata;
         this.dataloader = dataloader;
 
         int max_part = bothdata.MaxPart();
-        int step_models = bothdata.StepModels();
+//        int step_models = bothdata.StepModels();
 
         this.texture_index_int_array = new int[max_part];
 
-        this.memory_object_array = new Object[max_part];
+        this.memory_object_array = MIX_MEMORY_OBJECT_ARRAY[i];
+//        this.memory_object_array = new Object[max_part];
         this.model_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
         this.glow_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
 
-        System.arraycopy(this.dataloader.memory_object_array, step_models, this.memory_object_array, 0, max_part);
+//        System.arraycopy(this.dataloader.memory_object_array, step_models, this.memory_object_array, 0, max_part);
 
         this.setGlow();
         this.setModel();
+
+        this.objectscreendraw = this.getObjectScreenDraw();
+        this.objectworlddraw = this.getObjectWorldDraw();
+    }
+
+    public ObjectRender(BothData bothdata, DataLoader dataloader, Object[] memory_object_array)
+    {
+        this.bothdata = bothdata;
+        this.dataloader = dataloader;
+
+        int max_part = bothdata.MaxPart();
+
+        this.texture_index_int_array = new int[max_part];
+
+        this.memory_object_array = memory_object_array;
+        this.model_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
+        this.glow_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
 
         this.objectscreendraw = this.getObjectScreenDraw();
         this.objectworlddraw = this.getObjectWorldDraw();

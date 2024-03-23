@@ -2,6 +2,7 @@ package com.nali.system;
 
 import com.nali.Nali;
 import com.nali.config.MyConfig;
+import com.nali.data.BothData;
 import com.nali.data.GuiObjectData;
 import com.nali.render.ObjectRender;
 import com.nali.system.file.FileDataReader;
@@ -10,10 +11,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
+import java.util.Comparator;
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class DataLoader
 {
+    public static Object[][] MIX_MEMORY_OBJECT_ARRAY;
     public Object[] memory_object_array;
     public OpenGLTextureMemory opengltexturememory;
     public OpenGLObjectShaderMemory[] openglobjectshadermemory_array;
@@ -88,7 +92,7 @@ public class DataLoader
 
                 if (MyConfig.SHADER.pre_shader)
                 {
-                    new ObjectRender(null, new GuiObjectData(i, 1), dataloader)
+                    new ObjectRender(new GuiObjectData(i, 1), dataloader, new Object[]{dataloader.memory_object_array[i]})
                     {
                         @Override
                         public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
@@ -106,6 +110,33 @@ public class DataLoader
         if (!file.isDirectory())
         {
             Nali.error('\"' + file.getPath() + "\" NOT_FOUND");
+        }
+    }
+
+    public static void setMemory()
+    {
+        List<Class> RENDER_CLASS_LIST = Reflect.getClasses("com.nali.list.render");
+        RENDER_CLASS_LIST.sort(Comparator.comparing(Class::getName));
+        int size = RENDER_CLASS_LIST.size();
+        MIX_MEMORY_OBJECT_ARRAY = new Object[size][];
+
+        int index = 0;
+        for (int i = 0; i < size; ++i)
+        {
+            try
+            {
+                Class clasz = RENDER_CLASS_LIST.get(i);
+                DataLoader dataloader = (DataLoader)clasz.getField("DATALOADER").get(null);
+                BothData bothdata = (BothData)clasz.getField("BOTHDATA").get(null);
+                clasz.getField("ID").set(null, index++);
+                int max_part = bothdata.MaxPart();
+                MIX_MEMORY_OBJECT_ARRAY[i] = new Object[max_part];
+                System.arraycopy(dataloader.memory_object_array, bothdata.StepModels(), MIX_MEMORY_OBJECT_ARRAY[i], 0, max_part);
+            }
+            catch (NoSuchFieldException | IllegalAccessException e)
+            {
+                Nali.error(e);
+            }
         }
     }
 }

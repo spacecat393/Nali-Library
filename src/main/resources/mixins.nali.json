@@ -6,7 +6,7 @@
   "required": true,
   "minVersion": "0.7.11",
   "client": [
-    "MixinMinecraft",
-    "IMixinEntityRenderer"
+    "IMixinEntityRenderer",
+    "MixinMinecraft"
   ]
 }

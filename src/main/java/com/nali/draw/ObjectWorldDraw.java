@@ -5,6 +5,8 @@ import com.nali.render.ObjectRender;
 import com.nali.system.opengl.memory.OpenGLObjectMemory;
 import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
@@ -12,6 +14,7 @@ import java.util.function.Consumer;
 
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.OPENGL_INTBUFFER;
 
+@SideOnly(Side.CLIENT)
 public class ObjectWorldDraw
 {
     public static Consumer<OpenGLObjectMemory> DRAW_CONSUMER;
@@ -24,6 +27,53 @@ public class ObjectWorldDraw
 
     public void renderWorld(/*double ox, double oy, double oz, float scale*/)
     {
+//        int should_add = 0;
+//        //Array here
+////
+////        if ((this.objectrender.glow_byte_array[index / 8] >> index % 8 & 1) == 1)
+////        {
+////            this.objectrender.lig_b = -1.0F;
+////            this.objectrender.lig_s = -1.0F;
+////        }
+////        else
+////        {
+////            this.objectrender.updateLightCoord();
+////        }
+//
+//        for (int i = 0; i < OBJECT_ARRAYLIST.size(); ++i)
+//        {
+//            for (int l = 0; l < this.objectrender.memory_object_array.length; ++l)
+//            {
+//                if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)
+//                {
+//                    if (OBJECT_ARRAYLIST.get(i) == this.objectrender.memory_object_array[l])
+//                    {
+//                        should_add = -1;
+//                        INTEGER_ARRAYLIST.add(i);
+//                        POS_DOUBLE_2D_ARRAYLIST.get(i).add(ox);
+//                        POS_DOUBLE_2D_ARRAYLIST.get(i).add(oy);
+//                        POS_DOUBLE_2D_ARRAYLIST.get(i).add(oz);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (should_add != -1)
+//        {
+//            OBJECT_ARRAYLIST.add(this.objectrender.memory_object_array[should_add]);
+//            int index = this.objectrender.memory_object_array.length;
+//            INTEGER_ARRAYLIST.add(index);
+//            POS_DOUBLE_2D_ARRAYLIST.add(new ArrayList<Double>());
+//            POS_DOUBLE_2D_ARRAYLIST.get(index).add(ox);
+//            POS_DOUBLE_2D_ARRAYLIST.get(index).add(oy);
+//            POS_DOUBLE_2D_ARRAYLIST.get(index).add(oz);
+//            LIG_FLOAT_2D_ARRAYLIST.add(new ArrayList<Float>());
+//            LIG_FLOAT_2D_ARRAYLIST.get(index).add(ox);
+//            LIG_FLOAT_2D_ARRAYLIST.get(index).add(oy);
+//            LIG_FLOAT_2D_ARRAYLIST.get(index).add(oz);
+//        }
+
         GL11.glPushMatrix();
 //        GL11.glTranslated(ox, oy, oz);
 
@@ -31,7 +81,7 @@ public class ObjectWorldDraw
 
         GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 
-        for (int i = 0; i < this.objectrender.memory_object_array.length; ++i)
+        for (int i = 0; i < this.objectrender.memory_object_array.length - 1; ++i)
         {
             if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)
             {
@@ -49,7 +99,7 @@ public class ObjectWorldDraw
     public void drawWorld(int index)
     {
 //        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index];
+        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index + 1];
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
         this.objectrender.takeDefault(openglobjectmemory);
 

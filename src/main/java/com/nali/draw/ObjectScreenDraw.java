@@ -46,7 +46,7 @@ public class ObjectScreenDraw
 
         this.objectrender.multiplyAnimation();
 
-        for (int i = 0; i < this.objectrender.memory_object_array.length - 1; ++i)
+        for (int i = 0; i < this.objectrender.getMaxMemory(); ++i)
         {
             if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)
             {
@@ -70,7 +70,7 @@ public class ObjectScreenDraw
 
     public void drawScreen(int index)
     {
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index + 1];
+        OpenGLObjectMemory openglobjectmemory = this.objectrender.getMemory(index);
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
 
         this.objectrender.takeDefault(openglobjectmemory);

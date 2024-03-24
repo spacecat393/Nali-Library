@@ -24,8 +24,8 @@ public class OpenGLSkinningMemory extends OpenGLObjectMemory
     {
         super.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, attriblocation_string_2d_array, length - 2);
         String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
-//        byte max_joints = (byte)Integer.parseInt(model_string_array[4]);
-        this.max_joints = (byte)Integer.parseInt(model_string_array[4]);
+//        byte max_joints = Byte.parseByte(model_string_array[4]);
+        this.max_joints = Byte.parseByte(model_string_array[4]);
 
 //        float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
         this.joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");

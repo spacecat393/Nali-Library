@@ -43,7 +43,7 @@ public class OpenGLObjectMemory
     public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
         String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
-        this.state |= (byte)Integer.parseInt(model_string_array[1]);//texture_state
+        this.state |= Byte.parseByte(model_string_array[1]);//texture_state
 
         int shader_id = Integer.parseInt(model_string_array[2]);
         this.state |= (byte)(2 * Integer.parseInt(model_string_array[3]));//culling
@@ -71,7 +71,7 @@ public class OpenGLObjectMemory
         {
             String[] attriblocation_string_array = attriblocation_string_2d_array[i];
             String attriblocation_name_string = attriblocation_string_array[0];
-            this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), (byte)Integer.parseInt(attriblocation_string_array[1])));
+            this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1])));
         }
     }
 }

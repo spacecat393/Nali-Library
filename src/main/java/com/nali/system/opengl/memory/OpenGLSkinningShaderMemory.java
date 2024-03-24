@@ -22,7 +22,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
     @Override
     public void readVertShader(String[] shader_string_array, String folder_path)
     {
-        byte shader_state = (byte)Integer.parseInt(shader_string_array[1]);
+        byte shader_state = Byte.parseByte(shader_string_array[1]);
 
         String model_folder_path = folder_path + "Models/" + shader_string_array[2];
         String animation_string = "/Animation/";

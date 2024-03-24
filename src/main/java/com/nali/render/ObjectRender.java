@@ -285,4 +285,14 @@ public class ObjectRender
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GL11.glColor4f(RED, GREEN, BLUE, ALPHA);
     }
+
+    public OpenGLObjectMemory getMemory(int i)
+    {
+        return (OpenGLObjectMemory)this.memory_object_array[i];
+    }
+
+    public int getMaxMemory()
+    {
+        return this.memory_object_array.length;
+    }
 }

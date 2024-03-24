@@ -42,7 +42,7 @@ public class OpenGLObjectShaderMemory
 
     public void readVertShader(String[] shader_string_array, String folder_path)
     {
-        byte shader_state = (byte)Integer.parseInt(shader_string_array[1]);
+        byte shader_state = Byte.parseByte(shader_string_array[1]);
 
         this.vert_shader = new StringBuilder();
         StringReader.append((StringBuilder)this.vert_shader, folder_path + "Shaders/Vertex" + shader_state);
@@ -50,7 +50,7 @@ public class OpenGLObjectShaderMemory
 
     public void readFragShader(String[] shader_string_array, String folder_path)
     {
-        byte shader_state = (byte)Integer.parseInt(shader_string_array[1]);
+        byte shader_state = Byte.parseByte(shader_string_array[1]);
 
         this.frag_shader = new StringBuilder();
         StringReader.append((StringBuilder)this.frag_shader, folder_path + "Shaders/Fragment" + shader_state);

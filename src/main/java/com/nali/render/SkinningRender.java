@@ -62,6 +62,18 @@ public class SkinningRender extends ObjectRender
         GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
     }
 
+    @Override
+    public OpenGLObjectMemory getMemory(int i)
+    {
+        return (OpenGLObjectMemory)this.memory_object_array[i + 1];
+    }
+
+    @Override
+    public int getMaxMemory()
+    {
+        return this.memory_object_array.length - 1;
+    }
+
     public void initSkinning()
     {
 //        int max_bones = this.openglanimationmemory.bones;

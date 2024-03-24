@@ -27,6 +27,11 @@ public class ObjectWorldDraw
 
     public void renderWorld(/*double ox, double oy, double oz, float scale*/)
     {
+//        OBJECT_ARRAYLIST.add(this.objectrender);
+//        DOUBLE_ARRAYLIST.add(ox);
+//        DOUBLE_ARRAYLIST.add(oy);
+//        DOUBLE_ARRAYLIST.add(oz);
+//        FLOAT_ARRAYLIST.add(this.objectrender.entitiesrendermemory.scale)
 //        int should_add = 0;
 //        //Array here
 ////
@@ -81,7 +86,7 @@ public class ObjectWorldDraw
 
         GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 
-        for (int i = 0; i < this.objectrender.memory_object_array.length - 1; ++i)
+        for (int i = 0; i < this.objectrender.getMaxMemory(); ++i)
         {
             if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)
             {
@@ -99,7 +104,7 @@ public class ObjectWorldDraw
     public void drawWorld(int index)
     {
 //        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.objectrender.memory_object_array[index + 1];
+        OpenGLObjectMemory openglobjectmemory = this.objectrender.getMemory(index);
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
         this.objectrender.takeDefault(openglobjectmemory);
 

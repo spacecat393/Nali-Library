@@ -69,4 +69,9 @@ public class Nali
         LOGGER.error(s);
         FMLCommonHandler.instance().exitJava(-1, true);
     }
+
+//    public static void debug(String s)
+//    {
+//        LOGGER.info(s);
+//    }
 }

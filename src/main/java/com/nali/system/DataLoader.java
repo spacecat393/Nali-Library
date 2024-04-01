@@ -6,6 +6,7 @@ import com.nali.data.BothData;
 import com.nali.data.GuiObjectData;
 import com.nali.render.ObjectRender;
 import com.nali.system.file.FileDataReader;
+import com.nali.system.openal.memory.OpenALMemory;
 import com.nali.system.opengl.memory.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,6 +22,7 @@ public class DataLoader
     public Object[] memory_object_array;
     public OpenGLTextureMemory opengltexturememory;
     public OpenGLObjectShaderMemory[] openglobjectshadermemory_array;
+    public OpenALMemory openalmemory;
 
     public static void setModels(DataLoader dataloader, String mod_id_string)
     {
@@ -29,7 +31,7 @@ public class DataLoader
 
         String folder_path = mod_id_string + '/';
 
-        dataloader.opengltexturememory = new OpenGLTextureMemory(mod_id_string);
+        dataloader.opengltexturememory = new OpenGLTextureMemory(folder_path);
 
         Object[] model_object_array = FileDataReader.getMixXStringArray(folder_path + "ModelsList");
         int model_length = model_object_array.length;
@@ -101,6 +103,18 @@ public class DataLoader
                     }.objectscreendraw.renderScreen();
                 }
             }
+        }
+    }
+
+    public static void setSounds(DataLoader dataloader, String mod_id_string)
+    {
+        mod_id_string = Reference.MOD_ID + '/' + mod_id_string;
+        DataLoader.check(mod_id_string);
+
+        String folder_path = mod_id_string + '/';
+        if (new File(folder_path + "Sounds").isDirectory())
+        {
+            dataloader.openalmemory = new OpenALMemory(folder_path);
         }
     }
 

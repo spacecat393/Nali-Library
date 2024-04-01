@@ -2,7 +2,7 @@
 	{
 		"modid": "nali",
 		"name": "NaliLibrary",
-		"description": "Rendering + 3D-Skinning & Data Loader",
+		"description": "Rendering\n3D-Skinning\nSounds\nData Loader\n",
 		"version": "${version}",
 		"mcversion": "1.12.2",
 		"url": "https://twitter.com/Nali36687751",

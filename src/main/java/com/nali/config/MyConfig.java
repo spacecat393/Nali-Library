@@ -23,6 +23,9 @@ public class MyConfig
     @Config.Name("Shader Settings")
     public static final Shader SHADER = new Shader();
 
+    @Config.Name("Sound Settings")
+    public static final Sound SOUND = new Sound();
+
 //    public static class Color
 //    {
 //        @Config.Name("R")
@@ -86,6 +89,15 @@ public class MyConfig
         @Config.Comment("M4x4 Buffer for Animation.")
         @Config.RequiresMcRestart
         public int max_bones = 220 * 16;
+    }
+
+    public static class Sound
+    {
+        @Config.Name("AL_GAIN")
+        public float al_gain = 1.0F;
+
+        @Config.Name("AL_PITCH")
+        public float al_pitch = 1.0F;
     }
 
 //    public static void registerConfig()

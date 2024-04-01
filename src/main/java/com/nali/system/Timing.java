@@ -1,7 +1,10 @@
 package com.nali.system;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class Timing
 {
     public static long LAST_TIME;

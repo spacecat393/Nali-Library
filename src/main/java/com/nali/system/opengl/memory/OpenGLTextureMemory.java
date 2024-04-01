@@ -24,7 +24,7 @@ public class OpenGLTextureMemory
 
     public OpenGLTextureMemory(String mod_id_string)
     {
-        File[] file_array = new File(mod_id_string + "/Textures/").listFiles();
+        File[] file_array = new File(mod_id_string + "Textures/").listFiles();
         int size = file_array.length;
         this.texture_array = new Object[size];
         this.width_int_array = new int[size];
@@ -36,8 +36,8 @@ public class OpenGLTextureMemory
             {
                 BufferedImage bufferedimage = ImageIO.read(file);
 
-                byte[] byte_array = file.getName().getBytes();
-                int index = Integer.parseInt(new String(byte_array, 0, byte_array.length - 4));
+                String name = file.getName();
+                int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
                 int width = bufferedimage.getWidth();
                 int height = bufferedimage.getHeight();
 

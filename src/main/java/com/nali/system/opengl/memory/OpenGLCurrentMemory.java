@@ -39,6 +39,7 @@ public class OpenGLCurrentMemory
     public static boolean GL_CULL_FACE;
     public static boolean GL_BLEND;
     public static boolean GL_TEXTURE_2D;
+    public static boolean GL_LIGHTING;
 
     public static float GL_LINE_WIDTH;
 

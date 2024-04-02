@@ -3,6 +3,8 @@ package com.nali;
 import com.nali.config.MyConfig;
 import com.nali.draw.ObjectWorldDraw;
 import com.nali.key.KeyRegistryHelper;
+import com.nali.networks.NetworksRegistry;
+import com.nali.particle.ParticleRegistry;
 import com.nali.system.DataLoader;
 import com.nali.system.Reference;
 import com.nali.system.opengl.memory.OpenGLCurrentMemory;
@@ -52,8 +54,11 @@ public class Nali
     @EventHandler
     public void onFMLInitializationEvent(FMLInitializationEvent event)
     {
+        NetworksRegistry.register();
+
         if (event.getSide().isClient())
         {
+            ParticleRegistry.register();
             DataLoader.setMemory();
         }
     }

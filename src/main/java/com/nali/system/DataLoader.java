@@ -109,13 +109,13 @@ public class DataLoader
     public static void setSounds(DataLoader dataloader, String mod_id_string)
     {
         mod_id_string = Reference.MOD_ID + '/' + mod_id_string;
-        DataLoader.check(mod_id_string);
+//        DataLoader.check(mod_id_string);
 
         String folder_path = mod_id_string + '/';
-        if (new File(folder_path + "Sounds").isDirectory())
-        {
-            dataloader.openalmemory = new OpenALMemory(folder_path);
-        }
+//        if (new File(folder_path + "Sounds").isDirectory())
+//        {
+        dataloader.openalmemory = new OpenALMemory(folder_path);
+//        }
     }
 
     public static void check(String mod_id_string)

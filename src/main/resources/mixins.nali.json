@@ -8,5 +8,8 @@
   "client": [
     "IMixinEntityRenderer",
     "MixinMinecraft"
+  ],
+  "mixins": [
+    "IMixinEnumParticleTypes"
   ]
 }

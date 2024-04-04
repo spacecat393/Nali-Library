@@ -1,5 +1,6 @@
 package com.nali.mixin;
 
+import com.nali.system.Reference;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import zone.rong.mixinbooter.IEarlyMixinLoader;
 
@@ -13,7 +14,7 @@ public class MixinLoader implements IEarlyMixinLoader, IFMLLoadingPlugin
     @Override
     public List<String> getMixinConfigs()
     {
-        return Collections.singletonList("mixins.nali.json");
+        return Collections.singletonList("mixins." + Reference.MOD_ID + ".json");
     }
 
     @Override

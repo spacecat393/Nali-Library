@@ -1,16 +1,16 @@
 [
 	{
-		"modid": "nali",
+		"modid": "${modid}",
 		"name": "NaliLibrary",
 		"description": "Rendering\n3D-Skinning\nSounds\nData Loader\n",
 		"version": "${version}",
-		"mcversion": "1.12.2",
+		"mcversion": "${mcversion}",
 		"url": "https://twitter.com/Nali36687751",
 		"updateUrl": "",
 		"authorList": ["Nali"],
 		"credits": "",
 		"logoFile": "",
 		"screenshots": [],
-		"dependencies": []
+		"dependencies": ["mixinbooter"]
 	}
 ]

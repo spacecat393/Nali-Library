@@ -28,9 +28,11 @@ public class KeyRegistryHelper
         {
             try
             {
-                ClientRegistry.registerKeyBinding((KeyBinding)clasz.getConstructor(String.class).newInstance(StringReader.get(clasz)[0]));
+                KeyBinding keybinding = (KeyBinding)clasz.getConstructor(String[].class).newInstance((Object)StringReader.get(clasz));
+                clasz.getField("I").set(null, keybinding);
+                ClientRegistry.registerKeyBinding(keybinding);
             }
-            catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e)
+            catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e)
             {
                 Nali.error(e);
             }

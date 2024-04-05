@@ -1,6 +1,7 @@
 package com.nali.key;
 
 import com.nali.Nali;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -51,5 +52,20 @@ public class KeyHelper
         String uuidRegex = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$";
         Pattern pattern = Pattern.compile(uuidRegex);
         return uuid_string.length() == 36 && pattern.matcher(uuid_string).matches();
+    }
+
+    public static Color generateRainbowColor()
+    {
+        return Color.getHSBColor(Minecraft.getSystemTime()/*System.currentTimeMillis()*/ % 3600 / 3600.0F, 1.0F, 1.0F);
+    }
+
+    public static int getRainbowColor4()
+    {
+        Color color = generateRainbowColor();
+        int red = color.getRed();
+        int green = color.getGreen();
+        int blue = color.getBlue();
+        int alpha = 255;
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
     }
 }

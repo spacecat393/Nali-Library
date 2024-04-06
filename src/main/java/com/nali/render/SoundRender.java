@@ -2,6 +2,7 @@ package com.nali.render;
 
 import com.nali.config.MyConfig;
 import com.nali.system.DataLoader;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.openal.AL10;
@@ -15,6 +16,7 @@ public class SoundRender
     public static Set<SoundRender> SOUNDRENDER_SET = new LinkedHashSet();
     public DataLoader dataloader;
     public int source = -1, id;
+    public boolean pause;
 
     public SoundRender(DataLoader dataloader/*, int id*/)
     {
@@ -69,12 +71,28 @@ public class SoundRender
     {
         if (this.source != -1)
         {
-            if (AL10.alGetSourcei(this.source, AL10.AL_SOURCE_STATE) == AL10.AL_STOPPED)
+            boolean pause = Minecraft.getMinecraft().isGamePaused();
+            if (pause != this.pause)
             {
-                AL10.alDeleteSources(this.source);
-                this.source = -1;
-                SOUNDRENDER_SET.remove(this);
+                if (pause)
+                {
+                    AL10.alSourcePause(this.source);
+                }
+                else
+                {
+                    AL10.alSourcePlay(this.source);
+                }
             }
+            else if (!this.pause)
+            {
+                if (AL10.alGetSourcei(this.source, AL10.AL_SOURCE_STATE) == AL10.AL_STOPPED)
+                {
+                    AL10.alDeleteSources(this.source);
+                    this.source = -1;
+                    SOUNDRENDER_SET.remove(this);
+                }
+            }
+            this.pause = pause;
         }
     }
 

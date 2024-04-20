@@ -28,7 +28,7 @@ public class OpenALMemory
             String path = file.getPath();
             int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
 
-            byte[] byte_array = FFmpeg.get(path);
+            byte[] byte_array = FFmpeg.getSounds(path);
             ByteBuffer bytebuffer = ByteBuffer.allocateDirect(byte_array.length << 2).order(ByteOrder.nativeOrder());
             bytebuffer.put(byte_array);
             bytebuffer.flip();

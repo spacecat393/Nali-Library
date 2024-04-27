@@ -69,11 +69,11 @@ public class ObjectWorldDraw
 //            OBJECT_ARRAYLIST.add(this.objectrender.memory_object_array[should_add]);
 //            int index = this.objectrender.memory_object_array.length;
 //            INTEGER_ARRAYLIST.add(index);
-//            POS_DOUBLE_2D_ARRAYLIST.add(new ArrayList<Double>());
+//            POS_DOUBLE_2D_ARRAYLIST.add(new List<Double>());
 //            POS_DOUBLE_2D_ARRAYLIST.get(index).add(ox);
 //            POS_DOUBLE_2D_ARRAYLIST.get(index).add(oy);
 //            POS_DOUBLE_2D_ARRAYLIST.get(index).add(oz);
-//            LIG_FLOAT_2D_ARRAYLIST.add(new ArrayList<Float>());
+//            LIG_FLOAT_2D_ARRAYLIST.add(new List<Float>());
 //            LIG_FLOAT_2D_ARRAYLIST.get(index).add(ox);
 //            LIG_FLOAT_2D_ARRAYLIST.get(index).add(oy);
 //            LIG_FLOAT_2D_ARRAYLIST.get(index).add(oz);

@@ -11,7 +11,7 @@ public class Reflect
 {
     public static List<Class> getClasses(String package_name)
     {
-        ArrayList<Class> class_arraylist = new ArrayList<Class>();
+        List<Class> class_arraylist = new ArrayList();
 
         try
         {

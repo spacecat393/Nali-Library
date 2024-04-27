@@ -55,7 +55,7 @@ public class OpenGLBuffer
 
     // public static void setM4x4FloatBuffer(Object[] object_array, int id, boolean native_memory)
     // {
-    //     ArrayList<M4x4> m4x4_arraylist = (ArrayList<M4x4>)object_array[id];
+    //     List<M4x4> m4x4_arraylist = (List<M4x4>)object_array[id];
     //     float[] float_array = new float[m4x4_arraylist.size() * 16];
 
     //     for (int i = 0; i < m4x4_arraylist.size(); ++i)
@@ -86,7 +86,7 @@ public class OpenGLBuffer
 
     // public static void setIntBuffer(Object[] object_array, int id, boolean native_memory)
     // {
-    //     ArrayList<Integer> int_arraylist = (ArrayList<Integer>)object_array[id];
+    //     List<Integer> int_arraylist = (List<Integer>)object_array[id];
     //     int[] int_array = new int[int_arraylist.size()];
 
     //     for (int m0 = 0; m0 < int_arraylist.size(); ++m0)
@@ -113,7 +113,7 @@ public class OpenGLBuffer
 
     // public static void setIntArrayBuffer(Object[] object_array, int id, boolean native_memory)
     // {
-    //     ArrayList<int[]> int_arraylist = (ArrayList<int[]>)object_array[id];
+    //     List<int[]> int_arraylist = (List<int[]>)object_array[id];
 
     //     int size = 0;
 
@@ -258,7 +258,6 @@ public class OpenGLBuffer
             default:
             {
                 Nali.error("TEXTURE_LEAK");
-                break;
             }
         }
     }

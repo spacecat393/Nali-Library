@@ -10,7 +10,7 @@ import java.util.WeakHashMap;
 @SideOnly(Side.CLIENT)
 public class KeyTick
 {
-    public static Map<Integer, Boolean> KEY_MAP = new WeakHashMap<>();
+    public static Map<Integer, Boolean> KEY_MAP = new WeakHashMap();
 
     public static void addKey(int key)
     {

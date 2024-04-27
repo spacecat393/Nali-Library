@@ -9,13 +9,14 @@ import org.lwjgl.opengl.GL15;
 
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
 
 @SideOnly(Side.CLIENT)
 public class OpenGLObjectMemory
 {
-    public ArrayList<OpenGLAttribMemory> openglattribmemory_arraylist = new ArrayList<OpenGLAttribMemory>();
+    public List<OpenGLAttribMemory> openglattribmemory_arraylist = new ArrayList();
     //int[N] -> IntBuffer
     public Object index;
     public int index_length;

@@ -11,13 +11,13 @@ public abstract class NetworksMessage implements IMessage
     public void fromBytes(ByteBuf bytebuf)
     {
         int length = bytebuf.readableBytes();
-        data = new byte[length];
-        bytebuf.readBytes(data);
+        this.data = new byte[length];
+        bytebuf.readBytes(this.data);
     }
 
     @Override
     public void toBytes(ByteBuf bytebuf)
     {
-        bytebuf.writeBytes(data);
+        bytebuf.writeBytes(this.data);
     }
 }

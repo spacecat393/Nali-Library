@@ -62,7 +62,6 @@ public class DataLoader
                 default:
                 {
                     Nali.error(model_string_array[0] + " CORRUPTED_DATA");
-                    break;
                 }
             }
         }

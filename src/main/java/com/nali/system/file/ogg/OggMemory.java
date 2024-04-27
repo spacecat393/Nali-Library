@@ -10,7 +10,7 @@
 ////https://xiph.org/ogg/
 //public class OggMemory
 //{
-//    public ArrayList<OggHeader> oggheader_arraylist = new ArrayList();
+//    public List<OggHeader> oggheader_arraylist = new ArrayList();
 //    public OggVorbisCode oggvorbiscode;
 //    public OggVorbisCommand oggvorbiscommand;
 //

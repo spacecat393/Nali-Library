@@ -56,7 +56,7 @@
 //            //0.0 - 1.0 end
 //            //1 / sample_rate +-
 //
-//            // ArrayList<byte[]> ba = new ArrayList();
+//            // List<byte[]> ba = new ArrayList();
 //            // int in = 0;
 //
 //            // for (int i = 0; i < data_byte_array.length; i += 2)

@@ -94,6 +94,7 @@ public class MyConfig
     public static class Sound
     {
         @Config.Name("ffmpeg")
+        @Config.RequiresMcRestart
         public boolean ffmpeg = true;
 
         @Config.Name("AL_GAIN")

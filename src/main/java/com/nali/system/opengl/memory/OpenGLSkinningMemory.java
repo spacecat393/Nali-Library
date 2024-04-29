@@ -5,7 +5,7 @@ import com.nali.system.opengl.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.nio.FloatBuffer;
+import java.nio.ByteBuffer;
 
 @SideOnly(Side.CLIENT)
 public class OpenGLSkinningMemory extends OpenGLObjectMemory
@@ -65,9 +65,11 @@ public class OpenGLSkinningMemory extends OpenGLObjectMemory
 //            this.weights_float_array = temp_weights_float_array;
         }
 
-        FloatBuffer joints_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joints_float_array, true);
-        this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(joints_floatbuffer, OpenGLBuffer.loadFloatBuffer(joints_floatbuffer), limit_max_joints));
-        FloatBuffer weights_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weights_float_array, true);
-        this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(weights_floatbuffer, OpenGLBuffer.loadFloatBuffer(weights_floatbuffer), limit_max_joints));
+//        FloatBuffer joints_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joints_float_array, true);
+        ByteBuffer joints_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_joints_float_array, true);
+        this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(joints_bytebuffer, OpenGLBuffer.loadFloatBuffer(joints_bytebuffer), limit_max_joints));
+//        FloatBuffer weights_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weights_float_array, true);
+        ByteBuffer weights_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_weights_float_array, true);
+        this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(weights_bytebuffer, OpenGLBuffer.loadFloatBuffer(weights_bytebuffer), limit_max_joints));
     }
 }

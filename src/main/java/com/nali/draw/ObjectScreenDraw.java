@@ -26,7 +26,7 @@ public class ObjectScreenDraw
     public void renderScreen()
     {
         GL11.glPushMatrix();
-//        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
+//        OpenGlHelper.glPushAttrib(OpenGlHelper.GL_COLOR_BUFFER_BIT);
 //        float r = this.objectrender.r;
 //        float g = this.objectrender.g;
 //        float b = this.objectrender.b;
@@ -36,7 +36,7 @@ public class ObjectScreenDraw
 //        this.objectrender.g = new_g;
 //        this.objectrender.b = new_b;
 //        this.objectrender.a = new_a;
-//        GL11.glColor4f(this.objectrender.sr, this.objectrender.sg, this.objectrender.sb, this.objectrender.sa);
+//        OpenGlHelper.glColor4f(this.objectrender.sr, this.objectrender.sg, this.objectrender.sb, this.objectrender.sa);
 
         GL11.glTranslatef(this.x, this.y, this.z);
         GL11.glScalef(this.sx, this.sy, this.sz);
@@ -54,17 +54,17 @@ public class ObjectScreenDraw
             }
         }
 
-//        GL11.glRotatef(-this.objectrender.rz, 0.0F, 0.0F, 1.0F);
-//        GL11.glRotatef(-this.objectrender.ry, 0.0F, 1.0F, 0.0F);
-//        GL11.glRotatef(-this.objectrender.rx, 1.0F, 0.0F, 0.0F);
-//        GL11.glScalef(1.0F / sx, 1.0F / sy, 1.0F / sz);
-//        GL11.glTranslatef(-this.objectrender.x, -this.objectrender.y, -this.objectrender.z);
+//        OpenGlHelper.glRotatef(-this.objectrender.rz, 0.0F, 0.0F, 1.0F);
+//        OpenGlHelper.glRotatef(-this.objectrender.ry, 0.0F, 1.0F, 0.0F);
+//        OpenGlHelper.glRotatef(-this.objectrender.rx, 1.0F, 0.0F, 0.0F);
+//        OpenGlHelper.glScalef(1.0F / sx, 1.0F / sy, 1.0F / sz);
+//        OpenGlHelper.glTranslatef(-this.objectrender.x, -this.objectrender.y, -this.objectrender.z);
 
 //        this.objectrender.r = r;
 //        this.objectrender.g = g;
 //        this.objectrender.b = b;
 //        this.objectrender.a = a;
-//        GL11.glPopAttrib();
+//        OpenGlHelper.glPopAttrib();
         GL11.glPopMatrix();
     }
 

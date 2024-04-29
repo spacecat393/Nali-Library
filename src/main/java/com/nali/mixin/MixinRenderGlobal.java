@@ -4,7 +4,7 @@
 //import net.minecraft.client.renderer.RenderGlobal;
 //import net.minecraft.client.renderer.culling.ICamera;
 //import net.minecraft.entity.Entity;
-//import org.lwjgl.opengl.GL11;
+//import org.lwjgl.opengl.OpenGlHelper;
 //import org.spongepowered.asm.mixin.Mixin;
 //import org.spongepowered.asm.mixin.injection.At;
 //import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,13 +23,13 @@
 //        for (int i = 0; i < OBJECT_ARRAYLIST.size(); ++i)
 //        {
 //            ObjectRender objectrender = (ObjectRender)OBJECT_ARRAYLIST.get(i);
-//            GL11.glPushMatrix();
+//            OpenGlHelper.glPushMatrix();
 //
 //            int next = i * 3;
 //            float s = objectrender.entitiesrendermemory.scale;
-//            GL11.glTranslated(DOUBLE_ARRAYLIST.get(next), DOUBLE_ARRAYLIST.get(next + 1), DOUBLE_ARRAYLIST.get(next + 2));
-//            GL11.glScalef(s, s, s);
-//            GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+//            OpenGlHelper.glTranslated(DOUBLE_ARRAYLIST.get(next), DOUBLE_ARRAYLIST.get(next + 1), DOUBLE_ARRAYLIST.get(next + 2));
+//            OpenGlHelper.glScalef(s, s, s);
+//            OpenGlHelper.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 //
 //            for (int l = 0; l < objectrender.memory_object_array.length - 1; ++l)
 //            {
@@ -39,8 +39,8 @@
 //                }
 //            }
 //
-//            GL11.glPopMatrix();
-////            GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, openglobjectmemory.index_length, GL11.GL_UNSIGNED_INT, 0, 1);
+//            OpenGlHelper.glPopMatrix();
+////            GL31.glDrawElementsInstanced(OpenGlHelper.GL_TRIANGLES, openglobjectmemory.index_length, OpenGlHelper.GL_UNSIGNED_INT, 0, 1);
 //        }
 //
 //        OBJECT_ARRAYLIST.clear();

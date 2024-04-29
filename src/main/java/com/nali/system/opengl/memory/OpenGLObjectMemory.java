@@ -2,12 +2,13 @@ package com.nali.system.opengl.memory;
 
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.OpenGLBuffer;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
-import java.nio.IntBuffer;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +38,8 @@ public class OpenGLObjectMemory
         GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
         GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
         this.createBufferFromFile(model_string_array, folder_path, shader_string_2d_array);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
+        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
     }
 
     public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
@@ -51,12 +52,12 @@ public class OpenGLObjectMemory
 
         this.shader = shader_id;
 
-        this.element_array_buffer = GL15.glGenBuffers();
+        this.element_array_buffer = OpenGlHelper.glGenBuffers();
         this.index_int_array = FileDataReader.getIntArray(model_folder_string + "/Index");
         this.index_length = this.index_int_array.length;
-        this.index = OpenGLBuffer.createIntBuffer(this.index_int_array, true);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
-        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)this.index, GL15.GL_STATIC_DRAW);
+        this.index = OpenGLBuffer.createIntByteBuffer(this.index_int_array, true);
+        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
+        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (ByteBuffer)this.index, OpenGlHelper.GL_STATIC_DRAW);
 
         String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
         this.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, attriblocation_string_2d_array, attriblocation_string_2d_array.length);

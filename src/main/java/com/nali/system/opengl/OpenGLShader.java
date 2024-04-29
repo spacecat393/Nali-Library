@@ -1,10 +1,10 @@
 package com.nali.system.opengl;
 
 import com.nali.Nali;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 
 import java.nio.ByteBuffer;
 
@@ -13,19 +13,24 @@ public class OpenGLShader
 {
     public static int loadBuffer(ByteBuffer bytebuffer, int type)
     {
-        int shader = GL20.glCreateShader(type);
-//        GL20.glShaderSource(shader, stringbuilder);
-        GL20.glShaderSource(shader, bytebuffer);
-        GL20.glCompileShader(shader);
+        int shader = OpenGlHelper.glCreateShader(type);
+//        int shader = OpenGlHelper.glCreateShader(type);
+//        OpenGlHelper.glShaderSource(shader, stringbuilder);
+//        OpenGlHelper.glShaderSource(shader, bytebuffer);
+        OpenGlHelper.glShaderSource(shader, bytebuffer);
+//        OpenGlHelper.glCompileShader(shader);
+        OpenGlHelper.glCompileShader(shader);
 
-        if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
+//        if (OpenGlHelper.glGetShaderi(shader, OpenGlHelper.GL_COMPILE_STATUS) == OpenGlHelper.GL_FALSE)
+        if (OpenGlHelper.glGetShaderi(shader, OpenGlHelper.GL_COMPILE_STATUS) == GL11.GL_FALSE)
         {
-//            int error = GL11.glGetError();
-//            if (error != GL11.GL_NO_ERROR)
+//            int error = OpenGlHelper.glGetError();
+//            if (error != OpenGlHelper.GL_NO_ERROR)
 //            {
 //                Nali.error(GLU.gluErrorString(error));
 //            }
-            Nali.error(GL20.glGetShaderInfoLog(shader, 1024));
+//            Nali.error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
+            Nali.error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
         }
 
         return shader;
@@ -33,6 +38,7 @@ public class OpenGLShader
 
     public static void delete(int shader)
     {
-        GL20.glDeleteShader(shader);
+//        OpenGlHelper.glDeleteShader(shader);
+        OpenGlHelper.glDeleteShader(shader);
     }
 }

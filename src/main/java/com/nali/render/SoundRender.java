@@ -18,10 +18,19 @@ public class SoundRender
     public int source = -1, id;
     public boolean pause;
 
-    public SoundRender(DataLoader dataloader/*, int id*/)
+    public static SoundRender getSoundRender(DataLoader dataloader/*, int id*/)
     {
-        this.dataloader = dataloader;
+        if (dataloader.openalmemory == null)
+        {
+            return new NoSoundRender();
+        }
+        else
+        {
+            SoundRender soundrender = new SoundRender();
+            soundrender.dataloader = dataloader;
 //        this.gen(id);
+            return soundrender;
+        }
     }
 
 //    public void rePlay(int id)

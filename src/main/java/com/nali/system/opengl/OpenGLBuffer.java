@@ -1,10 +1,10 @@
 package com.nali.system.opengl;
 
 import com.nali.Nali;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 import java.nio.ByteBuffer;
@@ -15,9 +15,55 @@ import java.nio.IntBuffer;
 @SideOnly(Side.CLIENT)
 public class OpenGLBuffer
 {
+    public static ByteBuffer createIntByteBuffer(int[] int_array, boolean native_memory)
+    {
+        ByteBuffer bytebuffer;
+
+        if (native_memory)
+        {
+            bytebuffer = ByteBuffer.allocateDirect(int_array.length << 2).order(ByteOrder.nativeOrder());
+        }
+        else
+        {
+            bytebuffer = ByteBuffer.allocate(int_array.length);
+        }
+
+        for (int i : int_array)
+        {
+            bytebuffer.putInt(i);
+        }
+
+        bytebuffer.flip();
+
+        return bytebuffer;
+    }
+
+    public static ByteBuffer createFloatByteBuffer(float[] float_array, boolean native_memory)
+    {
+        ByteBuffer bytebuffer;
+
+        if (native_memory)
+        {
+            bytebuffer = ByteBuffer.allocateDirect(float_array.length << 2).order(ByteOrder.nativeOrder());
+        }
+        else
+        {
+            bytebuffer = ByteBuffer.allocate(float_array.length);
+        }
+
+        for (float f : float_array)
+        {
+            bytebuffer.putFloat(f);
+        }
+
+        bytebuffer.flip();
+
+        return bytebuffer;
+    }
+
     public static IntBuffer createIntBuffer(int[] int_array, boolean native_memory)
     {
-        IntBuffer intbuffer = null;
+        IntBuffer intbuffer;
 
         if (native_memory)
         {
@@ -195,32 +241,33 @@ public class OpenGLBuffer
     //     object_array[id] = bytebuffer;
     // }
 
-    public static int loadFloatBuffer(FloatBuffer floatbuffer)
+//    public static int loadFloatBuffer(FloatBuffer floatbuffer)
+    public static int loadFloatBuffer(ByteBuffer bytebuffer)
     {
-        int buffer = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, floatbuffer, GL15.GL_STATIC_DRAW);
+        int buffer = OpenGlHelper.glGenBuffers();
+        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
+        OpenGlHelper.glBufferData(OpenGlHelper.GL_ARRAY_BUFFER, bytebuffer, OpenGlHelper.GL_STATIC_DRAW);
 
         return buffer;
     }
 
 //    public static void setIntBuffer(int id, int buffer, int size)
 //    {
-//        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-//        GL30.glVertexAttribIPointer(id, size, GL11.GL_INT, 0, 0);
+//        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
+//        GL30.glVertexAttribIPointer(id, size, OpenGlHelper.GL_INT, 0, 0);
 //    }
 
     public static void setFloatBuffer(int id, int buffer, int size)
     {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
+        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
         GL20.glVertexAttribPointer(id, size, GL11.GL_FLOAT, false, 0, 0);
     }
 
 //    public static int loadIntBuffer(IntBuffer intbuffer)
 //    {
-//        int buffer = GL15.glGenBuffers();
-//        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-//        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, intbuffer, GL15.GL_STATIC_DRAW);
+//        int buffer = OpenGlHelper.glGenBuffers();
+//        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
+//        OpenGlHelper.glBufferData(OpenGlHelper.GL_ARRAY_BUFFER, intbuffer, OpenGlHelper.GL_STATIC_DRAW);
 //
 //        return buffer;
 //    }

@@ -1,7 +1,7 @@
 //package com.nali.mixin;
 //
 //import net.minecraft.client.renderer.GlStateManager;
-//import org.lwjgl.opengl.GL11;
+//import org.lwjgl.opengl.OpenGlHelper;
 //import org.spongepowered.asm.mixin.Final;
 //import org.spongepowered.asm.mixin.Mixin;
 //import org.spongepowered.asm.mixin.Overwrite;

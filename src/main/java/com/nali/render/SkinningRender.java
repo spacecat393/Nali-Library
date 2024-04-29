@@ -5,10 +5,10 @@ import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
 import com.nali.system.DataLoader;
 import com.nali.system.opengl.memory.*;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 
 import java.util.Arrays;
 
@@ -59,7 +59,7 @@ public class SkinningRender extends ObjectRender
         super.setUniform(openglobjectmemory, openglobjectshadermemory, index);
 
         setFloatBuffer(this.skinning_float_array);
-        GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
     }
 
     @Override
@@ -326,9 +326,9 @@ public class SkinningRender extends ObjectRender
 //            vec4[3] = 1.0F;
 //        }
 
-//        GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+//        OpenGlHelper.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
         GL11.glTranslatef(vec4[0] / vec4[3], vec4[1] / vec4[3], vec4[2] / vec4[3]);
-//        GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
+//        OpenGlHelper.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
 //        float[] mat4 = new float[]
 //        {
 //            1, 0, 0, 0,
@@ -337,6 +337,6 @@ public class SkinningRender extends ObjectRender
 //            vec4[0], vec4[1], vec4[2], vec4[3]
 //        };
 //        OpenGLCurrentMemory.setFloatBuffer(mat4);
-//        GL11.glMultMatrix(OpenGLCurrentMemory.OPENGL_FLOATBUFFER);
+//        OpenGlHelper.glMultMatrix(OpenGLCurrentMemory.OPENGL_FLOATBUFFER);
     }
 }

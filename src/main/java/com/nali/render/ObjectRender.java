@@ -10,6 +10,7 @@ import com.nali.system.opengl.memory.OpenGLAttribMemory;
 import com.nali.system.opengl.memory.OpenGLObjectMemory;
 import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.*;
@@ -80,8 +81,8 @@ public class ObjectRender
     public void setBuffer(OpenGLObjectMemory openglobjectmemory)
     {
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, openglobjectmemory.element_array_buffer);
-//        GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)openglobjectmemory.index, GL15.GL_STATIC_DRAW);
+        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, openglobjectmemory.element_array_buffer);
+//        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)openglobjectmemory.index, OpenGlHelper.GL_STATIC_DRAW);
 
         for (int i = 0; i < openglobjectshadermemory.attriblocation_int_array.length; ++i)
         {
@@ -93,12 +94,12 @@ public class ObjectRender
     public static void deleteBuffer(OpenGLObjectMemory openglobjectmemory)
     {
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
-        GL15.glDeleteBuffers(openglobjectmemory.element_array_buffer);
+        OpenGlHelper.glDeleteBuffers(openglobjectmemory.element_array_buffer);
 
         for (int i = 0; i < openglobjectshadermemory.attriblocation_int_array.length; ++i)
         {
             OpenGLAttribMemory openglattribmemory = openglobjectmemory.openglattribmemory_arraylist.get(i);
-            GL15.glDeleteBuffers(openglattribmemory.buffer);
+            OpenGlHelper.glDeleteBuffers(openglattribmemory.buffer);
         }
     }
 
@@ -121,29 +122,29 @@ public class ObjectRender
     {
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
         GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        GL20.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
-        GL20.glUniform4(openglobjectshadermemory.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        GL20.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
     }
 
     public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index) {}
 
     public void setTextureUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
     {
-        GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
+        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
         OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemory.state & 1));
     }
 
     public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
     {
-        GL20.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
-        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
+        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
         OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
     }
 
@@ -191,7 +192,7 @@ public class ObjectRender
 
         this.setBuffer(openglobjectmemory);
 
-        GL20.glUseProgram(openglobjectshadermemory.program);
+        OpenGlHelper.glUseProgram(openglobjectshadermemory.program);
 
         for (int i : openglobjectshadermemory.attriblocation_int_array)
         {
@@ -241,11 +242,11 @@ public class ObjectRender
             GL20.glDisableVertexAttribArray(i);
         }
 
-        GL20.glUseProgram(GL_CURRENT_PROGRAM);
-        GL13.glActiveTexture(GL_ACTIVE_TEXTURE);
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        OpenGlHelper.glUseProgram(GL_CURRENT_PROGRAM);
+        OpenGlHelper.setActiveTexture(GL_ACTIVE_TEXTURE);
+        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, GL_TEXTURE_BINDING_2D);
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
+        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
 
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_S);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL_TEXTURE_WRAP_T);
@@ -282,8 +283,8 @@ public class ObjectRender
         GL20.glBlendEquationSeparate(GL_BLEND_EQUATION_RGB, GL_BLEND_EQUATION_ALPHA);
         GL14.glBlendFuncSeparate(GL_BLEND_SRC_RGB, GL_BLEND_DST_RGB, GL_BLEND_SRC_ALPHA, GL_BLEND_DST_ALPHA);
 
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//        GL11.glColor4f(RED, GREEN, BLUE, ALPHA);
+//        OpenGlHelper.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        OpenGlHelper.glColor4f(RED, GREEN, BLUE, ALPHA);
     }
 
     public OpenGLObjectMemory getMemory(int i)

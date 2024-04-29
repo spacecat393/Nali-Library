@@ -80,9 +80,9 @@ public class ObjectWorldDraw
 //        }
 
         GL11.glPushMatrix();
-//        GL11.glTranslated(ox, oy, oz);
+//        OpenGlHelper.glTranslated(ox, oy, oz);
 
-//        GL11.glScalef(scale, scale, scale);
+//        OpenGlHelper.glScalef(scale, scale, scale);
 
         GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
 
@@ -94,16 +94,16 @@ public class ObjectWorldDraw
             }
         }
 
-//        GL11.glRotatef(-rx, 1.0F, 0.0F, 0.0F);
-//        GL11.glScalef(1.0F / scale, 1.0F / scale, 1.0F / scale);
+//        OpenGlHelper.glRotatef(-rx, 1.0F, 0.0F, 0.0F);
+//        OpenGlHelper.glScalef(1.0F / scale, 1.0F / scale, 1.0F / scale);
 //
-//        GL11.glTranslated(-ox, -oy, -oz);
+//        OpenGlHelper.glTranslated(-ox, -oy, -oz);
         GL11.glPopMatrix();
     }
 
     public void drawWorld(int index)
     {
-//        GL11.glPushAttrib(GL11.GL_COLOR_BUFFER_BIT);
+//        OpenGlHelper.glPushAttrib(OpenGlHelper.GL_COLOR_BUFFER_BIT);
         OpenGLObjectMemory openglobjectmemory = this.objectrender.getMemory(index);
         OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
         this.objectrender.takeDefault(openglobjectmemory);
@@ -112,11 +112,11 @@ public class ObjectWorldDraw
         {
             this.objectrender.lig_b = -1.0F;
             this.objectrender.lig_s = -1.0F;
-//            GL11.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], this.objectrender.a);
+//            OpenGlHelper.glColor4f(GL_CURRENT_COLOR[0], GL_CURRENT_COLOR[1], GL_CURRENT_COLOR[2], this.objectrender.a);
         }
         else
         {
-//            GL11.glColor4f(this.objectrender.r, this.objectrender.g, this.objectrender.b, this.objectrender.a);
+//            OpenGlHelper.glColor4f(this.objectrender.r, this.objectrender.g, this.objectrender.b, this.objectrender.a);
             this.objectrender.updateLightCoord();
         }
 
@@ -124,7 +124,7 @@ public class ObjectWorldDraw
 
         DRAW_CONSUMER.accept(openglobjectmemory);
 
-//        GL11.glPopAttrib();
+//        OpenGlHelper.glPopAttrib();
         this.objectrender.setDefault(openglobjectmemory);
     }
 

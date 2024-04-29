@@ -40,7 +40,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
         StringBuilder vertex_stringbuilder = new StringBuilder();
         this.vert_shader = vertex_stringbuilder;
-        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 0);
+        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 0);
 //        vertex_stringbuilder.append(getVertexHeaderShaderString());
 
         int bindposes_size = this.bind_poses_float_array.length / 16;
@@ -105,7 +105,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 //        }
         vertex_stringbuilder.append("uniform mat4 animation[").append(String.valueOf(this.max_bones)).append("];\n");
 
-        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 1);
+        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 1);
 
 //        int[][] back_bones_2d_int_array = new int[this.max_bones][];
         this.back_bones_2d_int_array = new int[this.max_bones][];
@@ -149,7 +149,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
             vertex_stringbuilder.append("}\n");
         }
 
-        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/Vertex" + shader_state + 2);
+        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 2);
     }
 
 //    @Override
@@ -161,7 +161,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 //        int start_index = this.uniformlocation_int_array.length - max_bones;
 //        for (int i = 0; i < max_bones; ++i)
 //        {
-//            this.uniformlocation_int_array[start_index + i] = GL20.glGetUniformLocation(this.program, "animation" + StringReader.convertNumberToLetter(i));
+//            this.uniformlocation_int_array[start_index + i] = OpenGlHelper.glGetUniformLocation(this.program, "animation" + StringReader.convertNumberToLetter(i));
 //        }
 //    }
 

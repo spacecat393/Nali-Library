@@ -1,11 +1,9 @@
 package com.nali;
 
 import com.nali.config.MyConfig;
-import com.nali.draw.ObjectWorldDraw;
 import com.nali.key.KeyRegistryHelper;
 import com.nali.networks.NetworksRegistry;
 import com.nali.particle.ParticleRegistry;
-import com.nali.system.DataLoader;
 import com.nali.system.Reference;
 import com.nali.system.opengl.memory.OpenGLCurrentMemory;
 import net.minecraftforge.common.config.Configuration;
@@ -42,7 +40,7 @@ public class Nali
             CONFIGURATION = new Configuration(event.getSuggestedConfigurationFile());
             CONFIGURATION.load();
 //            MyConfig.registerConfig();
-            ObjectWorldDraw.loadWithConfig();
+//            ObjectWorldDraw.loadWithConfig();
             KeyRegistryHelper.set();
             OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MyConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
@@ -59,7 +57,7 @@ public class Nali
         if (event.getSide().isClient())
         {
             ParticleRegistry.register();
-            DataLoader.setMemory();
+//            DataLoader.setMemory();
         }
     }
 

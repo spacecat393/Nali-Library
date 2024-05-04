@@ -87,11 +87,11 @@ public class OpenGLTextureMemory
         }
     }
 
-    public void deleteBuffer()
-    {
-        for (Object o : this.texture_array)
-        {
-            GL11.glDeleteTextures((int)o);
-        }
-    }
+//    public void deleteBuffer()
+//    {
+//        for (Object o : this.texture_array)
+//        {
+//            GL11.glDeleteTextures((int)o);
+//        }
+//    }
 }

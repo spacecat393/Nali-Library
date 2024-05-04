@@ -1,6 +1,8 @@
 package com.nali.render;
 
 import com.nali.data.BothData;
+import com.nali.data.client.ClientData;
+import com.nali.data.client.SkinningClientData;
 import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
 import com.nali.system.DataLoader;
@@ -23,15 +25,17 @@ public class SkinningRender extends ObjectRender
     public int[] frame_int_array, current_frame_int_array;
     public float[] skinning_float_array, timeline_float_array, final_timeline_float_array, current_mat4 = new float[16];
     public byte[] frame_byte_array;
+    public BothData bothdata;
 //    public OpenGLAnimationMemory openglanimationmemory;
 
 //    public long last_time = Minecraft.getSystemTime();
 
-    public SkinningRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, DataLoader dataloader, int i)
+    public SkinningRender(EntitiesRenderMemory entitiesrendermemory, BothData bothdata, ClientData clientdata, DataLoader dataloader/*, int i*/)
     {
-        super(entitiesrendermemory, bothdata, dataloader, i);
+        super(entitiesrendermemory, clientdata, dataloader/*, i*/);
 
 //        int step_models = bothdata.StepModels();
+        this.bothdata = bothdata;
         int max_array_length = bothdata.MaxFrame();
 
         this.frame_int_array = new int[max_array_length];
@@ -43,7 +47,9 @@ public class SkinningRender extends ObjectRender
         this.frame_byte_array = new byte[(int)Math.ceil(max_array_length / 8.0D)];
 
 //        this.skinning_float_array = new float[this.openglanimationmemory.bones * 16];
-        this.skinning_float_array = new float[((OpenGLAnimationMemory)this.memory_object_array[0]).bones * 16];
+//        this.skinning_float_array = new float[((OpenGLAnimationMemory)this.memory_object_array[0]).bones * 16];
+//        this.skinning_float_array = new float[dataloader.openglanimationmemory_list.get(((SkinningClientData)clientdata).AnimationID()).bones * 16];
+        this.skinning_float_array = new float[((OpenGLAnimationMemory)dataloader.object_array[((SkinningClientData)clientdata).AnimationID()]).bones * 16];
 
         this.setFrame();
     }
@@ -56,28 +62,28 @@ public class SkinningRender extends ObjectRender
     @Override
     public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
     {
-        super.setUniform(openglobjectmemory, openglobjectshadermemory, index);
-
         setFloatBuffer(this.skinning_float_array);
         OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
+        super.setUniform(openglobjectmemory, openglobjectshadermemory, index);
     }
 
-    @Override
-    public OpenGLObjectMemory getMemory(int i)
-    {
-        return (OpenGLObjectMemory)this.memory_object_array[i + 1];
-    }
+//    @Override
+//    public OpenGLObjectMemory getMemory(int i)
+//    {
+//        return (OpenGLObjectMemory)this.memory_object_array[i + 1];
+//    }
 
-    @Override
-    public int getMaxMemory()
-    {
-        return this.memory_object_array.length - 1;
-    }
+//    @Override
+//    public int getMaxMemory()
+//    {
+//        return this.memory_object_array.length - 1;
+//    }
 
-    public void initSkinning()
+    public void initSkinning(OpenGLAnimationMemory openglanimationmemory)
     {
 //        int max_bones = this.openglanimationmemory.bones;
-        int max_bones = ((OpenGLAnimationMemory)this.memory_object_array[0]).bones;
+//        int max_bones = ((OpenGLAnimationMemory)this.memory_object_array[0]).bones;
+        int max_bones = openglanimationmemory.bones;
 
         for (int i = 0; i < max_bones; ++i)
         {
@@ -85,12 +91,10 @@ public class SkinningRender extends ObjectRender
         }
     }
 
-    public int debug;
-
-    public void setSkinning()
+    public void setSkinning(OpenGLAnimationMemory openglanimationmemory)
     {
 //        int max_key = this.openglanimationmemory.length;
-        OpenGLAnimationMemory openglanimationmemory = (OpenGLAnimationMemory)this.memory_object_array[0];
+//        OpenGLAnimationMemory openglanimationmemory = (OpenGLAnimationMemory)this.memory_object_array[0];
         int max_key = openglanimationmemory.length;
 
 //        long current_time = Minecraft.getSystemTime();
@@ -161,7 +165,9 @@ public class SkinningRender extends ObjectRender
 
     public float[] get3DSkinning(float x, float y, float z, float x0, float y0, float z0, int i, int v)
     {
-        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.memory_object_array[i];
+//        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.memory_object_array[i];
+//        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.dataloader.openglobjectmemory_array[i];
+        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.dataloader.object_array[i];
 
         int vi = openglskinningmemory.index_int_array[v] * 3;
 
@@ -181,7 +187,8 @@ public class SkinningRender extends ObjectRender
                 temp_vec4_float_array[2] = openglskinningmemory.vertices_float_array[vi + 2] + z0;
                 temp_vec4_float_array[3] = 1.0F;
 
-                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
+//                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
+                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)this.dataloader.openglobjectshadermemory_array[openglskinningmemory.shader_id];
 
                 for (int b = 0; b < openglskinningshadermemory.back_bones_2d_int_array[joints].length; ++b)
                 {
@@ -223,7 +230,8 @@ public class SkinningRender extends ObjectRender
 
     public float[] getScale3DSkinning(float x, float y, float z, float x0, float y0, float z0, int i, int v)
     {
-        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.memory_object_array[i];
+//        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.memory_object_array[i];
+        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.dataloader.object_array[i];
 
         int vi = openglskinningmemory.index_int_array[v] * 3;
 
@@ -243,7 +251,8 @@ public class SkinningRender extends ObjectRender
                 temp_vec4_float_array[2] = openglskinningmemory.vertices_float_array[vi + 2] + z0;
                 temp_vec4_float_array[3] = 1.0F;
 
-                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
+//                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
+                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)this.dataloader.openglobjectshadermemory_array[openglskinningmemory.shader_id];
 
                 for (int b = 0; b < openglskinningshadermemory.back_bones_2d_int_array[joints].length; ++b)
                 {
@@ -293,7 +302,9 @@ public class SkinningRender extends ObjectRender
 
     public float[] getMat43DSkinning(int i, int v)
     {
-        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.memory_object_array[i];
+//        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.memory_object_array[i];
+//        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.dataloader.openglobjectmemory_array[i];
+        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.dataloader.object_array[i];
 
         byte max_joints = openglskinningmemory.max_joints;
         float[] mat4_float_array = new float[16];
@@ -306,7 +317,8 @@ public class SkinningRender extends ObjectRender
 
         if (joints != -1)
         {
-            OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
+//            OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
+            OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)this.dataloader.openglobjectshadermemory_array[openglskinningmemory.shader_id];
 
             for (int b = 0; b < openglskinningshadermemory.back_bones_2d_int_array[joints].length; ++b)
             {

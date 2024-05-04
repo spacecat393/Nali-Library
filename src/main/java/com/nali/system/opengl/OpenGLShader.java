@@ -36,9 +36,9 @@ public class OpenGLShader
         return shader;
     }
 
-    public static void delete(int shader)
-    {
+//    public static void delete(int shader)
+//    {
+////        OpenGlHelper.glDeleteShader(shader);
 //        OpenGlHelper.glDeleteShader(shader);
-        OpenGlHelper.glDeleteShader(shader);
-    }
+//    }
 }

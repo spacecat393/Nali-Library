@@ -40,6 +40,8 @@ public class OpenGLObjectShaderMemory
 
                 if (!new File(folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION).isDirectory())
                 {
+                    String gl_version = GL11.glGetString(GL11.GL_VERSION);
+                    Nali.LOGGER.info("GL_VERSION " + gl_version);
                     Nali.error("GL_SHADING_LANGUAGE_VERSION " + GL_SHADING_LANGUAGE_VERSION);
                 }
             }
@@ -47,9 +49,6 @@ public class OpenGLObjectShaderMemory
             this.readVertShader(shader_string_array, folder_path);
             this.readFragShader(shader_string_array, folder_path);
             this.createBuffer(shader_string_array, folder_path/*, 0*/);
-
-//            String gl_version = OpenGlHelper.glGetString(OpenGlHelper.GL_VERSION);
-//            Nali.LOGGER.info("GL_VERSION " + gl_version);
         }
         else
         {
@@ -137,12 +136,12 @@ public class OpenGLObjectShaderMemory
         }
     }
 
-    public void deleteBuffer()
-    {
-        OpenGlHelper.glDeleteProgram(this.program);
-        OpenGLShader.delete((int)this.vert_shader);
-        OpenGLShader.delete((int)this.frag_shader);
-    }
+//    public void deleteBuffer()
+//    {
+//        OpenGlHelper.glDeleteProgram(this.program);
+//        OpenGLShader.delete((int)this.vert_shader);
+//        OpenGLShader.delete((int)this.frag_shader);
+//    }
 
 //    public int getMaxBones()
 //    {

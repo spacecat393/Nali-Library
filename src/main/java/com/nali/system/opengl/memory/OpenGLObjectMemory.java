@@ -21,15 +21,15 @@ public class OpenGLObjectMemory
     //int[N] -> IntBuffer
     public Object index;
     public int index_length;
-//    public byte culling;
-//    public byte texture_state;
-    public byte state;//culling texture_state
-    //shader_id_int -> OpenGLShaderData
-    public Object shader;
+//    //shader_id_int -> OpenGLShaderData
+//    public Object shader;
     public int element_array_buffer;
 
     public float[] vertices_float_array;
     public int[] index_int_array;
+
+    public byte state;//texture_state culling transparent glow
+    public int /*model_id, */texture_id, shader_id;
 
     public OpenGLObjectMemory(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
@@ -45,12 +45,18 @@ public class OpenGLObjectMemory
     public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
         String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
-        this.state |= Byte.parseByte(model_string_array[1]);//texture_state
+//        this.state |= Byte.parseByte(model_string_array[1]);//texture_state
+        //default_texture
+        this.texture_id = Integer.parseInt(model_string_array[1]);
+        this.shader_id = Integer.parseInt(model_string_array[2]);
 
-        int shader_id = Integer.parseInt(model_string_array[2]);
-        this.state |= (byte)(2 * Integer.parseInt(model_string_array[3]));//culling
+        this.state = (byte)(Byte.parseByte(model_string_array[3]) | 2 * Byte.parseByte(model_string_array[4]) | 4 * Byte.parseByte(model_string_array[5]) | 8 * Byte.parseByte(model_string_array[6]));//texture_state culling transparent glow
 
-        this.shader = shader_id;
+//        int shader_id = Integer.parseInt(model_string_array[2]);
+//        this.shader_id = Integer.parseInt(model_string_array[2]);
+//        this.state |= (byte)(2 * Integer.parseInt(model_string_array[3]));//culling
+
+//        this.shader = shader_id;
 
         this.element_array_buffer = OpenGlHelper.glGenBuffers();
         this.index_int_array = FileDataReader.getIntArray(model_folder_string + "/Index");
@@ -59,7 +65,8 @@ public class OpenGLObjectMemory
         OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
         OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (ByteBuffer)this.index, OpenGlHelper.GL_STATIC_DRAW);
 
-        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
+//        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
+        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader_id][0] + "/Attrib");
         this.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, attriblocation_string_2d_array, attriblocation_string_2d_array.length);
     }
 

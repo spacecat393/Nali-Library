@@ -1,6 +1,5 @@
 //package com.nali.mixin;
 //
-//import com.nali.entities.EntitiesRender;
 //import net.minecraft.client.renderer.EntityRenderer;
 //import org.spongepowered.asm.mixin.Mixin;
 //import org.spongepowered.asm.mixin.injection.At;
@@ -10,9 +9,9 @@
 //@Mixin(EntityRenderer.class)
 //public abstract class MixinEntityRenderer
 //{
-//    @Inject(method = "renderWorld", at = @At("HEAD"))
+//    @Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/EntityRenderer;updateLightmap(F)V", shift = At.Shift.AFTER))
 //    private void renderWorld(float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
 //    {
-//        EntitiesRender.FREE_FUNCTION.accept(partialTicks);
+//
 //    }
 //}

@@ -10,6 +10,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.nali.Nali.error;
 
@@ -23,6 +25,10 @@ public class DataLoader
 //    public List<OpenGLAnimationMemory> openglanimationmemory_list = new ArrayList();
     public OpenGLTextureMemory opengltexturememory;
     public OpenALMemory openalmemory;
+
+    public static List<DataLoader> DATALOADER_LIST = new ArrayList();
+    public static int MAX;
+    public int index;
 
     public static void setModels(DataLoader dataloader, String mod_id_string)
     {
@@ -114,6 +120,9 @@ public class DataLoader
 //                }
 //            }
 //        }
+
+        DATALOADER_LIST.add(dataloader);
+        dataloader.index = MAX++;
     }
 
     public static void setSounds(DataLoader dataloader, String mod_id_string)

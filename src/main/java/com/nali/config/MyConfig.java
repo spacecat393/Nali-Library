@@ -18,8 +18,8 @@ public class MyConfig
 
 //    public static final Color COLOR = new Color();
 //    public static final Light LIGHT = new Light();
-    @Config.Name("Frame Settings")
-    public static final Frame FRAME = new Frame();
+//    @Config.Name("Frame Settings")
+//    public static final Frame FRAME = new Frame();
     @Config.Name("Shader Settings")
     public static final Shader SHADER = new Shader();
 
@@ -60,25 +60,25 @@ public class MyConfig
 //        public double moon_light = 0.0D;
 //    }
 
-    public static class Frame
-    {
-        @Config.Name("Using Frame Buffer Index")
-        @Config.Comment("When other rendering mod use own frame-buffer.")
-        @Config.RequiresMcRestart
-        public boolean using_frame_buffer_index = false;
-
-        @Config.Name("Frame Buffer Index")
-        @Config.Comment("Match which frame-buffer is rendering.")
-        @Config.RequiresMcRestart
-        public int frame_buffer_index = 5;
-    }
+//    public static class Frame
+//    {
+//        @Config.Name("Using Frame Buffer Index")
+//        @Config.Comment("When other rendering mod use own frame-buffer.")
+//        @Config.RequiresMcRestart
+//        public boolean using_frame_buffer_index = false;
+//
+//        @Config.Name("Frame Buffer Index")
+//        @Config.Comment("Match which frame-buffer is rendering.")
+//        @Config.RequiresMcRestart
+//        public int frame_buffer_index = 5;
+//    }
 
     public static class Shader
     {
-//        @Config.Name("glDrawElementsInstanced")
-//        @Config.Comment("Draw later with order.")
-//        @Config.RequiresMcRestart
-//        public boolean gl_draw_elements_instanced = true;
+        @Config.Name("glDrawElementsInstanced")
+        @Config.Comment("Draw later with order.")
+        @Config.RequiresMcRestart
+        public boolean gl_draw_elements_instanced = true;
 
         @Config.Name("Pre-Shaders")
         @Config.Comment("Load first then no need to wait.")

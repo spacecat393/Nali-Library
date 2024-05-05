@@ -64,6 +64,7 @@ public class SkinningRender extends ObjectRender
     {
         setFloatBuffer(this.skinning_float_array);
         OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
+//        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[8], false, OPENGL_FLOATBUFFER);
         super.setUniform(openglobjectmemory, openglobjectshadermemory, index);
     }
 

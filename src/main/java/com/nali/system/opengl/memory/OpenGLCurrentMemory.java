@@ -18,9 +18,7 @@ public class OpenGLCurrentMemory
     public static int SHADERS;
     public static int GL_CURRENT_PROGRAM;
     public static int GL_ELEMENT_ARRAY_BUFFER_BINDING;
-    public static int GL_TEXTURE_BINDING_2D;
     public static int GL_ARRAY_BUFFER_BINDING;
-    public static int GL_ACTIVE_TEXTURE;
     public static int GL_BLEND_EQUATION_RGB;
     public static int GL_BLEND_EQUATION_ALPHA;
     public static int GL_BLEND_SRC_RGB;
@@ -28,12 +26,38 @@ public class OpenGLCurrentMemory
     public static int GL_BLEND_DST_RGB;
     public static int GL_BLEND_DST_ALPHA;
 
+    public static int GL_ACTIVE_TEXTURE;
+//    public static int GL_ACTIVE_TEXTURE_0;
+//    public static int GL_ACTIVE_TEXTURE_1;
+//    public static int GL_ACTIVE_TEXTURE_2;
+    public static int GL_TEXTURE_BINDING_2D;
+    public static int GL_TEXTURE_BINDING_2D_0;
+    public static int GL_TEXTURE_BINDING_2D_1;
+//    public static int GL_TEXTURE_BINDING_2D_2;
+
+//    public static int GL_FRONT_FACE;
+
+    public static int GL_DEPTH_WRITEMASK;
+//    public static int GL_DEPTH_FUNC;
+
 //    public static int GL_MATRIX_MODE;
 
     public static int GL_TEXTURE_WRAP_S;
+    public static int GL_TEXTURE_WRAP_S_0;
+    public static int GL_TEXTURE_WRAP_S_1;
+//    public static int GL_TEXTURE_WRAP_S_2;
     public static int GL_TEXTURE_WRAP_T;
+    public static int GL_TEXTURE_WRAP_T_0;
+    public static int GL_TEXTURE_WRAP_T_1;
+//    public static int GL_TEXTURE_WRAP_T_2;
     public static int GL_TEXTURE_MIN_FILTER;
+    public static int GL_TEXTURE_MIN_FILTER_0;
+    public static int GL_TEXTURE_MIN_FILTER_1;
+//    public static int GL_TEXTURE_MIN_FILTER_2;
     public static int GL_TEXTURE_MAG_FILTER;
+    public static int GL_TEXTURE_MAG_FILTER_0;
+    public static int GL_TEXTURE_MAG_FILTER_1;
+//    public static int GL_TEXTURE_MAG_FILTER_2;
 
     public static boolean GL_DEPTH_TEST;
     public static boolean GL_CULL_FACE;

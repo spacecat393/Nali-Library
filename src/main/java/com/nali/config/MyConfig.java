@@ -75,10 +75,10 @@ public class MyConfig
 
     public static class Shader
     {
-        @Config.Name("glDrawElementsInstanced")
-        @Config.Comment("Draw later with order.")
-        @Config.RequiresMcRestart
-        public boolean gl_draw_elements_instanced = true;
+//        @Config.Name("Sort")
+//        @Config.Comment("Draw later with order.")
+//        @Config.RequiresMcRestart
+//        public boolean sort = true;
 
         @Config.Name("Pre-Shaders")
         @Config.Comment("Load first then no need to wait.")

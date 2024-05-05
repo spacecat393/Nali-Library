@@ -76,7 +76,7 @@ public class ObjectRender
 //        this.objectworlddraw = this.getObjectWorldDraw();
 //    }
 
-    public void setBuffer(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory)
+    public static void setBuffer(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory)
     {
 //        OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
         OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, openglobjectmemory.element_array_buffer);
@@ -152,7 +152,7 @@ public class ObjectRender
 //        OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[6], 2);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
-        OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer) Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
+        OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
     }
 
     public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
@@ -176,7 +176,7 @@ public class ObjectRender
 //        return new ObjectWorldDraw(this);
 //    }
 
-    public void takeDefault(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory)
+    public static void takeDefault(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory)
     {
 //        takeColor();
 
@@ -222,7 +222,7 @@ public class ObjectRender
 //        GL_TEXTURE_MIN_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
 //        GL_TEXTURE_MAG_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 
-        this.setBuffer(openglobjectmemory, openglobjectshadermemory);
+        setBuffer(openglobjectmemory, openglobjectshadermemory);
 
         OpenGlHelper.glUseProgram(openglobjectshadermemory.program);
 
@@ -280,7 +280,12 @@ public class ObjectRender
 
         GL11.glGetInteger(GL11.GL_DEPTH_WRITEMASK, OPENGL_INTBUFFER);
         GL_DEPTH_WRITEMASK = OPENGL_INTBUFFER.get(0);
-        if (this.getTransparent(openglobjectmemory))
+    }
+
+    public static void setTransparent(boolean transparent)
+    {
+        //        if (this.getTransparent(openglobjectmemory))
+        if (transparent)
         {
             GL11.glDepthMask(false);
 //            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
@@ -299,7 +304,7 @@ public class ObjectRender
         }
     }
 
-    public void setDefault(/*OpenGLObjectMemory openglobjectmemory, */OpenGLObjectShaderMemory openglobjectshadermemory)
+    public static void setDefault(/*OpenGLObjectMemory openglobjectmemory, */OpenGLObjectShaderMemory openglobjectshadermemory)
     {
 //        OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
 
@@ -431,14 +436,16 @@ public class ObjectRender
 //        int model_id = index;
 //        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.dataloader.object_array[model_id];
 //        this.updateLight(openglobjectmemory);
-//        byte[] byte_array = new byte[4 + 4 + 4 + 4 + 4 + 4 + 4];
+//        byte[] byte_array = new byte[4 + 4 + 4 + 4 + 4 + 1 + 4/* + 4*/];
 //        BytesWriter.set(byte_array, index, 0);
 //        BytesWriter.set(byte_array, this.getTextureBuffer(openglobjectmemory), 4);
 //        BytesWriter.set(byte_array, this.getShaderBuffer(openglobjectmemory), 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
-//        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
-//        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 4 + 4 + 4);
+//        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
+////        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
+//        byte_array[4 + 4 + 4 + 4 + 4] = (byte)(this.getTransparent(openglobjectmemory) ? 1 : 0);
+//        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 4 + 4 + 1);
 //        DrawWorld.add(new String(byte_array));
 //        OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
 //        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
@@ -474,7 +481,8 @@ public class ObjectRender
 //        OpenGLObjectShaderMemory openglobjectshadermemory = this.dataloader.openglobjectshadermemory_array[openglobjectmemory.shader_id];
         OpenGLObjectShaderMemory openglobjectshadermemory = this.dataloader.openglobjectshadermemory_array[this.getShaderBuffer(openglobjectmemory)];
         this.updateLight(openglobjectmemory);
-        this.takeDefault(openglobjectmemory, openglobjectshadermemory);
+        takeDefault(openglobjectmemory, openglobjectshadermemory);
+        setTransparent(this.getTransparent(openglobjectmemory));
 
 //        if ((this.objectrender.glow_byte_array[index / 8] >> index % 8 & 1) == 1)
 //        else

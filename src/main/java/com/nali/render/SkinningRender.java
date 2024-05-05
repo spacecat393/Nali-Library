@@ -352,4 +352,11 @@ public class SkinningRender extends ObjectRender
 //        OpenGLCurrentMemory.setFloatBuffer(mat4);
 //        OpenGlHelper.glMultMatrix(OpenGLCurrentMemory.OPENGL_FLOATBUFFER);
     }
+
+//    @Override
+//    public void drawLater(int index)
+//    {
+//        DrawWorld.SKINNING_MAP.put(DrawWorld.PROJECTION_M4X4_FLOATBUFFER_LIST.size(), this.skinning_float_array);
+//        super.drawLater(index);
+//    }
 }

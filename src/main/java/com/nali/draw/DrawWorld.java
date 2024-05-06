@@ -106,10 +106,29 @@ public class DrawWorld
         }
     }
 
+//    public static void drawFirst()
+//    {
+//        ObjectRender.takeDefault();
+//        draw(FIRST_MODEL_MAP);
+//        ObjectRender.setDefault();
+//    }
+//
+//    public static void drawSecond()
+//    {
+//        ObjectRender.takeDefault();
+//        draw(SECOND_MODEL_MAP);
+//        ObjectRender.setDefault();
+//        FIRST_MODEL_MAP.clear();
+//        SECOND_MODEL_MAP.clear();
+//        DRAWWORLDDATA_LIST.clear();
+//        DATA_SIZE = 0;
+//    }
+
 //    @SubscribeEvent
 //    public static void onRenderWorldLastEvent(RenderWorldLastEvent event)
     public static void run()
     {
+        ObjectRender.takeDefault();
         draw(FIRST_MODEL_MAP);
         draw(SECOND_MODEL_MAP);
 
@@ -136,6 +155,7 @@ public class DrawWorld
 //        SECOND_STEP_INTEGER_LIST.clear();
 //        SECOND_SIZE = 0;
 //        }
+        ObjectRender.setDefault();
     }
 
     public static void draw(Map<ByteArray, List<Integer>> model_map)
@@ -147,7 +167,7 @@ public class DrawWorld
         Object[] values_object_array = model_map.values().toArray();
 
         //0
-        ObjectRender.takeDefault();
+//        ObjectRender.takeDefault();
 
 //        int step_size = 0;
         for (int g = 0; g < keyset_object_array.length; ++g)
@@ -170,9 +190,16 @@ public class DrawWorld
 //                GL33.glVertexAttribDivisor(openglobjectshadermemory.attriblocation_int_array[i], max);
 //            }
 
+//            //1e
+//            OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
+//            OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
+//            OpenGLBuffer.setTextureBuffer(Minecraft.getMinecraft().getFramebuffer().framebufferTexture, (byte)0);
+
             //1
             OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
+//            OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[6], 1);
             OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
+//            OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
             OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 //            for (int i = 0; i < max; ++i)
 //            float[] skinning_float_array = drawworlddata.skinning_float_array;
@@ -217,18 +244,25 @@ public class DrawWorld
                 OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
                 OpenGLBuffer.put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
                 OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
-                if ((openglobjectmemory.state & 8) == 8) {
+                if ((openglobjectmemory.state & 8) == 8)
+                {
                     GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], -1.0F, -1.0F);
-                } else {
+//                    GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[7], -1.0F, -1.0F);
+                }
+                else
+                {
                     GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], drawworlddata.lig_b, drawworlddata.lig_s);
+//                    GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[7], drawworlddata.lig_b, drawworlddata.lig_s);
                 }
 
 //                if (animation)
-                if (drawworlddata.skinning_float_array != null) {
+                if (drawworlddata.skinning_float_array != null)
+                {
 //                    OpenGLAnimationMemory openglanimationmemory = (OpenGLAnimationMemory)dataloader.object_array[animation_id];
 //                    float[] skinning_float_array = SKINNING_MAP.get(i);
                     setFloatBuffer(drawworlddata.skinning_float_array);
                     OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
+//                    OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[8], false, OPENGL_FLOATBUFFER);
                 }
 
                 GL11.glDrawElements(GL11.GL_TRIANGLES, openglobjectmemory.index_length, GL11.GL_UNSIGNED_INT, 0);
@@ -243,6 +277,6 @@ public class DrawWorld
         }
 
         //0
-        ObjectRender.setDefault();
+//        ObjectRender.setDefault();
     }
 }

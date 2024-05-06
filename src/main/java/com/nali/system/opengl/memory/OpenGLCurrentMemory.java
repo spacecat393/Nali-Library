@@ -33,7 +33,7 @@ public class OpenGLCurrentMemory
     public static int GL_TEXTURE_BINDING_2D;
     public static int GL_TEXTURE_BINDING_2D_0;
     public static int GL_TEXTURE_BINDING_2D_1;
-//    public static int GL_TEXTURE_BINDING_2D_2;
+    public static int GL_TEXTURE_BINDING_2D_2;
 
 //    public static int GL_FRONT_FACE;
 
@@ -45,19 +45,19 @@ public class OpenGLCurrentMemory
     public static int GL_TEXTURE_WRAP_S;
     public static int GL_TEXTURE_WRAP_S_0;
     public static int GL_TEXTURE_WRAP_S_1;
-//    public static int GL_TEXTURE_WRAP_S_2;
+    public static int GL_TEXTURE_WRAP_S_2;
     public static int GL_TEXTURE_WRAP_T;
     public static int GL_TEXTURE_WRAP_T_0;
     public static int GL_TEXTURE_WRAP_T_1;
-//    public static int GL_TEXTURE_WRAP_T_2;
+    public static int GL_TEXTURE_WRAP_T_2;
     public static int GL_TEXTURE_MIN_FILTER;
     public static int GL_TEXTURE_MIN_FILTER_0;
     public static int GL_TEXTURE_MIN_FILTER_1;
-//    public static int GL_TEXTURE_MIN_FILTER_2;
+    public static int GL_TEXTURE_MIN_FILTER_2;
     public static int GL_TEXTURE_MAG_FILTER;
     public static int GL_TEXTURE_MAG_FILTER_0;
     public static int GL_TEXTURE_MAG_FILTER_1;
-//    public static int GL_TEXTURE_MAG_FILTER_2;
+    public static int GL_TEXTURE_MAG_FILTER_2;
 
     public static boolean GL_DEPTH_TEST;
     public static boolean GL_CULL_FACE;

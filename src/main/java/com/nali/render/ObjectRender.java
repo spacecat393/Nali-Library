@@ -474,7 +474,7 @@ public class ObjectRender
         }
 
         DrawWorld.DRAWWORLDDATA_LIST.add(drawworlddata);
-//        ++DrawWorld.DATA_SIZE;
+        ++DrawWorld.DATA_SIZE;
 
 //        this.lig_b = lig_b;
 //        this.lig_s = lig_s;

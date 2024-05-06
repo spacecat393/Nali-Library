@@ -11,9 +11,7 @@ import com.nali.system.opengl.memory.OpenGLObjectMemory;
 import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -45,17 +43,17 @@ public class DrawWorld
     public static List<DrawWorldData> DRAWWORLDDATA_LIST = new ArrayList();
 //    public static List<Integer> FIRST_DATA_ID_INTEGER_LIST = new ArrayList();
 //    public static List<Integer> SECOND_DATA_ID_INTEGER_LIST = new ArrayList();
-//    public static int DATA_SIZE;
+    public static int DATA_SIZE;
 
-    public static Map<ByteArray, Integer> FIRST_MODEL_MAP = new HashMap();
+    public static Map<ByteArray, List<Integer>> FIRST_MODEL_MAP = new HashMap();
 //    public static List<Integer> FIRST_ID_INTEGER_LIST = new ArrayList();
-    public static List<Integer> FIRST_STEP_INTEGER_LIST = new ArrayList();
-    public static int FIRST_SIZE;
+//    public static List<Integer> FIRST_STEP_INTEGER_LIST = new ArrayList();
+//    public static int FIRST_SIZE;
 
-    public static Map<ByteArray, Integer> SECOND_MODEL_MAP = new HashMap();
+    public static Map<ByteArray, List<Integer>> SECOND_MODEL_MAP = new HashMap();
 //    public static List<Integer> SECOND_ID_INTEGER_LIST = new ArrayList();
-    public static List<Integer> SECOND_STEP_INTEGER_LIST = new ArrayList();
-    public static int SECOND_SIZE;
+//    public static List<Integer> SECOND_STEP_INTEGER_LIST = new ArrayList();
+//    public static int SECOND_SIZE;
 
     public static void add(ByteArray bytearray)
     {
@@ -63,33 +61,39 @@ public class DrawWorld
         if (bytearray.array[4 + 4 + 4] == 0)
         {
 //            FIRST_DATA_ID_INTEGER_LIST.add(DATA_SIZE);
-            Integer index = FIRST_MODEL_MAP.get(bytearray);
-            if (index == null)
+            List<Integer> index_integer_list = FIRST_MODEL_MAP.get(bytearray);
+            if (index_integer_list == null)
             {
-                FIRST_MODEL_MAP.put(bytearray, FIRST_SIZE++);
+                ArrayList arraylist = new ArrayList();
+                arraylist.add(DATA_SIZE);
+                FIRST_MODEL_MAP.put(bytearray, arraylist);
 //                FIRST_ID_INTEGER_LIST.add(FIRST_SIZE++);
-                FIRST_STEP_INTEGER_LIST.add(1);
+//                FIRST_STEP_INTEGER_LIST.add(1);
             }
             else
             {
+                index_integer_list.add(DATA_SIZE);
 //                FIRST_ID_INTEGER_LIST.add(index);
-                FIRST_STEP_INTEGER_LIST.set(index, FIRST_STEP_INTEGER_LIST.get(index) + 1);
+//                FIRST_STEP_INTEGER_LIST.set(index, FIRST_STEP_INTEGER_LIST.get(index) + 1);
             }
         }
         else
         {
 //            SECOND_DATA_ID_INTEGER_LIST.add(DATA_SIZE);
-            Integer index = SECOND_MODEL_MAP.get(bytearray);
-            if (index == null)
+            List<Integer> index_integer_list = SECOND_MODEL_MAP.get(bytearray);
+            if (index_integer_list == null)
             {
-                SECOND_MODEL_MAP.put(bytearray, SECOND_SIZE++);
+                ArrayList arraylist = new ArrayList();
+                arraylist.add(DATA_SIZE);
+                SECOND_MODEL_MAP.put(bytearray, arraylist);
 //                SECOND_ID_INTEGER_LIST.add(SECOND_SIZE++);
-                SECOND_STEP_INTEGER_LIST.add(1);
+//                SECOND_STEP_INTEGER_LIST.add(1);
             }
             else
             {
+                index_integer_list.add(DATA_SIZE);
 //                SECOND_ID_INTEGER_LIST.add(index);
-                SECOND_STEP_INTEGER_LIST.set(index, SECOND_STEP_INTEGER_LIST.get(index) + 1);
+//                SECOND_STEP_INTEGER_LIST.set(index, SECOND_STEP_INTEGER_LIST.get(index) + 1);
             }
         }
     }
@@ -102,11 +106,12 @@ public class DrawWorld
         }
     }
 
-    @SubscribeEvent
-    public static void onRenderWorldLastEvent(RenderWorldLastEvent event)
+//    @SubscribeEvent
+//    public static void onRenderWorldLastEvent(RenderWorldLastEvent event)
+    public static void run()
     {
-        draw(FIRST_MODEL_MAP, FIRST_STEP_INTEGER_LIST/*, FIRST_ID_INTEGER_LIST*//*, FIRST_DATA_ID_INTEGER_LIST*/);
-        draw(SECOND_MODEL_MAP, SECOND_STEP_INTEGER_LIST/*, SECOND_ID_INTEGER_LIST*//*, SECOND_DATA_ID_INTEGER_LIST*/);
+        draw(FIRST_MODEL_MAP);
+        draw(SECOND_MODEL_MAP);
 
 //        PROJECTION_M4X4_FLOAT_LIST.clear();
 //        MODELVIEW_M4X4_FLOAT_LIST.clear();
@@ -119,34 +124,36 @@ public class DrawWorld
         DRAWWORLDDATA_LIST.clear();
 //        FIRST_DATA_ID_INTEGER_LIST.clear();
 //        SECOND_DATA_ID_INTEGER_LIST.clear();
-//        DATA_SIZE = 0;
+        DATA_SIZE = 0;
 
         FIRST_MODEL_MAP.clear();
 //        FIRST_ID_INTEGER_LIST.clear();
-        FIRST_STEP_INTEGER_LIST.clear();
-        FIRST_SIZE = 0;
+//        FIRST_STEP_INTEGER_LIST.clear();
+//        FIRST_SIZE = 0;
 
         SECOND_MODEL_MAP.clear();
 //        SECOND_ID_INTEGER_LIST.clear();
-        SECOND_STEP_INTEGER_LIST.clear();
-        SECOND_SIZE = 0;
+//        SECOND_STEP_INTEGER_LIST.clear();
+//        SECOND_SIZE = 0;
 //        }
     }
 
-    public static void draw(Map<ByteArray, Integer> model_map, List<Integer> step_integer_list/*, List<Integer> id_integer_list*//*, List<Integer> data_id_integer_list*/)
+    public static void draw(Map<ByteArray, List<Integer>> model_map)
     {
         //        if (MyConfig.SHADER.gl_draw_elements_instanced)
 //        {
 //            int group = 0;
-        Object[] object_array = model_map.keySet().toArray();
+        Object[] keyset_object_array = model_map.keySet().toArray();
+        Object[] values_object_array = model_map.values().toArray();
 
         //0
         ObjectRender.takeDefault();
 
 //        int step_size = 0;
-        for (int g = 0; g < object_array.length; ++g)
+        for (int g = 0; g < keyset_object_array.length; ++g)
         {
-            byte[] byte_array = ((ByteArray)object_array[g]).array;
+            byte[] byte_array = ((ByteArray)keyset_object_array[g]).array;
+            List<Integer> index_integer_list = (List)values_object_array[g];
             DataLoader dataloader = DATALOADER_LIST.get(BytesReader.getInt(byte_array, 4 + 4 + 4 + 1));
             OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)dataloader.object_array[BytesReader.getInt(byte_array, 0)];
 //                int texture_id = BytesReader.getInt(byte_array, 4);
@@ -170,12 +177,17 @@ public class DrawWorld
 //            for (int i = 0; i < max; ++i)
 //            float[] skinning_float_array = drawworlddata.skinning_float_array;
 
-            for (int i = 0; i < step_integer_list.get(g); ++i)
+            //1
+            OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
+            OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+            OpenGLBuffer.setTextureBuffer(BytesReader.getInt(byte_array, 4), (byte)(openglobjectmemory.state & 1));
+
+            for (Integer integer : index_integer_list)
             {
 //                ObjectRender.enableBuffer(openglobjectmemory, openglobjectshadermemory);
 //                int index = step_size + id_integer_list.get(i);
 //                DrawWorldData drawworlddata = DRAWWORLDDATA_LIST.get(data_id_integer_list.get(step_size + i));
-                DrawWorldData drawworlddata = DRAWWORLDDATA_LIST.get(i);
+                DrawWorldData drawworlddata = DRAWWORLDDATA_LIST.get(integer);
 
 //                boolean animation = drawworlddata.skinning_float_array != null;
 //                if (animation)
@@ -190,10 +202,10 @@ public class DrawWorld
 //                OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //                OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer) Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 
-                //1
-                OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
-                OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-                OpenGLBuffer.setTextureBuffer(BytesReader.getInt(byte_array, 4), (byte)(openglobjectmemory.state & 1));
+//                //1
+//                OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
+//                OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+//                OpenGLBuffer.setTextureBuffer(BytesReader.getInt(byte_array, 4), (byte)(openglobjectmemory.state & 1));
 
                 OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
                 OpenGLBuffer.put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.projection_m4x4_float, 16);
@@ -205,18 +217,14 @@ public class DrawWorld
                 OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
                 OpenGLBuffer.put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
                 OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
-                if ((openglobjectmemory.state & 8) == 8)
-                {
+                if ((openglobjectmemory.state & 8) == 8) {
                     GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], -1.0F, -1.0F);
-                }
-                else
-                {
+                } else {
                     GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], drawworlddata.lig_b, drawworlddata.lig_s);
                 }
 
 //                if (animation)
-                if (drawworlddata.skinning_float_array != null)
-                {
+                if (drawworlddata.skinning_float_array != null) {
 //                    OpenGLAnimationMemory openglanimationmemory = (OpenGLAnimationMemory)dataloader.object_array[animation_id];
 //                    float[] skinning_float_array = SKINNING_MAP.get(i);
                     setFloatBuffer(drawworlddata.skinning_float_array);

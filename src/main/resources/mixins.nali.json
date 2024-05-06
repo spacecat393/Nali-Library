@@ -7,7 +7,8 @@
   "minVersion": "0.7.11",
   "client": [
     "IMixinEntityRenderer",
-    "MixinMinecraft"
+    "MixinMinecraft",
+    "MixinEntityRenderer"
   ],
   "mixins": [
     "IMixinEnumParticleTypes"

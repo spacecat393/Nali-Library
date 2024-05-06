@@ -326,4 +326,14 @@ public class OpenGLBuffer
         bytebuffer.flip();
         return bytebuffer;
     }
+
+    public static void put(FloatBuffer floatbuffer, float[] float_array, int max)
+    {
+        floatbuffer.clear();
+        for (int i = 0; i < max; ++i)
+        {
+            floatbuffer.put(float_array[i]);
+        }
+        floatbuffer.flip();
+    }
 }

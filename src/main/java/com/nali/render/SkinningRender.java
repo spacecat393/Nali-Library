@@ -3,6 +3,7 @@ package com.nali.render;
 import com.nali.data.BothData;
 import com.nali.data.client.ClientData;
 import com.nali.data.client.SkinningClientData;
+import com.nali.draw.DrawWorldData;
 import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
 import com.nali.system.DataLoader;
@@ -62,6 +63,7 @@ public class SkinningRender extends ObjectRender
     @Override
     public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
     {
+//        OPENGL_FLOATBUFFER.limit(this.skinning_float_array.length);
         setFloatBuffer(this.skinning_float_array);
         OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
 //        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[8], false, OPENGL_FLOATBUFFER);
@@ -353,10 +355,10 @@ public class SkinningRender extends ObjectRender
 //        OpenGlHelper.glMultMatrix(OpenGLCurrentMemory.OPENGL_FLOATBUFFER);
     }
 
-//    @Override
-//    public void drawLater(int index)
-//    {
-//        DrawWorld.SKINNING_MAP.put(DrawWorld.PROJECTION_M4X4_FLOATBUFFER_LIST.size(), this.skinning_float_array);
-//        super.drawLater(index);
-//    }
+    @Override
+    public void updateDataLater(DrawWorldData drawworlddata)
+    {
+        super.updateDataLater(drawworlddata);
+        drawworlddata.skinning_float_array = this.skinning_float_array;
+    }
 }

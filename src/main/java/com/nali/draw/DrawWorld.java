@@ -111,17 +111,17 @@ public class DrawWorld
 //        ObjectRender.takeDefault();
 //        draw(FIRST_MODEL_MAP);
 //        ObjectRender.setDefault();
+//        FIRST_MODEL_MAP.clear();
+//        SECOND_MODEL_MAP.clear();
+//        DRAWWORLDDATA_LIST.clear();
+//        DATA_SIZE = 0;
 //    }
-//
+
 //    public static void drawSecond()
 //    {
 //        ObjectRender.takeDefault();
 //        draw(SECOND_MODEL_MAP);
 //        ObjectRender.setDefault();
-//        FIRST_MODEL_MAP.clear();
-//        SECOND_MODEL_MAP.clear();
-//        DRAWWORLDDATA_LIST.clear();
-//        DATA_SIZE = 0;
 //    }
 
 //    @SubscribeEvent

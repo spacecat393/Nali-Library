@@ -112,23 +112,24 @@ public class ObjectRender
     public static void setTransparent(boolean transparent)
     {
         //        if (this.getTransparent(openglobjectmemory))
-        if (transparent)
-        {
-            GL11.glDepthMask(false);
-//            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
-
-            GL11.glEnable(GL11.GL_BLEND);
-
-            GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
-
-            GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-//        GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        }
-        else
-        {
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glDepthMask(true);
-        }
+        GL11.glDepthMask(!transparent);
+//        if (transparent)
+//        {
+//            GL11.glDepthMask(false);
+////            GlStateManager.blendFunc(GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ONE);
+//
+////            GL11.glEnable(GL11.GL_BLEND);
+////
+////            GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
+////
+////            GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+////        GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+//        }
+//        else
+//        {
+////            GL11.glDisable(GL11.GL_BLEND);
+//            GL11.glDepthMask(true);
+//        }
     }
 
 //    public static void deleteBuffer(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory)
@@ -322,6 +323,12 @@ public class ObjectRender
 
         GL11.glGetInteger(GL11.GL_DEPTH_WRITEMASK, OPENGL_INTBUFFER);
         GL_DEPTH_WRITEMASK = OPENGL_INTBUFFER.get(0);
+
+        GL11.glEnable(GL11.GL_BLEND);
+
+        GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
+
+        GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
     }
 
     public static void setDefault(/*OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory*/)

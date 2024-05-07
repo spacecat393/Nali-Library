@@ -38,7 +38,11 @@ public class OpenGLObjectShaderMemory
             {
                 GL_SHADING_LANGUAGE_VERSION = GL11.glGetString(GL20.GL_SHADING_LANGUAGE_VERSION);
 
-                if (!new File(folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION).isDirectory())
+                if (GL_SHADING_LANGUAGE_VERSION.contains("4.60"))
+                {
+                    GL_SHADING_LANGUAGE_VERSION = "4.60";
+                }
+                else if (!new File(folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION).isDirectory())
                 {
                     String gl_version = GL11.glGetString(GL11.GL_VERSION);
                     Nali.LOGGER.info("GL_VERSION " + gl_version);

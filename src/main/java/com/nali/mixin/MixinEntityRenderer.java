@@ -12,7 +12,7 @@ public abstract class MixinEntityRenderer
 {
     @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 3))
 //    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V", shift = At.Shift.BEFORE, ordinal = 1))
-    private void renderFWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
+    private void nali_renderFWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
     {
         DrawWorld.run();
 //        DrawWorld.drawFirst();

@@ -1,7 +1,6 @@
 package com.nali;
 
 import com.nali.config.MyConfig;
-import com.nali.key.KeyRegistryHelper;
 import com.nali.networks.NetworksRegistry;
 import com.nali.particle.ParticleRegistry;
 import com.nali.system.Reference;
@@ -41,7 +40,7 @@ public class Nali
             CONFIGURATION.load();
 //            MyConfig.registerConfig();
 //            ObjectWorldDraw.loadWithConfig();
-            KeyRegistryHelper.set();
+//            KeyRegistryHelper.set();
             OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MyConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
 //            OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();

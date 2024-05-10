@@ -2,6 +2,7 @@ package com.nali.key;
 
 import com.nali.Nali;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -10,6 +11,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
+import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
 @SideOnly(Side.CLIENT)
@@ -19,6 +21,11 @@ public class KeyHelper
     {
         copyToClipboard(getTextFromClipboard());
     }
+
+    public static KeyBinding[] KEYBINDING_ARRAY = new KeyBinding[0];
+    public static Method[] DETECT_METHOD_ARRAY = new Method[0];
+//    public static List<Integer> CURRENT_KEY_INTEGER_LIST = new ArrayList();
+//    public static List<Integer> CURRENT_MOUSE_KEY_INTEGER_LIST = new ArrayList();
 
     public static void copyToClipboard(String text)
     {

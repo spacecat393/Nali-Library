@@ -3,7 +3,9 @@ package com.nali;
 import com.nali.config.MyConfig;
 import com.nali.networks.NetworksRegistry;
 import com.nali.particle.ParticleRegistry;
+import com.nali.system.ClientLoader;
 import com.nali.system.Reference;
+import com.nali.system.ServerLoader;
 import com.nali.system.opengl.memory.OpenGLCurrentMemory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -12,6 +14,8 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -45,6 +49,7 @@ public class Nali
 
 //            OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 //            Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
+            ClientLoader.loadPreInit();
         }
     }
 
@@ -57,6 +62,12 @@ public class Nali
         {
             ParticleRegistry.register();
 //            DataLoader.setMemory();
+            ClientLoader.loadInit();
+        }
+
+        if (FMLLaunchHandler.side() == Side.SERVER)
+        {
+            ServerLoader.pairSound();
         }
     }
 

@@ -80,10 +80,10 @@ public class MyConfig
 //        @Config.RequiresMcRestart
 //        public boolean sort = true;
 
-        @Config.Name("Pre-Shaders")
-        @Config.Comment("Load first then no need to wait.")
-        @Config.RequiresMcRestart
-        public boolean pre_shader = false;
+//        @Config.Name("Pre-Shaders")
+//        @Config.Comment("Load first then no need to wait.")
+//        @Config.RequiresMcRestart
+//        public boolean pre_shader = false;
 
         @Config.Name("Max Shaders")
         @Config.Comment("Limit pre-shader if you run on Integrated GPU then try to Add More until it launch to main menu. [Add More is up on your Ram that can pre-shader how much on launch]")

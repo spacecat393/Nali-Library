@@ -2,6 +2,7 @@ package com.nali.system.opengl.memory;
 
 import com.nali.Nali;
 import com.nali.config.MyConfig;
+import com.nali.system.Reference;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.OpenGLShader;
@@ -13,6 +14,7 @@ import org.lwjgl.opengl.GL20;
 
 import java.io.File;
 import java.nio.ByteBuffer;
+import java.nio.file.Paths;
 
 import static com.nali.system.opengl.OpenGLBuffer.getFrom;
 
@@ -28,10 +30,12 @@ public class OpenGLObjectShaderMemory
     //StringBuilder->ShaderBuffer->ByteBuffer
     public Object frag_shader;
 
-    public OpenGLObjectShaderMemory(String[] shader_string_array, String folder_path)
+    public OpenGLObjectShaderMemory(String[] shader_string_array/*, String folder_path*/)
     {
         if (OpenGLCurrentMemory.SHADERS < MyConfig.SHADER.max_shaders)
         {
+            String shader_folder_string = Reference.MOD_ID + "/" + shader_string_array[0];
+            String modid_folder_string = Reference.MOD_ID + "/" + shader_string_array[2];
             ++OpenGLCurrentMemory.SHADERS;
 
             if (GL_SHADING_LANGUAGE_VERSION == null)
@@ -42,7 +46,8 @@ public class OpenGLObjectShaderMemory
                 {
                     GL_SHADING_LANGUAGE_VERSION = "4.60";
                 }
-                else if (!new File(folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION).isDirectory())
+//                else if (!new File(folder_path + "Shader/" + GL_SHADING_LANGUAGE_VERSION).isDirectory())
+                else if (!new File(modid_folder_string + "Shader/" + GL_SHADING_LANGUAGE_VERSION).isDirectory())
                 {
                     String gl_version = GL11.glGetString(GL11.GL_VERSION);
                     Nali.LOGGER.info("GL_VERSION " + gl_version);
@@ -50,9 +55,14 @@ public class OpenGLObjectShaderMemory
                 }
             }
 
-            this.readVertShader(shader_string_array, folder_path);
-            this.readFragShader(shader_string_array, folder_path);
-            this.createBuffer(shader_string_array, folder_path/*, 0*/);
+            shader_folder_string += "/Shader/" + GL_SHADING_LANGUAGE_VERSION;
+            byte shader_state = Byte.parseByte(shader_string_array[3]);
+//            this.readVertShader(shader_string_array, folder_path, shader_state);
+            this.readVertShader(shader_string_array, shader_folder_string, shader_state);
+//            this.readFragShader(shader_string_array, folder_path, shader_state);
+            this.readFragShader(shader_string_array, shader_folder_string, shader_state);
+//            this.createBuffer(shader_string_array, folder_path/*, 0*/);
+            this.createBuffer(shader_string_array, modid_folder_string/*, 0*/);
         }
         else
         {
@@ -60,35 +70,33 @@ public class OpenGLObjectShaderMemory
         }
     }
 
-    public void readVertShader(String[] shader_string_array, String folder_path)
+    public void readVertShader(String[] shader_string_array, String folder_path, byte shader_state)
     {
-        byte shader_state = Byte.parseByte(shader_string_array[1]);
-
+//        byte shader_state = Byte.parseByte(shader_string_array[1]);
         this.vert_shader = new StringBuilder();
-        StringReader.append((StringBuilder)this.vert_shader, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state);
+        StringReader.append((StringBuilder)this.vert_shader, folder_path + "/Vertex" + shader_state);
     }
 
-    public void readFragShader(String[] shader_string_array, String folder_path)
+    public void readFragShader(String[] shader_string_array, String folder_path, byte shader_state)
     {
-        byte shader_state = Byte.parseByte(shader_string_array[1]);
-
+//        byte shader_state = Byte.parseByte(shader_string_array[1]);
         this.frag_shader = new StringBuilder();
-        StringReader.append((StringBuilder)this.frag_shader, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Fragment" + shader_state);
+        StringReader.append((StringBuilder)this.frag_shader, folder_path + "/Fragment" + shader_state);
     }
 
     public String[][] getAttribLocationString2DArray(String shader_data_folder_string)
     {
-        return FileDataReader.getMixXStringArray(shader_data_folder_string + "/Attrib");
+        return FileDataReader.getMixXStringArray(Paths.get(shader_data_folder_string + "Attrib"));
     }
 
     public String[][] getUniformString2DArray(String shader_data_folder_string)
     {
-        return FileDataReader.getMixXStringArray(shader_data_folder_string + "/Uniform");
+        return FileDataReader.getMixXStringArray(Paths.get(shader_data_folder_string + "Uniform"));
     }
 
     public void createBuffer(String[] shader_string_array, String folder_path/*, int max_bones*/)
     {
-        String model_folder_string = folder_path + "Shaders/" + shader_string_array[0];
+        String model_folder_string = folder_path + "/Shader/" + shader_string_array[1] + "/";
         this.createShaderBuffer();
         String[][] attriblocation_string_2d_array = this.getAttribLocationString2DArray(model_folder_string);
         this.attriblocation_int_array = new int[attriblocation_string_2d_array.length];

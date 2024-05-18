@@ -1,6 +1,7 @@
 package com.nali.system.opengl.memory;
 
 import com.nali.math.M4x4;
+import com.nali.system.Reference;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,17 +15,19 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
     public int[][] back_bones_2d_int_array;
 //    public int[][] bones_2d_int_array;
 
-    public OpenGLSkinningShaderMemory(String[] shader_string_array, String folder_path)
+    public OpenGLSkinningShaderMemory(String[] shader_string_array/*, String folder_path*/)
     {
-        super(shader_string_array, folder_path);
+        super(shader_string_array/*, folder_path*/);
     }
 
     @Override
-    public void readVertShader(String[] shader_string_array, String folder_path)
+    public void readVertShader(String[] shader_string_array, String folder_path, byte shader_state)
     {
-        byte shader_state = Byte.parseByte(shader_string_array[1]);
+//        folder_path = shader_string_array[4];
+//        byte shader_state = Byte.parseByte(shader_string_array[1]);
 
-        String model_folder_path = folder_path + "Models/" + shader_string_array[2];
+//        String model_folder_path = folder_path + "/Models/" + shader_string_array[5];
+        String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[4] + "/Model/" + shader_string_array[5];
         String animation_string = "/Animation/";
 
 //        float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
@@ -40,7 +43,9 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
         StringBuilder vertex_stringbuilder = new StringBuilder();
         this.vert_shader = vertex_stringbuilder;
-        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 0);
+//        StringReader.append(vertex_stringbuilder, folder_path + "/Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 0);
+        String file_string = /*Reference.MOD_ID + "/" + */folder_path + "/Vertex" + shader_state;
+        StringReader.append(vertex_stringbuilder, file_string + 0);
 //        vertex_stringbuilder.append(getVertexHeaderShaderString());
 
         int bindposes_size = this.bind_poses_float_array.length / 16;
@@ -105,7 +110,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 //        }
         vertex_stringbuilder.append("uniform mat4 animation[").append(String.valueOf(this.max_bones)).append("];\n");
 
-        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 1);
+        StringReader.append(vertex_stringbuilder, file_string + 1);
 
 //        int[][] back_bones_2d_int_array = new int[this.max_bones][];
         this.back_bones_2d_int_array = new int[this.max_bones][];
@@ -149,7 +154,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
             vertex_stringbuilder.append("}\n");
         }
 
-        StringReader.append(vertex_stringbuilder, folder_path + "Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 2);
+        StringReader.append(vertex_stringbuilder, file_string + 2);
     }
 
 //    @Override

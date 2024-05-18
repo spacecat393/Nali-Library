@@ -15,20 +15,21 @@ public class OpenGLSkinningMemory extends OpenGLObjectMemory
     public byte max_joints;
 //    public int animation_id;
 
-    public OpenGLSkinningMemory(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
+    public OpenGLSkinningMemory(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
     {
-        super(model_string_array, folder_path, shader_string_2d_array);
+        super(model_string_array, folder_path/*, shader_string_2d_array*/);
     }
 
     @Override
-    public void createBufferAttribLocation(String[] model_string_array, String folder_path, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int length)
+    public void createBufferAttribLocation(String[] model_string_array, String model_folder_string/*, String folder_path*/, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int length)
     {
-        super.createBufferAttribLocation(model_string_array, folder_path, shader_string_2d_array, attriblocation_string_2d_array, length - 2);
-        String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
+        super.createBufferAttribLocation(model_string_array, model_folder_string/*, folder_path*/, shader_string_2d_array, attriblocation_string_2d_array, length - 2);
+//        String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
 //        byte max_joints = Byte.parseByte(model_string_array[4]);
 //        this.max_joints = Byte.parseByte(model_string_array[4]);
 //        this.animation_id = Integer.parseInt(model_string_array[7]);
         this.max_joints = Byte.parseByte(model_string_array[7]);
+//        this.max_joints = Byte.parseByte(model_string_array[8]);
 
 //        float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
         this.joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");

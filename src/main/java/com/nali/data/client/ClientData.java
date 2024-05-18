@@ -8,4 +8,6 @@ public interface ClientData
 {
     int StartPart();
     int EndPart();//MaxPart = StartPart - EndPart
+//    int Texture();
+//    int Shader();
 }

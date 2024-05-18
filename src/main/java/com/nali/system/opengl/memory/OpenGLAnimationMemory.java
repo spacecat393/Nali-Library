@@ -19,7 +19,7 @@ public class OpenGLAnimationMemory
 
     public OpenGLAnimationMemory(String[] model_string_array, String folder_path)
     {
-        String model_folder_path = folder_path + "Models/" + model_string_array[0];
+        String model_folder_path = folder_path + "/Model/" + model_string_array[0];
         String animation_string = "/Animation/";
 
         if (new File(model_folder_path + animation_string).isDirectory())

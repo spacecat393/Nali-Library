@@ -37,6 +37,7 @@ public abstract class MixinGameSettings
     private void nali_firstLoadOptions(CallbackInfo ci)
     {
         this.key_class_list = Reflect.getClasses("com.nali.list.key");
+//        this.key_class_list.sort(Comparator.comparing(Class::getName));
         int size = this.key_class_list.size();
         this.string_array = new String[size];
         this.string_array_object = new Object[size];

@@ -1,7 +1,6 @@
 package com.nali.render;
 
 import com.nali.config.MyConfig;
-import com.nali.system.DataLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -10,28 +9,31 @@ import org.lwjgl.openal.AL10;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import static com.nali.system.ClientLoader.OPENALMEMORY_LIST;
+
 @SideOnly(Side.CLIENT)
 public class SoundRender
 {
     public static Set<SoundRender> SOUNDRENDER_SET = new LinkedHashSet();
-    public DataLoader dataloader;
+//    public DataLoader dataloader;
     public int source = -1, id;
     public boolean pause;
 
-    public static SoundRender getSoundRender(DataLoader dataloader/*, int id*/)
-    {
-        if (dataloader.openalmemory == null)
-        {
-            return new NoSoundRender();
-        }
-        else
-        {
-            SoundRender soundrender = new SoundRender();
-            soundrender.dataloader = dataloader;
-//        this.gen(id);
-            return soundrender;
-        }
-    }
+//    public static SoundRender getSoundRender(/*DataLoader dataloader, */int id)
+//    {
+////        if (dataloader.openalmemory == null)
+//        if (id == -1)
+//        {
+//            return new NoSoundRender();
+//        }
+//        else
+//        {
+//            SoundRender soundrender = new SoundRender();
+////            soundrender.dataloader = dataloader;
+////        this.gen(id);
+//            return soundrender;
+//        }
+//    }
 
 //    public void rePlay(int id)
 //    {
@@ -113,7 +115,8 @@ public class SoundRender
         this.source = AL10.alGenSources();
 //        this.buffer = AL10.alGenBuffers();
 //        AL10.alBufferData(this.buffer, AL10.AL_FORMAT_MONO16, this.dataloader.openalmemory.bytebuffer_array[id], this.dataloader.openalmemory.sample_rate_int_array[id]);
-        AL10.alSourcei(this.source, AL10.AL_BUFFER, this.dataloader.openalmemory.sound_buffer_int_array[id]);
+//        AL10.alSourcei(this.source, AL10.AL_BUFFER, this.dataloader.openalmemory.sound_buffer_int_array[id]);
+        AL10.alSourcei(this.source, AL10.AL_BUFFER, OPENALMEMORY_LIST.get(id).sound_buffer);
         SOUNDRENDER_SET.add(this);
 //        });
     }

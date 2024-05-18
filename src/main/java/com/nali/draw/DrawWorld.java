@@ -2,7 +2,6 @@ package com.nali.draw;
 
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.render.ObjectRender;
-import com.nali.system.DataLoader;
 import com.nali.system.Reference;
 import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.BytesReader;
@@ -24,7 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nali.system.DataLoader.DATALOADER_LIST;
+import static com.nali.system.ClientLoader.OBJECT_LIST;
+import static com.nali.system.ClientLoader.OPENGLOBJECTSHADERMEMORY_LIST;
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
 
 @SideOnly(Side.CLIENT)
@@ -174,10 +174,12 @@ public class DrawWorld
         {
             byte[] byte_array = ((ByteArray)keyset_object_array[g]).array;
             List<Integer> index_integer_list = (List)values_object_array[g];
-            DataLoader dataloader = DATALOADER_LIST.get(BytesReader.getInt(byte_array, 4 + 4 + 4 + 1));
-            OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)dataloader.object_array[BytesReader.getInt(byte_array, 0)];
+//            DataLoader dataloader = DATALOADER_LIST.get(BytesReader.getInt(byte_array, 4 + 4 + 4 + 1));
+//            OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)dataloader.object_array[BytesReader.getInt(byte_array, 0)];
+            OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)OBJECT_LIST.get(BytesReader.getInt(byte_array, 0));
 //                int texture_id = BytesReader.getInt(byte_array, 4);
-            OpenGLObjectShaderMemory openglobjectshadermemory = dataloader.openglobjectshadermemory_array[BytesReader.getInt(byte_array, 4 + 4)];
+//            OpenGLObjectShaderMemory openglobjectshadermemory = dataloader.openglobjectshadermemory_array[BytesReader.getInt(byte_array, 4 + 4)];
+            OpenGLObjectShaderMemory openglobjectshadermemory = OPENGLOBJECTSHADERMEMORY_LIST.get(BytesReader.getInt(byte_array, 4 + 4));
 //            float lig_b = BytesReader.getFloat(byte_array, 4 + 4 + 4);
 //            float lig_s = BytesReader.getFloat(byte_array, 4 + 4 + 4 + 4);
 //                int animation_id = BytesReader.getInt(byte_array, 4 + 4 + 4 + 4 + 4);

@@ -6,6 +6,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @SideOnly(Side.CLIENT)
@@ -228,13 +229,15 @@ public class FileDataReader
 //        }
 //    }
 
-    public static String[][] getMixXStringArray(String path_string)
+//    public static String[][] getMixXStringArray(String path_string)
+    public static String[][] getMixXStringArray(Path path)
     {
         String[][] string_2d_array = null;
 
         try
         {
-            String data_string = new String(Files.readAllBytes(Paths.get(path_string)));
+//            String data_string = new String(Files.readAllBytes(Paths.get(path_string)));
+            String data_string = new String(Files.readAllBytes(path));
             String[] newline_string_array = data_string.split("\n");
             string_2d_array = new String[newline_string_array.length][];
 

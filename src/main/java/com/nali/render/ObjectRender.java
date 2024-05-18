@@ -4,7 +4,6 @@ import com.nali.data.client.ClientData;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.mixin.IMixinEntityRenderer;
-import com.nali.system.DataLoader;
 import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.BytesWriter;
 import com.nali.system.opengl.OpenGLBuffer;
@@ -17,12 +16,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.*;
 
+import static com.nali.system.ClientLoader.*;
 import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
 
 @SideOnly(Side.CLIENT)
 public class ObjectRender
 {
-    public DataLoader dataloader;
+//    public DataLoader dataloader;
 //    public Object[] memory_object_array;
 //    public BothData bothdata;
     public ClientData clientdata;
@@ -36,12 +36,12 @@ public class ObjectRender
 //    public byte[] glow_byte_array;
     public float lig_b = -1.0F, lig_s = -1.0F;
 
-    public ObjectRender(EntitiesRenderMemory entitiesrendermemory, ClientData clientdata, DataLoader dataloader/*, int i*/)
+    public ObjectRender(EntitiesRenderMemory entitiesrendermemory, ClientData clientdata/*, DataLoader dataloader*//*, int i*/)
     {
         this.entitiesrendermemory = entitiesrendermemory;
 //        this.bothdata = bothdata;
         this.clientdata = clientdata;
-        this.dataloader = dataloader;
+//        this.dataloader = dataloader;
 
 //        int max_part = bothdata.MaxPart();
 //        int max_part = clientdata.EndPart() - clientdata.StartPart();
@@ -178,7 +178,8 @@ public class ObjectRender
         OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 //        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemory.state & 1));
-        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(openglobjectmemory), (byte)(openglobjectmemory.state & 1));
+        OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, (byte)(openglobjectmemory.state & 1));
+//        OpenGLBuffer.setTextureBuffer(this.clientdata.Texture(), (byte)(openglobjectmemory.state & 1));
     }
 
 //    public void setFrameBufferUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory/*, int index*/)
@@ -436,12 +437,13 @@ public class ObjectRender
 //        return this.memory_object_array.length;
 //    }
 
-    public int getTextureBuffer(OpenGLObjectMemory openglobjectmemory)
+    public int getTextureID(OpenGLObjectMemory openglobjectmemory)
     {
-        return (int)this.dataloader.opengltexturememory.texture_array[openglobjectmemory.texture_id];
+//        return (int)this.dataloader.opengltexturememory.texture_array[openglobjectmemory.texture_id];
+        return openglobjectmemory.texture_id;
     }
 
-    public int getShaderBuffer(OpenGLObjectMemory openglobjectmemory)
+    public int getShaderID(OpenGLObjectMemory openglobjectmemory)
     {
         return openglobjectmemory.shader_id;
     }
@@ -494,17 +496,20 @@ public class ObjectRender
     public void drawLater(int index)
     {
 //        int model_id = index;
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.dataloader.object_array[index];
+//        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.dataloader.object_array[index];
+        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)OBJECT_LIST.get(index);
 //        this.updateLight(openglobjectmemory);
-        byte[] byte_array = new byte[4 + 4 + 4 + 1 + 4/* + 4*/];
+        byte[] byte_array = new byte[4 + 4 + 4 + 1/* + 4*//* + 4*/];
         BytesWriter.set(byte_array, index, 0);
-        BytesWriter.set(byte_array, this.getTextureBuffer(openglobjectmemory), 4);
-        BytesWriter.set(byte_array, this.getShaderBuffer(openglobjectmemory), 4 + 4);
+        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, 4);
+//        BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
+        BytesWriter.set(byte_array, this.getShaderID(openglobjectmemory), 4 + 4);
+//        BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
 //        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
         byte_array[4 + 4 + 4] = (byte)(this.getTransparent(openglobjectmemory) ? 1 : 0);
-        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
+//        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
         DrawWorld.add(new ByteArray(byte_array));
     }
 
@@ -524,9 +529,10 @@ public class ObjectRender
         float lig_b = this.lig_b;
         float lig_s = this.lig_s;
 //        OpenGLObjectMemory openglobjectmemory = this.dataloader.openglobjectmemory_array[index];
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.dataloader.object_array[index];
+        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)OBJECT_LIST.get(index);
 //        OpenGLObjectShaderMemory openglobjectshadermemory = this.dataloader.openglobjectshadermemory_array[openglobjectmemory.shader_id];
-        OpenGLObjectShaderMemory openglobjectshadermemory = this.dataloader.openglobjectshadermemory_array[this.getShaderBuffer(openglobjectmemory)];
+        OpenGLObjectShaderMemory openglobjectshadermemory = OPENGLOBJECTSHADERMEMORY_LIST.get(this.getShaderID(openglobjectmemory));
+//        OpenGLObjectShaderMemory openglobjectshadermemory = OPENGLOBJECTSHADERMEMORY_LIST.get(this.clientdata.Shader());
         this.updateLight(openglobjectmemory);
         takeDefault();
         enableBuffer(openglobjectmemory, openglobjectshadermemory);

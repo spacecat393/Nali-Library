@@ -195,7 +195,7 @@ public class SkinningRender extends ObjectRender
 
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)this.dataloader.openglobjectshadermemory_array[openglskinningmemory.shader_id];
-                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)OPENGLOBJECTSHADERMEMORY_LIST.get(openglskinningmemory.shader_id);
+                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)OPENGLOBJECTSHADERMEMORY_LIST.get(this.getShaderID(openglskinningmemory)/*openglskinningmemory.shader_id*/);
 
                 for (int b = 0; b < openglskinningshadermemory.back_bones_2d_int_array[joints].length; ++b)
                 {
@@ -261,7 +261,7 @@ public class SkinningRender extends ObjectRender
 
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)this.dataloader.openglobjectshadermemory_array[openglskinningmemory.shader_id];
-                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)OPENGLOBJECTSHADERMEMORY_LIST.get(openglskinningmemory.shader_id);
+                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)OPENGLOBJECTSHADERMEMORY_LIST.get(this.getShaderID(openglskinningmemory)/*openglskinningmemory.shader_id*/);
 
                 for (int b = 0; b < openglskinningshadermemory.back_bones_2d_int_array[joints].length; ++b)
                 {
@@ -329,7 +329,7 @@ public class SkinningRender extends ObjectRender
         {
 //            OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
 //            OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)this.dataloader.openglobjectshadermemory_array[openglskinningmemory.shader_id];
-            OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)OPENGLOBJECTSHADERMEMORY_LIST.get(openglskinningmemory.shader_id);
+            OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)OPENGLOBJECTSHADERMEMORY_LIST.get(this.getShaderID(openglskinningmemory)/*openglskinningmemory.shader_id*/);
 
             for (int b = 0; b < openglskinningshadermemory.back_bones_2d_int_array[joints].length; ++b)
             {

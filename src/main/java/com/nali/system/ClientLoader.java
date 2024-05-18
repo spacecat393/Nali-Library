@@ -231,6 +231,7 @@ public class ClientLoader
         }
 
         DATA_CLASS_LIST = null;
+        DATA_STRING_LIST = null;
     }
 
 //    public static void setModels(DataLoader dataloader, String mod_id_string)

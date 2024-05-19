@@ -92,7 +92,12 @@ public class ObjectRender
             OpenGLBuffer.setFloatBuffer(openglobjectshadermemory.attriblocation_int_array[i], openglattribmemory.buffer, openglattribmemory.size);
         }
 
-        OpenGlHelper.glUseProgram(openglobjectshadermemory.program);
+        int program = openglobjectshadermemory.program;
+//        if (MY_CURRENT_PROGRAM != program)
+//        {
+        OpenGlHelper.glUseProgram(program);
+//        }
+//        MY_CURRENT_PROGRAM = program;
 
         for (int i : openglobjectshadermemory.attriblocation_int_array)
         {
@@ -201,8 +206,13 @@ public class ObjectRender
 
     public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
     {
-        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], this.lig_b, this.lig_s);
-//        GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[7], this.lig_b, this.lig_s);
+        OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
+        OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
+        OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_b);
+        OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_s);
+        OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
+        OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+//        OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], this.lig_b, this.lig_s);
     }
 
 //    public void updateLightCoord()
@@ -417,6 +427,8 @@ public class ObjectRender
 
 //        OpenGlHelper.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        OpenGlHelper.glColor4f(RED, GREEN, BLUE, ALPHA);
+
+//        MY_CURRENT_PROGRAM = -1;
     }
 
     public static void disableBuffer(OpenGLObjectShaderMemory openglobjectshadermemory)
@@ -509,6 +521,7 @@ public class ObjectRender
 //        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
 //        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
         byte_array[4 + 4 + 4] = (byte)(this.getTransparent(openglobjectmemory) ? 1 : 0);
+        byte_array[4 + 4 + 4] += this.getExtraBit(openglobjectmemory);
 //        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
         DrawWorld.add(new ByteArray(byte_array));
     }
@@ -562,7 +575,8 @@ public class ObjectRender
         {
             this.lig_b = -1.0F;
             this.lig_s = -1.0F;
-        }}
+        }
+    }
 
     public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
     {
@@ -574,5 +588,10 @@ public class ObjectRender
             this.setLightMapUniform(openglobjectshadermemory);
         }
         this.setLightCoord(openglobjectshadermemory);
+    }
+
+    public byte getExtraBit(OpenGLObjectMemory openglobjectmemory)
+    {
+        return 0;
     }
 }

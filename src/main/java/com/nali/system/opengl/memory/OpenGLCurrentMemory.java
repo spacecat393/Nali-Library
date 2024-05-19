@@ -19,6 +19,7 @@ public class OpenGLCurrentMemory
 
     public static int
     SHADERS,
+//    MY_CURRENT_PROGRAM = -1,
     GL_CURRENT_PROGRAM,
     GL_ELEMENT_ARRAY_BUFFER_BINDING,
     GL_ARRAY_BUFFER_BINDING,

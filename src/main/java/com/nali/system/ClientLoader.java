@@ -2,6 +2,7 @@ package com.nali.system;
 
 import com.nali.Nali;
 import com.nali.config.MyConfig;
+import com.nali.render.ObjectRender;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.openal.memory.OpenALMemory;
 import com.nali.system.opengl.memory.*;
@@ -9,7 +10,10 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.nali.Nali.error;
@@ -168,22 +172,27 @@ public class ClientLoader
             }
         }
 
-//        if (MyConfig.SHADER.pre_shader)
-//        {
-//            for (int i = 0; i < OBJECT_LIST.size(); ++i)
-//            {
-//                if (OBJECT_LIST.get(i) instanceof OpenGLObjectMemory)
-//                {
-//                    new ObjectRender(null, new FastClientData(i, i + 1))
-//                    {
-//                        @Override
-//                        public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
-//                        {
-//                        }
-//                    }.draw();
-//                }
-//            }
-//        }
+        if (MyConfig.SHADER.pre_shader)
+        {
+            List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
+            for (Class render_class : render_class_list)
+            {
+                try
+                {
+                    Constructor constructor = render_class.getConstructors()[0];
+                    Class[] parameter_types_class_array = constructor.getParameterTypes();
+
+                    Object[] args_object_array = new Object[parameter_types_class_array.length];
+                    Arrays.fill(args_object_array, null);
+
+                    ((ObjectRender)constructor.newInstance(args_object_array)).draw();
+                }
+                catch (IllegalAccessException | InstantiationException | InvocationTargetException e)
+                {
+                    Nali.error(e);
+                }
+            }
+        }
     }
 
     public static void loadInit()

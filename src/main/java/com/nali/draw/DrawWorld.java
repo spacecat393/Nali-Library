@@ -15,7 +15,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL20;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -199,17 +198,30 @@ public class DrawWorld
 
             //1
             OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
-//            OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[6], 1);
-            OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
-//            OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
-            OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
-//            for (int i = 0; i < max; ++i)
-//            float[] skinning_float_array = drawworlddata.skinning_float_array;
+            if ((byte_array[4 + 4 + 4] & 2) == 2)
+            {
+                OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+                OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 
-            //1
-            OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
-            OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-            OpenGLBuffer.setTextureBuffer(BytesReader.getInt(byte_array, 4), (byte)(openglobjectmemory.state & 1));
+                int color = BytesReader.getInt(byte_array, 4);
+                OPENGL_FIXED_PIPE_FLOATBUFFER.limit(3);
+                OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
+                OPENGL_FIXED_PIPE_FLOATBUFFER.put(((color >> 16) & 0xFF) / 255.0F);
+                OPENGL_FIXED_PIPE_FLOATBUFFER.put(((color >> 8) & 0xFF) / 255.0F);
+                OPENGL_FIXED_PIPE_FLOATBUFFER.put((color & 0xFF) / 255.0F);
+                OPENGL_FIXED_PIPE_FLOATBUFFER.put(((color >> 24) & 0xFF) / 255.0F);
+                OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
+                OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[4], OPENGL_FIXED_PIPE_FLOATBUFFER);
+            }
+            else
+            {
+                OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
+                OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
+
+                OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
+                OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+                OpenGLBuffer.setTextureBuffer(BytesReader.getInt(byte_array, 4), (byte)(openglobjectmemory.state & 1));
+            }
 
             for (Integer integer : index_integer_list)
             {
@@ -224,7 +236,7 @@ public class DrawWorld
 //                    OPENGL_FLOATBUFFER.limit(drawworlddata.skinning_float_array.length);
 //                }
 
-                ObjectRender.setTransparent(byte_array[4 + 4 + 4] == 1);
+                ObjectRender.setTransparent((byte_array[4 + 4 + 4] & 1) == 1);
 
 //                //1
 //                OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
@@ -248,13 +260,31 @@ public class DrawWorld
                 OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
                 if ((openglobjectmemory.state & 8) == 8)
                 {
-                    GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], -1.0F, -1.0F);
-//                    GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[7], -1.0F, -1.0F);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.put(-1.0f);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.put(-1.0f);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
+//                    FloatBuffer floatbuffer = ByteBuffer.allocateDirect(2 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//                    floatbuffer.put(-1.0f);
+//                    floatbuffer.put(-1.0f);
+//                    floatbuffer.flip();
+                    OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+//                    OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], -1.0F, -1.0F);
                 }
                 else
                 {
-                    GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[6], drawworlddata.lig_b, drawworlddata.lig_s);
-//                    GL20.glUniform2f(openglobjectshadermemory.uniformlocation_int_array[7], drawworlddata.lig_b, drawworlddata.lig_s);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.put(drawworlddata.lig_b);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.put(drawworlddata.lig_s);
+                    OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
+//                    FloatBuffer floatbuffer = ByteBuffer.allocateDirect(2 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//                    floatbuffer.put(drawworlddata.lig_b);
+//                    floatbuffer.put(drawworlddata.lig_s);
+//                    floatbuffer.flip();
+                    OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+//                    OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], drawworlddata.lig_b, drawworlddata.lig_s);
                 }
 
 //                if (animation)

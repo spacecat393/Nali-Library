@@ -112,10 +112,10 @@ public class ClientLoader
                             String[] string_array = shader_string_2d_array[l];
                             switch (string_array.length)
                             {
-                                case 4:
+                                case 5:
                                     OPENGLOBJECTSHADERMEMORY_LIST.add(new OpenGLObjectShaderMemory(string_array/*, shader_file.getPath()*/));
                                     break;
-                                case 6:
+                                case 7:
                                     OPENGLOBJECTSHADERMEMORY_LIST.add(new OpenGLSkinningShaderMemory(string_array/*, shader_file.getPath()*/));
                                     break;
                                 default:

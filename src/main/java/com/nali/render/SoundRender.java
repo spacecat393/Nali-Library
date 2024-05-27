@@ -16,7 +16,7 @@ public class SoundRender
 {
     public static Set<SoundRender> SOUNDRENDER_SET = new LinkedHashSet();
 //    public DataLoader dataloader;
-    public int source = -1, id;
+    public int source = -1, id = -1;
     public boolean pause;
 
 //    public static SoundRender getSoundRender(/*DataLoader dataloader, */int id)
@@ -58,24 +58,24 @@ public class SoundRender
 
     public void play(int id)
     {
-        if (id != -1)
+//        if (id != -1)
+//        {
+        if (this.id != id || this.source == -1)
         {
-            if (this.id != id || this.source == -1)
-            {
 //                Minecraft.getMinecraft().addScheduledTask(() ->
 //                {
-                if (this.source != -1)
-                {
-                    AL10.alDeleteSources(this.source);
+            if (this.source != -1)
+            {
+                AL10.alDeleteSources(this.source);
 //                    AL10.alDeleteBuffers(this.buffer);
-                }
-
-                this.gen(id);
-
-                AL10.alSourcePlay(this.source);
-//                });
             }
+
+            this.gen(id);
+
+            AL10.alSourcePlay(this.source);
+//                });
         }
+//        }
     }
 
     public void loop()

@@ -1,8 +1,13 @@
 package com.nali.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.ITextureObject;
+import net.minecraft.client.renderer.texture.SimpleTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -22,6 +27,20 @@ public class RenderHelper
         bufferbuilder.pos(x + width, y, 0.0D).tex((u + width) * f, v * f1).endVertex();
         bufferbuilder.pos(x, y, 0.0D).tex(u * f, v * f1).endVertex();
         tessellator.draw();
+    }
+
+    public static int getTextureBuffer(ResourceLocation resourcelocation)
+    {
+        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+        ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
+
+        if (itextureobject == null)
+        {
+            itextureobject = new SimpleTexture(resourcelocation);
+            texturemanager.loadTexture(resourcelocation, itextureobject);
+        }
+
+        return itextureobject.getGlTextureId();
     }
 
     //    public static void blit(int x, int y, float tx, float ty, int txw, int tyw, int w, int h)

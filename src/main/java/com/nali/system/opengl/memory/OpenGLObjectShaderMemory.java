@@ -56,11 +56,11 @@ public class OpenGLObjectShaderMemory
             }
 
             shader_folder_string += "/Shader/" + GL_SHADING_LANGUAGE_VERSION;
-            byte shader_state = Byte.parseByte(shader_string_array[3]);
+//            byte shader_state = Byte.parseByte(shader_string_array[3]);
 //            this.readVertShader(shader_string_array, folder_path, shader_state);
-            this.readVertShader(shader_string_array, shader_folder_string, shader_state);
+            this.readVertShader(shader_string_array, shader_folder_string/*, shader_state*/);
 //            this.readFragShader(shader_string_array, folder_path, shader_state);
-            this.readFragShader(shader_string_array, shader_folder_string, shader_state);
+            this.readFragShader(shader_string_array, shader_folder_string/*, shader_state*/);
 //            this.createBuffer(shader_string_array, folder_path/*, 0*/);
             this.createBuffer(shader_string_array, modid_folder_string/*, 0*/);
         }
@@ -70,18 +70,18 @@ public class OpenGLObjectShaderMemory
         }
     }
 
-    public void readVertShader(String[] shader_string_array, String folder_path, byte shader_state)
+    public void readVertShader(String[] shader_string_array, String folder_path/*, byte shader_state*/)
     {
 //        byte shader_state = Byte.parseByte(shader_string_array[1]);
         this.vert_shader = new StringBuilder();
-        StringReader.append((StringBuilder)this.vert_shader, folder_path + "/Vertex" + shader_state);
+        StringReader.append((StringBuilder)this.vert_shader, folder_path + "/Vertex" + shader_string_array[3]);
     }
 
-    public void readFragShader(String[] shader_string_array, String folder_path, byte shader_state)
+    public void readFragShader(String[] shader_string_array, String folder_path/*, byte shader_state*/)
     {
 //        byte shader_state = Byte.parseByte(shader_string_array[1]);
         this.frag_shader = new StringBuilder();
-        StringReader.append((StringBuilder)this.frag_shader, folder_path + "/Fragment" + shader_state);
+        StringReader.append((StringBuilder)this.frag_shader, folder_path + "/Fragment" + shader_string_array[4]);
     }
 
     public String[][] getAttribLocationString2DArray(String shader_data_folder_string)

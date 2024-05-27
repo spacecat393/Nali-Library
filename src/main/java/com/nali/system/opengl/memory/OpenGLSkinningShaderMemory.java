@@ -21,13 +21,14 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
     }
 
     @Override
-    public void readVertShader(String[] shader_string_array, String folder_path, byte shader_state)
+    public void readVertShader(String[] shader_string_array, String folder_path/*, byte shader_state*/)
     {
 //        folder_path = shader_string_array[4];
 //        byte shader_state = Byte.parseByte(shader_string_array[1]);
 
 //        String model_folder_path = folder_path + "/Models/" + shader_string_array[5];
-        String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[4] + "/Model/" + shader_string_array[5];
+//        String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[4] + "/Model/" + shader_string_array[5];
+        String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[5] + "/Model/" + shader_string_array[6];
         String animation_string = "/Animation/";
 
 //        float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");
@@ -44,7 +45,8 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
         StringBuilder vertex_stringbuilder = new StringBuilder();
         this.vert_shader = vertex_stringbuilder;
 //        StringReader.append(vertex_stringbuilder, folder_path + "/Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 0);
-        String file_string = /*Reference.MOD_ID + "/" + */folder_path + "/Vertex" + shader_state;
+//        String file_string = /*Reference.MOD_ID + "/" + */folder_path + "/Vertex" + shader_state;
+        String file_string = /*Reference.MOD_ID + "/" + */folder_path + "/Vertex" + shader_string_array[3];
         StringReader.append(vertex_stringbuilder, file_string + 0);
 //        vertex_stringbuilder.append(getVertexHeaderShaderString());
 

@@ -183,7 +183,9 @@ public class ObjectRender
         OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 //        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemory.state & 1));
-        OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, (byte)(openglobjectmemory.state & 1));
+//        OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, (byte)(openglobjectmemory.state & 1));
+        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(openglobjectmemory), (byte)(openglobjectmemory.state & 1));
+//        OpenGLBuffer.setTextureBuffer(this.getTextureID(openglobjectmemory), (byte)(openglobjectmemory.state & 1));
 //        OpenGLBuffer.setTextureBuffer(this.clientdata.Texture(), (byte)(openglobjectmemory.state & 1));
     }
 
@@ -452,7 +454,13 @@ public class ObjectRender
     public int getTextureID(OpenGLObjectMemory openglobjectmemory)
     {
 //        return (int)this.dataloader.opengltexturememory.texture_array[openglobjectmemory.texture_id];
-        return openglobjectmemory.texture_id;
+        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemory.texture_id).texture_buffer;
+//        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemory.texture_id).texture_buffer;
+    }
+
+    public int getTextureBuffer(OpenGLObjectMemory openglobjectmemory)
+    {
+        return getTextureID(openglobjectmemory);
     }
 
     public int getShaderID(OpenGLObjectMemory openglobjectmemory)
@@ -513,7 +521,9 @@ public class ObjectRender
 //        this.updateLight(openglobjectmemory);
         byte[] byte_array = new byte[4 + 4 + 4 + 1/* + 4*//* + 4*/];
         BytesWriter.set(byte_array, index, 0);
-        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, 4);
+//        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, 4);
+        BytesWriter.set(byte_array, this.getTextureBuffer(openglobjectmemory), 4);
+//        BytesWriter.set(byte_array, this.getTextureID(openglobjectmemory), 4);
 //        BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
         BytesWriter.set(byte_array, this.getShaderID(openglobjectmemory), 4 + 4);
 //        BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);

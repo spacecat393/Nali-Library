@@ -62,9 +62,8 @@ public class Nali
         {
             ParticleRegistry.register();
 //            DataLoader.setMemory();
-            ClientLoader.loadInit();
+//            ClientLoader.loadInit();
         }
-
         if (FMLLaunchHandler.side() == Side.SERVER)
         {
             ServerLoader.pairSound();

@@ -3,6 +3,8 @@ package com.nali.mixin;
 import com.nali.Nali;
 import com.nali.key.KeyHelper;
 import com.nali.render.SoundRender;
+import com.nali.system.ClientLoader;
+import com.nali.system.Reflect;
 import com.nali.system.Timing;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
@@ -16,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.List;
 
 import static com.nali.key.KeyHelper.DETECT_METHOD_ARRAY;
 import static com.nali.render.SoundRender.SOUNDRENDER_SET;
@@ -23,6 +26,11 @@ import static com.nali.render.SoundRender.SOUNDRENDER_SET;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
 {
+//    @Shadow
+//    public TextureManager renderEngine;
+//    @Shadow
+//    private IReloadableResourceManager resourceManager;
+
 //    private byte state;
 
     @Inject(method = "runGameLoop", at = @At(value = "HEAD"))
@@ -73,19 +81,24 @@ public abstract class MixinMinecraft
 
         for (int i = 0; i < DETECT_METHOD_ARRAY.length; ++i)
         {
-            try
-            {
-                Method method = DETECT_METHOD_ARRAY[i];
-                int key = KeyHelper.KEYBINDING_ARRAY[i].getKeyCodeDefault();
+            Method method = DETECT_METHOD_ARRAY[i];
+            int key = KeyHelper.KEYBINDING_ARRAY[i].getKeyCodeDefault();
 //                if (key != 0)
 //                {
 //                LOGGER.info("K " + key + " " + Arrays.toString(MKEY_SET.toArray()));
 //                if (KKEY_SET.contains(key) || MKEY_SET.contains(key))
 //                if (KEY_SET.contains(key))
-                if ((key < 0 && Mouse.isButtonDown(key + 100)) || (key > 0 && Keyboard.isKeyDown(key)))
+            if ((key < 0 && Mouse.isButtonDown(key + 100)) || (key > 0 && Keyboard.isKeyDown(key)))
+            {
+                try
                 {
                     method.invoke(null);
                 }
+                catch (IllegalAccessException | InvocationTargetException e)
+                {
+                    Nali.error(e);
+                }
+            }
 //                    else
 //                    {
 //                        for (int k : KeyHelper.CURRENT_KEY_INTEGER_LIST)
@@ -107,11 +120,6 @@ public abstract class MixinMinecraft
 //                        }
 //                    }
 //                }
-            }
-            catch (IllegalAccessException | InvocationTargetException e)
-            {
-                Nali.error(e);
-            }
         }
 
 //        KEY_SET.clear();
@@ -126,6 +134,44 @@ public abstract class MixinMinecraft
 //        CURRENT_KEY_INTEGER_LIST.clear();
 //        CURRENT_MOUSE_KEY_INTEGER_LIST.clear();
 //        this.state = 0;
+    }
+
+    @Inject(method = "refreshResources", at = @At(value = "TAIL"))
+    @Mutable
+    private void nali_refreshResources(CallbackInfo callbackinfo)
+    {
+//        Nali.LOGGER.info("MC " + Minecraft.getMinecraft());
+//        Nali.LOGGER.info("MC " + Minecraft.getMinecraft().getTextureManager());
+        if (Minecraft.getMinecraft().getTextureManager() != null)
+        {
+            this.setRender();
+        }
+    }
+
+    @Inject(method = "init", at = @At(value = "TAIL"))
+    @Mutable
+    private void init(CallbackInfo callbackinfo)
+    {
+//        ClientLoader.loadPreInit();
+        this.setRender();
+        ClientLoader.loadInit();
+    }
+
+    private void setRender()
+    {
+//        Nali.LOGGER.info("setRender!");
+        List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
+//        TextureManager texturemanager = new TextureManager(this.resourceManager);
+        for (Class render_class : render_class_list)
+        {
+            try
+            {
+                render_class.getMethod("setTextureMap"/*, TextureManager.class*/).invoke(null/*, this.renderEngine*/);
+            }
+            catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+            {
+            }
+        }
     }
 
 //    @Inject(method = "runTickKeyboard", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;dispatchKeypresses()V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)

@@ -454,13 +454,14 @@ public class ObjectRender
     public int getTextureID(OpenGLObjectMemory openglobjectmemory)
     {
 //        return (int)this.dataloader.opengltexturememory.texture_array[openglobjectmemory.texture_id];
-        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemory.texture_id).texture_buffer;
 //        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemory.texture_id).texture_buffer;
+//        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemory.texture_id).texture_buffer;
+        return openglobjectmemory.texture_id;
     }
 
     public int getTextureBuffer(OpenGLObjectMemory openglobjectmemory)
     {
-        return getTextureID(openglobjectmemory);
+        return OPENGLTEXTUREMEMORY_LIST.get(getTextureID(openglobjectmemory)).texture_buffer;
     }
 
     public int getShaderID(OpenGLObjectMemory openglobjectmemory)

@@ -29,16 +29,22 @@ public class RenderHelper
         tessellator.draw();
     }
 
-    public static int getTextureBuffer(ResourceLocation resourcelocation)
+    public static int getTextureBuffer(/*TextureManager texturemanager, */ResourceLocation resourcelocation)
     {
+//        Nali.LOGGER.info("start T");
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+//        Nali.LOGGER.info("texturemanager " + texturemanager);
         ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
+//        Nali.LOGGER.info("F itextureobject " + itextureobject);
 
         if (itextureobject == null)
         {
+//            Nali.LOGGER.info("load!");
             itextureobject = new SimpleTexture(resourcelocation);
+//            Nali.LOGGER.info("SimpleTexture " + itextureobject);
             texturemanager.loadTexture(resourcelocation, itextureobject);
         }
+//        Nali.LOGGER.info("itextureobject " + itextureobject);
 
         return itextureobject.getGlTextureId();
     }

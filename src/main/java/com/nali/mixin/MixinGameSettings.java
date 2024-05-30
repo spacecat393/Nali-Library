@@ -84,9 +84,9 @@ public abstract class MixinGameSettings
 
             for (int i = 0; i < size; ++i)
             {
+                Class clasz = this.key_class_list.get(i);
                 try
                 {
-                    Class clasz = this.key_class_list.get(i);
                     KeyBinding keybinding = (KeyBinding)clasz.getConstructor(String[].class, Integer.class).newInstance(this.string_array_object[i], integer_array[i]);
                     clasz.getField("ID").set(null, i);
                     ClientRegistry.registerKeyBinding(keybinding);

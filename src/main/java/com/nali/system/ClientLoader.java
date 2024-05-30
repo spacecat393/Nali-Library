@@ -171,28 +171,6 @@ public class ClientLoader
                 }
             }
         }
-
-        if (MyConfig.SHADER.pre_shader)
-        {
-            List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
-            for (Class render_class : render_class_list)
-            {
-                try
-                {
-                    Constructor constructor = render_class.getConstructors()[0];
-                    Class[] parameter_types_class_array = constructor.getParameterTypes();
-
-                    Object[] args_object_array = new Object[parameter_types_class_array.length];
-                    Arrays.fill(args_object_array, null);
-
-                    ((ObjectRender)constructor.newInstance(args_object_array)).draw();
-                }
-                catch (IllegalAccessException | InstantiationException | InvocationTargetException e)
-                {
-                    Nali.error(e);
-                }
-            }
-        }
     }
 
     public static void loadInit()
@@ -235,6 +213,28 @@ public class ClientLoader
                             break;
                         }
                     }
+                }
+            }
+        }
+
+        if (MyConfig.SHADER.pre_shader)
+        {
+            List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
+            for (Class render_class : render_class_list)
+            {
+                try
+                {
+                    Constructor constructor = render_class.getConstructors()[0];
+                    Class[] parameter_types_class_array = constructor.getParameterTypes();
+
+                    Object[] args_object_array = new Object[parameter_types_class_array.length];
+                    Arrays.fill(args_object_array, null);
+
+                    ((ObjectRender)constructor.newInstance(args_object_array)).draw();
+                }
+                catch (IllegalAccessException | InstantiationException | InvocationTargetException e)
+                {
+                    Nali.error(e);
                 }
             }
         }

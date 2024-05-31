@@ -12,6 +12,8 @@ import com.nali.system.opengl.memory.OpenGLObjectMemory;
 import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.*;
@@ -604,5 +606,20 @@ public class ObjectRender
     public byte getExtraBit(OpenGLObjectMemory openglobjectmemory)
     {
         return 0;
+    }
+
+    public void updateLightCoord(World world, BlockPos blockpos)
+    {
+        if (world.isBlockLoaded(blockpos))
+        {
+            int brightness = world.getCombinedLight(blockpos, 0);
+            this.lig_b = (brightness % 65536) / 255.0F;
+            this.lig_s = (brightness / 65536.0F) / 255.0F;
+        }
+
+        if (this.lig_b < 0.1875F)
+        {
+            this.lig_b = 0.1875F;
+        }
     }
 }

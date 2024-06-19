@@ -1,6 +1,5 @@
-package com.nali.config;
+package com.nali;
 
-import com.nali.system.Reference;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -8,8 +7,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Config(modid = Reference.MOD_ID)
-public class MyConfig
+import static com.nali.Nali.ID;
+
+@Config(modid = ID)
+public class NaliConfig
 {
 //    @Config.Name("Using Multi Uniform")
 //    @Config.Comment("Rendering")
@@ -20,10 +21,10 @@ public class MyConfig
 //    public static final Light LIGHT = new Light();
 //    @Config.Name("Frame Settings")
 //    public static final Frame FRAME = new Frame();
-    @Config.Name("Shader Settings")
+    @Config.Name("Shader")
     public static final Shader SHADER = new Shader();
 
-    @Config.Name("Sound Settings")
+    @Config.Name("Sound")
     public static final Sound SOUND = new Sound();
 
 //    public static class Color
@@ -109,34 +110,15 @@ public class MyConfig
         public float al_pitch = 1.0F;
     }
 
-//    public static void registerConfig()
-//    {
-////        String comment = "Lighting";
-////        COLOR.r = Nali.CONFIGURATION.getFloat("R Color", "color", (float)COLOR.r, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-////        COLOR.g = Nali.CONFIGURATION.getFloat("G Color", "color", (float)COLOR.g, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-////        COLOR.b = Nali.CONFIGURATION.getFloat("B Color", "color", (float)COLOR.b, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-////        LIGHT.min_light = Nali.CONFIGURATION.getFloat("Min Light", "light", (float)LIGHT.min_light, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-////        LIGHT.min_brightness = Nali.CONFIGURATION.getFloat("Min Brightness", "light", (float)LIGHT.min_brightness, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-////        LIGHT.min_sun_brightness_factor = Nali.CONFIGURATION.getFloat("Min Sun Brightness Factor", "light", (float)LIGHT.min_sun_brightness_factor, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-////        LIGHT.sun_light = Nali.CONFIGURATION.getFloat("Sun Light", "light", (float)LIGHT.sun_light, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-////        LIGHT.moon_light = Nali.CONFIGURATION.getFloat("Moon Light", "light", (float)LIGHT.moon_light, Float.MIN_VALUE, Float.MAX_VALUE, comment);
-//        ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
-//        String comment = "Rendering";
-////        USING_MULTI_UNIFORM = Nali.CONFIGURATION.getBoolean("Using Multi Uniform", Configuration.CATEGORY_GENERAL, USING_MULTI_UNIFORM, comment);
-//        FRAME.using_frame_buffer_index = Nali.CONFIGURATION.getBoolean("Using Frame Buffer Index", "frame", FRAME.using_frame_buffer_index, comment);
-//        FRAME.frame_buffer_index = Nali.CONFIGURATION.getInt("Frame Buffer Index", "frame", FRAME.frame_buffer_index, Integer.MIN_VALUE, Integer.MAX_VALUE, comment);
-//    }
-
-    @Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Side.CLIENT)
+    @Mod.EventBusSubscriber(modid = ID, value = Side.CLIENT)
     public static class ConfigEvent
     {
         @SubscribeEvent
         public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
         {
-            if (event.getModID().equals(Reference.MOD_ID))
+            if (event.getModID().equals(ID))
             {
-                ConfigManager.sync(Reference.MOD_ID, Config.Type.INSTANCE);
-//                Nali.CONFIGURATION.save();
+                ConfigManager.sync(ID, Config.Type.INSTANCE);
             }
         }
     }

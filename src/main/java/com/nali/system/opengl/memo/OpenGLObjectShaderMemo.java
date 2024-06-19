@@ -1,8 +1,6 @@
-package com.nali.system.opengl.memory;
+package com.nali.system.opengl.memo;
 
-import com.nali.Nali;
-import com.nali.config.MyConfig;
-import com.nali.system.Reference;
+import com.nali.NaliConfig;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.OpenGLShader;
@@ -16,10 +14,12 @@ import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.file.Paths;
 
+import static com.nali.Nali.I;
+import static com.nali.Nali.ID;
 import static com.nali.system.opengl.OpenGLBuffer.getFrom;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLObjectShaderMemory
+public class OpenGLObjectShaderMemo
 {
     public static String GL_SHADING_LANGUAGE_VERSION;
     public int program;
@@ -30,13 +30,13 @@ public class OpenGLObjectShaderMemory
     //StringBuilder->ShaderBuffer->ByteBuffer
     public Object frag_shader;
 
-    public OpenGLObjectShaderMemory(String[] shader_string_array/*, String folder_path*/)
+    public OpenGLObjectShaderMemo(String[] shader_string_array/*, String folder_path*/)
     {
-        if (OpenGLCurrentMemory.SHADERS < MyConfig.SHADER.max_shaders)
+        if (OpenGLCurrentMemo.SHADERS < NaliConfig.SHADER.max_shaders)
         {
-            String shader_folder_string = Reference.MOD_ID + "/" + shader_string_array[0];
-            String modid_folder_string = Reference.MOD_ID + "/" + shader_string_array[2];
-            ++OpenGLCurrentMemory.SHADERS;
+            String shader_folder_string = ID + "/" + shader_string_array[0];
+            String modid_folder_string = ID + "/" + shader_string_array[2];
+            ++OpenGLCurrentMemo.SHADERS;
 
             if (GL_SHADING_LANGUAGE_VERSION == null)
             {
@@ -50,8 +50,8 @@ public class OpenGLObjectShaderMemory
                 else if (!new File(modid_folder_string + "Shader/" + GL_SHADING_LANGUAGE_VERSION).isDirectory())
                 {
                     String gl_version = GL11.glGetString(GL11.GL_VERSION);
-                    Nali.LOGGER.info("GL_VERSION " + gl_version);
-                    Nali.error("GL_SHADING_LANGUAGE_VERSION " + GL_SHADING_LANGUAGE_VERSION);
+                    I.logger.info("GL_VERSION " + gl_version);
+                    I.error("GL_SHADING_LANGUAGE_VERSION " + GL_SHADING_LANGUAGE_VERSION);
                 }
             }
 
@@ -66,7 +66,7 @@ public class OpenGLObjectShaderMemory
         }
         else
         {
-            Nali.error("MAX_SHADERS");
+            I.error("MAX_SHADERS");
         }
     }
 
@@ -144,7 +144,7 @@ public class OpenGLObjectShaderMemory
 //            {
 //                Nali.error(string);
 //            }
-            Nali.error(OpenGlHelper.glGetProgramInfoLog(this.program, 1024));
+            I.error(OpenGlHelper.glGetProgramInfoLog(this.program, 1024));
         }
     }
 

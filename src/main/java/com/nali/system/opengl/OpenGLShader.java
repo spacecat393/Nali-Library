@@ -1,12 +1,13 @@
 package com.nali.system.opengl;
 
-import com.nali.Nali;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.ByteBuffer;
+
+import static com.nali.Nali.I;
 
 @SideOnly(Side.CLIENT)
 public class OpenGLShader
@@ -30,7 +31,7 @@ public class OpenGLShader
 //                Nali.error(GLU.gluErrorString(error));
 //            }
 //            Nali.error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
-            Nali.error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
+            I.error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
         }
 
         return shader;

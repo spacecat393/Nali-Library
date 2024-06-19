@@ -5,7 +5,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.*;
 
-import static com.nali.Nali.error;
+import static com.nali.Nali.I;
 
 @SideOnly(Side.CLIENT)
 public class FFmpeg
@@ -122,7 +122,7 @@ public class FFmpeg
             }
             if (process.waitFor() != 0)
             {
-                error(error_stringbuilder.toString());
+                I.error(error_stringbuilder.toString());
             }
 
             bufferedreader.close();
@@ -133,7 +133,7 @@ public class FFmpeg
         }
         catch (IOException | NumberFormatException | InterruptedException e)
         {
-            error(e);
+            I.error(e);
         }
 
         return null;
@@ -167,7 +167,7 @@ public class FFmpeg
             }
             if (process.waitFor() != 0)
             {
-                error(error_stringbuilder.toString());
+                I.error(error_stringbuilder.toString());
             }
 
             byte[] byte_array = bytearrayoutputstream.toByteArray();
@@ -180,7 +180,7 @@ public class FFmpeg
         }
         catch (IOException | InterruptedException e)
         {
-            error(e);
+            I.error(e);
         }
 
         return null;

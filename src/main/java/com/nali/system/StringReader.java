@@ -1,11 +1,11 @@
 package com.nali.system;
 
-import com.nali.Nali;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
+import static com.nali.Nali.I;
 
 public class StringReader
 {
@@ -60,7 +60,7 @@ public class StringReader
         }
         catch (FileNotFoundException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
 
         try
@@ -73,7 +73,7 @@ public class StringReader
         }
         catch (IOException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
         finally
         {
@@ -85,7 +85,7 @@ public class StringReader
                 }
                 catch (IOException e)
                 {
-                    Nali.error(e);
+                    I.error(e);
                 }
             }
         }

@@ -4,7 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public interface ClientData
+public interface ClientDataO
 {
     int StartPart();
     int EndPart();//MaxPart = StartPart - EndPart

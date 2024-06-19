@@ -1,4 +1,4 @@
-package com.nali.system.opengl.memory;
+package com.nali.system.opengl.memo;
 
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLAnimationMemory
+public class OpenGLAnimationMemo
 {
     //mat4[F*B*N]
     public float[] transforms_float_array;
@@ -17,7 +17,7 @@ public class OpenGLAnimationMemory
     public int bones;
     public int length;
 
-    public OpenGLAnimationMemory(String[] model_string_array, String folder_path)
+    public OpenGLAnimationMemo(String[] model_string_array, String folder_path)
     {
         String model_folder_path = folder_path + "/Model/" + model_string_array[0];
         String animation_string = "/Animation/";

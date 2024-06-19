@@ -1,15 +1,15 @@
 {
   "package": "com.nali.mixin",
-  "refmap": "mixins.nali.refmap.json",
-  "target": "@env(DEFAULT)",
-  "compatibilityLevel": "JAVA_8",
   "required": true,
-  "minVersion": "0.7.11",
+  "refmap": "${mixin_refmap}",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8.5",
+  "compatibilityLevel": "JAVA_8",
   "client": [
     "IMixinEntityRenderer",
     "MixinMinecraft",
     "MixinEntityRenderer",
-    "MixinGameSettings",
+    "MixinGameSettings"
   ],
   "mixins": [
     "IMixinEnumParticleTypes"

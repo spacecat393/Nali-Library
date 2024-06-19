@@ -1,6 +1,5 @@
 package com.nali.mixin;
 
-import com.nali.Nali;
 import com.nali.key.MixKeyBinding;
 import com.nali.system.Reflect;
 import com.nali.system.StringReader;
@@ -21,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import static com.nali.Nali.I;
 import static com.nali.key.KeyHelper.DETECT_METHOD_ARRAY;
 import static com.nali.key.KeyHelper.KEYBINDING_ARRAY;
 
@@ -37,7 +37,6 @@ public abstract class MixinGameSettings
     private byte load_time;
 
     @Inject(method = "loadOptions", at = @At(value = "HEAD"))
-    @Mutable
     private void nali_firstLoadOptions(CallbackInfo ci)
     {
         if (++this.load_time == 2)
@@ -58,7 +57,6 @@ public abstract class MixinGameSettings
     }
 
     @Inject(method = "loadOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/GameSettings;dataFix(Lnet/minecraft/nbt/NBTTagCompound;)Lnet/minecraft/nbt/NBTTagCompound;", shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    @Mutable
     private void nali_midLoadOptions(CallbackInfo ci, FileInputStream fileInputStream, List<String> list, NBTTagCompound nbttagcompound)
     {
         if (this.load_time == 2)
@@ -96,7 +94,7 @@ public abstract class MixinGameSettings
                 }
                 catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e)
                 {
-                    Nali.error(e);
+                    I.error(e);
                 }
             }
 
@@ -107,7 +105,6 @@ public abstract class MixinGameSettings
     }
 
     @Inject(method = "loadOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;resetKeyBindingArrayAndHash()V", shift = At.Shift.AFTER))
-    @Mutable
     private void nali_lastLoadOptions(CallbackInfo ci)
     {
         if (this.load_time == 2)
@@ -120,7 +117,6 @@ public abstract class MixinGameSettings
     }
 
     @Inject(method = "saveOptions", at = @At(value = "HEAD"))
-    @Mutable
     private void nali_firstSaveOptions(CallbackInfo ci)
     {
         int size = KEYBINDING_ARRAY.length;
@@ -134,7 +130,6 @@ public abstract class MixinGameSettings
     }
 
     @Inject(method = "saveOptions", at = @At(value = "TAIL"))
-    @Mutable
     private void nali_lastSaveOptions(CallbackInfo ci)
     {
         int size = KEYBINDING_ARRAY.length;
@@ -149,7 +144,6 @@ public abstract class MixinGameSettings
     }
 
     @Inject(method = "setOptionKeyBinding", at = @At(value = "HEAD"), cancellable = true)
-    @Mutable
     private void setOptionKeyBinding(KeyBinding key, int keyCode, CallbackInfo ci)
     {
         for (KeyBinding keybinding : KEYBINDING_ARRAY)

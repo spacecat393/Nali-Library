@@ -1,4 +1,4 @@
-package com.nali.system.openal.memory;
+package com.nali.system.openal.memo;
 
 import com.nali.system.file.FFmpeg;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,13 +10,13 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 @SideOnly(Side.CLIENT)
-public class OpenALMemory
+public class OpenALMemo
 {
 //    public int[] sound_buffer_int_array;
 //    public int[] sample_rate_int_array;
     public int sound_buffer;
 
-    public OpenALMemory(File file)
+    public OpenALMemo(File file)
     {
 //        this.sound_buffer_int_array = new int[sound_file_array.length];
 //        this.sample_rate_int_array = new int[size];

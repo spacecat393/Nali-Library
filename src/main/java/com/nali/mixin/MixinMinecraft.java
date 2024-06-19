@@ -1,9 +1,7 @@
 package com.nali.mixin;
 
-import com.nali.Nali;
 import com.nali.key.KeyHelper;
-import com.nali.render.SoundRender;
-import com.nali.system.ClientLoader;
+import com.nali.render.sound.SoundRender;
 import com.nali.system.Reflect;
 import com.nali.system.Timing;
 import net.minecraft.client.Minecraft;
@@ -20,8 +18,9 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.nali.Nali.I;
 import static com.nali.key.KeyHelper.DETECT_METHOD_ARRAY;
-import static com.nali.render.SoundRender.SOUNDRENDER_SET;
+import static com.nali.render.sound.SoundRender.SOUNDRENDER_SET;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
@@ -34,7 +33,6 @@ public abstract class MixinMinecraft
 //    private byte state;
 
     @Inject(method = "runGameLoop", at = @At(value = "HEAD"))
-    @Mutable
     private void nali_runGameLoop(CallbackInfo callbackinfo)
     {
         Timing.count();
@@ -45,7 +43,6 @@ public abstract class MixinMinecraft
 //    }
 //
 //    @Inject(method = "runTick", at = @At(value = "TAIL"))
-//    @Mutable
 //    private void nali_runTick(CallbackInfo ci)
 //    {
 ////        boolean keyboard = (this.state & 1) == 0;
@@ -96,7 +93,7 @@ public abstract class MixinMinecraft
                 }
                 catch (IllegalAccessException | InvocationTargetException e)
                 {
-                    Nali.error(e);
+                    I.error(e);
                 }
             }
 //                    else
@@ -137,7 +134,6 @@ public abstract class MixinMinecraft
     }
 
     @Inject(method = "refreshResources", at = @At(value = "TAIL"))
-    @Mutable
     private void nali_refreshResources(CallbackInfo callbackinfo)
     {
 //        Nali.LOGGER.info("MC " + Minecraft.getMinecraft());
@@ -149,12 +145,11 @@ public abstract class MixinMinecraft
     }
 
     @Inject(method = "init", at = @At(value = "TAIL"))
-    @Mutable
     private void init(CallbackInfo callbackinfo)
     {
 //        ClientLoader.loadPreInit();
         this.setRender();
-        ClientLoader.loadInit();
+        I.clientloader.loadInit();
     }
 
     private void setRender()
@@ -175,7 +170,6 @@ public abstract class MixinMinecraft
     }
 
 //    @Inject(method = "runTickKeyboard", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;dispatchKeypresses()V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-//    @Mutable
 //    private void nali_runTickKeyboard(CallbackInfo ci, int i)
 //    {
 ////        this.state |= 1;
@@ -202,7 +196,6 @@ public abstract class MixinMinecraft
 //    }
 
 //    @Inject(method = "dispatchKeypresses", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Keyboard;isRepeatEvent()Z", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-//    @Mutable
 //    private void dispatchKeypresses(CallbackInfo ci, int i)
 //    {
 //        if (i != 0)
@@ -213,7 +206,6 @@ public abstract class MixinMinecraft
 //    }
 
 //    @Inject(method = "runTickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;setKeyBindState(IZ)V", shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
-//    @Mutable
 //    private void nali_runTickMouse(CallbackInfo ci, int i)
 //    {
 ////        this.state |= 2;

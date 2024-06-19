@@ -10,6 +10,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface IMixinEntityRenderer
 {
     @Accessor("lightmapTexture")
-    @Mutable
     DynamicTexture lightmapTexture();
 }

@@ -1,15 +1,15 @@
 package com.nali.render;
 
-import com.nali.data.client.ClientData;
+import com.nali.data.client.ClientDataO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.BytesWriter;
 import com.nali.system.opengl.OpenGLBuffer;
-import com.nali.system.opengl.memory.OpenGLAttribMemory;
-import com.nali.system.opengl.memory.OpenGLObjectMemory;
-import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
+import com.nali.system.opengl.memo.OpenGLAttribMemo;
+import com.nali.system.opengl.memo.OpenGLObjectMemo;
+import com.nali.system.opengl.memo.OpenGLObjectShaderMemo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.math.BlockPos;
@@ -18,18 +18,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.*;
 
-import static com.nali.system.ClientLoader.*;
-import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
+import static com.nali.Nali.I;
+import static com.nali.system.opengl.memo.OpenGLCurrentMemo.*;
 
 @SideOnly(Side.CLIENT)
-public class ObjectRender
+public class ObjectRender<C extends ClientDataO>
 {
 //    public DataLoader dataloader;
-//    public Object[] memory_object_array;
+//    public Object[] memo_object_array;
 //    public BothData bothdata;
-    public ClientData clientdata;
+    public C c;
 
-    public EntitiesRenderMemory entitiesrendermemory;
+//    public EntitiesRenderMemo entitiesrendermemo;
 //    public ObjectScreenDraw objectscreendraw;
 //    public ObjectWorldDraw objectworlddraw;
 
@@ -38,11 +38,11 @@ public class ObjectRender
 //    public byte[] glow_byte_array;
     public float lig_b = -1.0F, lig_s = -1.0F;
 
-    public ObjectRender(EntitiesRenderMemory entitiesrendermemory, ClientData clientdata/*, DataLoader dataloader*//*, int i*/)
+    public ObjectRender(/*EntitiesRenderMemo entitiesrendermemo, */C c/*, DataLoader dataloader*//*, int i*/)
     {
-        this.entitiesrendermemory = entitiesrendermemory;
+//        this.entitiesrendermemo = entitiesrendermemo;
 //        this.bothdata = bothdata;
-        this.clientdata = clientdata;
+        this.c = c;
 //        this.dataloader = dataloader;
 
 //        int max_part = bothdata.MaxPart();
@@ -51,12 +51,12 @@ public class ObjectRender
 
 //        this.texture_index_int_array = new int[max_part];
 
-//        this.memory_object_array = MIX_MEMORY_OBJECT_ARRAY[i];
-//        this.memory_object_array = new Object[max_part];
+//        this.memo_object_array = MIX_MEMORY_OBJECT_ARRAY[i];
+//        this.memo_object_array = new Object[max_part];
 //        this.model_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
 //        this.glow_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
 
-//        System.arraycopy(this.dataloader.memory_object_array, step_models, this.memory_object_array, 0, max_part);
+//        System.arraycopy(this.dataloader.memo_object_array, step_models, this.memo_object_array, 0, max_part);
 
 //        this.setGlow();
 //        this.setModel();
@@ -65,7 +65,7 @@ public class ObjectRender
 //        this.objectworlddraw = this.getObjectWorldDraw();
     }
 
-//    public ObjectRender(BothData bothdata, DataLoader dataloader/*, Object[] memory_object_array*/)
+//    public ObjectRender(BothData bothdata, DataLoader dataloader/*, Object[] memo_object_array*/)
 //    {
 //        this.bothdata = bothdata;
 //        this.dataloader = dataloader;
@@ -74,7 +74,7 @@ public class ObjectRender
 //
 ////        this.texture_index_int_array = new int[max_part];
 //
-////        this.memory_object_array = memory_object_array;
+////        this.memo_object_array = memo_object_array;
 //        this.model_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
 ////        this.glow_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
 //
@@ -82,31 +82,31 @@ public class ObjectRender
 //        this.objectworlddraw = this.getObjectWorldDraw();
 //    }
 
-    public static void enableBuffer(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory)
+    public static void enableBuffer(OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo)
     {
-//        OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
-        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, openglobjectmemory.element_array_buffer);
-//        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)openglobjectmemory.index, OpenGlHelper.GL_STATIC_DRAW);
+//        OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
+        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, openglobjectmemo.element_array_buffer);
+//        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)openglobjectmemo.index, OpenGlHelper.GL_STATIC_DRAW);
 
-        for (int i = 0; i < openglobjectshadermemory.attriblocation_int_array.length; ++i)
+        for (int i = 0; i < openglobjectshadermemo.attriblocation_int_array.length; ++i)
         {
-            OpenGLAttribMemory openglattribmemory = openglobjectmemory.openglattribmemory_arraylist.get(i);
-            OpenGLBuffer.setFloatBuffer(openglobjectshadermemory.attriblocation_int_array[i], openglattribmemory.buffer, openglattribmemory.size);
+            OpenGLAttribMemo openglattribmemo = openglobjectmemo.openglattribmemo_arraylist.get(i);
+            OpenGLBuffer.setFloatBuffer(openglobjectshadermemo.attriblocation_int_array[i], openglattribmemo.buffer, openglattribmemo.size);
         }
 
-        int program = openglobjectshadermemory.program;
+        int program = openglobjectshadermemo.program;
 //        if (MY_CURRENT_PROGRAM != program)
 //        {
         OpenGlHelper.glUseProgram(program);
 //        }
 //        MY_CURRENT_PROGRAM = program;
 
-        for (int i : openglobjectshadermemory.attriblocation_int_array)
+        for (int i : openglobjectshadermemo.attriblocation_int_array)
         {
             GL20.glEnableVertexAttribArray(i);
         }
 
-        if ((openglobjectmemory.state & 2) == 2)
+        if ((openglobjectmemo.state & 2) == 2)
         {
             GL11.glEnable(GL11.GL_CULL_FACE);
         }
@@ -118,7 +118,7 @@ public class ObjectRender
 
     public static void setTransparent(boolean transparent)
     {
-        //        if (this.getTransparent(openglobjectmemory))
+        //        if (this.getTransparent(openglobjectmemo))
         GL11.glDepthMask(!transparent);
 //        if (transparent)
 //        {
@@ -139,15 +139,15 @@ public class ObjectRender
 //        }
     }
 
-//    public static void deleteBuffer(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory)
+//    public static void deleteBuffer(OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo)
 //    {
-////        OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
-//        OpenGlHelper.glDeleteBuffers(openglobjectmemory.element_array_buffer);
+////        OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
+//        OpenGlHelper.glDeleteBuffers(openglobjectmemo.element_array_buffer);
 //
-//        for (int i = 0; i < openglobjectshadermemory.attriblocation_int_array.length; ++i)
+//        for (int i = 0; i < openglobjectshadermemo.attriblocation_int_array.length; ++i)
 //        {
-//            OpenGLAttribMemory openglattribmemory = openglobjectmemory.openglattribmemory_arraylist.get(i);
-//            OpenGlHelper.glDeleteBuffers(openglattribmemory.buffer);
+//            OpenGLAttribMemo openglattribmemo = openglobjectmemo.openglattribmemo_arraylist.get(i);
+//            OpenGlHelper.glDeleteBuffers(openglattribmemo.buffer);
 //        }
 //    }
 
@@ -166,57 +166,57 @@ public class ObjectRender
 //
 //    }
 
-    public void setFixedPipe(OpenGLObjectShaderMemory openglobjectshadermemory)
+    public void setFixedPipe(OpenGLObjectShaderMemo openglobjectshadermemo)
     {
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
         GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(openglobjectshadermemo.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(openglobjectshadermemo.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
-        OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(openglobjectshadermemo.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        OpenGlHelper.glUniform4(openglobjectshadermemory.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(openglobjectshadermemo.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
     }
 
-    public void setTextureUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory/*, int index*/)
+    public void setTextureUniform(OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo/*, int index*/)
     {
-        OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[4], 0);
+        OpenGlHelper.glUniform1i(openglobjectshadermemo.uniformlocation_int_array[4], 0);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-//        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememory.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemory.state & 1));
-//        OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, (byte)(openglobjectmemory.state & 1));
-        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(openglobjectmemory), (byte)(openglobjectmemory.state & 1));
-//        OpenGLBuffer.setTextureBuffer(this.getTextureID(openglobjectmemory), (byte)(openglobjectmemory.state & 1));
-//        OpenGLBuffer.setTextureBuffer(this.clientdata.Texture(), (byte)(openglobjectmemory.state & 1));
+//        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememo.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemo.state & 1));
+//        OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, (byte)(openglobjectmemo.state & 1));
+        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(openglobjectmemo), (byte)(openglobjectmemo.state & 1));
+//        OpenGLBuffer.setTextureBuffer(this.getTextureID(openglobjectmemo), (byte)(openglobjectmemo.state & 1));
+//        OpenGLBuffer.setTextureBuffer(this.clientdata.Texture(), (byte)(openglobjectmemo.state & 1));
     }
 
-//    public void setFrameBufferUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory/*, int index*/)
+//    public void setFrameBufferUniform(OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo/*, int index*/)
 //    {
-//        OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
+//        OpenGlHelper.glUniform1i(openglobjectshadermemo.uniformlocation_int_array[5], 1);
 //        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //        OpenGLBuffer.setTextureBuffer(Minecraft.getMinecraft().getFramebuffer().framebufferTexture, (byte)0);
-////        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(openglobjectmemory), (byte)(openglobjectmemory.state & 1));
+////        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(openglobjectmemo), (byte)(openglobjectmemo.state & 1));
 //    }
 
-    public void setLightMapUniform(OpenGLObjectShaderMemory openglobjectshadermemory)
+    public void setLightMapUniform(OpenGLObjectShaderMemo openglobjectshadermemo)
     {
-        OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
-//        OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[6], 2);
+        OpenGlHelper.glUniform1i(openglobjectshadermemo.uniformlocation_int_array[5], 1);
+//        OpenGlHelper.glUniform1i(openglobjectshadermemo.uniformlocation_int_array[6], 2);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
         OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
     }
 
-    public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
+    public void setLightCoord(OpenGLObjectShaderMemo openglobjectshadermemo)
     {
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
         OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
         OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_b);
         OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_s);
         OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
-        OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
-//        OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], this.lig_b, this.lig_s);
+        OpenGlHelper.glUniform2(openglobjectshadermemo.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+//        OpenGlHelper.glUniform2(openglobjectshadermemo.uniformlocation_int_array[7], this.lig_b, this.lig_s);
     }
 
 //    public void updateLightCoord()
@@ -234,11 +234,11 @@ public class ObjectRender
 //        return new ObjectWorldDraw(this);
 //    }
 
-    public static void takeDefault(/*OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory*/)
+    public static void takeDefault(/*OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo*/)
     {
 //        takeColor();
 
-//        OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
+//        OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
 
         GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, OPENGL_INTBUFFER);
         GL_CURRENT_PROGRAM = OPENGL_INTBUFFER.get(0);
@@ -280,11 +280,11 @@ public class ObjectRender
 //        GL_TEXTURE_MIN_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
 //        GL_TEXTURE_MAG_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 
-//        setBuffer(openglobjectmemory, openglobjectshadermemory);
+//        setBuffer(openglobjectmemo, openglobjectshadermemo);
 
-//        OpenGlHelper.glUseProgram(openglobjectshadermemory.program);
+//        OpenGlHelper.glUseProgram(openglobjectshadermemo.program);
 //
-//        for (int i : openglobjectshadermemory.attriblocation_int_array)
+//        for (int i : openglobjectshadermemo.attriblocation_int_array)
 //        {
 //            GL20.glEnableVertexAttribArray(i);
 //        }
@@ -297,7 +297,7 @@ public class ObjectRender
 
 //        GL11.glGetInteger(GL11.GL_FRONT_FACE, OPENGL_INTBUFFER);
 //        GL_FRONT_FACE = OPENGL_INTBUFFER.get(0);
-//        if (this.getTransparent(openglobjectmemory))
+//        if (this.getTransparent(openglobjectmemo))
 //        {
 //            GL11.glDepthMask(false);
 ////            GL11.glDepthFunc(GL11.GL_ALWAYS);
@@ -309,7 +309,7 @@ public class ObjectRender
 //        }
 
         GL_CULL_FACE = GL11.glIsEnabled(GL11.GL_CULL_FACE);
-//        if ((openglobjectmemory.state & 2) == 2)
+//        if ((openglobjectmemo.state & 2) == 2)
 //        {
 //            GL11.glEnable(GL11.GL_CULL_FACE);
 //        }
@@ -346,11 +346,11 @@ public class ObjectRender
         GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
     }
 
-    public static void setDefault(/*OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory*/)
+    public static void setDefault(/*OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo*/)
     {
-//        OpenGLObjectShaderMemory openglobjectshadermemory = (OpenGLObjectShaderMemory)openglobjectmemory.shader;
+//        OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
 
-//        for (int i : openglobjectshadermemory.attriblocation_int_array)
+//        for (int i : openglobjectshadermemo.attriblocation_int_array)
 //        {
 //            GL20.glDisableVertexAttribArray(i);
 //        }
@@ -435,50 +435,50 @@ public class ObjectRender
 //        MY_CURRENT_PROGRAM = -1;
     }
 
-    public static void disableBuffer(OpenGLObjectShaderMemory openglobjectshadermemory)
+    public static void disableBuffer(OpenGLObjectShaderMemo openglobjectshadermemo)
     {
-        for (int i : openglobjectshadermemory.attriblocation_int_array)
+        for (int i : openglobjectshadermemo.attriblocation_int_array)
         {
             GL20.glDisableVertexAttribArray(i);
         }
     }
 
-//    public OpenGLObjectMemory getMemory(int i)
+//    public OpenGLObjectMemo getMemo(int i)
 //    {
-//        return (OpenGLObjectMemory)this.memory_object_array[i];
+//        return (OpenGLObjectMemo)this.memo_object_array[i];
 //    }
 
-//    public int getMaxMemory()
+//    public int getMaxMemo()
 //    {
-//        return this.memory_object_array.length;
+//        return this.memo_object_array.length;
 //    }
 
-    public int getTextureID(OpenGLObjectMemory openglobjectmemory)
+    public int getTextureID(OpenGLObjectMemo openglobjectmemo)
     {
-//        return (int)this.dataloader.opengltexturememory.texture_array[openglobjectmemory.texture_id];
-//        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemory.texture_id).texture_buffer;
-//        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemory.texture_id).texture_buffer;
-        return openglobjectmemory.texture_id;
+//        return (int)this.dataloader.opengltexturememo.texture_array[openglobjectmemo.texture_id];
+//        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemo.texture_id).texture_buffer;
+//        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemo.texture_id).texture_buffer;
+        return openglobjectmemo.texture_id;
     }
 
-    public int getTextureBuffer(OpenGLObjectMemory openglobjectmemory)
+    public int getTextureBuffer(OpenGLObjectMemo openglobjectmemo)
     {
-        return OPENGLTEXTUREMEMORY_LIST.get(getTextureID(openglobjectmemory)).texture_buffer;
+        return I.clientloader.opengltexturememo_list.get(getTextureID(openglobjectmemo)).texture_buffer;
     }
 
-    public int getShaderID(OpenGLObjectMemory openglobjectmemory)
+    public int getShaderID(OpenGLObjectMemo openglobjectmemo)
     {
-        return openglobjectmemory.shader_id;
+        return openglobjectmemo.shader_id;
     }
 
-    public boolean getGlow(OpenGLObjectMemory openglobjectmemory)
+    public boolean getGlow(OpenGLObjectMemo openglobjectmemo)
     {
-        return (openglobjectmemory.state & 8) == 8;
+        return (openglobjectmemo.state & 8) == 8;
     }
 
-    public boolean getTransparent(OpenGLObjectMemory openglobjectmemory)
+    public boolean getTransparent(OpenGLObjectMemo openglobjectmemo)
     {
-        return (openglobjectmemory.state & 4) == 4;
+        return (openglobjectmemo.state & 4) == 4;
     }
 
     public void drawLater()
@@ -500,7 +500,7 @@ public class ObjectRender
         drawworlddata.lig_b = lig_b;
         drawworlddata.lig_s = lig_s;
         this.updateDataLater(drawworlddata);
-        for (int i = this.clientdata.StartPart(); i < this.clientdata.EndPart(); ++i)
+        for (int i = this.c.StartPart(); i < this.c.EndPart(); ++i)
         {
             this.drawLater(i);
         }
@@ -519,29 +519,29 @@ public class ObjectRender
     public void drawLater(int index)
     {
 //        int model_id = index;
-//        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)this.dataloader.object_array[index];
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)OBJECT_LIST.get(index);
-//        this.updateLight(openglobjectmemory);
+//        OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)this.dataloader.object_array[index];
+        OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)I.clientloader.object_list.get(index);
+//        this.updateLight(openglobjectmemo);
         byte[] byte_array = new byte[4 + 4 + 4 + 1/* + 4*//* + 4*/];
         BytesWriter.set(byte_array, index, 0);
-//        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemory)).texture_buffer, 4);
-        BytesWriter.set(byte_array, this.getTextureBuffer(openglobjectmemory), 4);
-//        BytesWriter.set(byte_array, this.getTextureID(openglobjectmemory), 4);
+//        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, 4);
+        BytesWriter.set(byte_array, this.getTextureBuffer(openglobjectmemo), 4);
+//        BytesWriter.set(byte_array, this.getTextureID(openglobjectmemo), 4);
 //        BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
-        BytesWriter.set(byte_array, this.getShaderID(openglobjectmemory), 4 + 4);
+        BytesWriter.set(byte_array, this.getShaderID(openglobjectmemo), 4 + 4);
 //        BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
 //        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
-        byte_array[4 + 4 + 4] = (byte)(this.getTransparent(openglobjectmemory) ? 1 : 0);
-        byte_array[4 + 4 + 4] += this.getExtraBit(openglobjectmemory);
+        byte_array[4 + 4 + 4] = (byte)(this.getTransparent(openglobjectmemo) ? 1 : 0);
+        byte_array[4 + 4 + 4] += this.getExtraBit(openglobjectmemo);
 //        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
         DrawWorld.add(new ByteArray(byte_array));
     }
 
     public void draw()
     {
-        for (int i = this.clientdata.StartPart(); i < this.clientdata.EndPart(); ++i)
+        for (int i = this.c.StartPart(); i < this.c.EndPart(); ++i)
         {
 //            if ((this.model_byte_array[i / 8] >> i % 8 & 1) == 1)
 //            {
@@ -554,15 +554,15 @@ public class ObjectRender
     {
         float lig_b = this.lig_b;
         float lig_s = this.lig_s;
-//        OpenGLObjectMemory openglobjectmemory = this.dataloader.openglobjectmemory_array[index];
-        OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)OBJECT_LIST.get(index);
-//        OpenGLObjectShaderMemory openglobjectshadermemory = this.dataloader.openglobjectshadermemory_array[openglobjectmemory.shader_id];
-        OpenGLObjectShaderMemory openglobjectshadermemory = OPENGLOBJECTSHADERMEMORY_LIST.get(this.getShaderID(openglobjectmemory));
-//        OpenGLObjectShaderMemory openglobjectshadermemory = OPENGLOBJECTSHADERMEMORY_LIST.get(this.clientdata.Shader());
-        this.updateLight(openglobjectmemory);
+//        OpenGLObjectMemo openglobjectmemo = this.dataloader.openglobjectmemo_array[index];
+        OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)I.clientloader.object_list.get(index);
+//        OpenGLObjectShaderMemo openglobjectshadermemo = this.dataloader.openglobjectshadermemo_array[openglobjectmemo.shader_id];
+        OpenGLObjectShaderMemo openglobjectshadermemo = I.clientloader.openglobjectshadermemo_list.get(this.getShaderID(openglobjectmemo));
+//        OpenGLObjectShaderMemo openglobjectshadermemo = I.clientloader.openglobjectshadermemo_list.get(this.clientdata.Shader());
+        this.updateLight(openglobjectmemo);
         takeDefault();
-        enableBuffer(openglobjectmemory, openglobjectshadermemory);
-        setTransparent(this.getTransparent(openglobjectmemory));
+        enableBuffer(openglobjectmemo, openglobjectshadermemo);
+        setTransparent(this.getTransparent(openglobjectmemo));
 
 //        if ((this.objectrender.glow_byte_array[index / 8] >> index % 8 & 1) == 1)
 //        else
@@ -570,40 +570,40 @@ public class ObjectRender
 //            this.updateLightCoord();
 //        }
 
-        this.setUniform(openglobjectmemory, openglobjectshadermemory, index);
+        this.setUniform(openglobjectmemo, openglobjectshadermemo, index);
 
-        GL11.glDrawElements(GL11.GL_TRIANGLES, openglobjectmemory.index_length, GL11.GL_UNSIGNED_INT, 0);
-//        DRAW_CONSUMER.accept(openglobjectmemory);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, openglobjectmemo.index_length, GL11.GL_UNSIGNED_INT, 0);
+//        DRAW_CONSUMER.accept(openglobjectmemo);
 
 //        OpenGlHelper.glPopAttrib();
-        disableBuffer(openglobjectshadermemory);
+        disableBuffer(openglobjectshadermemo);
         setDefault();
         this.lig_b = lig_b;
         this.lig_s = lig_s;
     }
 
-    public void updateLight(OpenGLObjectMemory openglobjectmemory)
+    public void updateLight(OpenGLObjectMemo openglobjectmemo)
     {
-        if (this.getGlow(openglobjectmemory))
+        if (this.getGlow(openglobjectmemo))
         {
             this.lig_b = -1.0F;
             this.lig_s = -1.0F;
         }
     }
 
-    public void setUniform(OpenGLObjectMemory openglobjectmemory, OpenGLObjectShaderMemory openglobjectshadermemory, int index)
+    public void setUniform(OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo, int index)
     {
-        this.setFixedPipe(openglobjectshadermemory);
-        this.setTextureUniform(openglobjectmemory, openglobjectshadermemory);
-//        this.setFrameBufferUniform(openglobjectmemory, openglobjectshadermemory);
+        this.setFixedPipe(openglobjectshadermemo);
+        this.setTextureUniform(openglobjectmemo, openglobjectshadermemo);
+//        this.setFrameBufferUniform(openglobjectmemo, openglobjectshadermemo);
         if (this.lig_b != -1.0F)
         {
-            this.setLightMapUniform(openglobjectshadermemory);
+            this.setLightMapUniform(openglobjectshadermemo);
         }
-        this.setLightCoord(openglobjectshadermemory);
+        this.setLightCoord(openglobjectshadermemo);
     }
 
-    public byte getExtraBit(OpenGLObjectMemory openglobjectmemory)
+    public byte getExtraBit(OpenGLObjectMemo openglobjectmemo)
     {
         return 0;
     }

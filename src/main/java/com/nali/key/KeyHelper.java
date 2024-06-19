@@ -1,6 +1,5 @@
 package com.nali.key;
 
-import com.nali.Nali;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,6 +12,8 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
+
+import static com.nali.Nali.I;
 
 @SideOnly(Side.CLIENT)
 public class KeyHelper
@@ -47,7 +48,7 @@ public class KeyHelper
             }
             catch (Exception e)
             {
-                Nali.error(e);
+                I.error(e);
             }
         }
 

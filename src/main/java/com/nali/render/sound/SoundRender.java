@@ -1,6 +1,6 @@
-package com.nali.render;
+package com.nali.render.sound;
 
-import com.nali.config.MyConfig;
+import com.nali.NaliConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -9,7 +9,7 @@ import org.lwjgl.openal.AL10;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.nali.system.ClientLoader.OPENALMEMORY_LIST;
+import static com.nali.Nali.I;
 
 @SideOnly(Side.CLIENT)
 public class SoundRender
@@ -116,7 +116,7 @@ public class SoundRender
 //        this.buffer = AL10.alGenBuffers();
 //        AL10.alBufferData(this.buffer, AL10.AL_FORMAT_MONO16, this.dataloader.openalmemory.bytebuffer_array[id], this.dataloader.openalmemory.sample_rate_int_array[id]);
 //        AL10.alSourcei(this.source, AL10.AL_BUFFER, this.dataloader.openalmemory.sound_buffer_int_array[id]);
-        AL10.alSourcei(this.source, AL10.AL_BUFFER, OPENALMEMORY_LIST.get(id).sound_buffer);
+        AL10.alSourcei(this.source, AL10.AL_BUFFER, I.clientloader.openalmemo_list.get(id).sound_buffer);
         SOUNDRENDER_SET.add(this);
 //        });
     }
@@ -127,8 +127,8 @@ public class SoundRender
 //        {
         if (this.source != -1)
         {
-            AL10.alSourcef(this.source, AL10.AL_GAIN, MyConfig.SOUND.al_gain);
-            AL10.alSourcef(this.source, AL10.AL_PITCH, MyConfig.SOUND.al_pitch);
+            AL10.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.SOUND.al_gain);
+            AL10.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.SOUND.al_pitch);
             AL10.alSource3f(this.source, AL10.AL_POSITION, x, y, z);
         }
 //        });

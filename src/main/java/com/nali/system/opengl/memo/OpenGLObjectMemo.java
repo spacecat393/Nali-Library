@@ -1,6 +1,6 @@
-package com.nali.system.opengl.memory;
+package com.nali.system.opengl.memo;
 
-import com.nali.system.Reference;
+import com.nali.Nali;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.OpenGLBuffer;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -14,12 +14,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
+import static com.nali.system.opengl.memo.OpenGLCurrentMemo.*;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLObjectMemory
+public class OpenGLObjectMemo
 {
-    public List<OpenGLAttribMemory> openglattribmemory_arraylist = new ArrayList();
+    public List<OpenGLAttribMemo> openglattribmemo_arraylist = new ArrayList();
     //int[N] -> IntBuffer
     public Object index;
     public int index_length;
@@ -33,7 +33,7 @@ public class OpenGLObjectMemory
     public byte state;//texture_state culling transparent glow
     public int /*model_id, */texture_id, shader_id;
 
-    public OpenGLObjectMemory(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
+    public OpenGLObjectMemo(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
     {
 //        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Reference.MOD_ID + "/" + model_string_array[2] + "/Shader"));
         String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderList"));
@@ -72,7 +72,7 @@ public class OpenGLObjectMemory
         OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (ByteBuffer)this.index, OpenGlHelper.GL_STATIC_DRAW);
 
 //        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
-        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Reference.MOD_ID + "/" + shader_string_2d_array[this.shader_id][0] + "/Shader/" + shader_string_2d_array[this.shader_id][1] + "/Attrib"));
+        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + shader_string_2d_array[this.shader_id][0] + "/Shader/" + shader_string_2d_array[this.shader_id][1] + "/Attrib"));
         this.createBufferAttribLocation(model_string_array, model_folder_string/*folder_path*/, shader_string_2d_array, attriblocation_string_2d_array, attriblocation_string_2d_array.length);
     }
 
@@ -86,7 +86,7 @@ public class OpenGLObjectMemory
         {
             String[] attriblocation_string_array = attriblocation_string_2d_array[i];
             String attriblocation_name_string = attriblocation_string_array[0];
-            this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1])));
+            this.openglattribmemo_arraylist.add(new OpenGLAttribMemo(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1])));
         }
     }
 }

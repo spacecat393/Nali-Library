@@ -1,11 +1,12 @@
 package com.nali.system;
 
 import com.google.common.reflect.ClassPath;
-import com.nali.Nali;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.nali.Nali.I;
 
 public class Reflect
 {
@@ -23,7 +24,7 @@ public class Reflect
         }
         catch (IOException | ClassNotFoundException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
 
         return class_arraylist;

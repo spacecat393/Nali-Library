@@ -1,13 +1,13 @@
 package com.nali.draw;
 
+import com.nali.Nali;
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.render.ObjectRender;
-import com.nali.system.Reference;
 import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.BytesReader;
 import com.nali.system.opengl.OpenGLBuffer;
-import com.nali.system.opengl.memory.OpenGLObjectMemory;
-import com.nali.system.opengl.memory.OpenGLObjectShaderMemory;
+import com.nali.system.opengl.memo.OpenGLObjectMemo;
+import com.nali.system.opengl.memo.OpenGLObjectShaderMemo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.common.Mod;
@@ -22,12 +22,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nali.system.ClientLoader.OBJECT_LIST;
-import static com.nali.system.ClientLoader.OPENGLOBJECTSHADERMEMORY_LIST;
-import static com.nali.system.opengl.memory.OpenGLCurrentMemory.*;
+import static com.nali.Nali.I;
+import static com.nali.system.opengl.memo.OpenGLCurrentMemo.*;
 
 @SideOnly(Side.CLIENT)
-@Mod.EventBusSubscriber(modid = Reference.MOD_ID, value = Side.CLIENT)
+@Mod.EventBusSubscriber(modid = Nali.ID, value = Side.CLIENT)
 public class DrawWorld
 {
     //no lighting time
@@ -175,10 +174,10 @@ public class DrawWorld
             List<Integer> index_integer_list = (List)values_object_array[g];
 //            DataLoader dataloader = DATALOADER_LIST.get(BytesReader.getInt(byte_array, 4 + 4 + 4 + 1));
 //            OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)dataloader.object_array[BytesReader.getInt(byte_array, 0)];
-            OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)OBJECT_LIST.get(BytesReader.getInt(byte_array, 0));
+            OpenGLObjectMemo openglobjectmemory = (OpenGLObjectMemo)I.clientloader.object_list.get(BytesReader.getInt(byte_array, 0));
 //                int texture_id = BytesReader.getInt(byte_array, 4);
 //            OpenGLObjectShaderMemory openglobjectshadermemory = dataloader.openglobjectshadermemory_array[BytesReader.getInt(byte_array, 4 + 4)];
-            OpenGLObjectShaderMemory openglobjectshadermemory = OPENGLOBJECTSHADERMEMORY_LIST.get(BytesReader.getInt(byte_array, 4 + 4));
+            OpenGLObjectShaderMemo openglobjectshadermemory = I.clientloader.openglobjectshadermemo_list.get(BytesReader.getInt(byte_array, 4 + 4));
 //            float lig_b = BytesReader.getFloat(byte_array, 4 + 4 + 4);
 //            float lig_s = BytesReader.getFloat(byte_array, 4 + 4 + 4 + 4);
 //                int animation_id = BytesReader.getInt(byte_array, 4 + 4 + 4 + 4 + 4);

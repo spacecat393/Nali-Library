@@ -1,21 +1,21 @@
-package com.nali.system.opengl.memory;
+package com.nali.system.opengl.memo;
 
+import com.nali.Nali;
 import com.nali.math.M4x4;
-import com.nali.system.Reference;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
+public class OpenGLSkinningShaderMemo extends OpenGLObjectShaderMemo
 {
     public int max_bones;
     public float[] bind_poses_float_array;
     public int[][] back_bones_2d_int_array;
 //    public int[][] bones_2d_int_array;
 
-    public OpenGLSkinningShaderMemory(String[] shader_string_array/*, String folder_path*/)
+    public OpenGLSkinningShaderMemo(String[] shader_string_array/*, String folder_path*/)
     {
         super(shader_string_array/*, folder_path*/);
     }
@@ -28,7 +28,7 @@ public class OpenGLSkinningShaderMemory extends OpenGLObjectShaderMemory
 
 //        String model_folder_path = folder_path + "/Models/" + shader_string_array[5];
 //        String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[4] + "/Model/" + shader_string_array[5];
-        String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[5] + "/Model/" + shader_string_array[6];
+        String model_folder_path = Nali.ID + "/" + shader_string_array[5] + "/Model/" + shader_string_array[6];
         String animation_string = "/Animation/";
 
 //        float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "BindPoses");

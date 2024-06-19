@@ -1,10 +1,10 @@
 [
 	{
-		"modid": "${modid}",
-		"name": "NaliLibrary",
-		"description": "Rendering\n3D-Skinning\nSounds\nData Loader\n",
-		"version": "${version}",
-		"mcversion": "${mcversion}",
+		"modid": "${mod_id}",
+		"name": "${mod_name}",
+		"description": "NaliLibrary",
+		"version": "${mod_version}",
+		"mcversion": "1.12.2",
 		"url": "https://twitter.com/Nali36687751",
 		"updateUrl": "",
 		"authorList": ["Nali"],

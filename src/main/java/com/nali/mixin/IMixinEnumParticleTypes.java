@@ -11,14 +11,12 @@ import java.util.Map;
 public interface IMixinEnumParticleTypes
 {
     @Accessor("PARTICLES")
-    @Mutable
     static Map<Integer, EnumParticleTypes> PARTICLES()
     {
         return null;
     }
 
     @Accessor("BY_NAME")
-    @Mutable
     static Map<String, EnumParticleTypes> BY_NAME()
     {
         return null;

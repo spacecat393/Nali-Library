@@ -14,7 +14,6 @@
 //public abstract class MixinKeyBinding
 //{
 //    @Inject(method = "resetKeyBindingArrayAndHash", at = @At(value = "TAIL"))
-//    @Mutable
 //    private static void nali_resetKeyBindingArrayAndHash(CallbackInfo callbackinfo)
 //    {
 //        for (KeyBinding keybinding : KEYBINDING_ARRAY)

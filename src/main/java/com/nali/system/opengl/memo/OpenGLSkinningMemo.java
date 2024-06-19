@@ -1,4 +1,4 @@
-package com.nali.system.opengl.memory;
+package com.nali.system.opengl.memo;
 
 import com.nali.system.file.FileDataReader;
 import com.nali.system.opengl.OpenGLBuffer;
@@ -8,14 +8,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.nio.ByteBuffer;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLSkinningMemory extends OpenGLObjectMemory
+public class OpenGLSkinningMemo extends OpenGLObjectMemo
 {
     public float[] joints_float_array;
     public float[] weights_float_array;
     public byte max_joints;
 //    public int animation_id;
 
-    public OpenGLSkinningMemory(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
+    public OpenGLSkinningMemo(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
     {
         super(model_string_array, folder_path/*, shader_string_2d_array*/);
     }
@@ -71,9 +71,9 @@ public class OpenGLSkinningMemory extends OpenGLObjectMemory
 
 //        FloatBuffer joints_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joints_float_array, true);
         ByteBuffer joints_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_joints_float_array, true);
-        this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(joints_bytebuffer, OpenGLBuffer.loadFloatBuffer(joints_bytebuffer), limit_max_joints));
+        this.openglattribmemo_arraylist.add(new OpenGLAttribMemo(joints_bytebuffer, OpenGLBuffer.loadFloatBuffer(joints_bytebuffer), limit_max_joints));
 //        FloatBuffer weights_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weights_float_array, true);
         ByteBuffer weights_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_weights_float_array, true);
-        this.openglattribmemory_arraylist.add(new OpenGLAttribMemory(weights_bytebuffer, OpenGLBuffer.loadFloatBuffer(weights_bytebuffer), limit_max_joints));
+        this.openglattribmemo_arraylist.add(new OpenGLAttribMemo(weights_bytebuffer, OpenGLBuffer.loadFloatBuffer(weights_bytebuffer), limit_max_joints));
     }
 }

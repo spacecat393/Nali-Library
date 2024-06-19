@@ -1,23 +1,21 @@
-package com.nali.networks;
+package com.nali.network;
 
 import com.nali.Nali;
-import com.nali.system.Reference;
 import com.nali.system.Reflect;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Comparator;
 import java.util.List;
 
-public class NetworksRegistry
+public class NetworkRegistry
 {
-    public static SimpleNetworkWrapper I = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
+    public static SimpleNetworkWrapper I = net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.newSimpleChannel(Nali.ID);
 
     public static void register()
     {
-        List<Class> handlers_class_list = Reflect.getClasses("com.nali.list.handlers");
-        List<Class> messages_class_list = Reflect.getClasses("com.nali.list.messages");
+        List<Class> handlers_class_list = Reflect.getClasses("com.nali.list.network.handler");
+        List<Class> messages_class_list = Reflect.getClasses("com.nali.list.network.message");
         handlers_class_list.sort(Comparator.comparing(Class::getName));
         messages_class_list.sort(Comparator.comparing(Class::getName));
 
@@ -30,7 +28,7 @@ public class NetworksRegistry
             }
             catch (IllegalAccessException | NoSuchFieldException e)
             {
-                Nali.error(e);
+                Nali.I.error(e);
             }
         }
     }

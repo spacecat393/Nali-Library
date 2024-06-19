@@ -1,6 +1,5 @@
 package com.nali.particle;
 
-import com.nali.Nali;
 import com.nali.mixin.IMixinEnumParticleTypes;
 import com.nali.system.Reflect;
 import net.minecraft.client.Minecraft;
@@ -13,6 +12,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.List;
+
+import static com.nali.Nali.I;
 
 public class ParticleRegistry
 {
@@ -45,7 +46,7 @@ public class ParticleRegistry
             }
             catch (IllegalAccessException | NoSuchFieldException e)
             {
-                Nali.error(e);
+                I.error(e);
             }
         }
     }
@@ -66,7 +67,7 @@ public class ParticleRegistry
         }
         catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
     }
 }

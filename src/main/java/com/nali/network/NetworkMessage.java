@@ -1,9 +1,9 @@
-package com.nali.networks;
+package com.nali.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
-public abstract class NetworksMessage implements IMessage
+public abstract class NetworkMessage implements IMessage
 {
     public byte[] data;
 

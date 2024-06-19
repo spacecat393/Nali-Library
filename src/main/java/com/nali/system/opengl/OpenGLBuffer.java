@@ -1,6 +1,5 @@
 package com.nali.system.opengl;
 
-import com.nali.Nali;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -11,6 +10,8 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import static com.nali.Nali.I;
 
 @SideOnly(Side.CLIENT)
 public class OpenGLBuffer
@@ -304,7 +305,7 @@ public class OpenGLBuffer
             }
             default:
             {
-                Nali.error("TEXTURE_LEAK");
+                I.error("TEXTURE_LEAK");
             }
         }
     }

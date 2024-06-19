@@ -1,6 +1,5 @@
-package com.nali.system.opengl.memory;
+package com.nali.system.opengl.memo;
 
-import com.nali.Nali;
 import com.nali.system.opengl.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,10 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import static com.nali.system.opengl.memory.OpenGLCurrentMemory.OPENGL_INTBUFFER;
+import static com.nali.Nali.I;
+import static com.nali.system.opengl.memo.OpenGLCurrentMemo.OPENGL_INTBUFFER;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLTextureMemory
+public class OpenGLTextureMemo
 {
 //    //ByteBuffer -> TextureBuffer
 //    public Object[] texture_array;
@@ -23,7 +23,7 @@ public class OpenGLTextureMemory
 //    public int[] height_int_array;
     public int texture_buffer;
 
-    public OpenGLTextureMemory(/*String mod_id_string*/File file)
+    public OpenGLTextureMemo(/*String mod_id_string*/File file)
     {
 //        File[] file_array = new File(mod_id_string + "Textures/").listFiles();
 //        int size = file_array.length;
@@ -76,7 +76,7 @@ public class OpenGLTextureMemory
         }
         catch (IOException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
 //        }
     }

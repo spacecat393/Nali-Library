@@ -1,11 +1,10 @@
 package com.nali.system;
 
-import com.nali.Nali;
-import com.nali.config.MyConfig;
+import com.nali.NaliConfig;
 import com.nali.render.ObjectRender;
 import com.nali.system.file.FileDataReader;
-import com.nali.system.openal.memory.OpenALMemory;
-import com.nali.system.opengl.memory.*;
+import com.nali.system.openal.memo.OpenALMemo;
+import com.nali.system.opengl.memo.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,39 +15,50 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.nali.Nali.error;
+import static com.nali.Nali.I;
+import static com.nali.Nali.ID;
 
 @SideOnly(Side.CLIENT)
 public class ClientLoader
 {
-    public static List<Class> DATA_CLASS_LIST = Reflect.getClasses("com.nali.list.data");
-    public static List<String> DATA_STRING_LIST = new ArrayList();
+    public List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
+    public List<String> data_string_list = new ArrayList();
 //    public static Object[][] MIX_MEMORY_OBJECT_ARRAY;
 //    public Object[] memory_object_array;
 //    public Object[] object_array;
-    public static List<Object> OBJECT_LIST = new ArrayList();
+    public List<Object> object_list = new ArrayList();
 //    public OpenGLObjectShaderMemory[] openglobjectshadermemory_array;
-    public static List<OpenGLObjectShaderMemory> OPENGLOBJECTSHADERMEMORY_LIST = new ArrayList();
+    public List<OpenGLObjectShaderMemo> openglobjectshadermemo_list = new ArrayList();
 //    public List<OpenGLAnimationMemory> openglanimationmemory_list = new ArrayList();
 //    public OpenGLTextureMemory opengltexturememory;
-    public static List<OpenGLTextureMemory> OPENGLTEXTUREMEMORY_LIST = new ArrayList();
+    public List<OpenGLTextureMemo> opengltexturememo_list = new ArrayList();
 //    public OpenALMemory openalmemory;
-    public static List<OpenALMemory> OPENALMEMORY_LIST = new ArrayList();
+    public List<OpenALMemo> openalmemo_list = new ArrayList();
 
-    static
-    {
-        for (Class data_class : DATA_CLASS_LIST)
-        {
-            DATA_STRING_LIST.add(data_class.getSimpleName().toLowerCase());
-        }
-    }
+//    static
+//    {
+//        for (Class data_class : this.data_class_list)
+//        {
+//            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
+//        }
+//    }
 
 //    public static List<DataLoader> DATALOADER_LIST = new ArrayList();
 //    public static int MAX;
 //    public int index;
-    public static void loadPreInit()
+    public void loadPreInit()
     {
-        File[] file_array = new File(Reference.MOD_ID).listFiles();
+        for (Class data_class : this.data_class_list)
+        {
+            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
+        }
+
+        File[] file_array = new File(ID).listFiles();
+
+        if (file_array == null)
+        {
+            return;
+        }
 
         for (File file : file_array)
         {
@@ -56,30 +66,30 @@ public class ClientLoader
             if (texture_file_array != null)
             {
                 String name_file = file.getName();
-                for (int i = 0; i < DATA_STRING_LIST.size(); ++i)
+                for (int i = 0; i < this.data_string_list.size(); ++i)
                 {
-                    if (DATA_STRING_LIST.get(i).contains(name_file))
+                    if (this.data_string_list.get(i).contains(name_file))
                     {
                         try
                         {
-                            int step = OPENGLTEXTUREMEMORY_LIST.size();
-                            DATA_CLASS_LIST.get(i).getField("TEXTURE_STEP").set(null, step);
+                            int step = this.opengltexturememo_list.size();
+                            this.data_class_list.get(i).getField("TEXTURE_STEP").set(null, step);
 
                             for (File texture_file : texture_file_array)
                             {
-                                OPENGLTEXTUREMEMORY_LIST.add(null);
+                                this.opengltexturememo_list.add(null);
                             }
 
                             for (File texture_file : texture_file_array)
                             {
                                 String name = texture_file.getName();
                                 int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
-                                OPENGLTEXTUREMEMORY_LIST.set(index + step, new OpenGLTextureMemory(texture_file));
+                                this.opengltexturememo_list.set(index + step, new OpenGLTextureMemo(texture_file));
                             }
                         }
                         catch (IllegalAccessException | NoSuchFieldException e)
                         {
-                            Nali.error(e);
+                            I.error(e);
                         }
                         break;
                     }
@@ -93,18 +103,18 @@ public class ClientLoader
             if (shader_file.isFile())
             {
                 String name_file = file.getName();
-                for (int i = 0; i < DATA_STRING_LIST.size(); ++i)
+                for (int i = 0; i < this.data_string_list.size(); ++i)
                 {
-                    if (DATA_STRING_LIST.get(i).contains(name_file))
+                    if (this.data_string_list.get(i).contains(name_file))
                     {
                         String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
                         try
                         {
-                            DATA_CLASS_LIST.get(i).getField("SHADER_STEP").set(null, OPENGLOBJECTSHADERMEMORY_LIST.size());
+                            this.data_class_list.get(i).getField("SHADER_STEP").set(null, this.openglobjectshadermemo_list.size());
                         }
                         catch (IllegalAccessException | NoSuchFieldException e)
                         {
-                            Nali.error(e);
+                            I.error(e);
                         }
 
                         for (int l = 0; l < shader_string_2d_array.length; ++l)
@@ -113,13 +123,13 @@ public class ClientLoader
                             switch (string_array.length)
                             {
                                 case 5:
-                                    OPENGLOBJECTSHADERMEMORY_LIST.add(new OpenGLObjectShaderMemory(string_array/*, shader_file.getPath()*/));
+                                    this.openglobjectshadermemo_list.add(new OpenGLObjectShaderMemo(string_array/*, shader_file.getPath()*/));
                                     break;
                                 case 7:
-                                    OPENGLOBJECTSHADERMEMORY_LIST.add(new OpenGLSkinningShaderMemory(string_array/*, shader_file.getPath()*/));
+                                    this.openglobjectshadermemo_list.add(new OpenGLSkinningShaderMemo(string_array/*, shader_file.getPath()*/));
                                     break;
                                 default:
-                                    error("SHADER_LIST " + l);
+                                    I.error("SHADER_LIST " + l);
                             }
                         }
                         break;
@@ -134,18 +144,18 @@ public class ClientLoader
             if (model_file.isFile())
             {
                 String name_file = file.getName();
-                for (int i = 0; i < DATA_STRING_LIST.size(); ++i)
+                for (int i = 0; i < this.data_string_list.size(); ++i)
                 {
-                    if (DATA_STRING_LIST.get(i).contains(name_file))
+                    if (this.data_string_list.get(i).contains(name_file))
                     {
                         Object[] object_array = FileDataReader.getMixXStringArray(model_file.toPath());
                         try
                         {
-                            DATA_CLASS_LIST.get(i).getField("MODEL_STEP").set(null, OBJECT_LIST.size());
+                            this.data_class_list.get(i).getField("MODEL_STEP").set(null, this.object_list.size());
                         }
                         catch (IllegalAccessException | NoSuchFieldException e)
                         {
-                            Nali.error(e);
+                            I.error(e);
                         }
 
                         for (int l = 0; l < object_array.length; ++l)
@@ -154,16 +164,16 @@ public class ClientLoader
                             switch (string_array.length)
                             {
                                 case 1:
-                                    OBJECT_LIST.add(new OpenGLAnimationMemory(string_array, file.getPath()));
+                                    this.object_list.add(new OpenGLAnimationMemo(string_array, file.getPath()));
                                     break;
                                 case 7:
-                                    OBJECT_LIST.add(new OpenGLObjectMemory(string_array, file.getPath()));
+                                    this.object_list.add(new OpenGLObjectMemo(string_array, file.getPath()));
                                     break;
                                 case 8:
-                                    OBJECT_LIST.add(new OpenGLSkinningMemory(string_array, file.getPath()));
+                                    this.object_list.add(new OpenGLSkinningMemo(string_array, file.getPath()));
                                     break;
                                 default:
-                                    error("MODEL_LIST " + l);
+                                    I.error("MODEL_LIST " + l);
                             }
                         }
                         break;
@@ -173,11 +183,16 @@ public class ClientLoader
         }
     }
 
-    public static void loadInit()
+    public void loadInit()
     {
-        if (MyConfig.SOUND.ffmpeg)
+        if (NaliConfig.SOUND.ffmpeg)
         {
-            File[] file_array = new File(Reference.MOD_ID).listFiles();
+            File[] file_array = new File(ID).listFiles();
+
+            if (file_array == null)
+            {
+                return;
+            }
 
             for (File file : file_array)
             {
@@ -185,30 +200,30 @@ public class ClientLoader
                 if (sound_file_array != null)
                 {
                     String name_file = file.getName();
-                    for (int i = 0; i < DATA_STRING_LIST.size(); ++i)
+                    for (int i = 0; i < this.data_string_list.size(); ++i)
                     {
-                        if (DATA_STRING_LIST.get(i).contains(name_file))
+                        if (this.data_string_list.get(i).contains(name_file))
                         {
                             try
                             {
-                                int step = OPENALMEMORY_LIST.size();
-                                DATA_CLASS_LIST.get(i).getField("OPENAL_STEP").set(null, OPENALMEMORY_LIST.size());
+                                int step = this.openalmemo_list.size();
+                                this.data_class_list.get(i).getField("OPENAL_STEP").set(null, this.openalmemo_list.size());
 
                                 for (File sound_file : sound_file_array)
                                 {
-                                    OPENALMEMORY_LIST.add(null);
+                                    this.openalmemo_list.add(null);
                                 }
 
                                 for (File sound_file : sound_file_array)
                                 {
                                     String name = sound_file.getName();
                                     int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
-                                    OPENALMEMORY_LIST.set(index + step, new OpenALMemory(sound_file));
+                                    this.openalmemo_list.set(index + step, new OpenALMemo(sound_file));
                                 }
                             }
                             catch (IllegalAccessException | NoSuchFieldException e)
                             {
-                                Nali.error(e);
+                                I.error(e);
                             }
                             break;
                         }
@@ -217,7 +232,7 @@ public class ClientLoader
             }
         }
 
-        if (MyConfig.SHADER.pre_shader)
+        if (NaliConfig.SHADER.pre_shader)
         {
             List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
             for (Class render_class : render_class_list)
@@ -234,18 +249,18 @@ public class ClientLoader
                 }
                 catch (IllegalAccessException | InstantiationException | InvocationTargetException e)
                 {
-                    Nali.error(e);
+                    I.error(e);
                 }
             }
         }
 
-        DATA_CLASS_LIST = null;
-        DATA_STRING_LIST = null;
+        this.data_class_list = null;
+        this.data_string_list = null;
     }
 
 //    public static void setModels(DataLoader dataloader, String mod_id_string)
 //    {
-//        mod_id_string = Reference.MOD_ID + '/' + mod_id_string;
+//        mod_id_string = ID + '/' + mod_id_string;
 //        DataLoader.check(mod_id_string);
 //
 //        String folder_path = mod_id_string + '/';
@@ -342,7 +357,7 @@ public class ClientLoader
 //    {
 //        if (MyConfig.SOUND.ffmpeg)
 //        {
-//            mod_id_string = Reference.MOD_ID + '/' + mod_id_string;
+//            mod_id_string = ID + '/' + mod_id_string;
 ////        DataLoader.check(mod_id_string);
 //
 //            String folder_path = mod_id_string + '/';

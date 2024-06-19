@@ -1,4 +1,4 @@
-package com.nali.render;
+package com.nali.render.sound;
 
 public class NoSoundRender extends SoundRender
 {

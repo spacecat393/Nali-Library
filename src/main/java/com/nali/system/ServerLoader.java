@@ -8,6 +8,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.nali.Nali.I;
+
 @SideOnly(Side.SERVER)
 public class ServerLoader
 {
@@ -21,7 +23,7 @@ public class ServerLoader
             data_string_list.add(data_class.getSimpleName().toLowerCase());
         }
 
-        File[] file_array = new File(Reference.MOD_ID).listFiles();
+        File[] file_array = new File(Nali.ID).listFiles();
 
         int step = 0;
         for (File file : file_array)
@@ -41,7 +43,7 @@ public class ServerLoader
                         }
                         catch (IllegalAccessException | NoSuchFieldException e)
                         {
-                            Nali.error(e);
+                            I.error(e);
                         }
                         break;
                     }

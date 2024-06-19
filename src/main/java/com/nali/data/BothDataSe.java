@@ -1,10 +1,9 @@
 package com.nali.data;
 
-public interface BothData
+public interface BothDataSe extends BothDataS
 {
     float Width();
     float Height();
     float Scale();
-    int MaxFrame();
-    int MaxSync();
+    byte MaxSync();
 }

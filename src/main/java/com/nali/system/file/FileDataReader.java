@@ -1,6 +1,5 @@
 package com.nali.system.file;
 
-import com.nali.Nali;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -8,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static com.nali.Nali.I;
 
 @SideOnly(Side.CLIENT)
 public class FileDataReader
@@ -53,7 +54,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
 
         return null;
@@ -96,7 +97,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
 
         return null;
@@ -139,7 +140,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
 
         return null;
@@ -248,7 +249,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            Nali.error(e);
+            I.error(e);
         }
 
         return string_2d_array;

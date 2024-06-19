@@ -6,10 +6,18 @@ public class BytesReader
 {
     public static int getInt(byte[] byte_array, int index)
     {
-        return ((byte_array[index + 3] & 0xFF) << 24) |
-        ((byte_array[index + 2] & 0xFF) << 16) |
-        ((byte_array[index + 1] & 0xFF) << 8) |
-        (byte_array[index] & 0xFF);
+        int i = 0;
+
+        for (int b = 0; b < Integer.BYTES; b++)
+        {
+            i |= (byte_array[b + index] & 0xFF) << (b * 8);
+        }
+
+        return i;
+//        return ((byte_array[index + 3] & 0xFF) << 24) |
+//                ((byte_array[index + 2] & 0xFF) << 16) |
+//                ((byte_array[index + 1] & 0xFF) << 8) |
+//                (byte_array[index] & 0xFF);
     }
 
     public static float getFloat(byte[] byte_array, int index)
@@ -36,9 +44,9 @@ public class BytesReader
     {
         long l = 0;
 
-        for (int i = 0; i < 8; i++)
+        for (int b = 0; b < Long.BYTES; b++)
         {
-            l |= (long)(byte_array[i + index] & 0xFF) << (i * 8);
+            l |= (long)(byte_array[b + index] & 0xFF) << (b * 8);
         }
 
         return l;

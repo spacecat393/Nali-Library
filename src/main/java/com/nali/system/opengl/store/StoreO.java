@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class StoreO<G extends MemoGo, S extends MemoSo> implements IStore<G, S>
+public class StoreO<G extends MemoGo, S extends MemoSo>
 {
     public List<G> g_list = new ArrayList();
     public List<S> s_list = new ArrayList();

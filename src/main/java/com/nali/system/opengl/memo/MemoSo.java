@@ -19,7 +19,7 @@ import static com.nali.Nali.ID;
 import static com.nali.system.opengl.OpenGLBuffer.getFrom;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLObjectShaderMemo
+public class MemoSo
 {
     public static String GL_SHADING_LANGUAGE_VERSION;
     public int program;
@@ -30,13 +30,13 @@ public class OpenGLObjectShaderMemo
     //StringBuilder->ShaderBuffer->ByteBuffer
     public Object frag_shader;
 
-    public OpenGLObjectShaderMemo(String[] shader_string_array/*, String folder_path*/)
+    public MemoSo(String[] shader_string_array/*, String folder_path*/)
     {
-        if (OpenGLCurrentMemo.SHADERS < NaliConfig.SHADER.max_shaders)
+        if (MemoCurrent.SHADERS < NaliConfig.SHADER.max_shaders)
         {
             String shader_folder_string = ID + "/" + shader_string_array[0];
             String modid_folder_string = ID + "/" + shader_string_array[2];
-            ++OpenGLCurrentMemo.SHADERS;
+            ++MemoCurrent.SHADERS;
 
             if (GL_SHADING_LANGUAGE_VERSION == null)
             {

@@ -4,7 +4,7 @@ import com.nali.network.NetworkRegistry;
 import com.nali.particle.ParticleRegistry;
 import com.nali.system.ClientLoader;
 import com.nali.system.ServerLoader;
-import com.nali.system.opengl.memo.OpenGLCurrentMemo;
+import com.nali.system.opengl.memo.MemoCurrent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -46,7 +46,7 @@ public class Nali
 //            MyConfig.registerConfig();
 //            ObjectWorldDraw.loadWithConfig();
 //            KeyRegistryHelper.set();
-            OpenGLCurrentMemo.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(NaliConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+            MemoCurrent.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(NaliConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
 //            OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 //            Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);

@@ -8,14 +8,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLSkinningShaderMemo extends OpenGLObjectShaderMemo
+public class MemoSs extends MemoSo
 {
     public int max_bones;
     public float[] bind_poses_float_array;
     public int[][] back_bones_2d_int_array;
 //    public int[][] bones_2d_int_array;
 
-    public OpenGLSkinningShaderMemo(String[] shader_string_array/*, String folder_path*/)
+    public MemoSs(String[] shader_string_array/*, String folder_path*/)
     {
         super(shader_string_array/*, folder_path*/);
     }

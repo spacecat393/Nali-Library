@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLAnimationMemo
+public class MemoAnimation
 {
     //mat4[F*B*N]
     public float[] transforms_float_array;
@@ -17,7 +17,7 @@ public class OpenGLAnimationMemo
     public int bones;
     public int length;
 
-    public OpenGLAnimationMemo(String[] model_string_array, String folder_path)
+    public MemoAnimation(String[] model_string_array, String folder_path)
     {
         String model_folder_path = folder_path + "/Model/" + model_string_array[0];
         String animation_string = "/Animation/";

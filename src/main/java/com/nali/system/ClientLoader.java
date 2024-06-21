@@ -4,6 +4,8 @@ import com.nali.NaliConfig;
 import com.nali.render.ObjectRender;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.openal.memo.OpenALMemo;
+import com.nali.system.opengl.store.StoreO;
+import com.nali.system.opengl.store.StoreS;
 import com.nali.system.opengl.memo.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -11,9 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import static com.nali.Nali.I;
 import static com.nali.Nali.ID;
@@ -21,17 +21,18 @@ import static com.nali.Nali.ID;
 @SideOnly(Side.CLIENT)
 public class ClientLoader
 {
-    public List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
-    public List<String> data_string_list = new ArrayList();
+//    public List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
+//    public List<String> data_string_list = new ArrayList();
+    public Map<String, Class> data_class_map = new HashMap();
 //    public static Object[][] MIX_MEMORY_OBJECT_ARRAY;
 //    public Object[] memory_object_array;
 //    public Object[] object_array;
-    public List<Object> object_list = new ArrayList();
+//    public List<Object> object_list = new ArrayList();
 //    public OpenGLObjectShaderMemory[] openglobjectshadermemory_array;
-    public List<OpenGLObjectShaderMemo> openglobjectshadermemo_list = new ArrayList();
-//    public List<OpenGLAnimationMemory> openglanimationmemory_list = new ArrayList();
 //    public OpenGLTextureMemory opengltexturememory;
-    public List<OpenGLTextureMemo> opengltexturememo_list = new ArrayList();
+    public StoreO<MemoGo, MemoSo> storeo = new StoreO();
+    public StoreS<MemoGs, MemoSs> stores = new StoreS();
+    public List<MemoTexture> opengltexturememo_list = new ArrayList();
 //    public OpenALMemory openalmemory;
     public List<OpenALMemo> openalmemo_list = new ArrayList();
 
@@ -48,9 +49,12 @@ public class ClientLoader
 //    public int index;
     public void loadPreInit()
     {
-        for (Class data_class : this.data_class_list)
+        List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
+//        for (Class data_class : this.data_class_list)
+        for (Class data_class : data_class_list)
         {
-            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
+//            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
+            this.data_class_map.put(data_class.getSimpleName().toLowerCase(), data_class);
         }
 
         File[] file_array = new File(ID).listFiles();
@@ -65,120 +69,182 @@ public class ClientLoader
             File[] texture_file_array = new File(file.getPath() + "/Texture").listFiles();
             if (texture_file_array != null)
             {
-                String name_file = file.getName();
-                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                String name_file = file.getName();
+//                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                {
+//                    if (this.data_string_list.get(i).contains(name_file))
+//                    {
+                try
                 {
-                    if (this.data_string_list.get(i).contains(name_file))
+                    int step = this.opengltexturememo_list.size();
+//                    this.data_class_list.get(i).getField("TEXTURE_STEP").set(null, step);
+                    this.data_class_map.get(file.getName()).getField("TEXTURE_STEP").set(null, step);
+
+                    for (File texture_file : texture_file_array)
                     {
-                        try
-                        {
-                            int step = this.opengltexturememo_list.size();
-                            this.data_class_list.get(i).getField("TEXTURE_STEP").set(null, step);
+                        this.opengltexturememo_list.add(null);
+                    }
 
-                            for (File texture_file : texture_file_array)
-                            {
-                                this.opengltexturememo_list.add(null);
-                            }
-
-                            for (File texture_file : texture_file_array)
-                            {
-                                String name = texture_file.getName();
-                                int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
-                                this.opengltexturememo_list.set(index + step, new OpenGLTextureMemo(texture_file));
-                            }
-                        }
-                        catch (IllegalAccessException | NoSuchFieldException e)
-                        {
-                            I.error(e);
-                        }
-                        break;
+                    for (File texture_file : texture_file_array)
+                    {
+                        String name = texture_file.getName();
+                        int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
+                        this.opengltexturememo_list.set(index + step, new MemoTexture(texture_file));
                     }
                 }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
+                }
+//                        break;
+//                    }
+//                }
             }
         }
 
         for (File file : file_array)
         {
-            File shader_file = new File(file.getPath() + "/ShaderList");
+            File shader_file = new File(file.getPath() + "/ShaderOList");
             if (shader_file.isFile())
             {
-                String name_file = file.getName();
-                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                String name_file = file.getName();
+//                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                {
+//                    if (this.data_string_list.get(i).contains(name_file))
+//                    {
+                String[][] string_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
+                try
                 {
-                    if (this.data_string_list.get(i).contains(name_file))
-                    {
-                        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
-                        try
-                        {
-                            this.data_class_list.get(i).getField("SHADER_STEP").set(null, this.openglobjectshadermemo_list.size());
-                        }
-                        catch (IllegalAccessException | NoSuchFieldException e)
-                        {
-                            I.error(e);
-                        }
+//                    this.data_class_list.get(i).getField("SHADER_STEP").set(null, this.openglobjectshadermemo_list.size());
+                    this.data_class_map.get(file.getName()).getField("SHADER_O_STEP").set(null, this.storeo.s_list.size());
+                }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
+                }
 
-                        for (int l = 0; l < shader_string_2d_array.length; ++l)
-                        {
-                            String[] string_array = shader_string_2d_array[l];
-                            switch (string_array.length)
-                            {
-                                case 5:
-                                    this.openglobjectshadermemo_list.add(new OpenGLObjectShaderMemo(string_array/*, shader_file.getPath()*/));
-                                    break;
-                                case 7:
-                                    this.openglobjectshadermemo_list.add(new OpenGLSkinningShaderMemo(string_array/*, shader_file.getPath()*/));
-                                    break;
-                                default:
-                                    I.error("SHADER_LIST " + l);
-                            }
-                        }
-                        break;
-                    }
+                for (String[] string_array : string_2d_array)
+                {
+                    this.storeo.s_list.add(new MemoSo(string_array/*, shader_file.getPath()*/));
+                }
+//                        break;
+//                    }
+//                }
+            }
+        }
+
+        for (File file : file_array)
+        {
+            File shader_file = new File(file.getPath() + "/ShaderSList");
+            if (shader_file.isFile())
+            {
+                String[][] tring_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
+                try
+                {
+                    this.data_class_map.get(file.getName()).getField("SHADER_S_STEP").set(null, this.stores.s_list.size());
+                }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
+                }
+
+                for (String[] string_array : tring_2d_array)
+                {
+                    this.stores.s_list.add(new MemoSs(string_array/*, shader_file.getPath()*/));
                 }
             }
         }
 
         for (File file : file_array)
         {
-            File model_file = new File(file.getPath() + "/ModelList");
+            File model_file = new File(file.getPath() + "/ModelOList");
             if (model_file.isFile())
             {
-                String name_file = file.getName();
-                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                String name_file = file.getName();
+//                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                {
+//                    if (this.data_string_list.get(i).contains(name_file))
+//                    {
+                String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
+                try
                 {
-                    if (this.data_string_list.get(i).contains(name_file))
-                    {
-                        Object[] object_array = FileDataReader.getMixXStringArray(model_file.toPath());
-                        try
-                        {
-                            this.data_class_list.get(i).getField("MODEL_STEP").set(null, this.object_list.size());
-                        }
-                        catch (IllegalAccessException | NoSuchFieldException e)
-                        {
-                            I.error(e);
-                        }
-
-                        for (int l = 0; l < object_array.length; ++l)
-                        {
-                            String[] string_array = (String[])object_array[l];
-                            switch (string_array.length)
-                            {
-                                case 1:
-                                    this.object_list.add(new OpenGLAnimationMemo(string_array, file.getPath()));
-                                    break;
-                                case 7:
-                                    this.object_list.add(new OpenGLObjectMemo(string_array, file.getPath()));
-                                    break;
-                                case 8:
-                                    this.object_list.add(new OpenGLSkinningMemo(string_array, file.getPath()));
-                                    break;
-                                default:
-                                    I.error("MODEL_LIST " + l);
-                            }
-                        }
-                        break;
-                    }
+//                    this.data_class_list.get(i).getField("MODEL_O_STEP").set(null, this.openglobjectmemo_list.size());
+                    this.data_class_map.get(file.getName()).getField("MODEL_O_STEP").set(null, this.storeo.g_list.size());
                 }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
+                }
+
+                for (String[] string_array : string_2d_array)
+                {
+                    this.storeo.g_list.add(new MemoGo(string_array, file.getPath()));
+                }
+//                        break;
+//                    }
+//                }
+            }
+        }
+
+        for (File file : file_array)
+        {
+            File model_file = new File(file.getPath() + "/ModelSList");
+            if (model_file.isFile())
+            {
+//                String name_file = file.getName();
+//                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                {
+//                    if (this.data_string_list.get(i).contains(name_file))
+//                    {
+                String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
+                try
+                {
+//                    this.data_class_list.get(i).getField("MODEL_S_STEP").set(null, this.openglskinningmemo_list.size());
+                    this.data_class_map.get(file.getName()).getField("MODEL_S_STEP").set(null, this.stores.g_list.size());
+                }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
+                }
+
+                for (String[] string_array : string_2d_array)
+                {
+                    this.stores.g_list.add(new MemoGs(string_array, file.getPath()));
+                }
+//                        break;
+//                    }
+//                }
+            }
+        }
+
+        for (File file : file_array)
+        {
+            File model_file = new File(file.getPath() + "/AnimationList");
+            if (model_file.isFile())
+            {
+//                String name_file = file.getName();
+//                for (int i = 0; i < this.data_string_list.size(); ++i)
+//                {
+//                    if (this.data_string_list.get(i).contains(name_file))
+//                    {
+                String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
+                try
+                {
+//                    this.data_class_list.get(i).getField("ANIMATION_STEP").set(null, this.openglskinningmemo_list.size());
+                    this.data_class_map.get(file.getName()).getField("ANIMATION_STEP").set(null, this.stores.memoanimation_list.size());
+                }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
+                }
+
+                for (String[] string_array : string_2d_array)
+                {
+                    this.stores.memoanimation_list.add(new MemoAnimation(string_array, file.getPath()));
+                }
+//                        break;
+//                    }
+//                }
             }
         }
     }
@@ -199,35 +265,36 @@ public class ClientLoader
                 File[] sound_file_array = new File(file.getPath() + "/Sound").listFiles();
                 if (sound_file_array != null)
                 {
-                    String name_file = file.getName();
-                    for (int i = 0; i < this.data_string_list.size(); ++i)
+//                    String name_file = file.getName();
+//                    for (int i = 0; i < this.data_string_list.size(); ++i)
+//                    {
+//                        if (this.data_string_list.get(i).contains(name_file))
+//                        {
+                    try
                     {
-                        if (this.data_string_list.get(i).contains(name_file))
+                        int step = this.openalmemo_list.size();
+//                        this.data_class_list.get(i).getField("OPENAL_STEP").set(null, this.openalmemo_list.size());
+                        this.data_class_map.get(file.getName()).getField("OPENAL_STEP").set(null, this.openalmemo_list.size());
+
+                        for (File sound_file : sound_file_array)
                         {
-                            try
-                            {
-                                int step = this.openalmemo_list.size();
-                                this.data_class_list.get(i).getField("OPENAL_STEP").set(null, this.openalmemo_list.size());
+                            this.openalmemo_list.add(null);
+                        }
 
-                                for (File sound_file : sound_file_array)
-                                {
-                                    this.openalmemo_list.add(null);
-                                }
-
-                                for (File sound_file : sound_file_array)
-                                {
-                                    String name = sound_file.getName();
-                                    int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
-                                    this.openalmemo_list.set(index + step, new OpenALMemo(sound_file));
-                                }
-                            }
-                            catch (IllegalAccessException | NoSuchFieldException e)
-                            {
-                                I.error(e);
-                            }
-                            break;
+                        for (File sound_file : sound_file_array)
+                        {
+                            String name = sound_file.getName();
+                            int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
+                            this.openalmemo_list.set(index + step, new OpenALMemo(sound_file));
                         }
                     }
+                    catch (IllegalAccessException | NoSuchFieldException e)
+                    {
+                        I.error(e);
+                    }
+//                            break;
+//                        }
+//                    }
                 }
             }
         }
@@ -254,8 +321,9 @@ public class ClientLoader
             }
         }
 
-        this.data_class_list = null;
-        this.data_string_list = null;
+//        this.data_class_list = null;
+//        this.data_string_list = null;
+        this.data_class_map = null;
     }
 
 //    public static void setModels(DataLoader dataloader, String mod_id_string)

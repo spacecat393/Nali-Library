@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import static com.nali.Nali.I;
-import static com.nali.system.opengl.memo.OpenGLCurrentMemo.OPENGL_INTBUFFER;
+import static com.nali.system.opengl.memo.MemoCurrent.OPENGL_INTBUFFER;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLTextureMemo
+public class MemoTexture
 {
 //    //ByteBuffer -> TextureBuffer
 //    public Object[] texture_array;
@@ -23,7 +23,7 @@ public class OpenGLTextureMemo
 //    public int[] height_int_array;
     public int texture_buffer;
 
-    public OpenGLTextureMemo(/*String mod_id_string*/File file)
+    public MemoTexture(/*String mod_id_string*/File file)
     {
 //        File[] file_array = new File(mod_id_string + "Textures/").listFiles();
 //        int size = file_array.length;

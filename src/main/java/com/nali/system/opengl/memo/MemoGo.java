@@ -14,12 +14,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nali.system.opengl.memo.OpenGLCurrentMemo.*;
+import static com.nali.system.opengl.memo.MemoCurrent.*;
 
 @SideOnly(Side.CLIENT)
-public class OpenGLObjectMemo
+public class MemoGo
 {
-    public List<OpenGLAttribMemo> openglattribmemo_arraylist = new ArrayList();
+    public List<MemoAttrib> openglattribmemo_arraylist = new ArrayList();
     //int[N] -> IntBuffer
     public Object index;
     public int index_length;
@@ -33,7 +33,7 @@ public class OpenGLObjectMemo
     public byte state;//texture_state culling transparent glow
     public int /*model_id, */texture_id, shader_id;
 
-    public OpenGLObjectMemo(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
+    public MemoGo(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
     {
 //        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Reference.MOD_ID + "/" + model_string_array[2] + "/Shader"));
         String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderList"));
@@ -86,7 +86,7 @@ public class OpenGLObjectMemo
         {
             String[] attriblocation_string_array = attriblocation_string_2d_array[i];
             String attriblocation_name_string = attriblocation_string_array[0];
-            this.openglattribmemo_arraylist.add(new OpenGLAttribMemo(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1])));
+            this.openglattribmemo_arraylist.add(new MemoAttrib(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1])));
         }
     }
 }

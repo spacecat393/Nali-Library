@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class DrawScreen
+public class DrawScreen<R extends ObjectRender>
 {
 //    public ObjectRender objectrender;
 //    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
@@ -28,7 +28,7 @@ public class DrawScreen
         this.sz = s;
     }
 
-    public void render(ObjectRender objectrender)
+    public void render(R r)
     {
         GL11.glPushMatrix();
 //        OpenGlHelper.glPushAttrib(OpenGlHelper.GL_COLOR_BUFFER_BIT);
@@ -51,7 +51,7 @@ public class DrawScreen
 
 //        this.objectrender.multiplyAnimation();
 
-        objectrender.draw();
+        r.draw();
 //        for (int i = this.objectrender.clientdata.StartPart(); i < this.objectrender.clientdata.EndPart(); ++i)
 //        {
 //            if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)

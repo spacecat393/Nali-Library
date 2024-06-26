@@ -1,12 +1,12 @@
 package com.nali.draw;
 
-import com.nali.render.ObjectRender;
+import com.nali.render.RenderO;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class DrawScreen<R extends ObjectRender>
+public class DrawScreen<R extends RenderO>
 {
 //    public ObjectRender objectrender;
 //    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;

@@ -1,7 +1,7 @@
 package com.nali.system;
 
 import com.nali.NaliConfig;
-import com.nali.render.ObjectRender;
+import com.nali.render.RenderO;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.openal.memo.OpenALMemo;
 import com.nali.system.opengl.store.StoreO;
@@ -312,7 +312,7 @@ public class ClientLoader
                     Object[] args_object_array = new Object[parameter_types_class_array.length];
                     Arrays.fill(args_object_array, null);
 
-                    ((ObjectRender)constructor.newInstance(args_object_array)).draw();
+                    ((RenderO)constructor.newInstance(args_object_array)).draw();
                 }
                 catch (IllegalAccessException | InstantiationException | InvocationTargetException e)
                 {

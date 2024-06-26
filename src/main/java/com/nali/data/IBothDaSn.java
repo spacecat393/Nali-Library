@@ -1,6 +1,6 @@
 package com.nali.data;
 
-public interface BothDataS
+public interface IBothDaSn
 {
     byte MaxFrame();
 }

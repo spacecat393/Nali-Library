@@ -1,6 +1,6 @@
 package com.nali.render;
 
-import com.nali.data.client.ClientDataO;
+import com.nali.data.client.IClientDaO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.mixin.IMixinEntityRenderer;
@@ -23,7 +23,7 @@ import static com.nali.Nali.I;
 import static com.nali.system.opengl.memo.MemoCurrent.*;
 
 @SideOnly(Side.CLIENT)
-public class ObjectRender<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>, C extends ClientDataO>
+public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>, C extends IClientDaO>
 {
 //    public DataLoader dataloader;
 //    public Object[] memo_object_array;
@@ -40,7 +40,7 @@ public class ObjectRender<G extends MemoGo, S extends MemoSo, ST extends StoreO<
 //    public byte[] glow_byte_array;
     public float lig_b = -1.0F, lig_s = -1.0F;
 
-    public ObjectRender(ST st, C c)
+    public RenderO(ST st, C c)
     {
 //        this.entitiesrendermemo = entitiesrendermemo;
 //        this.bothdata = bothdata;

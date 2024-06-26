@@ -1,4 +1,4 @@
-package com.nali.render.sound;
+package com.nali.sound;
 
 import com.nali.NaliConfig;
 import net.minecraft.client.Minecraft;
@@ -12,9 +12,9 @@ import java.util.Set;
 import static com.nali.Nali.I;
 
 @SideOnly(Side.CLIENT)
-public class SoundRender
+public class Sound
 {
-    public static Set<SoundRender> SOUNDRENDER_SET = new LinkedHashSet();
+    public static Set<Sound> SOUNDRENDER_SET = new LinkedHashSet();
 //    public DataLoader dataloader;
     public int source = -1, id = -1;
     public boolean pause;

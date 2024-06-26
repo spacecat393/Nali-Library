@@ -1,8 +1,8 @@
-package com.nali.render.sound;
+package com.nali.sound;
 
-public class NoSoundRender extends SoundRender
+public class NoSound extends Sound
 {
-    public NoSoundRender()
+    public NoSound()
     {
     }
 

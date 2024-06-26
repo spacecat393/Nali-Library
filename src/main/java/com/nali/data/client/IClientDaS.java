@@ -4,10 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public interface ClientDataO
+public interface IClientDaS extends IClientDaO
 {
-    int StartPart();
-    int EndPart();//MaxPart = StartPart - EndPart
-//    int Texture();
-//    int Shader();
+    int AnimationID();
 }

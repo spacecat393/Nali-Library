@@ -1,6 +1,6 @@
 package com.nali.data;
 
-public interface BothDataSe extends BothDataS
+public interface IBothDaSe extends IBothDaSn
 {
     float Width();
     float Height();

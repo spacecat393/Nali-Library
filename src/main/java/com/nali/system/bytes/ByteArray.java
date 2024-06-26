@@ -14,7 +14,7 @@ public class ByteArray
     @Override
     public int hashCode()
     {
-        return Arrays.hashCode(array);
+        return Arrays.hashCode(this.array);
     }
 
     @Override
@@ -29,6 +29,6 @@ public class ByteArray
             return false;
         }
         ByteArray bytearray = (ByteArray)object;
-        return Arrays.equals(array, bytearray.array);
+        return Arrays.equals(this.array, bytearray.array);
     }
 }

@@ -1,14 +1,13 @@
 package com.nali.mixin;
 
 import com.nali.key.KeyHelper;
-import com.nali.render.sound.SoundRender;
+import com.nali.sound.Sound;
 import com.nali.system.Reflect;
 import com.nali.system.Timing;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Mutable;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -20,7 +19,7 @@ import java.util.List;
 
 import static com.nali.Nali.I;
 import static com.nali.key.KeyHelper.DETECT_METHOD_ARRAY;
-import static com.nali.render.sound.SoundRender.SOUNDRENDER_SET;
+import static com.nali.sound.Sound.SOUNDRENDER_SET;
 
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
@@ -36,7 +35,7 @@ public abstract class MixinMinecraft
     private void nali_runGameLoop(CallbackInfo callbackinfo)
     {
         Timing.count();
-        for (SoundRender soundrender : new HashSet<>(SOUNDRENDER_SET))
+        for (Sound soundrender : new HashSet<>(SOUNDRENDER_SET))
         {
             soundrender.loop();
         }

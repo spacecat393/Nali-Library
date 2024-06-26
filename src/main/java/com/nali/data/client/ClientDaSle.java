@@ -1,12 +1,10 @@
-package com.nali.system.opengl.store;
+package com.nali.data.client;
 
-import com.nali.system.opengl.memo.MemoGs;
-import com.nali.system.opengl.memo.MemoSs;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class StoreSle<G extends MemoGs, S extends MemoSs> extends StoreS<G, S>
+public abstract class ClientDaSle extends ClientDaSn
 {
     public float body_rot,
             head_rot,

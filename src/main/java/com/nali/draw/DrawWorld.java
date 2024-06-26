@@ -2,7 +2,7 @@ package com.nali.draw;
 
 import com.nali.Nali;
 import com.nali.mixin.IMixinEntityRenderer;
-import com.nali.render.ObjectRender;
+import com.nali.render.RenderO;
 import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.BytesReader;
 import com.nali.system.opengl.OpenGLBuffer;
@@ -126,7 +126,7 @@ public class DrawWorld
 //    public static void onRenderWorldLastEvent(RenderWorldLastEvent event)
     public static void run()
     {
-        ObjectRender.takeDefault();
+        RenderO.takeDefault();
         draw(FIRST_MODEL_MAP);
         draw(SECOND_MODEL_MAP);
 
@@ -153,7 +153,7 @@ public class DrawWorld
 //        SECOND_STEP_INTEGER_LIST.clear();
 //        SECOND_SIZE = 0;
 //        }
-        ObjectRender.setDefault();
+        RenderO.setDefault();
     }
 
     public static void draw(Map<ByteArray, List<Integer>> model_map)
@@ -194,7 +194,7 @@ public class DrawWorld
 //                int animation_id = BytesReader.getInt(byte_array, 4 + 4 + 4 + 4 + 4);
 //                if (animation_id != -1)
 
-            ObjectRender.enableBuffer(memogo, memoso);
+            RenderO.enableBuffer(memogo, memoso);
 //            int max = step_integer_list.get(g);
 //            for (int i = 0; i < openglobjectshadermemory.attriblocation_int_array.length; ++i)
 //            {
@@ -246,7 +246,7 @@ public class DrawWorld
 //                    OPENGL_FLOATBUFFER.limit(drawworlddata.skinning_float_array.length);
 //                }
 
-                ObjectRender.setTransparent((byte_array[4 + 4 + 4] & 1) == 1);
+                RenderO.setTransparent((byte_array[4 + 4 + 4] & 1) == 1);
 
 //                //1
 //                OpenGlHelper.glUniform1i(openglobjectshadermemory.uniformlocation_int_array[5], 1);
@@ -311,7 +311,7 @@ public class DrawWorld
 //                ObjectRender.disableBuffer(openglobjectshadermemory);
             }
 
-            ObjectRender.disableBuffer(memoso);
+            RenderO.disableBuffer(memoso);
             //                GL33.glVertexAttribDivisor(i, );
 //                GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, openglobjectmemory.index_length, GL11.GL_UNSIGNED_INT, 0, STEP_INTEGER_LIST.get());
 

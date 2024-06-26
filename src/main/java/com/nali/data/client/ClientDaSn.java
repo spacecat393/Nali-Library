@@ -1,0 +1,10 @@
+package com.nali.data.client;
+
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@SideOnly(Side.CLIENT)
+public abstract class ClientDaSn implements IClientDaS
+{
+    public float scale;
+}

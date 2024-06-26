@@ -13,5 +13,4 @@ import java.util.List;
 public class StoreS<G extends MemoGs, S extends MemoSs> extends StoreO<G, S>
 {
     public List<MemoAnimation> memoanimation_list = new ArrayList();
-    public float scale;
 }

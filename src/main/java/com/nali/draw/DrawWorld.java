@@ -4,7 +4,7 @@ import com.nali.Nali;
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.render.RenderO;
 import com.nali.system.bytes.ByteArray;
-import com.nali.system.bytes.BytesReader;
+import com.nali.system.bytes.ByteReader;
 import com.nali.system.opengl.OpenGLBuffer;
 import com.nali.system.opengl.memo.MemoGo;
 import com.nali.system.opengl.memo.MemoSo;
@@ -181,13 +181,13 @@ public class DrawWorld
 
             if ((byte_array[4 + 4 + 4] & 2) == 2)
             {
-                memogo = I.clientloader.stores.g_list.get(BytesReader.getInt(byte_array, 0));
-                memoso = I.clientloader.stores.s_list.get(BytesReader.getInt(byte_array, 4 + 4));
+                memogo = I.clientloader.stores.g_list.get(ByteReader.getInt(byte_array, 0));
+                memoso = I.clientloader.stores.s_list.get(ByteReader.getInt(byte_array, 4 + 4));
             }
             else
             {
-                memogo = I.clientloader.storeo.g_list.get(BytesReader.getInt(byte_array, 0));
-                memoso = I.clientloader.storeo.s_list.get(BytesReader.getInt(byte_array, 4 + 4));
+                memogo = I.clientloader.storeo.g_list.get(ByteReader.getInt(byte_array, 0));
+                memoso = I.clientloader.storeo.s_list.get(ByteReader.getInt(byte_array, 4 + 4));
             }
 //            float lig_b = BytesReader.getFloat(byte_array, 4 + 4 + 4);
 //            float lig_s = BytesReader.getFloat(byte_array, 4 + 4 + 4 + 4);
@@ -213,7 +213,7 @@ public class DrawWorld
                 OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
                 OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 
-                int color = BytesReader.getInt(byte_array, 4);
+                int color = ByteReader.getInt(byte_array, 4);
                 OPENGL_FIXED_PIPE_FLOATBUFFER.limit(3);
                 OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
                 OPENGL_FIXED_PIPE_FLOATBUFFER.put(((color >> 16) & 0xFF) / 255.0F);
@@ -230,7 +230,7 @@ public class DrawWorld
 
                 OpenGlHelper.glUniform1i(memoso.uniformlocation_int_array[4], 0);
                 OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-                OpenGLBuffer.setTextureBuffer(BytesReader.getInt(byte_array, 4), (byte)(memogo.state & 1));
+                OpenGLBuffer.setTextureBuffer(ByteReader.getInt(byte_array, 4), (byte)(memogo.state & 1));
             }
 
             for (Integer integer : index_integer_list)

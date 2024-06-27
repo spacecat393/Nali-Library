@@ -1,7 +1,7 @@
 package com.nali.render;
 
 import com.nali.data.IBothDaSn;
-import com.nali.data.client.ClientDaSn;
+import com.nali.data.client.IClientDaS;
 import com.nali.draw.DrawWorldData;
 import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
@@ -22,12 +22,15 @@ import static com.nali.system.opengl.memo.MemoCurrent.OPENGL_FLOATBUFFER;
 import static com.nali.system.opengl.memo.MemoCurrent.setFloatBuffer;
 
 @SideOnly(Side.CLIENT)
-public class RenderS<B extends IBothDaSn, G extends MemoGs, S extends MemoSs, ST extends StoreS<G, S>, C extends ClientDaSn> extends RenderO<G, S, ST, C>
+public class RenderS<B extends IBothDaSn, G extends MemoGs, S extends MemoSs, ST extends StoreS<G, S>, C extends IClientDaS> extends RenderO<G, S, ST, C>
 {
+    public B b;
+
+    public float scale;
+
     public int[] frame_int_array, current_frame_int_array;
     public float[] skinning_float_array, timeline_float_array, final_timeline_float_array, current_mat4 = new float[16];
     public byte[] frame_byte_array;
-    public B b;
 //    public OpenGLAnimationMemory openglanimationmemory;
 
 //    public long last_time = Minecraft.getSystemTime();
@@ -295,9 +298,9 @@ public class RenderS<B extends IBothDaSn, G extends MemoGs, S extends MemoSs, ST
 
         main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new float[]
         {
-            this.c.scale, 0.0F, 0.0F, 0.0F,
-            0.0F, this.c.scale, 0.0F, 0.0F,
-            0.0F, 0.0F, this.c.scale, 0.0F,
+            this.scale, 0.0F, 0.0F, 0.0F,
+            0.0F, this.scale, 0.0F, 0.0F,
+            0.0F, 0.0F, this.scale, 0.0F,
             0.0F, 0.0F, 0.0F, 1.0F,
         });
         main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4x4().mat);

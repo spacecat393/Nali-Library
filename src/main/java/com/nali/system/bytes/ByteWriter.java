@@ -2,7 +2,7 @@ package com.nali.system.bytes;
 
 import java.util.UUID;
 
-public class BytesWriter
+public class ByteWriter
 {
     public static void set(byte[] byte_array, int i, int index)
     {

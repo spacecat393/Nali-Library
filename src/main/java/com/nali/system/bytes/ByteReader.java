@@ -2,7 +2,7 @@ package com.nali.system.bytes;
 
 import java.util.UUID;
 
-public class BytesReader
+public class ByteReader
 {
     public static int getInt(byte[] byte_array, int index)
     {

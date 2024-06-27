@@ -1,6 +1,8 @@
 package com.nali.data;
 
-public interface IBothDaSn
+import com.nali.sound.ISoundN;
+
+public interface IBothDaSn<SD extends ISoundN> extends IBothDaOn<SD>
 {
     byte MaxFrame();
 }

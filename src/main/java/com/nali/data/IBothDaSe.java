@@ -1,9 +1,7 @@
 package com.nali.data;
 
-public interface IBothDaSe extends IBothDaSn
+import com.nali.sound.ISoundN;
+
+public interface IBothDaSe<SD extends ISoundN> extends IBothDaSn<SD>, IBothDaE
 {
-    float Width();
-    float Height();
-    float Scale();
-    byte MaxSync();
 }

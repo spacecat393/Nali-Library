@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class StoreS<G extends MemoGs, S extends MemoSs> extends StoreO<G, S>
+public class StoreS<RG extends MemoGs, RS extends MemoSs> extends StoreO<RG, RS>
 {
     public List<MemoAnimation> memoanimation_list = new ArrayList();
 }

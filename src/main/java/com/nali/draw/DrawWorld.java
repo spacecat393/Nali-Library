@@ -181,13 +181,13 @@ public class DrawWorld
 
             if ((byte_array[4 + 4 + 4] & 2) == 2)
             {
-                memogo = I.clientloader.stores.g_list.get(ByteReader.getInt(byte_array, 0));
-                memoso = I.clientloader.stores.s_list.get(ByteReader.getInt(byte_array, 4 + 4));
+                memogo = I.clientloader.stores.rg_list.get(ByteReader.getInt(byte_array, 0));
+                memoso = I.clientloader.stores.rs_list.get(ByteReader.getInt(byte_array, 4 + 4));
             }
             else
             {
-                memogo = I.clientloader.storeo.g_list.get(ByteReader.getInt(byte_array, 0));
-                memoso = I.clientloader.storeo.s_list.get(ByteReader.getInt(byte_array, 4 + 4));
+                memogo = I.clientloader.storeo.rg_list.get(ByteReader.getInt(byte_array, 0));
+                memoso = I.clientloader.storeo.rs_list.get(ByteReader.getInt(byte_array, 4 + 4));
             }
 //            float lig_b = BytesReader.getFloat(byte_array, 4 + 4 + 4);
 //            float lig_s = BytesReader.getFloat(byte_array, 4 + 4 + 4 + 4);

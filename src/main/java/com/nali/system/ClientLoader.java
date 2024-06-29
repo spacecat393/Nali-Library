@@ -116,7 +116,7 @@ public class ClientLoader
                 try
                 {
 //                    this.data_class_list.get(i).getField("SHADER_STEP").set(null, this.openglobjectshadermemo_list.size());
-                    this.data_class_map.get(file.getName()).getField("SHADER_O_STEP").set(null, this.storeo.s_list.size());
+                    this.data_class_map.get(file.getName()).getField("SHADER_O_STEP").set(null, this.storeo.rs_list.size());
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -125,7 +125,7 @@ public class ClientLoader
 
                 for (String[] string_array : string_2d_array)
                 {
-                    this.storeo.s_list.add(new MemoSo(string_array/*, shader_file.getPath()*/));
+                    this.storeo.rs_list.add(new MemoSo(string_array/*, shader_file.getPath()*/));
                 }
 //                        break;
 //                    }
@@ -141,7 +141,7 @@ public class ClientLoader
                 String[][] tring_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
                 try
                 {
-                    this.data_class_map.get(file.getName()).getField("SHADER_S_STEP").set(null, this.stores.s_list.size());
+                    this.data_class_map.get(file.getName()).getField("SHADER_S_STEP").set(null, this.stores.rs_list.size());
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -150,7 +150,7 @@ public class ClientLoader
 
                 for (String[] string_array : tring_2d_array)
                 {
-                    this.stores.s_list.add(new MemoSs(string_array/*, shader_file.getPath()*/));
+                    this.stores.rs_list.add(new MemoSs(string_array/*, shader_file.getPath()*/));
                 }
             }
         }
@@ -169,7 +169,7 @@ public class ClientLoader
                 try
                 {
 //                    this.data_class_list.get(i).getField("MODEL_O_STEP").set(null, this.openglobjectmemo_list.size());
-                    this.data_class_map.get(file.getName()).getField("MODEL_O_STEP").set(null, this.storeo.g_list.size());
+                    this.data_class_map.get(file.getName()).getField("MODEL_O_STEP").set(null, this.storeo.rg_list.size());
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -178,7 +178,7 @@ public class ClientLoader
 
                 for (String[] string_array : string_2d_array)
                 {
-                    this.storeo.g_list.add(new MemoGo(string_array, file.getPath()));
+                    this.storeo.rg_list.add(new MemoGo(string_array, file.getPath()));
                 }
 //                        break;
 //                    }
@@ -200,7 +200,7 @@ public class ClientLoader
                 try
                 {
 //                    this.data_class_list.get(i).getField("MODEL_S_STEP").set(null, this.openglskinningmemo_list.size());
-                    this.data_class_map.get(file.getName()).getField("MODEL_S_STEP").set(null, this.stores.g_list.size());
+                    this.data_class_map.get(file.getName()).getField("MODEL_S_STEP").set(null, this.stores.rg_list.size());
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -209,7 +209,7 @@ public class ClientLoader
 
                 for (String[] string_array : string_2d_array)
                 {
-                    this.stores.g_list.add(new MemoGs(string_array, file.getPath()));
+                    this.stores.rg_list.add(new MemoGs(string_array, file.getPath()));
                 }
 //                        break;
 //                    }

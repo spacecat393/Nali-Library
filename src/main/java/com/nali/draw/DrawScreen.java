@@ -1,12 +1,16 @@
 package com.nali.draw;
 
+import com.nali.data.client.IClientDaO;
 import com.nali.render.RenderO;
+import com.nali.system.opengl.memo.MemoGo;
+import com.nali.system.opengl.memo.MemoSo;
+import com.nali.system.opengl.store.StoreO;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class DrawScreen<R extends RenderO>
+public class DrawScreen<RG extends MemoGo, RS extends MemoSo, RST extends StoreO<RG, RS>, RC extends IClientDaO, R extends RenderO<RG, RS, RST, RC>>
 {
 //    public ObjectRender objectrender;
 //    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;

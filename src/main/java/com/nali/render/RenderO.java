@@ -23,13 +23,13 @@ import static com.nali.Nali.I;
 import static com.nali.system.opengl.memo.MemoCurrent.*;
 
 @SideOnly(Side.CLIENT)
-public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>, C extends IClientDaO>
+public class RenderO<RG extends MemoGo, RS extends MemoSo, RST extends StoreO<RG, RS>, RC extends IClientDaO>
 {
 //    public DataLoader dataloader;
 //    public Object[] memo_object_array;
 //    public BothData bothdata;
-    public ST st;
-    public C c;
+    public RST rst;
+    public RC rc;
 
 //    public EntitiesRenderMemo entitiesrendermemo;
 //    public ObjectScreenDraw objectscreendraw;
@@ -40,12 +40,12 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
 //    public byte[] glow_byte_array;
     public float lig_b = -1.0F, lig_s = -1.0F;
 
-    public RenderO(ST st, C c)
+    public RenderO(RST rst, RC rc)
     {
 //        this.entitiesrendermemo = entitiesrendermemo;
 //        this.bothdata = bothdata;
-        this.st = st;
-        this.c = c;
+        this.rst = rst;
+        this.rc = rc;
 //        this.dataloader = dataloader;
 
 //        int max_part = bothdata.MaxPart();
@@ -100,27 +100,27 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
 //
 //    }
 
-    public void setFixedPipe(S s)
+    public void setFixedPipe(RS rs)
     {
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
         GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        OpenGlHelper.glUniformMatrix4(s.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        OpenGlHelper.glUniformMatrix4(s.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
-        OpenGlHelper.glUniform4(s.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        OpenGlHelper.glUniform4(s.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
     }
 
-    public void setTextureUniform(G g, S s/*, int index*/)
+    public void setTextureUniform(RG rg, RS rs/*, int index*/)
     {
-        OpenGlHelper.glUniform1i(s.uniformlocation_int_array[4], 0);
+        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[4], 0);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 //        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememo.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemo.state & 1));
 //        OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, (byte)(openglobjectmemo.state & 1));
-        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(g), (byte)(g.state & 1));
+        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.state & 1));
 //        OpenGLBuffer.setTextureBuffer(this.getTextureID(openglobjectmemo), (byte)(openglobjectmemo.state & 1));
 //        OpenGLBuffer.setTextureBuffer(this.clientdata.Texture(), (byte)(openglobjectmemo.state & 1));
     }
@@ -133,23 +133,23 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
 ////        OpenGLBuffer.setTextureBuffer(this.getTextureBuffer(openglobjectmemo), (byte)(openglobjectmemo.state & 1));
 //    }
 
-    public void setLightMapUniform(S s)
+    public void setLightMapUniform(RS rs)
     {
-        OpenGlHelper.glUniform1i(s.uniformlocation_int_array[5], 1);
+        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5], 1);
 //        OpenGlHelper.glUniform1i(openglobjectshadermemo.uniformlocation_int_array[6], 2);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
         OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
     }
 
-    public void setLightCoord(S s)
+    public void setLightCoord(RS rs)
     {
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
         OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
         OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_b);
         OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_s);
         OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
-        OpenGlHelper.glUniform2(s.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
 //        OpenGlHelper.glUniform2(openglobjectshadermemo.uniformlocation_int_array[7], this.lig_b, this.lig_s);
     }
 
@@ -178,32 +178,32 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
 //        return this.memo_object_array.length;
 //    }
 
-    public int getTextureID(G g)
+    public int getTextureID(RG rg)
     {
 //        return (int)this.dataloader.opengltexturememo.texture_array[openglobjectmemo.texture_id];
 //        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemo.texture_id).texture_buffer;
 //        return OPENGLTEXTUREMEMORY_LIST.get(openglobjectmemo.texture_id).texture_buffer;
-        return g.texture_id;
+        return rg.texture_id;
     }
 
-    public int getTextureBuffer(G g)
+    public int getTextureBuffer(RG rg)
     {
-        return I.clientloader.opengltexturememo_list.get(getTextureID(g)).texture_buffer;
+        return I.clientloader.opengltexturememo_list.get(getTextureID(rg)).texture_buffer;
     }
 
-    public int getShaderID(G g)
+    public int getShaderID(RG rg)
     {
-        return g.shader_id;
+        return rg.shader_id;
     }
 
-    public boolean getGlow(G g)
+    public boolean getGlow(RG rg)
     {
-        return (g.state & 8) == 8;
+        return (rg.state & 8) == 8;
     }
 
-    public boolean getTransparent(G g)
+    public boolean getTransparent(RG rg)
     {
-        return (g.state & 4) == 4;
+        return (rg.state & 4) == 4;
     }
 
     public void drawLater()
@@ -225,7 +225,7 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
         drawworlddata.lig_b = lig_b;
         drawworlddata.lig_s = lig_s;
         this.updateDataLater(drawworlddata);
-        for (int i = this.c.StartPart(); i < this.c.EndPart(); ++i)
+        for (int i = this.rc.StartPart(); i < this.rc.EndPart(); ++i)
         {
             this.drawLater(i);
         }
@@ -246,28 +246,28 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
 //        int model_id = index;
 //        OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)this.dataloader.object_array[index];
 //        OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)I.clientloader.object_list.get(index);
-        G g = this.st.g_list.get(index);
+        RG rg = this.rst.rg_list.get(index);
 //        this.updateLight(openglobjectmemo);
         byte[] byte_array = new byte[4 + 4 + 4 + 1/* + 4*//* + 4*/];
         ByteWriter.set(byte_array, index, 0);
 //        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, 4);
-        ByteWriter.set(byte_array, this.getTextureBuffer(g), 4);
+        ByteWriter.set(byte_array, this.getTextureBuffer(rg), 4);
 //        BytesWriter.set(byte_array, this.getTextureID(openglobjectmemo), 4);
 //        BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
-        ByteWriter.set(byte_array, this.getShaderID(g), 4 + 4);
+        ByteWriter.set(byte_array, this.getShaderID(rg), 4 + 4);
 //        BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
 //        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
 //        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
-        byte_array[4 + 4 + 4] = (byte)(this.getTransparent(g) ? 1 : 0);
-        byte_array[4 + 4 + 4] += this.getExtraBit(g);
+        byte_array[4 + 4 + 4] = (byte)(this.getTransparent(rg) ? 1 : 0);
+        byte_array[4 + 4 + 4] += this.getExtraBit(rg);
 //        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
         DrawWorld.add(new ByteArray(byte_array));
     }
 
     public void draw()
     {
-        for (int i = this.c.StartPart(); i < this.c.EndPart(); ++i)
+        for (int i = this.rc.StartPart(); i < this.rc.EndPart(); ++i)
         {
 //            if ((this.model_byte_array[i / 8] >> i % 8 & 1) == 1)
 //            {
@@ -281,14 +281,14 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
         float lig_b = this.lig_b;
         float lig_s = this.lig_s;
 //        OpenGLObjectMemo openglobjectmemo = this.dataloader.openglobjectmemo_array[index];
-        G g = this.st.g_list.get(index);
+        RG rg = this.rst.rg_list.get(index);
 //        OpenGLObjectShaderMemo openglobjectshadermemo = this.dataloader.openglobjectshadermemo_array[openglobjectmemo.shader_id];
-        S s = this.st.s_list.get(this.getShaderID(g));
+        RS rs = this.rst.rs_list.get(this.getShaderID(rg));
 //        OpenGLObjectShaderMemo openglobjectshadermemo = I.clientloader.openglobjectshadermemo_list.get(this.clientdata.Shader());
-        this.updateLight(g);
+        this.updateLight(rg);
         takeDefault();
-        enableBuffer(g, s);
-        setTransparent(this.getTransparent(g));
+        enableBuffer(rg, rs);
+        setTransparent(this.getTransparent(rg));
 
 //        if ((this.objectrender.glow_byte_array[index / 8] >> index % 8 & 1) == 1)
 //        else
@@ -296,40 +296,40 @@ public class RenderO<G extends MemoGo, S extends MemoSo, ST extends StoreO<G, S>
 //            this.updateLightCoord();
 //        }
 
-        this.setUniform(g, s, index);
+        this.setUniform(rg, rs, index);
 
-        GL11.glDrawElements(GL11.GL_TRIANGLES, g.index_length, GL11.GL_UNSIGNED_INT, 0);
+        GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
 //        DRAW_CONSUMER.accept(openglobjectmemo);
 
 //        OpenGlHelper.glPopAttrib();
-        disableBuffer(s);
+        disableBuffer(rs);
         setDefault();
         this.lig_b = lig_b;
         this.lig_s = lig_s;
     }
 
-    public void updateLight(G g)
+    public void updateLight(RG rg)
     {
-        if (this.getGlow(g))
+        if (this.getGlow(rg))
         {
             this.lig_b = -1.0F;
             this.lig_s = -1.0F;
         }
     }
 
-    public void setUniform(G g, S s, int index)
+    public void setUniform(RG rg, RS rs, int index)
     {
-        this.setFixedPipe(s);
-        this.setTextureUniform(g, s);
+        this.setFixedPipe(rs);
+        this.setTextureUniform(rg, rs);
 //        this.setFrameBufferUniform(openglobjectmemo, openglobjectshadermemo);
         if (this.lig_b != -1.0F)
         {
-            this.setLightMapUniform(s);
+            this.setLightMapUniform(rs);
         }
-        this.setLightCoord(s);
+        this.setLightCoord(rs);
     }
 
-    public byte getExtraBit(G g)
+    public byte getExtraBit(RG rg)
     {
         return 0;
     }

@@ -7,9 +7,9 @@ import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.ByteWriter;
 import com.nali.system.opengl.OpenGLBuffer;
-import com.nali.system.opengl.memo.MemoAttrib;
-import com.nali.system.opengl.memo.MemoGo;
-import com.nali.system.opengl.memo.MemoSo;
+import com.nali.system.opengl.memo.client.MemoAttrib;
+import com.nali.system.opengl.memo.client.MemoGo;
+import com.nali.system.opengl.memo.client.MemoSo;
 import com.nali.system.opengl.store.StoreO;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.*;
 
 import static com.nali.Nali.I;
-import static com.nali.system.opengl.memo.MemoCurrent.*;
+import static com.nali.system.opengl.memo.client.MemoCurrent.*;
 
 @SideOnly(Side.CLIENT)
 public class RenderO<RG extends MemoGo, RS extends MemoSo, RST extends StoreO<RG, RS>, RC extends IClientDaO>

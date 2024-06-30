@@ -5,8 +5,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import static com.nali.Nali.I;
 
@@ -15,13 +14,15 @@ public class ServerLoader
 {
     public static void pairSound()
     {
-        List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
-
-        List<String> data_string_list = new ArrayList();
-        for (Class data_class : data_class_list)
-        {
-            data_string_list.add(data_class.getSimpleName().toLowerCase());
-        }
+//        List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
+//
+//        List<String> data_string_list = new ArrayList();
+//        for (Class data_class : data_class_list)
+//        {
+//            data_string_list.add(data_class.getSimpleName().toLowerCase());
+//        }
+//        List<Class> data_class_list = I.bothloader.data_class_list;
+        Map<String, Class> data_class_map = I.bothloader.data_class_map;
 
         File[] file_array = new File(Nali.ID).listFiles();
 
@@ -31,22 +32,14 @@ public class ServerLoader
             File[] sound_file_array = new File(file.getPath() + "Sound/").listFiles();
             if (sound_file_array != null)
             {
-                String name_file = file.getName();
-                for (int i = 0; i < data_string_list.size(); ++i)
+                try
                 {
-                    if (data_string_list.get(i).contains(name_file))
-                    {
-                        try
-                        {
-                            data_class_list.get(i).getField("OPENAL_STEP").set(null, step);
-                            step += sound_file_array.length;
-                        }
-                        catch (IllegalAccessException | NoSuchFieldException e)
-                        {
-                            I.error(e);
-                        }
-                        break;
-                    }
+                    data_class_map.get(file.getName()).getField("OPENAL_STEP").set(null, step);
+                    step += sound_file_array.length;
+                }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
                 }
             }
         }

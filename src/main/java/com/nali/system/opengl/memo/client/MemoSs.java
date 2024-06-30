@@ -1,4 +1,4 @@
-package com.nali.system.opengl.memo;
+package com.nali.system.opengl.memo.client;
 
 import com.nali.Nali;
 import com.nali.math.M4x4;

@@ -2,15 +2,17 @@ package com.nali;
 
 import com.nali.network.NetworkRegistry;
 import com.nali.particle.ParticleRegistry;
+import com.nali.system.BothLoader;
 import com.nali.system.ClientLoader;
 import com.nali.system.ServerLoader;
-import com.nali.system.opengl.memo.MemoCurrent;
+import com.nali.system.opengl.memo.client.MemoCurrent;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,10 +37,13 @@ public class Nali
 
     @SideOnly(Side.CLIENT)
     public ClientLoader clientloader;
+    public BothLoader bothloader;
 
     @EventHandler
     public void onFMLPreInitializationEvent(FMLPreInitializationEvent event)
     {
+        this.bothloader = new BothLoader();
+        this.bothloader.pairModel();
         if (event.getSide().isClient())
         {
             this.configuration = new Configuration(event.getSuggestedConfigurationFile());
@@ -72,6 +77,12 @@ public class Nali
         }
     }
 
+    @EventHandler
+    public void onFMLPostInitializationEvent(FMLPostInitializationEvent event)
+    {
+        this.bothloader.clear();
+    }
+
     public void error(Throwable t)
     {
         this.logger.error(t, t);
@@ -87,5 +98,10 @@ public class Nali
     public void warn(Throwable t)
     {
         this.logger.warn(t, t);
+    }
+
+    public void warn(String s)
+    {
+        this.logger.warn(s);
     }
 }

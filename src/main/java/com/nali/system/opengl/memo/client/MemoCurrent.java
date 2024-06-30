@@ -1,4 +1,4 @@
-package com.nali.system.opengl.memo;
+package com.nali.system.opengl.memo.client;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

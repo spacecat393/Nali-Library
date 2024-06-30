@@ -1,8 +1,8 @@
 package com.nali.system.opengl.store;
 
-import com.nali.system.opengl.memo.MemoAnimation;
-import com.nali.system.opengl.memo.MemoGs;
-import com.nali.system.opengl.memo.MemoSs;
+import com.nali.system.opengl.memo.client.MemoAnimation;
+import com.nali.system.opengl.memo.client.MemoGs;
+import com.nali.system.opengl.memo.client.MemoSs;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 

@@ -1,4 +1,4 @@
-package com.nali.system.opengl.memo;
+package com.nali.system.opengl.memo.client;
 
 import com.nali.system.opengl.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import static com.nali.Nali.I;
-import static com.nali.system.opengl.memo.MemoCurrent.OPENGL_INTBUFFER;
+import static com.nali.system.opengl.memo.client.MemoCurrent.OPENGL_INTBUFFER;
 
 @SideOnly(Side.CLIENT)
 public class MemoTexture

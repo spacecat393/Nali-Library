@@ -2,8 +2,8 @@ package com.nali.draw;
 
 import com.nali.data.client.IClientDaO;
 import com.nali.render.RenderO;
-import com.nali.system.opengl.memo.MemoGo;
-import com.nali.system.opengl.memo.MemoSo;
+import com.nali.system.opengl.memo.client.MemoGo;
+import com.nali.system.opengl.memo.client.MemoSo;
 import com.nali.system.opengl.store.StoreO;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class DrawScreen<RG extends MemoGo, RS extends MemoSo, RST extends StoreO<RG, RS>, RC extends IClientDaO, R extends RenderO<RG, RS, RST, RC>>
 {
+    public R r;
 //    public ObjectRender objectrender;
 //    public float r = 1.0F, g = 1.0F, b = 1.0F, a = 1.0F;
 //    public float sr = 1.0F, sg = 1.0F, sb = 1.0F, sa = 1.0F;
@@ -24,6 +25,10 @@ public class DrawScreen<RG extends MemoGo, RS extends MemoSo, RST extends StoreO
 //    {
 //        this.objectrender = objectrender;
 //    }
+    public DrawScreen(R r)
+    {
+        this.r = r;
+    }
 
     public void scale(float s)
     {
@@ -32,7 +37,7 @@ public class DrawScreen<RG extends MemoGo, RS extends MemoSo, RST extends StoreO
         this.sz = s;
     }
 
-    public void render(R r)
+    public void render()
     {
         GL11.glPushMatrix();
 //        OpenGlHelper.glPushAttrib(OpenGlHelper.GL_COLOR_BUFFER_BIT);
@@ -55,7 +60,7 @@ public class DrawScreen<RG extends MemoGo, RS extends MemoSo, RST extends StoreO
 
 //        this.objectrender.multiplyAnimation();
 
-        r.draw();
+        this.r.draw();
 //        for (int i = this.objectrender.clientdata.StartPart(); i < this.objectrender.clientdata.EndPart(); ++i)
 //        {
 //            if ((this.objectrender.model_byte_array[i / 8] >> i % 8 & 1) == 1)

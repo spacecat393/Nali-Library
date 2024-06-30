@@ -1,4 +1,4 @@
-package com.nali.system.opengl.memo;
+package com.nali.system.opengl.memo.client;
 
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;

@@ -6,8 +6,8 @@ import com.nali.render.RenderO;
 import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.opengl.OpenGLBuffer;
-import com.nali.system.opengl.memo.MemoGo;
-import com.nali.system.opengl.memo.MemoSo;
+import com.nali.system.opengl.memo.client.MemoGo;
+import com.nali.system.opengl.memo.client.MemoSo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.common.Mod;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.nali.Nali.I;
-import static com.nali.system.opengl.memo.MemoCurrent.*;
+import static com.nali.system.opengl.memo.client.MemoCurrent.*;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(modid = Nali.ID, value = Side.CLIENT)

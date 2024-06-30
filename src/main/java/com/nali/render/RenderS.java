@@ -6,9 +6,10 @@ import com.nali.draw.DrawWorldData;
 import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
 import com.nali.sound.ISoundN;
-import com.nali.system.opengl.memo.MemoAnimation;
-import com.nali.system.opengl.memo.MemoGs;
-import com.nali.system.opengl.memo.MemoSs;
+import com.nali.system.opengl.memo.Memo3DS;
+import com.nali.system.opengl.memo.client.MemoAnimation;
+import com.nali.system.opengl.memo.client.MemoGs;
+import com.nali.system.opengl.memo.client.MemoSs;
 import com.nali.system.opengl.store.StoreS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,10 +18,11 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
 
+import static com.nali.Nali.I;
 import static com.nali.math.M4x4.multiplyVec4Mat4;
 import static com.nali.system.Timing.TIMELINE;
-import static com.nali.system.opengl.memo.MemoCurrent.OPENGL_FLOATBUFFER;
-import static com.nali.system.opengl.memo.MemoCurrent.setFloatBuffer;
+import static com.nali.system.opengl.memo.client.MemoCurrent.OPENGL_FLOATBUFFER;
+import static com.nali.system.opengl.memo.client.MemoCurrent.setFloatBuffer;
 
 @SideOnly(Side.CLIENT)
 public class RenderS<SD extends ISoundN, BD extends IBothDaSn<SD>, RG extends MemoGs, RS extends MemoSs, RST extends StoreS<RG, RS>, RC extends IClientDaS> extends RenderO<RG, RS, RST, RC>
@@ -179,7 +181,8 @@ public class RenderS<SD extends ISoundN, BD extends IBothDaSn<SD>, RG extends Me
 //        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.dataloader.object_array[i];
         RG rg = this.rst.rg_list.get(i);
 
-        int vi = rg.index_int_array[v] * 3;
+        Memo3DS memo3ds = I.bothloader.memo3d_list.get(i);
+        int vi = memo3ds.index_int_array[v] * 3;
 
         byte max_joints = rg.max_joints;
         float[] main_vec4_float_array = new float[4];
@@ -187,14 +190,14 @@ public class RenderS<SD extends ISoundN, BD extends IBothDaSn<SD>, RG extends Me
 
         for (int j = 0; j < max_joints; ++j)
         {
-            int ji = rg.index_int_array[v] * max_joints + j;
+            int ji = memo3ds.index_int_array[v] * max_joints + j;
             int joints = (int)rg.joints_float_array[ji];
 
             if (joints != -1)
             {
-                temp_vec4_float_array[0] = rg.vertices_float_array[vi] + x0;
-                temp_vec4_float_array[1] = rg.vertices_float_array[vi + 1] + y0;
-                temp_vec4_float_array[2] = rg.vertices_float_array[vi + 2] + z0;
+                temp_vec4_float_array[0] = memo3ds.vertices_float_array[vi] + x0;
+                temp_vec4_float_array[1] = memo3ds.vertices_float_array[vi + 1] + y0;
+                temp_vec4_float_array[2] = memo3ds.vertices_float_array[vi + 2] + z0;
                 temp_vec4_float_array[3] = 1.0F;
 
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
@@ -245,7 +248,8 @@ public class RenderS<SD extends ISoundN, BD extends IBothDaSn<SD>, RG extends Me
 //        OpenGLSkinningMemory openglskinningmemory = (OpenGLSkinningMemory)this.dataloader.object_array[i];
         RG rg = this.rst.rg_list.get(i);
 
-        int vi = rg.index_int_array[v] * 3;
+        Memo3DS memo3ds = I.bothloader.memo3d_list.get(i);
+        int vi = memo3ds.index_int_array[v] * 3;
 
         byte max_joints = rg.max_joints;
         float[] main_vec4_float_array = new float[4];
@@ -253,14 +257,14 @@ public class RenderS<SD extends ISoundN, BD extends IBothDaSn<SD>, RG extends Me
 
         for (int j = 0; j < max_joints; ++j)
         {
-            int ji = rg.index_int_array[v] * max_joints + j;
+            int ji = memo3ds.index_int_array[v] * max_joints + j;
             int joints = (int)rg.joints_float_array[ji];
 
             if (joints != -1)
             {
-                temp_vec4_float_array[0] = rg.vertices_float_array[vi] + x0;
-                temp_vec4_float_array[1] = rg.vertices_float_array[vi + 1] + y0;
-                temp_vec4_float_array[2] = rg.vertices_float_array[vi + 2] + z0;
+                temp_vec4_float_array[0] = memo3ds.vertices_float_array[vi] + x0;
+                temp_vec4_float_array[1] = memo3ds.vertices_float_array[vi + 1] + y0;
+                temp_vec4_float_array[2] = memo3ds.vertices_float_array[vi + 2] + z0;
                 temp_vec4_float_array[3] = 1.0F;
 
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
@@ -326,7 +330,8 @@ public class RenderS<SD extends ISoundN, BD extends IBothDaSn<SD>, RG extends Me
 
 //        for (int j = 0; j < 1; ++j)
 //        {
-        int ji = rg.index_int_array[v] * max_joints;// + j;
+        Memo3DS memo3ds = I.bothloader.memo3d_list.get(i);
+        int ji = memo3ds.index_int_array[v] * max_joints;// + j;
         int joints = (int)rg.joints_float_array[ji];
 
         if (joints != -1)

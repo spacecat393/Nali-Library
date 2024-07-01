@@ -22,7 +22,7 @@ public class ServerLoader
         for (Class data_class : data_class_list)
         {
 //            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
-            data_class_map.put(data_class.getSimpleName().toLowerCase(), data_class);
+            data_class_map.put(StringReader.get(data_class)[1], data_class);
         }
 
 //        List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");

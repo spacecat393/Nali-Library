@@ -153,9 +153,12 @@ public abstract class MixinMinecraft
 
     private void setRender()
     {
-//        Nali.LOGGER.info("setRender!");
-        List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
-//        TextureManager texturemanager = new TextureManager(this.resourceManager);
+        this.preTexture(Reflect.getClasses("com.nali.list.render.o"));
+        this.preTexture(Reflect.getClasses("com.nali.list.render.s"));
+    }
+
+    private void preTexture(List<Class> render_class_list)
+    {
         for (Class render_class : render_class_list)
         {
             try

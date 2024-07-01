@@ -33,10 +33,10 @@ public class MemoGo
     public byte state;//texture_state culling transparent glow
     public int /*model_id, */texture_id, shader_id;
 
-    public MemoGo(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
+    public MemoGo(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)
     {
 //        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Reference.MOD_ID + "/" + model_string_array[2] + "/Shader"));
-        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderList"));
+//        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderList"));
         GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
         GL_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
         GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
@@ -44,6 +44,11 @@ public class MemoGo
         this.createBufferFromFile(model_string_array, folder_path, shader_string_2d_array);
         OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
         OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+    }
+
+    public MemoGo(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
+    {
+        this(model_string_array, folder_path, FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderOList")));
     }
 
     public void createBufferFromFile(String[] model_string_array, String folder_path, String[][] shader_string_2d_array)

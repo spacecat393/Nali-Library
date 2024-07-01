@@ -11,9 +11,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.nali.Nali.I;
 import static com.nali.Nali.ID;
@@ -54,9 +56,8 @@ public class ClientLoader
         for (Class data_class : data_class_list)
         {
 //            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
-            this.data_class_map.put(data_class.getSimpleName().toLowerCase(), data_class);
+            this.data_class_map.put(StringReader.get(data_class)[1], data_class);
         }
-        Map<String, Class> data_class_map = this.data_class_map;
 
         File[] file_array = new File(ID).listFiles();
 
@@ -79,7 +80,7 @@ public class ClientLoader
                 {
                     int step = this.opengltexturememo_list.size();
 //                    this.data_class_list.get(i).getField("TEXTURE_STEP").set(null, step);
-                    data_class_map.get(file.getName()).getField("TEXTURE_STEP").set(null, step);
+                    this.data_class_map.get(file.getName()).getField("TEXTURE_STEP").set(null, step);
 
                     for (File texture_file : texture_file_array)
                     {
@@ -117,7 +118,7 @@ public class ClientLoader
                 try
                 {
 //                    this.data_class_list.get(i).getField("SHADER_STEP").set(null, this.openglobjectshadermemo_list.size());
-                    data_class_map.get(file.getName()).getField("SHADER_O_STEP").set(null, this.storeo.rs_list.size());
+                    this.data_class_map.get(file.getName()).getField("SHADER_O_STEP").set(null, this.storeo.rs_list.size());
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -142,7 +143,7 @@ public class ClientLoader
                 String[][] tring_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
                 try
                 {
-                    data_class_map.get(file.getName()).getField("SHADER_S_STEP").set(null, this.stores.rs_list.size());
+                    this.data_class_map.get(file.getName()).getField("SHADER_S_STEP").set(null, this.stores.rs_list.size());
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -170,7 +171,7 @@ public class ClientLoader
                 try
                 {
 //                    this.data_class_list.get(i).getField("MODEL_O_STEP").set(null, this.openglobjectmemo_list.size());
-                    data_class_map.get(file.getName()).getField("MODEL_O_STEP").set(null, this.storeo.rg_list.size());
+                    this.data_class_map.get(file.getName()).getField("MODEL_O_STEP").set(null, this.storeo.rg_list.size());
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -218,36 +219,37 @@ public class ClientLoader
 //                }
             }
         }
-//        for (File file : file_array)
-//        {
-//            File model_file = new File(file.getPath() + "/AnimationList");
-//            if (model_file.isFile())
-//            {
-////                String name_file = file.getName();
-////                for (int i = 0; i < this.data_string_list.size(); ++i)
-////                {
-////                    if (this.data_string_list.get(i).contains(name_file))
-////                    {
-//                String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
-//                try
+
+        for (File file : file_array)
+        {
+            File model_file = new File(file.getPath() + "/AnimationList");
+            if (model_file.isFile())
+            {
+//                String name_file = file.getName();
+//                for (int i = 0; i < this.data_string_list.size(); ++i)
 //                {
-////                    this.data_class_list.get(i).getField("ANIMATION_STEP").set(null, this.openglskinningmemo_list.size());
-//                    data_class_map.get(file.getName()).getField("ANIMATION_STEP").set(null, this.stores.memoanimation_list.size());
+//                    if (this.data_string_list.get(i).contains(name_file))
+//                    {
+                String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
+                try
+                {
+//                    this.data_class_list.get(i).getField("ANIMATION_STEP").set(null, this.openglskinningmemo_list.size());
+                    data_class_map.get(file.getName()).getField("ANIMATION_STEP").set(null, this.stores.memoanimation_list.size());
+                }
+                catch (IllegalAccessException | NoSuchFieldException e)
+                {
+                    I.error(e);
+                }
+
+                for (String[] string_array : string_2d_array)
+                {
+                    this.stores.memoanimation_list.add(new MemoAnimation(string_array, file.getPath()));
+                }
+//                        break;
+//                    }
 //                }
-//                catch (IllegalAccessException | NoSuchFieldException e)
-//                {
-//                    I.error(e);
-//                }
-//
-//                for (String[] string_array : string_2d_array)
-//                {
-//                    this.stores.memoanimation_list.add(new MemoAnimation(string_array, file.getPath()));
-//                }
-////                        break;
-////                    }
-////                }
-//            }
-//        }
+            }
+        }
     }
 
     public void loadInit()
@@ -302,29 +304,28 @@ public class ClientLoader
 
         if (NaliConfig.SHADER.pre_shader)
         {
-            List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
-            for (Class render_class : render_class_list)
-            {
-                try
-                {
-                    Constructor constructor = render_class.getConstructors()[0];
-                    Class[] parameter_types_class_array = constructor.getParameterTypes();
-
-                    Object[] args_object_array = new Object[parameter_types_class_array.length];
-                    Arrays.fill(args_object_array, null);
-
-                    ((RenderO)constructor.newInstance(args_object_array)).draw();
-                }
-                catch (IllegalAccessException | InstantiationException | InvocationTargetException e)
-                {
-                    I.error(e);
-                }
-            }
+            this.preRender(Reflect.getClasses("com.nali.list.render.s"));
+            this.preRender(Reflect.getClasses("com.nali.list.render.o"));
         }
 
 //        this.data_class_list = null;
 //        this.data_string_list = null;
         this.data_class_map = null;
+    }
+
+    public void preRender(List<Class> render_class_list)
+    {
+        for (Class render_class : render_class_list)
+        {
+            try
+            {
+                ((RenderO)render_class.getConstructor().newInstance()).draw();
+            }
+            catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e)
+            {
+                I.error(e);
+            }
+        }
     }
 
 //    public static void setModels(DataLoader dataloader, String mod_id_string)

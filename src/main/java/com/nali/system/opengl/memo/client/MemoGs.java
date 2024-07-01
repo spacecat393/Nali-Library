@@ -6,6 +6,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.nio.ByteBuffer;
+import java.nio.file.Paths;
 
 @SideOnly(Side.CLIENT)
 public class MemoGs extends MemoGo
@@ -17,7 +18,7 @@ public class MemoGs extends MemoGo
 
     public MemoGs(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
     {
-        super(model_string_array, folder_path/*, shader_string_2d_array*/);
+        super(model_string_array, folder_path, FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderSList")));
     }
 
     @Override

@@ -5,8 +5,8 @@ import com.nali.render.RenderO;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.openal.memo.OpenALMemo;
 import com.nali.system.opengl.memo.client.*;
-import com.nali.system.opengl.store.StoreO;
-import com.nali.system.opengl.store.StoreS;
+import com.nali.system.opengl.memo.client.store.StoreO;
+import com.nali.system.opengl.memo.client.store.StoreS;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,7 +23,7 @@ public class ClientLoader
 {
 //    public List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
 //    public List<String> data_string_list = new ArrayList();
-//    public Map<String, Class> data_class_map = new HashMap();
+    public Map<String, Class> data_class_map = new HashMap();
 //    public static Object[][] MIX_MEMORY_OBJECT_ARRAY;
 //    public Object[] memory_object_array;
 //    public Object[] object_array;
@@ -49,14 +49,14 @@ public class ClientLoader
 //    public int index;
     public void loadPreInit()
     {
-//        List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
-////        for (Class data_class : this.data_class_list)
-//        for (Class data_class : data_class_list)
-//        {
-////            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
-//            this.data_class_map.put(data_class.getSimpleName().toLowerCase(), data_class);
-//        }
-        Map<String, Class> data_class_map = I.bothloader.data_class_map;
+        List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
+//        for (Class data_class : this.data_class_list)
+        for (Class data_class : data_class_list)
+        {
+//            this.data_string_list.add(data_class.getSimpleName().toLowerCase());
+            this.data_class_map.put(data_class.getSimpleName().toLowerCase(), data_class);
+        }
+        Map<String, Class> data_class_map = this.data_class_map;
 
         File[] file_array = new File(ID).listFiles();
 
@@ -218,37 +218,36 @@ public class ClientLoader
 //                }
             }
         }
-
-        for (File file : file_array)
-        {
-            File model_file = new File(file.getPath() + "/AnimationList");
-            if (model_file.isFile())
-            {
-//                String name_file = file.getName();
-//                for (int i = 0; i < this.data_string_list.size(); ++i)
+//        for (File file : file_array)
+//        {
+//            File model_file = new File(file.getPath() + "/AnimationList");
+//            if (model_file.isFile())
+//            {
+////                String name_file = file.getName();
+////                for (int i = 0; i < this.data_string_list.size(); ++i)
+////                {
+////                    if (this.data_string_list.get(i).contains(name_file))
+////                    {
+//                String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
+//                try
 //                {
-//                    if (this.data_string_list.get(i).contains(name_file))
-//                    {
-                String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
-                try
-                {
-//                    this.data_class_list.get(i).getField("ANIMATION_STEP").set(null, this.openglskinningmemo_list.size());
-                    data_class_map.get(file.getName()).getField("ANIMATION_STEP").set(null, this.stores.memoanimation_list.size());
-                }
-                catch (IllegalAccessException | NoSuchFieldException e)
-                {
-                    I.error(e);
-                }
-
-                for (String[] string_array : string_2d_array)
-                {
-                    this.stores.memoanimation_list.add(new MemoAnimation(string_array, file.getPath()));
-                }
-//                        break;
-//                    }
+////                    this.data_class_list.get(i).getField("ANIMATION_STEP").set(null, this.openglskinningmemo_list.size());
+//                    data_class_map.get(file.getName()).getField("ANIMATION_STEP").set(null, this.stores.memoanimation_list.size());
 //                }
-            }
-        }
+//                catch (IllegalAccessException | NoSuchFieldException e)
+//                {
+//                    I.error(e);
+//                }
+//
+//                for (String[] string_array : string_2d_array)
+//                {
+//                    this.stores.memoanimation_list.add(new MemoAnimation(string_array, file.getPath()));
+//                }
+////                        break;
+////                    }
+////                }
+//            }
+//        }
     }
 
     public void loadInit()
@@ -276,7 +275,7 @@ public class ClientLoader
                     {
                         int step = this.openalmemo_list.size();
 //                        this.data_class_list.get(i).getField("OPENAL_STEP").set(null, this.openalmemo_list.size());
-                        I.bothloader.data_class_map.get(file.getName()).getField("OPENAL_STEP").set(null, this.openalmemo_list.size());
+                        this.data_class_map.get(file.getName()).getField("OPENAL_STEP").set(null, this.openalmemo_list.size());
 
                         for (File sound_file : sound_file_array)
                         {
@@ -325,7 +324,7 @@ public class ClientLoader
 
 //        this.data_class_list = null;
 //        this.data_string_list = null;
-//        this.data_class_map = null;
+        this.data_class_map = null;
     }
 
 //    public static void setModels(DataLoader dataloader, String mod_id_string)

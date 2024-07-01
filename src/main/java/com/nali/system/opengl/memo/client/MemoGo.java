@@ -27,8 +27,8 @@ public class MemoGo
 //    public Object shader;
     public int element_array_buffer;
 
-//    public float[] vertices_float_array;
-//    public int[] index_int_array;
+    public float[] vertices_float_array;
+    public int[] index_int_array;
 
     public byte state;//texture_state culling transparent glow
     public int /*model_id, */texture_id, shader_id;
@@ -65,9 +65,9 @@ public class MemoGo
 //        this.shader = shader_id;
 
         this.element_array_buffer = OpenGlHelper.glGenBuffers();
-        int[] index_int_array = FileDataReader.getIntArray(model_folder_string + "/Index");
-        this.index_length = index_int_array.length;
-        this.index = OpenGLBuffer.createIntByteBuffer(index_int_array, true);
+        this.index_int_array = FileDataReader.getIntArray(model_folder_string + "/Index");
+        this.index_length = this.index_int_array.length;
+        this.index = OpenGLBuffer.createIntByteBuffer(this.index_int_array, true);
         OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
         OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (ByteBuffer)this.index, OpenGlHelper.GL_STATIC_DRAW);
 
@@ -80,7 +80,7 @@ public class MemoGo
     {
 //        String model_folder_string = folder_path + "/Model/" + model_string_array[0] + '/';
 
-//        this.vertices_float_array = FileDataReader.getFloatArray(model_folder_string + "/Vertices");
+        this.vertices_float_array = FileDataReader.getFloatArray(model_folder_string + "/Vertices");
 
         for (int i = 0; i < length; ++i)
         {

@@ -1,4 +1,4 @@
-package com.nali.system.opengl.store;
+package com.nali.system.opengl.memo.client.store;
 
 import com.nali.system.opengl.memo.client.MemoGo;
 import com.nali.system.opengl.memo.client.MemoSo;

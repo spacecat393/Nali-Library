@@ -1,9 +1,24 @@
 package com.nali.system.bytes;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+
 import java.util.UUID;
 
 public class ByteWriter
 {
+    public static byte[] serializeNBT(NBTTagCompound compound)
+    {
+        ByteBuf bytebuf = ByteBufAllocator.DEFAULT.buffer();
+        ByteBufUtils.writeTag(bytebuf, compound);
+        byte[] byte_array = new byte[bytebuf.readableBytes()];
+        bytebuf.readBytes(byte_array);
+        bytebuf.release();
+        return byte_array;
+    }
+
     public static void set(byte[] byte_array, int i, int index)
     {
 //        byte_array[index] = (byte)(i & 0xFF);

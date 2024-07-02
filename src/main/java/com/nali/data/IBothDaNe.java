@@ -1,6 +1,6 @@
 package com.nali.data;
 
-public interface IBothDaE
+public interface IBothDaNe
 {
     float Width();
     float Height();

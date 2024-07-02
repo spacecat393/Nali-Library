@@ -5,7 +5,6 @@ import com.nali.data.client.IClientDaS;
 import com.nali.draw.DrawWorldData;
 import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
-import com.nali.sound.ISoundN;
 import com.nali.system.opengl.memo.client.MemoAnimation;
 import com.nali.system.opengl.memo.client.MemoGs;
 import com.nali.system.opengl.memo.client.MemoSs;
@@ -23,7 +22,7 @@ import static com.nali.system.opengl.memo.client.MemoCurrent.OPENGL_FLOATBUFFER;
 import static com.nali.system.opengl.memo.client.MemoCurrent.setFloatBuffer;
 
 @SideOnly(Side.CLIENT)
-public class RenderS<SD extends ISoundN, BD extends IBothDaSn<SD>, RG extends MemoGs, RS extends MemoSs, RST extends StoreS<RG, RS>, RC extends IClientDaS> extends RenderO<RG, RS, RST, RC>
+public class RenderS</*SD extends ISoundN, */BD extends IBothDaSn, RG extends MemoGs, RS extends MemoSs, RST extends StoreS<RG, RS>, RC extends IClientDaS> extends RenderO<RG, RS, RST, RC>
 {
     public BD bd;
 

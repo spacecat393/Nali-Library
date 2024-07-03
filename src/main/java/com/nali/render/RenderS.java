@@ -87,11 +87,12 @@ public class RenderS</*SD extends ISoundN, */BD extends IBothDaSn, RG extends Me
 //        return this.memory_object_array.length - 1;
 //    }
 
-    public void initSkinning(MemoAnimation memoanimation)
+    public void initSkinning(/*MemoAnimation memoanimation*/)
     {
 //        int max_bones = this.openglanimationmemory.bones;
 //        int max_bones = ((OpenGLAnimationMemory)this.memory_object_array[0]).bones;
-        int max_bones = memoanimation.bones;
+//        int max_bones = memoanimation.bones;
+        int max_bones = this.rst.memoanimation_list.get(this.rc.AnimationID()).bones;
 
         for (int i = 0; i < max_bones; ++i)
         {
@@ -99,8 +100,9 @@ public class RenderS</*SD extends ISoundN, */BD extends IBothDaSn, RG extends Me
         }
     }
 
-    public void setSkinning(MemoAnimation memoanimation)
+    public void setSkinning(/*MemoAnimation memoanimation*/)
     {
+        MemoAnimation memoanimation = this.rst.memoanimation_list.get(this.rc.AnimationID());
 //        int max_key = this.openglanimationmemory.length;
 //        OpenGLAnimationMemory openglanimationmemory = (OpenGLAnimationMemory)this.memory_object_array[0];
         int max_key = memoanimation.length;

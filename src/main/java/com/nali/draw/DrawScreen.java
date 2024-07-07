@@ -1,6 +1,6 @@
 package com.nali.draw;
 
-import com.nali.data.client.IClientDaO;
+import com.nali.da.client.IClientDaO;
 import com.nali.render.RenderO;
 import com.nali.system.opengl.memo.client.MemoGo;
 import com.nali.system.opengl.memo.client.MemoSo;

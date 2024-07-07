@@ -1,6 +1,6 @@
 package com.nali.sound;
 
-public interface ISoundLe
+public interface ISoundDaLe
 {
     int HURT();
     int DEATH();

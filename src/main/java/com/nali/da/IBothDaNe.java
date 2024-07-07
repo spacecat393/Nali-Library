@@ -1,4 +1,4 @@
-package com.nali.data;
+package com.nali.da;
 
 public interface IBothDaNe
 {

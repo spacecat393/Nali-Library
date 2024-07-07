@@ -1,4 +1,4 @@
-package com.nali.data.client;
+package com.nali.da.client;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

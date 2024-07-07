@@ -1,6 +1,6 @@
 package com.nali.render;
 
-import com.nali.data.client.IClientDaO;
+import com.nali.da.client.IClientDaO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.mixin.IMixinEntityRenderer;

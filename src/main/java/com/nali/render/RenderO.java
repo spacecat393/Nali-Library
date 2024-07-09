@@ -4,7 +4,6 @@ import com.nali.da.client.IClientDaO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.mixin.IMixinEntityRenderer;
-import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.ByteWriter;
 import com.nali.system.opengl.OpenGLBuffer;
 import com.nali.system.opengl.memo.client.MemoAttrib;
@@ -20,6 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.*;
 
 import static com.nali.Nali.I;
+import static com.nali.draw.DrawWorld.KEY_MAP;
 import static com.nali.system.opengl.memo.client.MemoCurrent.*;
 
 @SideOnly(Side.CLIENT)
@@ -247,22 +247,35 @@ public class RenderO<RG extends MemoGo, RS extends MemoSo, RST extends StoreO<RG
 //        OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)this.dataloader.object_array[index];
 //        OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)I.clientloader.object_list.get(index);
         RG rg = this.rst.rg_list.get(index);
-//        this.updateLight(openglobjectmemo);
-        byte[] byte_array = new byte[4 + 4 + 4 + 1/* + 4*//* + 4*/];
+////        this.updateLight(openglobjectmemo);
+//        byte[] byte_array = new byte[4 + 4 + 4 + 1/* + 4*//* + 4*/];
+//        ByteWriter.set(byte_array, index, 0);
+////        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, 4);
+//        ByteWriter.set(byte_array, this.getTextureBuffer(rg), 4);
+////        BytesWriter.set(byte_array, this.getTextureID(openglobjectmemo), 4);
+////        BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
+//        ByteWriter.set(byte_array, this.getShaderID(rg), 4 + 4);
+////        BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);
+////        BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
+////        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
+////        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
+//        byte_array[4 + 4 + 4] = (byte)(this.getTransparent(rg) ? 1 : 0);
+//        byte_array[4 + 4 + 4] += this.getExtraBit(rg);
+////        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
+////        DrawWorld.add(new ByteArray(byte_array));
+        DrawWorld.add(KEY_MAP.computeIfAbsent("" + index + this.getTextureBuffer(rg) + this.getShaderID(rg) + (byte)((this.getTransparent(rg) ? 1 : 0)) + this.getExtraBit(rg), k -> this.createByteArray(index)));
+    }
+
+    public byte[] createByteArray(int index)
+    {
+        RG rg = this.rst.rg_list.get(index);
+        byte[] byte_array = new byte[4 + 4 + 4 + 1];
         ByteWriter.set(byte_array, index, 0);
-//        BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, 4);
         ByteWriter.set(byte_array, this.getTextureBuffer(rg), 4);
-//        BytesWriter.set(byte_array, this.getTextureID(openglobjectmemo), 4);
-//        BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
         ByteWriter.set(byte_array, this.getShaderID(rg), 4 + 4);
-//        BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);
-//        BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
-//        BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
-//        BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
         byte_array[4 + 4 + 4] = (byte)(this.getTransparent(rg) ? 1 : 0);
         byte_array[4 + 4 + 4] += this.getExtraBit(rg);
-//        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
-        DrawWorld.add(new ByteArray(byte_array));
+        return byte_array;
     }
 
     public void draw()

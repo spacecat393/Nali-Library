@@ -3,7 +3,6 @@ package com.nali.draw;
 import com.nali.Nali;
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.render.RenderO;
-import com.nali.system.bytes.ByteArray;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.opengl.OpenGLBuffer;
 import com.nali.system.opengl.memo.client.MemoGo;
@@ -43,28 +42,35 @@ public class DrawWorld
 //    public static List<Integer> SECOND_DATA_ID_INTEGER_LIST = new ArrayList();
     public static int DATA_SIZE;
 
-    public static Map<ByteArray, List<Integer>> FIRST_MODEL_MAP = new HashMap();
+//    public static Map<ByteArray, List<Integer>> FIRST_MODEL_MAP = new HashMap();
+    public static Map<String, byte[]> KEY_MAP = new HashMap();
+    public static Map<byte[], List<Integer>> FIRST_MODEL_MAP = new HashMap();
 //    public static List<Integer> FIRST_ID_INTEGER_LIST = new ArrayList();
 //    public static List<Integer> FIRST_STEP_INTEGER_LIST = new ArrayList();
 //    public static int FIRST_SIZE;
 
-    public static Map<ByteArray, List<Integer>> SECOND_MODEL_MAP = new HashMap();
+//    public static Map<ByteArray, List<Integer>> SECOND_MODEL_MAP = new HashMap();
+    public static Map<byte[], List<Integer>> SECOND_MODEL_MAP = new HashMap();
 //    public static List<Integer> SECOND_ID_INTEGER_LIST = new ArrayList();
 //    public static List<Integer> SECOND_STEP_INTEGER_LIST = new ArrayList();
 //    public static int SECOND_SIZE;
 
-    public static void add(ByteArray bytearray)
+//    public static void add(ByteArray bytearray)
+    public static void add(byte[] byte_array)
     {
 //        byte[] byte_array = mtlbspd.getBytes(StandardCharsets.UTF_8);
-        if (bytearray.array[4 + 4 + 4] == 0)
+//        if (bytearray.array[4 + 4 + 4] == 0)
+        if (byte_array[4 + 4 + 4] == 0)
         {
 //            FIRST_DATA_ID_INTEGER_LIST.add(DATA_SIZE);
-            List<Integer> index_integer_list = FIRST_MODEL_MAP.get(bytearray);
+//            List<Integer> index_integer_list = FIRST_MODEL_MAP.get(bytearray);
+            List<Integer> index_integer_list = FIRST_MODEL_MAP.get(byte_array);
             if (index_integer_list == null)
             {
                 ArrayList arraylist = new ArrayList();
                 arraylist.add(DATA_SIZE);
-                FIRST_MODEL_MAP.put(bytearray, arraylist);
+//                FIRST_MODEL_MAP.put(bytearray, arraylist);
+                FIRST_MODEL_MAP.put(byte_array, arraylist);
 //                FIRST_ID_INTEGER_LIST.add(FIRST_SIZE++);
 //                FIRST_STEP_INTEGER_LIST.add(1);
             }
@@ -78,12 +84,14 @@ public class DrawWorld
         else
         {
 //            SECOND_DATA_ID_INTEGER_LIST.add(DATA_SIZE);
-            List<Integer> index_integer_list = SECOND_MODEL_MAP.get(bytearray);
+//            List<Integer> index_integer_list = SECOND_MODEL_MAP.get(bytearray);
+            List<Integer> index_integer_list = SECOND_MODEL_MAP.get(byte_array);
             if (index_integer_list == null)
             {
                 ArrayList arraylist = new ArrayList();
                 arraylist.add(DATA_SIZE);
-                SECOND_MODEL_MAP.put(bytearray, arraylist);
+//                SECOND_MODEL_MAP.put(bytearray, arraylist);
+                SECOND_MODEL_MAP.put(byte_array, arraylist);
 //                SECOND_ID_INTEGER_LIST.add(SECOND_SIZE++);
 //                SECOND_STEP_INTEGER_LIST.add(1);
             }
@@ -156,22 +164,24 @@ public class DrawWorld
         RenderO.setDefault();
     }
 
-    public static void draw(Map<ByteArray, List<Integer>> model_map)
+//    public static void draw(Map<ByteArray, List<Integer>> model_map)
+    public static void draw(Map<byte[], List<Integer>> model_map)
     {
         //        if (MyConfig.SHADER.gl_draw_elements_instanced)
 //        {
 //            int group = 0;
-        Object[] keyset_object_array = model_map.keySet().toArray();
-        Object[] values_object_array = model_map.values().toArray();
+        byte[][] keyset_byte_2d_array = model_map.keySet().toArray(new byte[0][]);
+        List<Integer>[] values_integer_list = model_map.values().toArray(new ArrayList[0]);
 
         //0
 //        ObjectRender.takeDefault();
 
 //        int step_size = 0;
-        for (int g = 0; g < keyset_object_array.length; ++g)
+        for (int g = 0; g < keyset_byte_2d_array.length; ++g)
         {
-            byte[] byte_array = ((ByteArray)keyset_object_array[g]).array;
-            List<Integer> index_integer_list = (List)values_object_array[g];
+//            byte[] byte_array = ((ByteArray)keyset_object_array[g]).array;
+            byte[] byte_array = keyset_byte_2d_array[g];
+            List<Integer> index_integer_list = values_integer_list[g];
 //            DataLoader dataloader = DATALOADER_LIST.get(BytesReader.getInt(byte_array, 4 + 4 + 4 + 1));
 //            OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)dataloader.object_array[BytesReader.getInt(byte_array, 0)];
             MemoGo memogo;

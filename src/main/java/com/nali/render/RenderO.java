@@ -263,7 +263,7 @@ public class RenderO<RG extends MemoGo, RS extends MemoSo, RST extends StoreO<RG
 //        byte_array[4 + 4 + 4] += this.getExtraBit(rg);
 ////        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
 ////        DrawWorld.add(new ByteArray(byte_array));
-        DrawWorld.add(KEY_MAP.computeIfAbsent("" + index + this.getTextureBuffer(rg) + this.getShaderID(rg) + (byte)((this.getTransparent(rg) ? 1 : 0)) + this.getExtraBit(rg), k -> this.createByteArray(index)));
+        DrawWorld.add(KEY_MAP.computeIfAbsent(index + " " + this.getTextureBuffer(rg) + " " + this.getShaderID(rg) + " " + (byte)((this.getTransparent(rg) ? 1 : 0) + this.getExtraBit(rg)), k -> this.createByteArray(index)));
     }
 
     public byte[] createByteArray(int index)

@@ -15,6 +15,7 @@ public class MemoCurrent
 //    public static FloatBuffer CPU_OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     public static FloatBuffer
     OPENGL_FIXED_PIPE_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
+//    OPENGL_FIXED_PIPE_FLOATBUFFER_1 = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
     OPENGL_FLOATBUFFER;
 
     public static int
@@ -37,14 +38,14 @@ public class MemoCurrent
     GL_TEXTURE_BINDING_2D,
     GL_TEXTURE_BINDING_2D_0,
     GL_TEXTURE_BINDING_2D_1,
-    GL_TEXTURE_BINDING_2D_2,
+//    GL_TEXTURE_BINDING_2D_2,
 
 //    GL_FRONT_FACE;
 
     GL_DEPTH_WRITEMASK,
 //    GL_DEPTH_FUNC;
 
-//    GL_MATRIX_MODE;
+//    GL_MATRIX_MODE,
 
 //    GL_TEXTURE_WRAP_S,
     GL_TEXTURE_WRAP_S_0,
@@ -67,8 +68,8 @@ public class MemoCurrent
     GL_DEPTH_TEST,
     GL_CULL_FACE,
     GL_BLEND,
-    GL_TEXTURE_2D,
-    GL_LIGHTING;
+    GL_TEXTURE_2D;
+//    GL_LIGHTING;
 
     public static float GL_LINE_WIDTH;
 

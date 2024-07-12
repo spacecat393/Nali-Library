@@ -18,10 +18,10 @@ import static com.nali.Nali.I;
 @SideOnly(Side.CLIENT)
 public class KeyHelper
 {
-    static
-    {
-        copyToClipboard(getTextFromClipboard());
-    }
+//    static
+//    {
+//        copyToClipboard(getTextFromClipboard());
+//    }
 
     public static KeyBinding[] KEYBINDING_ARRAY = new KeyBinding[0];
     public static Method[] DETECT_METHOD_ARRAY = new Method[0];

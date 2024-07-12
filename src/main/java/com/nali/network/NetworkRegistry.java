@@ -14,17 +14,17 @@ public class NetworkRegistry
 
     public static void register()
     {
-        List<Class> handlers_class_list = Reflect.getClasses("com.nali.list.network.handler");
-        List<Class> messages_class_list = Reflect.getClasses("com.nali.list.network.message");
-        handlers_class_list.sort(Comparator.comparing(Class::getName));
-        messages_class_list.sort(Comparator.comparing(Class::getName));
+        List<Class> handler_class_list = Reflect.getClasses("com.nali.list.network.handler");
+        List<Class> message_class_list = Reflect.getClasses("com.nali.list.network.message");
+        handler_class_list.sort(Comparator.comparing(Class::getName));
+        message_class_list.sort(Comparator.comparing(Class::getName));
 
-        for (int i = 0; i < handlers_class_list.size(); ++i)
+        for (int i = 0; i < handler_class_list.size(); ++i)
         {
             try
             {
-                Class messages_clasz = messages_class_list.get(i);
-                I.registerMessage(handlers_class_list.get(i), messages_clasz, i, (Side)messages_clasz.getField("SIDE").get(null));
+                Class message_clasz = message_class_list.get(i);
+                I.registerMessage(handler_class_list.get(i), message_clasz, i, (Side)message_clasz.getField("SIDE").get(null));
             }
             catch (IllegalAccessException | NoSuchFieldException e)
             {

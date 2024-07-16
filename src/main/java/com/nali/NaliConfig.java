@@ -82,17 +82,17 @@ public class NaliConfig
 //        public boolean sort = true;
 
         @Config.Name("Pre-Shaders")
-        @Config.Comment("Load first then no need to wait.")
+        @Config.Comment("First compile")
         @Config.RequiresMcRestart
         public boolean pre_shader = false;
 
         @Config.Name("Max Shaders")
-        @Config.Comment("Limit pre-shader if you run on Integrated GPU then try to Add More until it launch to main menu. [Add More is up on your Ram that can pre-shader how much on launch]")
+        @Config.Comment("Compile on next load")
         @Config.RequiresMcRestart
         public int max_shaders = Integer.MAX_VALUE;
 
         @Config.Name("Max Bones")
-        @Config.Comment("M4x4 Buffer for Animation.")
+        @Config.Comment("Animation Mat4")
         @Config.RequiresMcRestart
         public int max_bones = 220 * 16;
     }

@@ -15,10 +15,13 @@ public class MemoCurrent
 //    public static FloatBuffer CPU_OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     public static FloatBuffer
     OPENGL_FIXED_PIPE_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
+    OPENGL_PROJECTION_MATRIX_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
 //    OPENGL_FIXED_PIPE_FLOATBUFFER_1 = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
     OPENGL_FLOATBUFFER;
 
     public static int
+    GL_DRAW_FRAMEBUFFER_BINDING,
+    GL_READ_FRAMEBUFFER_BINDING,
     SHADERS,
 //    MY_CURRENT_PROGRAM = -1,
     GL_CURRENT_PROGRAM,
@@ -45,7 +48,7 @@ public class MemoCurrent
     GL_DEPTH_WRITEMASK,
 //    GL_DEPTH_FUNC;
 
-//    GL_MATRIX_MODE,
+    GL_MATRIX_MODE,
 
 //    GL_TEXTURE_WRAP_S,
     GL_TEXTURE_WRAP_S_0,

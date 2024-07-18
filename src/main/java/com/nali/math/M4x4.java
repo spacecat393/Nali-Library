@@ -288,19 +288,19 @@ public class M4x4
 //        this.mat[5] = (float)Math.cos(z);
 //    }
 
-    public void translateUV(float x, float y/*, float z*/)
-    {
-        this.mat[12] = x;
-        this.mat[13] = y;
-//        this.mat[14] = z;
-    }
-
-    public void translateXYZ(float x, float y, float z)
-    {
-        this.mat[3] = x;
-        this.mat[7] = y;
-        this.mat[11] = z;
-    }
+//    public void translateUV(float x, float y/*, float z*/)
+//    {
+//        this.mat[12] = x;
+//        this.mat[13] = y;
+////        this.mat[14] = z;
+//    }
+//
+//    public void translateXYZ(float x, float y, float z)
+//    {
+//        this.mat[3] = x;
+//        this.mat[7] = y;
+//        this.mat[11] = z;
+//    }
 //
 //    public void translatePlus(float x, float y, float z)
 //    {

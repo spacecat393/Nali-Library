@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 
 @SideOnly(Side.SERVER)
 public class ServerLoader
@@ -38,17 +38,17 @@ public class ServerLoader
         int step = 0;
         for (File file : file_array)
         {
-            File[] sound_file_array = new File(file.getPath() + "Sound/").listFiles();
+            File[] sound_file_array = new File(file + "/sound").listFiles();
             if (sound_file_array != null)
             {
                 try
                 {
-                    data_class_map.get(file.getName()).getField("OPENAL_STEP").set(null, step);
+                    data_class_map.get(file.getName()).getField("SOUND_STEP").set(null, step);
                     step += sound_file_array.length;
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
-                    I.error(e);
+                    error(e);
                 }
             }
         }

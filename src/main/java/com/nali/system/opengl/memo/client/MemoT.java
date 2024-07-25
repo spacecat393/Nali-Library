@@ -1,6 +1,5 @@
 package com.nali.system.opengl.memo.client;
 
-import com.nali.system.opengl.OpenGLBuffer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -11,19 +10,19 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
-import static com.nali.Nali.I;
-import static com.nali.system.opengl.memo.client.MemoCurrent.OPENGL_INTBUFFER;
+import static com.nali.Nali.error;
 
 @SideOnly(Side.CLIENT)
-public class MemoTexture
+public class MemoT
 {
 //    //ByteBuffer -> TextureBuffer
 //    public Object[] texture_array;
 //    public int[] width_int_array;
 //    public int[] height_int_array;
-    public int texture_buffer;
+//    public int texture_buffer;
 
-    public MemoTexture(/*String mod_id_string*/File file)
+//    public MemoTexture(/*String mod_id_string*/File file)
+    public static int gen(/*String mod_id_string*/File file)
     {
 //        File[] file_array = new File(mod_id_string + "Textures/").listFiles();
 //        int size = file_array.length;
@@ -49,10 +48,10 @@ public class MemoTexture
 
             for (int h = 0; h < height; ++h)
             {
-                if (width >= 0)
-                {
-                    System.arraycopy(pixels, h * width, new_pixels, (height - 1 - h) * width, width);
-                }
+//                if (width >= 0)
+//                {
+                System.arraycopy(pixels, h * width, new_pixels, (height - 1 - h) * width, width);
+//                }
             }
 
             for (int pixel : new_pixels)
@@ -69,15 +68,26 @@ public class MemoTexture
 //            this.width_int_array[index] = width;
 //            this.height_int_array[index] = height;
 
-            GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
+//            GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
+
 //        loadBuffer();
-            this.texture_buffer = OpenGLBuffer.loadTextureBuffer(bytebuffer, width, height);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, OPENGL_INTBUFFER.get(0));
+//            this.texture_buffer = OpenGLBuffer.loadTextureBuffer(bytebuffer, width, height);
+//            this.texture_buffer = GL11.glGenTextures();
+            int texture_buffer = GL11.glGenTextures();
+//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture_buffer);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture_buffer);
+            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, bytebuffer);
+
+            return texture_buffer;
+
+//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, OPENGL_INTBUFFER.get(0));
         }
         catch (IOException e)
         {
-            I.error(e);
+            error(e);
         }
+
+        return -1;
 //        }
     }
 

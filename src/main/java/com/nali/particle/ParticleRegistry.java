@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 
 public class ParticleRegistry
 {
@@ -46,7 +46,7 @@ public class ParticleRegistry
             }
             catch (IllegalAccessException | NoSuchFieldException e)
             {
-                I.error(e);
+                error(e);
             }
         }
     }
@@ -67,7 +67,7 @@ public class ParticleRegistry
         }
         catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
         {
-            I.error(e);
+            error(e);
         }
     }
 }

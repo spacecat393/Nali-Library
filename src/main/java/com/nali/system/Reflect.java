@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 
 public class Reflect
 {
@@ -24,7 +24,7 @@ public class Reflect
         }
         catch (IOException | ClassNotFoundException e)
         {
-            I.error(e);
+            error(e);
         }
 
         return class_arraylist;

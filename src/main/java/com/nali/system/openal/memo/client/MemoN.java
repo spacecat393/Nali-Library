@@ -1,4 +1,4 @@
-package com.nali.system.openal.memo;
+package com.nali.system.openal.memo.client;
 
 import com.nali.system.file.FFmpeg;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,13 +10,14 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 @SideOnly(Side.CLIENT)
-public class OpenALMemo
+public class MemoN
 {
 //    public int[] sound_buffer_int_array;
 //    public int[] sample_rate_int_array;
-    public int sound_buffer;
+//    public int sound_buffer;
 
-    public OpenALMemo(File file)
+//    public MemoN(File file)
+    public static int gen(File file)
     {
 //        this.sound_buffer_int_array = new int[sound_file_array.length];
 //        this.sample_rate_int_array = new int[size];
@@ -31,9 +32,10 @@ public class OpenALMemo
         bytebuffer.flip();
 
 //        this.sound_buffer_int_array[index] = AL10.alGenBuffers();
-        this.sound_buffer = AL10.alGenBuffers();
+        int sound_buffer = AL10.alGenBuffers();
 //            this.sample_rate_int_array[index] = FFmpeg.getSampleRate(path);
 //        AL10.alBufferData(this.sound_buffer_int_array[index], AL10.AL_FORMAT_MONO16, bytebuffer, FFmpeg.getSampleRate(path));
-        AL10.alBufferData(this.sound_buffer, AL10.AL_FORMAT_MONO16, bytebuffer, FFmpeg.getSampleRate(path));
+        AL10.alBufferData(sound_buffer, AL10.AL_FORMAT_MONO16, bytebuffer, FFmpeg.getSampleRate(path));
+        return sound_buffer;
     }
 }

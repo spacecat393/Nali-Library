@@ -8,6 +8,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.nali.Nali.error;
+
 public class NetworkRegistry
 {
     public static SimpleNetworkWrapper I = net.minecraftforge.fml.common.network.NetworkRegistry.INSTANCE.newSimpleChannel(Nali.ID);
@@ -28,7 +30,7 @@ public class NetworkRegistry
             }
             catch (IllegalAccessException | NoSuchFieldException e)
             {
-                Nali.I.error(e);
+                error(e);
             }
         }
     }

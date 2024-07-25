@@ -1,0 +1,167 @@
+package com.nali.system.opengl.memo.client;
+
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.nio.ByteBuffer;
+
+import static com.nali.Nali.error;
+import static com.nali.system.opengl.memo.client.MemoC.createFloatByteBuffer;
+
+@SideOnly(Side.CLIENT)
+public class MemoA1
+{
+    //float[N] -> FloatBuffer
+//    public Object object;
+    public int buffer;
+    public byte size;
+
+    public MemoA1(float[] float_array, byte size)
+    {
+        this.buffer = genFloatBuffer(createFloatByteBuffer(float_array/*, true*/));
+        this.size = size;
+    }
+
+//    public MemoAttrib(/*Object object, */int buffer, byte size)
+//    {
+////        this.object = object;
+//        this.buffer = buffer;
+//        this.size = size;
+//    }
+
+    public static MemoA1[] gen(MemoA0[] memoa0_array, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/, int shader_id)
+    {
+//        String model_folder_string = folder_path + "/Model/" + model_string_array[0] + '/';
+//        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + model_string_array[2] + "/ShaderList"));
+//        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + model_string_array[0] + "/ShaderList"));
+//        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderList"));
+////        this.state |= Byte.parseByte(model_string_array[1]);//texture_state
+//        //default_texture
+//        this.texture_id = Integer.parseInt(model_string_array[1]);
+//        this.shader_id = Integer.parseInt(model_string_array[2]);
+////        this.shader_id = Integer.parseInt(model_string_array[3]);
+//
+//        this.state = (byte)(Byte.parseByte(model_string_array[3]) | 2 * Byte.parseByte(model_string_array[4]) | 4 * Byte.parseByte(model_string_array[5]) | 8 * Byte.parseByte(model_string_array[6]));//texture_state culling transparent glow
+////        this.state = (byte)(Byte.parseByte(model_string_array[4]) | 2 * Byte.parseByte(model_string_array[5]) | 4 * Byte.parseByte(model_string_array[6]) | 8 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
+//
+////        int shader_id = Integer.parseInt(model_string_array[2]);
+////        this.shader_id = Integer.parseInt(model_string_array[2]);
+////        this.state |= (byte)(2 * Integer.parseInt(model_string_array[3]));//culling
+//
+////        this.shader = shader_id;
+//
+//        this.element_array_buffer = OpenGlHelper.glGenBuffers();
+//        this.index_int_array = FileDataReader.getIntArray(model_folder_string + "/Index");
+//        this.index_length = this.index_int_array.length;
+//        this.index = OpenGLBuffer.createIntByteBuffer(this.index_int_array, true);
+//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
+//        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (ByteBuffer)this.index, OpenGlHelper.GL_STATIC_DRAW);
+
+//        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
+//        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + shader_string_2d_array[shader_id][0] + "/Shader/" + shader_string_2d_array[shader_id][1] + "/Attrib"));
+        switch (shader_string_2d_array[shader_id].length)
+        {
+            case 5:
+                return genO(memoa0_array/*, model_string_array*//*, model_folder_string*//*folder_path*//*, shader_string_2d_array*//*, attriblocation_string_2d_array*/, attriblocation_string_2d_array.length);
+            case 7:
+                return genS(memoa0_array, model_string_array/*, model_folder_string*//*folder_path*//*, shader_string_2d_array*//*, attriblocation_string_2d_array*/, attriblocation_string_2d_array.length);
+            default:
+                error("MEMOA1");
+        }
+
+        return null;
+    }
+
+    public static MemoA1[] genO(MemoA0[] memoa0_array/*, String[] model_string_array*//*, String model_folder_string*//*, String folder_path*//*, String[][] shader_string_2d_array*//*, String[][] attriblocation_string_2d_array*/, int length)
+    {
+//        String model_folder_string = folder_path + "/Model/" + model_string_array[0] + '/';
+
+//        this.vertices_float_array = FileDataReader.getFloatArray(model_folder_string + "/Vertices");
+
+        MemoA1[] memoa1_array = new MemoA1[memoa0_array.length];
+        for (int i = 0; i < length; ++i)
+        {
+//            String[] attriblocation_string_array = attriblocation_string_2d_array[i];
+//            String attriblocation_name_string = attriblocation_string_array[0];
+            MemoA0 memoa0 = memoa0_array[i];
+            memoa1_array[i] = new MemoA1(memoa0.float_array, memoa0.size);
+//            memoa1_array[i] = new MemoA1(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1]));
+        }
+
+        return memoa1_array;
+    }
+
+    public static MemoA1[] genS(MemoA0[] memoa0_array, String[] model_string_array/*, String model_folder_string*//*, String folder_path*//*, String[][] shader_string_2d_array*//*, String[][] attriblocation_string_2d_array*/, int length)
+    {
+        MemoA1[] memoa1_array = genO(memoa0_array/*, model_string_array*//*, model_folder_string*//*, folder_path*//*, shader_string_2d_array*//*, attriblocation_string_2d_array*/, length - 2);
+//        String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
+//        byte max_joints = Byte.parseByte(model_string_array[4]);
+//        this.max_joints = Byte.parseByte(model_string_array[4]);
+//        this.animation_id = Integer.parseInt(model_string_array[7]);
+//        byte max_joints = Byte.parseByte(model_string_array[7]);
+        byte max_joints = Byte.parseByte(model_string_array[8]);
+//        this.max_joints = Byte.parseByte(model_string_array[8]);
+
+//        float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
+//        float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
+        int j_index = length - 2;
+        int w_index = length - 1;
+        float[] joints_float_array = memoa0_array[j_index].float_array;
+//        float[] weights_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
+//        float[] weights_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
+        float[] weights_float_array = memoa0_array[w_index].float_array;
+        float[] temp_joints_float_array = joints_float_array;
+        float[] temp_weights_float_array = weights_float_array;
+
+        byte limit_max_joints = 4;
+
+        if (max_joints != limit_max_joints)
+        {
+            int step = limit_max_joints - max_joints;
+            int joints_float_array_length = joints_float_array.length;
+            int new_size = joints_float_array_length + (joints_float_array_length / max_joints) * step;
+            temp_joints_float_array = new float[new_size];
+            temp_weights_float_array = new float[new_size];
+            int index = 0;
+            int temp_index = 0;
+
+            for (int x = 0; x < temp_joints_float_array.length; x += limit_max_joints)
+            {
+                for (int y = 0; y < max_joints; ++y)
+                {
+                    temp_joints_float_array[temp_index] = joints_float_array[index];
+                    temp_weights_float_array[temp_index++] = weights_float_array[index++];
+                }
+
+                for (int y = 0; y < step; ++y)
+                {
+                    temp_joints_float_array[temp_index] = -1;
+                    temp_weights_float_array[temp_index++] = 0.0F;
+                }
+            }
+
+//            this.joints_float_array = temp_joints_float_array;
+//            this.weights_float_array = temp_weights_float_array;
+        }
+
+//        FloatBuffer joints_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joints_float_array, true);
+//        ByteBuffer joints_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_joints_float_array, true);
+        memoa1_array[j_index] = new MemoA1(temp_joints_float_array, limit_max_joints);
+//        FloatBuffer weights_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weights_float_array, true);
+//        ByteBuffer weights_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_weights_float_array, true);
+        memoa1_array[w_index] = new MemoA1(temp_weights_float_array, limit_max_joints);
+        return memoa1_array;
+    }
+
+    public static int genFloatBuffer(ByteBuffer bytebuffer)
+    {
+//        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+//        GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+        int buffer = OpenGlHelper.glGenBuffers();
+        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
+        OpenGlHelper.glBufferData(OpenGlHelper.GL_ARRAY_BUFFER, bytebuffer, OpenGlHelper.GL_STATIC_DRAW);
+//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+        return buffer;
+    }
+}

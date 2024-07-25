@@ -9,7 +9,7 @@ import org.lwjgl.openal.AL10;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.nali.Nali.I;
+import static com.nali.system.ClientLoader.SOUND_INTEGER_LIST;
 
 @SideOnly(Side.CLIENT)
 public class Sound
@@ -116,7 +116,7 @@ public class Sound
 //        this.buffer = AL10.alGenBuffers();
 //        AL10.alBufferData(this.buffer, AL10.AL_FORMAT_MONO16, this.dataloader.openalmemory.bytebuffer_array[id], this.dataloader.openalmemory.sample_rate_int_array[id]);
 //        AL10.alSourcei(this.source, AL10.AL_BUFFER, this.dataloader.openalmemory.sound_buffer_int_array[id]);
-        AL10.alSourcei(this.source, AL10.AL_BUFFER, I.clientloader.openalmemo_list.get(id).sound_buffer);
+        AL10.alSourcei(this.source, AL10.AL_BUFFER, SOUND_INTEGER_LIST.get(id)/*.sound_buffer*/);
         SOUNDRENDER_SET.add(this);
 //        });
     }

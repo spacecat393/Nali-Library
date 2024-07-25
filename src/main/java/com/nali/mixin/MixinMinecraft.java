@@ -2,6 +2,7 @@ package com.nali.mixin;
 
 import com.nali.key.KeyHelper;
 import com.nali.sound.Sound;
+import com.nali.system.ClientLoader;
 import com.nali.system.Reflect;
 import com.nali.system.Timing;
 import net.minecraft.client.Minecraft;
@@ -17,7 +18,7 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.List;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 import static com.nali.key.KeyHelper.DETECT_METHOD_ARRAY;
 import static com.nali.sound.Sound.SOUNDRENDER_SET;
 
@@ -92,7 +93,7 @@ public abstract class MixinMinecraft
                 }
                 catch (IllegalAccessException | InvocationTargetException e)
                 {
-                    I.error(e);
+                    error(e);
                 }
             }
 //                    else
@@ -148,7 +149,8 @@ public abstract class MixinMinecraft
     {
 //        ClientLoader.loadPreInit();
         this.setRender();
-        I.clientloader.loadInit();
+//        I.clientloader.loadInit();
+        ClientLoader.loadInit();
     }
 
     private void setRender()

@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 
 public class StringReader
 {
@@ -60,7 +60,7 @@ public class StringReader
         }
         catch (FileNotFoundException e)
         {
-            I.error(e);
+            error(e);
         }
 
         try
@@ -73,7 +73,7 @@ public class StringReader
         }
         catch (IOException e)
         {
-            I.error(e);
+            error(e);
         }
         finally
         {
@@ -85,7 +85,7 @@ public class StringReader
                 }
                 catch (IOException e)
                 {
-                    I.error(e);
+                    error(e);
                 }
             }
         }

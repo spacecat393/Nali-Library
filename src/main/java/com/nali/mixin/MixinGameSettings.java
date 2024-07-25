@@ -20,7 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 import static com.nali.key.KeyHelper.DETECT_METHOD_ARRAY;
 import static com.nali.key.KeyHelper.KEYBINDING_ARRAY;
 
@@ -94,7 +94,7 @@ public abstract class MixinGameSettings
                 }
                 catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | NoSuchFieldException e)
                 {
-                    I.error(e);
+                    error(e);
                 }
             }
 

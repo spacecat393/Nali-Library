@@ -4,17 +4,14 @@ import com.nali.network.NetworkRegistry;
 import com.nali.particle.ParticleRegistry;
 import com.nali.system.ClientLoader;
 import com.nali.system.ServerLoader;
-import com.nali.system.opengl.memo.client.MemoCurrent;
-import net.minecraftforge.common.config.Configuration;
+import com.nali.system.opengl.memo.client.MemoC;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,15 +23,15 @@ public class Nali
 {
     public final static String ID = "nali";
 
-    @Instance
-    public static Nali I;
+//    @Instance
+//    public static Nali I;
 
-    public Configuration configuration;
-    public Logger logger = LogManager.getLogger(ID);
+//    public Configuration configuration;
+    public static Logger LOGGER = LogManager.getLogger(ID);
 //    public Random random = new Random();
 
-    @SideOnly(Side.CLIENT)
-    public ClientLoader clientloader;
+//    @SideOnly(Side.CLIENT)
+//    public ClientLoader clientloader;
 //    public BothLoader bothloader;
 
     @EventHandler
@@ -44,17 +41,19 @@ public class Nali
 //        this.bothloader.pairModel();
         if (event.getSide().isClient())
         {
-            this.configuration = new Configuration(event.getSuggestedConfigurationFile());
-            this.configuration.load();
+//            this.configuration = new Configuration(event.getSuggestedConfigurationFile());
+//            this.configuration.load();
 //            MyConfig.registerConfig();
 //            ObjectWorldDraw.loadWithConfig();
 //            KeyRegistryHelper.set();
-            MemoCurrent.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(NaliConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//            MemoCurrent.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(NaliConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+            MemoC.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MemoC.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
 //            OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 //            Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
-            this.clientloader = new ClientLoader();
-            this.clientloader.loadPreInit();
+//            this.clientloader = new ClientLoader();
+//            this.clientloader.loadPreInit();
+            ClientLoader.loadPreInit();
         }
     }
 
@@ -81,25 +80,25 @@ public class Nali
 //        this.bothloader.clear();
 //    }
 
-    public void error(Throwable t)
+    public static void error(Throwable t)
     {
-        this.logger.error(t, t);
+        LOGGER.error(t, t);
         FMLCommonHandler.instance().exitJava(-1, true);
     }
 
-    public void error(String s)
+    public static void error(String s)
     {
-        this.logger.error(s);
+        LOGGER.error(s);
         FMLCommonHandler.instance().exitJava(-1, true);
     }
 
-    public void warn(Throwable t)
+    public static void warn(Throwable t)
     {
-        this.logger.warn(t, t);
+        LOGGER.warn(t, t);
     }
 
-    public void warn(String s)
+    public static void warn(String s)
     {
-        this.logger.warn(s);
+        LOGGER.warn(s);
     }
 }

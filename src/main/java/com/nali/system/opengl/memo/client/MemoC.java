@@ -9,7 +9,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 @SideOnly(Side.CLIENT)
-public class MemoCurrent
+public class MemoC
 {
     public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
 //    public static FloatBuffer CPU_OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
@@ -20,9 +20,10 @@ public class MemoCurrent
     OPENGL_FLOATBUFFER;
 
     public static int
+    MAX_BONE,
+//    SHADERS,
     GL_DRAW_FRAMEBUFFER_BINDING,
     GL_READ_FRAMEBUFFER_BINDING,
-    SHADERS,
 //    MY_CURRENT_PROGRAM = -1,
     GL_CURRENT_PROGRAM,
     GL_ELEMENT_ARRAY_BUFFER_BINDING,
@@ -90,6 +91,48 @@ public class MemoCurrent
 //        BLUE_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "blue");
 //        ALPHA_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "alpha");
 //    }
+
+    public static ByteBuffer createIntByteBuffer(int[] int_array)
+    {
+        ByteBuffer bytebuffer;
+
+        bytebuffer = ByteBuffer.allocateDirect(int_array.length << 2).order(ByteOrder.nativeOrder());
+
+        for (int i : int_array)
+        {
+            bytebuffer.putInt(i);
+        }
+
+        bytebuffer.flip();
+
+        return bytebuffer;
+    }
+
+    public static ByteBuffer createFloatByteBuffer(float[] float_array)
+    {
+        ByteBuffer bytebuffer;
+
+        bytebuffer = ByteBuffer.allocateDirect(float_array.length << 2).order(ByteOrder.nativeOrder());
+
+        for (float f : float_array)
+        {
+            bytebuffer.putFloat(f);
+        }
+
+        bytebuffer.flip();
+
+        return bytebuffer;
+    }
+
+    public static void put(FloatBuffer floatbuffer, float[] float_array, int max)
+    {
+        floatbuffer.clear();
+        for (int i = 0; i < max; ++i)
+        {
+            floatbuffer.put(float_array[i]);
+        }
+        floatbuffer.flip();
+    }
 
     public static void setFloatBuffer(float[] float_array)
     {

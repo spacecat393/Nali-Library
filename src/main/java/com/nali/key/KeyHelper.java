@@ -13,7 +13,7 @@ import java.awt.datatransfer.Transferable;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 
 @SideOnly(Side.CLIENT)
 public class KeyHelper
@@ -48,7 +48,7 @@ public class KeyHelper
             }
             catch (Exception e)
             {
-                I.error(e);
+                error(e);
             }
         }
 

@@ -6,9 +6,11 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.nali.Nali.ID;
 
+@SideOnly(Side.CLIENT)
 @Config(modid = ID)
 public class NaliConfig
 {
@@ -76,6 +78,11 @@ public class NaliConfig
 
     public static class Shader
     {
+        @Config.Name("GL_SHADING_LANGUAGE_VERSION")
+        @Config.Comment("Shader Folder")
+        @Config.RequiresMcRestart
+        public String gl_shading_language_version = "4.60";
+
 //        @Config.Name("Sort")
 //        @Config.Comment("Draw later with order.")
 //        @Config.RequiresMcRestart
@@ -86,15 +93,15 @@ public class NaliConfig
         @Config.RequiresMcRestart
         public boolean pre_shader = false;
 
-        @Config.Name("Max Shaders")
-        @Config.Comment("Compile on next load")
-        @Config.RequiresMcRestart
-        public int max_shaders = Integer.MAX_VALUE;
+//        @Config.Name("Max Shaders")
+//        @Config.Comment("Compile on next load")
+//        @Config.RequiresMcRestart
+//        public int max_shaders = Integer.MAX_VALUE;
 
-        @Config.Name("Max Bones")
-        @Config.Comment("Animation Mat4")
-        @Config.RequiresMcRestart
-        public int max_bones = 220 * 16;
+//        @Config.Name("Max Bones")
+//        @Config.Comment("Animation Mat4")
+//        @Config.RequiresMcRestart
+//        public int max_bones = 220 * 16;
     }
 
     public static class Sound

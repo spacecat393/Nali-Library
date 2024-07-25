@@ -4,9 +4,8 @@ import com.nali.Nali;
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.render.RenderO;
 import com.nali.system.bytes.ByteReader;
-import com.nali.system.opengl.OpenGLBuffer;
-import com.nali.system.opengl.memo.client.MemoGo;
-import com.nali.system.opengl.memo.client.MemoSo;
+import com.nali.system.opengl.memo.client.MemoG;
+import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.common.Mod;
@@ -21,8 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nali.Nali.I;
-import static com.nali.system.opengl.memo.client.MemoCurrent.*;
+import static com.nali.render.RenderO.setLightMapBuffer;
+import static com.nali.render.RenderO.setTextureBuffer;
+import static com.nali.system.ClientLoader.G_LIST;
+import static com.nali.system.ClientLoader.S_LIST;
+import static com.nali.system.opengl.memo.client.MemoC.*;
 
 @SideOnly(Side.CLIENT)
 @Mod.EventBusSubscriber(modid = Nali.ID, value = Side.CLIENT)
@@ -184,27 +186,29 @@ public class DrawWorld
             List<Integer> index_integer_list = values_integer_list[g];
 //            DataLoader dataloader = DATALOADER_LIST.get(BytesReader.getInt(byte_array, 4 + 4 + 4 + 1));
 //            OpenGLObjectMemory openglobjectmemory = (OpenGLObjectMemory)dataloader.object_array[BytesReader.getInt(byte_array, 0)];
-            MemoGo memogo;
+            MemoG rg = G_LIST.get(ByteReader.getInt(byte_array, 0));
+            MemoS rs = S_LIST.get(ByteReader.getInt(byte_array, 4 + 4));
+//            MemoG memogo;
 //                int texture_id = BytesReader.getInt(byte_array, 4);
 //            OpenGLObjectShaderMemory openglobjectshadermemory = dataloader.openglobjectshadermemory_array[BytesReader.getInt(byte_array, 4 + 4)];
-            MemoSo memoso;
+//            MemoS memoso;
 
-            if ((byte_array[4 + 4 + 4] & 2) == 2)
-            {
-                memogo = I.clientloader.stores.rg_list.get(ByteReader.getInt(byte_array, 0));
-                memoso = I.clientloader.stores.rs_list.get(ByteReader.getInt(byte_array, 4 + 4));
-            }
-            else
-            {
-                memogo = I.clientloader.storeo.rg_list.get(ByteReader.getInt(byte_array, 0));
-                memoso = I.clientloader.storeo.rs_list.get(ByteReader.getInt(byte_array, 4 + 4));
-            }
+//            if ((byte_array[4 + 4 + 4] & 2) == 2)
+//            {
+//                memogo = I.clientloader.stores.rg_list.get(ByteReader.getInt(byte_array, 0));
+//                memoso = I.clientloader.stores.rs_list.get(ByteReader.getInt(byte_array, 4 + 4));
+//            }
+//            else
+//            {
+//                memogo = I.clientloader.storeo.rg_list.get(ByteReader.getInt(byte_array, 0));
+//                memoso = I.clientloader.storeo.rs_list.get(ByteReader.getInt(byte_array, 4 + 4));
+//            }
 //            float lig_b = BytesReader.getFloat(byte_array, 4 + 4 + 4);
 //            float lig_s = BytesReader.getFloat(byte_array, 4 + 4 + 4 + 4);
 //                int animation_id = BytesReader.getInt(byte_array, 4 + 4 + 4 + 4 + 4);
 //                if (animation_id != -1)
 
-            RenderO.enableBuffer(memogo, memoso);
+            RenderO.enableBuffer(rg, rs);
 //            int max = step_integer_list.get(g);
 //            for (int i = 0; i < openglobjectshadermemory.attriblocation_int_array.length; ++i)
 //            {
@@ -217,11 +221,11 @@ public class DrawWorld
 //            OpenGLBuffer.setTextureBuffer(Minecraft.getMinecraft().getFramebuffer().framebufferTexture, (byte)0);
 
             //1
-            OpenGlHelper.glUniform1i(memoso.uniformlocation_int_array[5], 1);
+            OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5], 1);
             if ((byte_array[4 + 4 + 4] & 4) == 4)//color
             {
                 OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-                OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
+                setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 
                 int color = ByteReader.getInt(byte_array, 4);
                 OPENGL_FIXED_PIPE_FLOATBUFFER.limit(3);
@@ -231,16 +235,16 @@ public class DrawWorld
                 OPENGL_FIXED_PIPE_FLOATBUFFER.put((color & 0xFF) / 255.0F);
                 OPENGL_FIXED_PIPE_FLOATBUFFER.put(((color >> 24) & 0xFF) / 255.0F);
                 OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
-                OpenGlHelper.glUniform4(memoso.uniformlocation_int_array[4], OPENGL_FIXED_PIPE_FLOATBUFFER);
+                OpenGlHelper.glUniform4(rs.uniformlocation_int_array[4], OPENGL_FIXED_PIPE_FLOATBUFFER);
             }
             else
             {
                 OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
-                OpenGLBuffer.setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
+                setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 
-                OpenGlHelper.glUniform1i(memoso.uniformlocation_int_array[4], 0);
+                OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[4], 0);
                 OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-                OpenGLBuffer.setTextureBuffer(ByteReader.getInt(byte_array, 4), (byte)(memogo.state & 1));
+                setTextureBuffer(ByteReader.getInt(byte_array, 4), (byte)(rg.state & 1));
             }
 
             for (Integer integer : index_integer_list)
@@ -269,16 +273,16 @@ public class DrawWorld
 //                OpenGLBuffer.setTextureBuffer(BytesReader.getInt(byte_array, 4), (byte)(openglobjectmemory.state & 1));
 
                 OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
-                OpenGLBuffer.put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.projection_m4x4_float, 16);
-                OpenGlHelper.glUniformMatrix4(memoso.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
-                OpenGLBuffer.put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.modelview_m4x4_float, 16);
-                OpenGlHelper.glUniformMatrix4(memoso.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+                put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.projection_m4x4_float, 16);
+                OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
+                put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.modelview_m4x4_float, 16);
+                OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
                 OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
-                OpenGLBuffer.put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.color_v4_float, 4);
-                OpenGlHelper.glUniform4(memoso.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
-                OpenGLBuffer.put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
-                OpenGlHelper.glUniform4(memoso.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
-                if ((memogo.state & 8) == 8)
+                put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.color_v4_float, 4);
+                OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
+                put(OPENGL_FIXED_PIPE_FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
+                OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
+                if ((rg.state & 8) == 8)
                 {
                     OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
                     OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
@@ -289,7 +293,7 @@ public class DrawWorld
 //                    floatbuffer.put(-1.0f);
 //                    floatbuffer.put(-1.0f);
 //                    floatbuffer.flip();
-                    OpenGlHelper.glUniform2(memoso.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+                    OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
 //                    OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], -1.0F, -1.0F);
                 }
                 else
@@ -303,7 +307,7 @@ public class DrawWorld
 //                    floatbuffer.put(drawworlddata.lig_b);
 //                    floatbuffer.put(drawworlddata.lig_s);
 //                    floatbuffer.flip();
-                    OpenGlHelper.glUniform2(memoso.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+                    OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
 //                    OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], drawworlddata.lig_b, drawworlddata.lig_s);
                 }
 
@@ -313,15 +317,15 @@ public class DrawWorld
 //                    OpenGLAnimationMemory openglanimationmemory = (OpenGLAnimationMemory)dataloader.object_array[animation_id];
 //                    float[] skinning_float_array = SKINNING_MAP.get(i);
                     setFloatBuffer(drawworlddata.skinning_float_array);
-                    OpenGlHelper.glUniformMatrix4(memoso.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
+                    OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
 //                    OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[8], false, OPENGL_FLOATBUFFER);
                 }
 
-                GL11.glDrawElements(GL11.GL_TRIANGLES, memogo.index_length, GL11.GL_UNSIGNED_INT, 0);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
 //                ObjectRender.disableBuffer(openglobjectshadermemory);
             }
 
-            RenderO.disableBuffer(memoso);
+            RenderO.disableBuffer(rs);
             //                GL33.glVertexAttribDivisor(i, );
 //                GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, openglobjectmemory.index_length, GL11.GL_UNSIGNED_INT, 0, STEP_INTEGER_LIST.get());
 

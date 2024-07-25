@@ -8,7 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.nali.Nali.I;
+import static com.nali.Nali.error;
 
 @SideOnly(Side.CLIENT)
 public class FileDataReader
@@ -54,7 +54,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            I.error(e);
+            error(e);
         }
 
         return null;
@@ -97,7 +97,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            I.error(e);
+            error(e);
         }
 
         return null;
@@ -140,7 +140,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            I.error(e);
+            error(e);
         }
 
         return null;
@@ -249,7 +249,7 @@ public class FileDataReader
         }
         catch (IOException e)
         {
-            I.error(e);
+            error(e);
         }
 
         return string_2d_array;

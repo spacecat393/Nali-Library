@@ -7,24 +7,28 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 
 @SideOnly(Side.CLIENT)
-public class MemoAnimation
+public class MemoF
 {
     //mat4[F*B*N]
     public float[] transforms_float_array;
 //    public byte[] idlebones_byte_array;
 //    public float[] visual_bones_float_array;
 //    public int[][] bones_2d_int_array;
-    public int bones;
+    public int bone;
     public int length;
 
-    public MemoAnimation(String[] model_string_array, String folder_path)
+    //share
+    public float[] bind_pose_float_array;
+    public int[][] back_bone_2d_int_array;
+
+    public MemoF(int bone, String[] model_string_array, String folder_path)
     {
-        String model_folder_path = folder_path + "/Model/" + model_string_array[0];
-        String animation_string = "/Animation/";
+        String model_folder_path = folder_path + "/model/" + model_string_array[0];
+        String animation_string = "/frame/";
 
         if (new File(model_folder_path + animation_string).isDirectory())
         {
-            this.transforms_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "/Transforms");
+            this.transforms_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "transform.bin");
 
 //            try
 //            {
@@ -62,8 +66,9 @@ public class MemoAnimation
 //
 //            this.bones_2d_int_array = back_bones_2d_int_array;
 
-            this.bones = new File(model_folder_path + animation_string + "Bones").listFiles().length;
-            this.length = (this.transforms_float_array.length / 16) / this.bones;
+//            this.bone = new File(model_folder_path + animation_string + "bone").listFiles().length;
+            this.bone = bone;
+            this.length = (this.transforms_float_array.length / 16) / this.bone;
         }
     }
 }

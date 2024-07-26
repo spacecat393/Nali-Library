@@ -16,11 +16,24 @@ public class MemoA1
 //    public Object object;
     public int buffer;
     public byte size;
+//    public int type;
 
-    public MemoA1(float[] float_array, byte size)
+    public MemoA1(float[] float_array, byte size/*, int type*/)
     {
-        this.buffer = genFloatBuffer(createFloatByteBuffer(float_array/*, true*/));
+//        if (o instanceof float[])
+//        {
+        this.buffer = genBuffer(createFloatByteBuffer(float_array));
+//        }
+//        else if (o instanceof int[])
+//        {
+//            this.buffer = genBuffer(createIntByteBuffer((int[])o/*, true*/));
+//        }
+//        else
+//        {
+//            error("MEMOA1");
+//        }
         this.size = size;
+//        this.type = type;
     }
 
 //    public MemoAttrib(/*Object object, */int buffer, byte size)
@@ -60,12 +73,13 @@ public class MemoA1
 
 //        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "Shaders/" + shader_string_2d_array[(int)this.shader][0] + "/Attrib");
 //        String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + shader_string_2d_array[shader_id][0] + "/Shader/" + shader_string_2d_array[shader_id][1] + "/Attrib"));
-        switch (shader_string_2d_array[shader_id].length)
+        String[] shader_string_array = shader_string_2d_array[shader_id];
+        switch (shader_string_array.length)
         {
-            case 5:
+            case 6:
                 return genO(memoa0_array/*, model_string_array*//*, model_folder_string*//*folder_path*//*, shader_string_2d_array*//*, attriblocation_string_2d_array*/, attriblocation_string_2d_array.length);
-            case 7:
-                return genS(memoa0_array, model_string_array/*, model_folder_string*//*folder_path*//*, shader_string_2d_array*//*, attriblocation_string_2d_array*/, attriblocation_string_2d_array.length);
+            case 9:
+                return genS(memoa0_array, model_string_array, shader_string_array/*, model_folder_string*//*folder_path*//*, shader_string_2d_array*//*, attriblocation_string_2d_array*/, attriblocation_string_2d_array.length);
             default:
                 error("MEMOA1");
         }
@@ -85,76 +99,95 @@ public class MemoA1
 //            String[] attriblocation_string_array = attriblocation_string_2d_array[i];
 //            String attriblocation_name_string = attriblocation_string_array[0];
             MemoA0 memoa0 = memoa0_array[i];
-            memoa1_array[i] = new MemoA1(memoa0.float_array, memoa0.size);
+            memoa1_array[i] = new MemoA1((float[])memoa0.o, memoa0.size/*, GL11.GL_FLOAT*//*memoa0.type*/);
 //            memoa1_array[i] = new MemoA1(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1]));
         }
 
         return memoa1_array;
     }
 
-    public static MemoA1[] genS(MemoA0[] memoa0_array, String[] model_string_array/*, String model_folder_string*//*, String folder_path*//*, String[][] shader_string_2d_array*//*, String[][] attriblocation_string_2d_array*/, int length)
+    public static MemoA1[] genS(MemoA0[] memoa0_array, String[] model_string_array, String[] shader_string_array/*, String model_folder_string*//*, String folder_path*//*, String[][] shader_string_2d_array*//*, String[][] attriblocation_string_2d_array*/, int length)
     {
         MemoA1[] memoa1_array = genO(memoa0_array/*, model_string_array*//*, model_folder_string*//*, folder_path*//*, shader_string_2d_array*//*, attriblocation_string_2d_array*/, length - 2);
 //        String model_folder_string = folder_path + "Models/" + model_string_array[0] + '/';
-//        byte max_joints = Byte.parseByte(model_string_array[4]);
-//        this.max_joints = Byte.parseByte(model_string_array[4]);
+//        byte max_joint = Byte.parseByte(model_string_array[4]);
+//        this.max_joint = Byte.parseByte(model_string_array[4]);
 //        this.animation_id = Integer.parseInt(model_string_array[7]);
-//        byte max_joints = Byte.parseByte(model_string_array[7]);
-        byte max_joints = Byte.parseByte(model_string_array[8]);
-//        this.max_joints = Byte.parseByte(model_string_array[8]);
+//        byte max_joint = Byte.parseByte(model_string_array[7]);
+        byte max_joint = Byte.parseByte(model_string_array[8]);
+//        this.max_joint = Byte.parseByte(model_string_array[8]);
 
-//        float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
-//        float[] joints_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
+//        float[] joint_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
+//        float[] joint_float_array = FileDataReader.getFloatIntArray(model_folder_string + "/Joints");
         int j_index = length - 2;
         int w_index = length - 1;
-        float[] joints_float_array = memoa0_array[j_index].float_array;
-//        float[] weights_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
-//        float[] weights_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
-        float[] weights_float_array = memoa0_array[w_index].float_array;
-        float[] temp_joints_float_array = joints_float_array;
-        float[] temp_weights_float_array = weights_float_array;
-
-        byte limit_max_joints = 4;
-
-        if (max_joints != limit_max_joints)
+//        float[] joint_float_array = (float[])memoa0_array[j_index].t;
+        MemoA0 j_memoa0 = memoa0_array[j_index];
+        MemoA0 w_memoa0 = memoa0_array[w_index];
+        int[] joint_int_array = (int[])j_memoa0.o;
+//        float[] weight_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
+//        float[] weight_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
+        float[] weight_float_array = (float[])w_memoa0.o;
+//        float[] temp_joint_float_array = joint_float_array;
+        int size = joint_int_array.length;
+        float[] temp_joint_float_array = new float[size];
+        for (int i = 0; i < size; ++i)
         {
-            int step = limit_max_joints - max_joints;
-            int joints_float_array_length = joints_float_array.length;
-            int new_size = joints_float_array_length + (joints_float_array_length / max_joints) * step;
-            temp_joints_float_array = new float[new_size];
-            temp_weights_float_array = new float[new_size];
+            temp_joint_float_array[i] = joint_int_array[i];
+        }
+//        int[] temp_joint_int_array = joint_int_array;
+        float[] temp_weight_float_array = weight_float_array;
+
+        byte limit_max_joint = Byte.parseByte(shader_string_array[8]);
+
+        if (max_joint != limit_max_joint)
+        {
+            int step = limit_max_joint - max_joint;
+//            int joint_float_array_length = joint_float_array.length;
+            int joint_float_array_length = size;
+//            int joint_int_array_length = joint_int_array.length;
+            int new_size = joint_float_array_length + (joint_float_array_length / max_joint) * step;
+//            int new_size = joint_int_array_length + (joint_int_array_length / max_joint) * step;
+            temp_joint_float_array = new float[new_size];
+//            temp_joint_int_array = new int[new_size];
+            temp_weight_float_array = new float[new_size];
             int index = 0;
             int temp_index = 0;
 
-            for (int x = 0; x < temp_joints_float_array.length; x += limit_max_joints)
+            for (int x = 0; x < temp_joint_float_array.length; x += limit_max_joint)
+//            for (int x = 0; x < temp_joint_int_array.length; x += limit_max_joint)
             {
-                for (int y = 0; y < max_joints; ++y)
+                for (int y = 0; y < max_joint; ++y)
                 {
-                    temp_joints_float_array[temp_index] = joints_float_array[index];
-                    temp_weights_float_array[temp_index++] = weights_float_array[index++];
+//                    temp_joint_float_array[temp_index] = joint_float_array[index];
+                    temp_joint_float_array[temp_index] = joint_int_array[index];
+//                    temp_joint_int_array[temp_index] = joint_int_array[index];
+                    temp_weight_float_array[temp_index++] = weight_float_array[index++];
                 }
 
                 for (int y = 0; y < step; ++y)
                 {
-                    temp_joints_float_array[temp_index] = -1;
-                    temp_weights_float_array[temp_index++] = 0.0F;
+                    temp_joint_float_array[temp_index] = -1;
+//                    temp_joint_int_array[temp_index] = -1;
+                    temp_weight_float_array[temp_index++] = 0.0F;
                 }
             }
 
-//            this.joints_float_array = temp_joints_float_array;
-//            this.weights_float_array = temp_weights_float_array;
+//            this.joint_float_array = temp_joint_float_array;
+//            this.weight_float_array = temp_weight_float_array;
         }
 
-//        FloatBuffer joints_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joints_float_array, true);
-//        ByteBuffer joints_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_joints_float_array, true);
-        memoa1_array[j_index] = new MemoA1(temp_joints_float_array, limit_max_joints);
-//        FloatBuffer weights_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weights_float_array, true);
-//        ByteBuffer weights_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_weights_float_array, true);
-        memoa1_array[w_index] = new MemoA1(temp_weights_float_array, limit_max_joints);
+//        FloatBuffer joint_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joint_float_array, true);
+//        ByteBuffer joint_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_joint_float_array, true);
+        memoa1_array[j_index] = new MemoA1(temp_joint_float_array, limit_max_joint/*, GL11.GL_FLOAT*/);
+//        memoa1_array[j_index] = new MemoA1(temp_joint_int_array, limit_max_joint, j_memoa0.type);
+//        FloatBuffer weight_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weight_float_array, true);
+//        ByteBuffer weight_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_weight_float_array, true);
+        memoa1_array[w_index] = new MemoA1(temp_weight_float_array, limit_max_joint/*, GL11.GL_FLOAT*//*w_memoa0.type*/);
         return memoa1_array;
     }
 
-    public static int genFloatBuffer(ByteBuffer bytebuffer)
+    public static int genBuffer(ByteBuffer bytebuffer)
     {
 //        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
 //        GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
@@ -164,4 +197,15 @@ public class MemoA1
 //        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
         return buffer;
     }
+
+//    public static int genIntBuffer(ByteBuffer bytebuffer)
+//    {
+////        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+////        GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+//        int buffer = OpenGlHelper.glGenBuffers();
+//        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
+//        OpenGlHelper.glBufferData(OpenGlHelper.GL_ARRAY_BUFFER, bytebuffer, OpenGlHelper.GL_STATIC_DRAW);
+////        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+//        return buffer;
+//    }
 }

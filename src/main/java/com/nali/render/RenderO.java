@@ -570,18 +570,6 @@ public class RenderO<RC extends IClientDaO>
 
     public static void enableBuffer(MemoG memogo, MemoS memoso)
     {
-//        OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
-        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, memogo.element_array_buffer);
-//        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)openglobjectmemo.index, OpenGlHelper.GL_STATIC_DRAW);
-
-        for (int i = 0; i < memoso.attriblocation_int_array.length; ++i)
-        {
-            MemoA1 a1 = memogo.memoa1_array[i];
-//            OpenGLBuffer.setFloatBuffer(memoso.attriblocation_int_array[i], openglattribmemo.buffer, openglattribmemo.size);
-            OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
-            GL20.glVertexAttribPointer(memoso.attriblocation_int_array[i], a1.size, GL11.GL_FLOAT, false, 0, 0);
-        }
-
         int program = memoso.program;
 //        if (MY_CURRENT_PROGRAM != program)
 //        {
@@ -589,9 +577,22 @@ public class RenderO<RC extends IClientDaO>
 //        }
 //        MY_CURRENT_PROGRAM = program;
 
-        for (int i : memoso.attriblocation_int_array)
+//        OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
+        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, memogo.element_array_buffer);
+//        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, (IntBuffer)openglobjectmemo.index, OpenGlHelper.GL_STATIC_DRAW);
+
+        int[] int_array = memoso.attriblocation_int_array;
+        for (int i = 0; i < int_array.length; ++i)
         {
-            GL20.glEnableVertexAttribArray(i);
+            MemoA1 a1 = memogo.memoa1_array[i];
+//            OpenGLBuffer.setFloatBuffer(memoso.attriblocation_int_array[i], openglattribmemo.buffer, openglattribmemo.size);
+            OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
+            GL20.glVertexAttribPointer(int_array[i], a1.size, GL11.GL_FLOAT, false, 0, 0);
+//        }
+//
+//        for (int i : memoso.attriblocation_int_array)
+//        {
+            GL20.glEnableVertexAttribArray(int_array[i]);
         }
 
         if ((memogo.state & 2) == 2)
@@ -676,4 +677,20 @@ public class RenderO<RC extends IClientDaO>
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
     }
+
+//    public static void retrieve()
+//    {
+//        OpenGlHelper.glBindBuffer(GL30.GL_TRANSFORM_FEEDBACK_BUFFER, tbo);
+//
+//        ByteBuffer bytebuffer = GL15.glMapBuffer(GL30.GL_TRANSFORM_FEEDBACK_BUFFER, GL15.GL_READ_ONLY, );
+//        IntBuffer intbuffer = bytebuffer.asIntBuffer();
+//
+//        for (int i = 0; i < 3; i++)
+//        {
+//            int x = intbuffer.get();
+//            int y = intbuffer.get();
+//        }
+//
+//        GL15.glUnmapBuffer(GL30.GL_TRANSFORM_FEEDBACK_BUFFER);
+//    }
 }

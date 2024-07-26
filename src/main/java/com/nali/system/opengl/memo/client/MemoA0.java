@@ -7,14 +7,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class MemoA0
 {
-    public float[] float_array;
+//    public float[] float_array;
+    public Object o;
     public byte size;
+//    public int type;
 
-    public MemoA0(float[] float_array, byte size)
+    public MemoA0(Object o, byte size)
     {
-        this.float_array = float_array;
+        this.o = o;
         this.size = size;
+//        this.type = GL11.GL_FLOAT;
     }
+
+//    public MemoA0(int[] int_array, byte size)
+//    {
+//        this.o = int_array;
+//        this.size = size;
+////        this.type = GL11.GL_INT;
+//    }
 
     public static MemoA0[] gen(String[] model_string_array, String[][] attriblocation_string_2d_array, String folder_path/*, String[][] shader_string_2d_array*//*, int shader_id*/)
     {
@@ -24,11 +34,29 @@ public class MemoA0
 
         int length = attriblocation_string_2d_array.length;
         MemoA0[] memoa0_array = new MemoA0[length];
-        for (int i = 0; i < length; ++i)
+        if (model_string_array.length == 9)
         {
-            String[] attriblocation_string_array = attriblocation_string_2d_array[i];
-            String attriblocation_name_string = attriblocation_string_array[0];
-            memoa0_array[i] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_name_string + ".bin"/*Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)*/), Byte.parseByte(attriblocation_string_array[1]));
+            String[] attriblocation_string_array;
+            for (int i = 0; i < length - 2; ++i)
+            {
+                attriblocation_string_array = attriblocation_string_2d_array[i];
+                String attriblocation_name_string = attriblocation_string_array[0];
+                memoa0_array[i] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_name_string + ".bin"/*Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)*/), Byte.parseByte(attriblocation_string_array[1]));
+            }
+
+            length -= 2;
+            memoa0_array[length] = new MemoA0(FileDataReader.getIntArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
+            length += 1;
+            memoa0_array[length] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
+        }
+        else
+        {
+            for (int i = 0; i < length; ++i)
+            {
+                String[] attriblocation_string_array = attriblocation_string_2d_array[i];
+                String attriblocation_name_string = attriblocation_string_array[0];
+                memoa0_array[i] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_name_string + ".bin"/*Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)*/), Byte.parseByte(attriblocation_string_array[1]));
+            }
         }
 
         return memoa0_array;

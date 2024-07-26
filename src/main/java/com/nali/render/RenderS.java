@@ -184,25 +184,25 @@ public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends Render
         MemoA2 ra2 = A2_MAP.get(i);
 
         int[] index_int_array = ra2.index_int_array;
-        float[] vertices_float_array = ra2.vertices_float_array;
+        float[] vertex_float_array = ra2.vertex_float_array;
         int[][] back_bones_2d_int_array = rf.back_bone_2d_int_array;
 
         int vi = index_int_array[v] * 3;
 
-        byte max_joints = ra2.max_joints;
+        byte max_joint = ra2.max_joint;
         float[] main_vec4_float_array = new float[4];
         float[] temp_vec4_float_array = new float[4];
 
-        for (int j = 0; j < max_joints; ++j)
+        for (int j = 0; j < max_joint; ++j)
         {
-            int ji = index_int_array[v] * max_joints + j;
-            int joints = (int)ra2.joints_float_array[ji];
+            int ji = index_int_array[v] * max_joint + j;
+            int joints = ra2.joint_int_array[ji];
 
             if (joints != -1)
             {
-                temp_vec4_float_array[0] = vertices_float_array[vi] + x0;
-                temp_vec4_float_array[1] = vertices_float_array[vi + 1] + y0;
-                temp_vec4_float_array[2] = vertices_float_array[vi + 2] + z0;
+                temp_vec4_float_array[0] = vertex_float_array[vi] + x0;
+                temp_vec4_float_array[1] = vertex_float_array[vi + 1] + y0;
+                temp_vec4_float_array[2] = vertex_float_array[vi + 2] + z0;
                 temp_vec4_float_array[3] = 1.0F;
 
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
@@ -225,7 +225,7 @@ public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends Render
                     temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
                 }
 
-                float weights = ra2.weights_float_array[ji];
+                float weights = ra2.weight_float_array[ji];
 
                 temp_vec4_float_array[0] *= weights;
                 temp_vec4_float_array[1] *= weights;
@@ -256,25 +256,25 @@ public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends Render
         MemoA2 ra2 = A2_MAP.get(i);
 
         int[] index_int_array = ra2.index_int_array;
-        float[] vertices_float_array = ra2.vertices_float_array;
+        float[] vertex_float_array = ra2.vertex_float_array;
         int[][] back_bones_2d_int_array = rf.back_bone_2d_int_array;
 
         int vi = index_int_array[v] * 3;
 
-        byte max_joints = ra2.max_joints;
+        byte max_joint = ra2.max_joint;
         float[] main_vec4_float_array = new float[4];
         float[] temp_vec4_float_array = new float[4];
 
-        for (int j = 0; j < max_joints; ++j)
+        for (int j = 0; j < max_joint; ++j)
         {
-            int ji = index_int_array[v] * max_joints + j;
-            int joints = (int)ra2.joints_float_array[ji];
+            int ji = index_int_array[v] * max_joint + j;
+            int joints = ra2.joint_int_array[ji];
 
             if (joints != -1)
             {
-                temp_vec4_float_array[0] = vertices_float_array[vi] + x0;
-                temp_vec4_float_array[1] = vertices_float_array[vi + 1] + y0;
-                temp_vec4_float_array[2] = vertices_float_array[vi + 2] + z0;
+                temp_vec4_float_array[0] = vertex_float_array[vi] + x0;
+                temp_vec4_float_array[1] = vertex_float_array[vi + 1] + y0;
+                temp_vec4_float_array[2] = vertex_float_array[vi + 2] + z0;
                 temp_vec4_float_array[3] = 1.0F;
 
 //                OpenGLSkinningShaderMemory openglskinningshadermemory = (OpenGLSkinningShaderMemory)openglskinningmemory.shader;
@@ -297,7 +297,7 @@ public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends Render
                     temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
                 }
 
-                float weights = ra2.weights_float_array[ji];
+                float weights = ra2.weight_float_array[ji];
 
                 temp_vec4_float_array[0] *= weights;
                 temp_vec4_float_array[1] *= weights;
@@ -338,14 +338,14 @@ public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends Render
 
         int[][] back_bones_2d_int_array = rf.back_bone_2d_int_array;
 
-        byte max_joints = ra2.max_joints;
+        byte max_joint = ra2.max_joint;
         float[] mat4_float_array = new float[16];
         System.arraycopy(M4x4.IDENTITY, 0, mat4_float_array, 0, 16);
 
 //        for (int j = 0; j < 1; ++j)
 //        {
-        int ji = ra2.index_int_array[v] * max_joints;// + j;
-        int joints = (int)ra2.joints_float_array[ji];
+        int ji = ra2.index_int_array[v] * max_joint;// + j;
+        int joints = ra2.joint_int_array[ji];
 
         if (joints != -1)
         {

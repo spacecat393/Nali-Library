@@ -1,6 +1,5 @@
 package com.nali.system.opengl.memo.client;
 
-import com.nali.NaliConfig;
 import com.nali.math.M4x4;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
@@ -9,6 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.nali.Nali.ID;
+import static com.nali.NaliConfig.SHADER;
 
 @SideOnly(Side.CLIENT)
 public class MemoHVs extends MemoH
@@ -20,7 +20,7 @@ public class MemoHVs extends MemoH
 
     public MemoHVs(String[] shader_string_array)
     {
-        String folder_path = ID + "/" + shader_string_array[0] + "/shader/" + NaliConfig.SHADER.gl_shading_language_version + "/";
+        String folder_path = ID + "/" + shader_string_array[0] + "/shader/" + SHADER.gl_shading_language_version + "/";
 
 //        super(shader_string_array);
 //    }
@@ -33,7 +33,8 @@ public class MemoHVs extends MemoH
 
 //        String model_folder_path = folder_path + "/Models/" + shader_string_array[5];
 //        String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[4] + "/Model/" + shader_string_array[5];
-        String model_folder_path = ID + "/" + shader_string_array[5] + "/model/" + shader_string_array[6];
+//        String model_folder_path = ID + "/" + shader_string_array[5] + "/model/" + shader_string_array[6];
+        String model_folder_path = ID + "/" + shader_string_array[6] + "/model/" + shader_string_array[7];
         String frame_string = "/frame/";
 
 //        float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + frame_string + "BindPoses");
@@ -118,7 +119,57 @@ public class MemoHVs extends MemoH
 //        }
         stringbuilder.append("uniform mat4 frame[").append(String.valueOf(this.bone)).append("];\n");
 
+        //
+        byte max_joint = Byte.parseByte(shader_string_array[8]);
+        if (max_joint == 1)
+        {
+//            stringbuilder.append(SHADER.attribute + " int joint;\n" + SHADER.attribute + " float weight;\n");
+            stringbuilder.append(SHADER.attribute + " float joint;\n" + SHADER.attribute + " float weight;\n");
+        }
+        else
+        {
+//            stringbuilder.append(SHADER.attribute + " ivec" + max_joint + " joint;\n" + SHADER.attribute + " vec" + max_joint + " weight;\n");
+            stringbuilder.append(SHADER.attribute + " vec" + max_joint + " joint;\n" + SHADER.attribute + " vec" + max_joint + " weight;\n");
+        }
+        //
+
         StringReader.append(stringbuilder, file_string + "1.vert");
+
+        //
+//        if (max_joint == 1)
+//        {
+//            stringbuilder.append("j = joint;\nw = weight;\n}\n");
+//        }
+//        else
+//        String j_string = "joint";
+        String w_string = "weight";
+        String temp_v = "vertex_v4";
+        String temp_n = "normal_v4";
+        if (max_joint == 1)
+        {
+            stringbuilder.append("vec4 vertex_v4 = vec4(vertex, 1.0);\nvec4 normal_v4 = vec4(normal, 0.0);\nint j = int(joint);\n");
+        }
+        else
+        {
+//            j_string = "j";
+            w_string = "w";
+            temp_v = "temp_vertex_v4";
+            temp_n = "temp_normal_v4";
+            stringbuilder.append("vec4 vertex_v4 = vec4(0);\nvec4 normal_v4 = vec4(0);\nfor (int i = 0; i < " + max_joint + "; ++i)\n{\nvec4 temp_vertex_v4 = vec4(vertex, 1.0);\nvec4 temp_normal_v4 = vec4(normal, 0.0);\nint j = 0;\nfloat w = 0.0;\n");
+            for (int i = 0; i < max_joint; ++i)
+            {
+                String head = "else if";
+
+                if (i == 0)
+                {
+                    head = "if";
+                }
+
+                stringbuilder.append(head).append(" (i == ").append(String.valueOf(i)).append(")\n{\n");
+                stringbuilder.append("j = int(joint[" + i + "]);\nw = weight[" + i + "];\n}\n");
+            }
+        }
+        //
 
 //        int[][] back_bones_2d_int_array = new int[this.max_bones][];
         this.back_bone_2d_int_array = new int[this.bone][];
@@ -139,6 +190,7 @@ public class MemoHVs extends MemoH
         for (int j = 0; j < bone_2d_int_array.length; ++j)
         {
             int[] back_bone_int_array = this.back_bone_2d_int_array[j];
+
             String head = "else if";
 
             if (j == 0)
@@ -147,19 +199,30 @@ public class MemoHVs extends MemoH
             }
 
             stringbuilder.append(head).append(" (j == ").append(String.valueOf(j)).append(")\n{\n");
+//            stringbuilder.append(head).append(" (" + j_string + " == ").append(String.valueOf(j)).append(")\n{\n");
             for (int bone : back_bone_int_array)
             {
-                stringbuilder.append("temp_vertex_vec4 *= bindpose[").append(String.valueOf(bone)).append("];\n");
-//                stringbuilder.append("temp_vertex_vec4 *= frame").append(StringReader.convertNumberToLetter(bone)).append(";\n");
-                stringbuilder.append("temp_vertex_vec4 *= frame[").append(String.valueOf(bone)).append("];\n");
-                stringbuilder.append("temp_vertex_vec4 *= invbindpose[").append(String.valueOf(bone)).append("];\n");
-                stringbuilder.append("temp_normal_vec4 *= bindpose[").append(String.valueOf(bone)).append("];\n");
-//                stringbuilder.append("temp_normal_vec4 *= frame").append(StringReader.convertNumberToLetter(bone)).append(";\n");
-                stringbuilder.append("temp_normal_vec4 *= frame[").append(String.valueOf(bone)).append("];\n");
-                stringbuilder.append("temp_normal_vec4 *= invbindpose[").append(String.valueOf(bone)).append("];\n");
-//                stringbuilder.append("temp_normal_vec4 *= temp_vertex_vec4;\n");
+                stringbuilder.append(temp_v + " *= bindpose[").append(String.valueOf(bone)).append("];\n");
+//                stringbuilder.append("temp_vertex_v4 *= frame").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+                stringbuilder.append(temp_v + " *= frame[").append(String.valueOf(bone)).append("];\n");
+                stringbuilder.append(temp_v + " *= invbindpose[").append(String.valueOf(bone)).append("];\n");
+                stringbuilder.append(temp_n + " *= bindpose[").append(String.valueOf(bone)).append("];\n");
+//                stringbuilder.append("temp_normal_v4 *= frame").append(StringReader.convertNumberToLetter(bone)).append(";\n");
+                stringbuilder.append(temp_n + " *= frame[").append(String.valueOf(bone)).append("];\n");
+                stringbuilder.append(temp_n + " *= invbindpose[").append(String.valueOf(bone)).append("];\n");
+//                stringbuilder.append("temp_normal_v4 *= temp_vertex_v4;\n");
             }
             stringbuilder.append("}\n");
+        }
+
+        if (max_joint == 1)
+        {
+            stringbuilder.append("vertex_v4 *= " + w_string + ";\nnormal_v4 *= " + w_string + ";\n");
+        }
+        else
+        {
+//            stringbuilder.append("temp_vertex_v4 *= w;\ntemp_normal_v4 *= w;\nvertex_v4 += temp_vertex_v4;\nnormal_v4 += temp_normal_v4;\n}\n");
+            stringbuilder.append("temp_vertex_v4 *= " + w_string + ";\ntemp_normal_v4 *= " + w_string + ";\nvertex_v4 += temp_vertex_v4;\nnormal_v4 += temp_normal_v4;\n}\n");
         }
 
         StringReader.append(stringbuilder, file_string + "2.vert");

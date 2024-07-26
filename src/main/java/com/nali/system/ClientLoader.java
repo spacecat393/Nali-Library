@@ -94,8 +94,10 @@ public class ClientLoader
         List<Integer> shader_id_integer_list = new ArrayList();
 //        List<int[]> index_int_array_list = new ArrayList();
 
-        List<Integer> frag_integer_list = new ArrayList();
-        List<Integer> vert_o_integer_list = new ArrayList();
+//        List<Integer> frag_integer_list = new ArrayList();
+//        List<Integer> vert_o_integer_list = new ArrayList();
+        Map<String, Integer> frag_integer_map = new HashMap();
+        Map<String, Integer> vert_o_integer_map = new HashMap();
 //        List<Integer> vert_s_integer_list = new ArrayList();
 
 //        String path_string;
@@ -209,7 +211,8 @@ public class ClientLoader
             if (vert_file_array != null)
             {
                 int step = memohvo_list.size();
-                vert_o_integer_list.add(step);
+//                vert_o_integer_list.add(step);
+                vert_o_integer_map.put(file.getName(), step);
 
                 for (File vert_file : vert_file_array)
                 {
@@ -231,7 +234,8 @@ public class ClientLoader
             if (frag_file_array != null)
             {
                 int step = memohfo_list.size();
-                frag_integer_list.add(step);
+//                frag_integer_list.add(step);
+                frag_integer_map.put(file.getName(), step);
 
                 for (File frag_file : frag_file_array)
                 {
@@ -247,11 +251,11 @@ public class ClientLoader
             }
         }
 
-        int i = 0, l = 0;
-        String path_string;
+        int i = 0/*, l = 0*/;
+//        String path_string;
         for (String[][] string_2d_array : shader_string_2d_array_list)
         {
-            path_string = Nali.ID + "/" + shader_name_string_list.get(i);
+//            path_string = Nali.ID + "/" + shader_name_string_list.get(i);
 //            int step = S_LIST.size();
 
             try
@@ -268,21 +272,23 @@ public class ClientLoader
                 String shader_string = string_array[3];
                 byte[] byte_array = shader_string.getBytes();
                 int v = Integer.parseInt(new String(byte_array, 1, byte_array.length - 1));
-                int f = Integer.parseInt(string_array[4]) + frag_integer_list.get(l);
+//                int f = Integer.parseInt(string_array[4]) + frag_integer_list.get(l);
+                int f = Integer.parseInt(string_array[5]) + frag_integer_map.get(string_array[4]);
                 if (shader_string.charAt(0) == 's')
                 {
                     MemoHVs memohvs = new MemoHVs(string_array);
                     memohvs_list.add(memohvs);
 //                    S_LIST.add(new MemoS(memohvs_list.get(v + vert_s_integer_list.get(l)).shader, memohfo_list.get(f).shader, string_array, path_string));
-                    S_LIST.add(new MemoS(memohvs.shader, memohfo_list.get(f).shader, string_array, path_string));
+                    S_LIST.add(new MemoS(memohvs.shader, memohfo_list.get(f).shader, string_array/*, path_string*/));
                 }
                 else
                 {
-                    S_LIST.add(new MemoS(memohvo_list.get(v + vert_o_integer_list.get(l)).shader, memohfo_list.get(f).shader, string_array, path_string));
+//                    S_LIST.add(new MemoS(memohvo_list.get(v + vert_o_integer_list.get(l)).shader, memohfo_list.get(f).shader, string_array/*, path_string*/));
+                    S_LIST.add(new MemoS(memohvo_list.get(v + vert_o_integer_map.get(string_array[2])).shader, memohfo_list.get(f).shader, string_array/*, path_string*/));
                 }
             }
 
-            ++l;
+//            ++l;
         }
 
 //        for (File file : file_array)
@@ -308,10 +314,11 @@ public class ClientLoader
 //        }
 
         i = 0;
-        l = 0;
+        int l = 0;
+//        String path_string;
         for (String[][] string_2d_array : model_string_2d_array_list)
         {
-            path_string = Nali.ID + "/" + model_name_string_list.get(i);
+            String path_string = Nali.ID + "/" + model_name_string_list.get(i);
 
             try
             {

@@ -10,8 +10,7 @@ import org.lwjgl.opengl.GL20;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import static com.nali.Nali.error;
-import static com.nali.Nali.warn;
+import static com.nali.Nali.*;
 
 @SideOnly(Side.CLIENT)
 public class MemoS
@@ -24,13 +23,13 @@ public class MemoS
     //StringBuilder->ShaderBuffer->ByteBuffer
     public int frag_shader;
 
-    public MemoS(/*MemoHVo memohvo, MemoHFo memohfo*/int vert_shader, int frag_shader, String[] shader_string_array, String folder_path)
+    public MemoS(/*MemoHVo memohvo, MemoHFo memohfo*/int vert_shader, int frag_shader, String[] shader_string_array/*, String folder_path*/)
     {
 //        this.vert_shader = memohvo.shader;
 //        this.frag_shader = memohfo.shader;
         this.vert_shader = vert_shader;
         this.frag_shader = frag_shader;
-        this.createBuffer(shader_string_array, folder_path);
+        this.createBuffer(shader_string_array/*, folder_path*/);
 //        if (MemoCurrent.SHADERS < NaliConfig.SHADER.max_shaders)
 //        {
 ////            String shader_folder_string = ID + "/" + shader_string_array[0];
@@ -95,8 +94,9 @@ public class MemoS
 //        return FileDataReader.getMixXStringArray(Paths.get(shader_data_folder_string + "Uniform"));
 //    }
 
-    public void createBuffer(String[] shader_string_array, String folder_path/*, int max_bones*/)
+    public void createBuffer(String[] shader_string_array/*, String folder_path*//*, int max_bones*/)
     {
+        String folder_path = ID + "/" + shader_string_array[0];
         String model_folder_string = folder_path + "/shader/" + shader_string_array[1] + "/";
         this.createShaderBuffer(shader_string_array);
 //        String[][] attriblocation_string_2d_array = this.getAttribLocationString2DArray(model_folder_string);

@@ -49,11 +49,11 @@ public class MemoG
 
             memoa2.index_int_array = index_int_array;
 
-            memoa2.vertices_float_array = memoa0_array[0].float_array;
-            memoa2.joints_float_array = memoa0_array[size - 2].float_array;
-            memoa2.weights_float_array = memoa0_array[size - 1].float_array;
+            memoa2.vertex_float_array = (float[])memoa0_array[0].o;
+            memoa2.joint_int_array = (int[])memoa0_array[size - 2].o;
+            memoa2.weight_float_array = (float[])memoa0_array[size - 1].o;
 //            memoa2.max_joints = Byte.parseByte(model_string_array[7]);
-            memoa2.max_joints = Byte.parseByte(model_string_array[8]);
+            memoa2.max_joint = Byte.parseByte(model_string_array[8]);
 
             A2_MAP.put(G_LIST.size(), memoa2);
         }

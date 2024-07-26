@@ -79,9 +79,14 @@ public class NaliConfig
     public static class Shader
     {
         @Config.Name("GL_SHADING_LANGUAGE_VERSION")
-        @Config.Comment("Shader Folder")
+        @Config.Comment("\"120\" \"460\"")
         @Config.RequiresMcRestart
-        public String gl_shading_language_version = "4.60";
+        public String gl_shading_language_version = "460";
+
+        @Config.Name("ATTRIBUTE")
+        @Config.Comment("\"attribute\" \"in\"")
+        @Config.RequiresMcRestart
+        public String attribute = "in";
 
 //        @Config.Name("Sort")
 //        @Config.Comment("Draw later with order.")

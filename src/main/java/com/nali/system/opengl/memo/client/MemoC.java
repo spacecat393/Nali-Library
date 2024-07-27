@@ -2,7 +2,6 @@ package com.nali.system.opengl.memo.client;
 
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.BufferUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -23,8 +22,9 @@ public class MemoC
     public static int
     MAX_BONE,
 //    SHADERS,
-    GL_DRAW_FRAMEBUFFER_BINDING,
-    GL_READ_FRAMEBUFFER_BINDING,
+//    LATER_GL_RENDERBUFFER_BINDING,
+    GL_DRAW_FRAMEBUFFER_BINDING,/* LATER_GL_DRAW_FRAMEBUFFER_BINDING,*/
+    GL_READ_FRAMEBUFFER_BINDING,/* LATER_GL_READ_FRAMEBUFFER_BINDING,*/
 //    MY_CURRENT_PROGRAM = -1,
     GL_CURRENT_PROGRAM,
     GL_ELEMENT_ARRAY_BUFFER_BINDING,

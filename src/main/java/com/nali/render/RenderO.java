@@ -24,6 +24,12 @@ import static com.nali.system.opengl.memo.client.MemoC.*;
 @SideOnly(Side.CLIENT)
 public class RenderO<RC extends IClientDaO>
 {
+//    public static int
+//    RENDERBUFFER = -1,
+//    FRAMEBUFFER = -1,
+//    FRAMEBUFFER_TEXTURE = -1,
+//    RENDERBUFFER_TEXTURE = -1;
+
 //    public DataLoader dataloader;
 //    public Object[] memo_object_array;
 //    public BothData bothdata;
@@ -207,6 +213,38 @@ public class RenderO<RC extends IClientDaO>
     {
 //        float lig_b = this.lig_b;
 //        float lig_s = this.lig_s;
+//        //
+//        Minecraft minecraft = Minecraft.getMinecraft();
+//        int display_width = minecraft.displayWidth, display_height = minecraft.displayHeight;
+//        GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
+//        LATER_GL_DRAW_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+//        GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
+//        LATER_GL_READ_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+//
+//        GL11.glGetInteger(GL30.GL_RENDERBUFFER_BINDING, OPENGL_INTBUFFER);
+//        LATER_GL_RENDERBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+//
+//        OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, RENDERBUFFER);
+//        OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, FRAMEBUFFER);
+//
+//        if ()
+//        {
+//            if (RENDERBUFFER != -1)
+//            {
+//                OpenGlHelper.glDeleteRenderbuffers(RENDERBUFFER);
+//                OpenGlHelper.glDeleteFramebuffers(FRAMEBUFFER);
+//                GL11.glDeleteTextures(RENDERBUFFER_TEXTURE);
+//                GL11.glDeleteTextures(FRAMEBUFFER_TEXTURE);
+//            }
+//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, RENDERBUFFER);
+//            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, display_width, display_height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (IntBuffer)null);
+//        }
+//        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+//
+//        OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, LATER_GL_RENDERBUFFER_BINDING);
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, LATER_GL_READ_FRAMEBUFFER_BINDING);
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, LATER_GL_DRAW_FRAMEBUFFER_BINDING);
+//        //
 
         DrawWorldData drawworlddata = new DrawWorldData();
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);

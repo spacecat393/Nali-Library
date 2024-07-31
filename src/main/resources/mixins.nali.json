@@ -7,9 +7,9 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "IMixinEntityRenderer",
-    "MixinMinecraft",
     "MixinEntityRenderer",
-    "MixinGameSettings"
+    "MixinGameSettings",
+    "MixinMinecraft"
   ],
   "mixins": [
     "IMixinEnumParticleTypes"

@@ -145,7 +145,7 @@ public abstract class MixinMinecraft
     }
 
     @Inject(method = "init", at = @At(value = "TAIL"))
-    private void init(CallbackInfo callbackinfo)
+    private void nali_init(CallbackInfo callbackinfo)
     {
 //        ClientLoader.loadPreInit();
         this.setRender();

@@ -330,17 +330,17 @@ public class ClientLoader
             }
 
             GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-            GL_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+            int gl_array_buffer_binding = OPENGL_INTBUFFER.get(0);
             GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
-            GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+            int gl_element_array_buffer_binding = OPENGL_INTBUFFER.get(0);
 
             for (String[] string_array : string_2d_array)
             {
                 G_LIST.add(new MemoG(/*index_int_array_list, */memoa0_array_list.get(l), shader_string_2d_array_map.get(string_array[2]), attriblocation_string_2d_array_list.get(l), shader_id_integer_list.get(l++), string_array, path_string));
             }
 
-            OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
-            OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+            OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
+            OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, gl_element_array_buffer_binding);
         }
 
 //        for (File file : file_array)

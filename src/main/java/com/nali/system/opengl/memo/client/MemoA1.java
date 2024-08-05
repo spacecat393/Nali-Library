@@ -189,23 +189,23 @@ public class MemoA1
 
     public static int genBuffer(ByteBuffer bytebuffer)
     {
-//        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-//        GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+//        GL11.glGetInteger(GL15.R_GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+//        R_GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
         int buffer = OpenGlHelper.glGenBuffers();
         OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
         OpenGlHelper.glBufferData(OpenGlHelper.GL_ARRAY_BUFFER, bytebuffer, OpenGlHelper.GL_STATIC_DRAW);
-//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, R_GL_ELEMENT_ARRAY_BUFFER_BINDING);
         return buffer;
     }
 
 //    public static int genIntBuffer(ByteBuffer bytebuffer)
 //    {
-////        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-////        GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+////        GL11.glGetInteger(GL15.R_GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+////        R_GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
 //        int buffer = OpenGlHelper.glGenBuffers();
 //        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, buffer);
 //        OpenGlHelper.glBufferData(OpenGlHelper.GL_ARRAY_BUFFER, bytebuffer, OpenGlHelper.GL_STATIC_DRAW);
-////        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+////        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, R_GL_ELEMENT_ARRAY_BUFFER_BINDING);
 //        return buffer;
 //    }
 }

@@ -68,7 +68,7 @@ public class MemoT
 //            this.width_int_array[index] = width;
 //            this.height_int_array[index] = height;
 
-//            GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
+//            GL11.glGetInteger(GL11.R_GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
 
 //        loadBuffer();
 //            this.texture_buffer = OpenGLBuffer.loadTextureBuffer(bytebuffer, width, height);

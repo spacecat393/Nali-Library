@@ -63,13 +63,13 @@ public class MemoG
 
 //        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Reference.MOD_ID + "/" + model_string_array[2] + "/Shader"));
 //        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderList"));
-//        GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-//        GL_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+//        GL11.glGetInteger(GL15.R_GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+//        R_GL_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
 //        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
-//        GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+//        R_GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
 //        this.createBufferFromFile(model_string_array, folder_path, shader_string_2d_array);
-//        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, GL_ARRAY_BUFFER_BINDING);
-//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER_BINDING);
+//        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, R_GL_ARRAY_BUFFER_BINDING);
+//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, R_GL_ELEMENT_ARRAY_BUFFER_BINDING);
     }
 
 //    public MemoGo(String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)

@@ -1,25 +1,33 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
-
-# idea
-out
-*.ipr
-*.iws
-*.iml
-.idea
-
-# gradle
-build
 .gradle
-
-# other
-eclipse
-run
+.vscode
+.idea
+libs
+bin
+build
+run/usercache.json
+run/usernamecache.json
+run/config
+run/logs
+run/saves
+run/crash-reports
+run/options.txt
+run/world
+run/banned-ips.json
+run/banned-players.json
+run/eula.txt
+run/ops.json
+run/server.properties
+run/servers.dat
+run/whitelist.json
+run/screenshots
+run/server
+run/natives
+run/.mixin.out
+defaultconfigs
+mods
+resourcepacks
+Results
+logs
 *.properties
 *.gradle
 gradlew

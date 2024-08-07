@@ -5,6 +5,7 @@ import com.nali.particle.ParticleRegistry;
 import com.nali.system.ClientLoader;
 import com.nali.system.ServerLoader;
 import com.nali.system.opengl.memo.client.MemoC;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -14,9 +15,13 @@ import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import static com.nali.system.opengl.memo.client.MemoA1.genBuffer;
+import static com.nali.system.opengl.memo.client.MemoC.*;
 
 @Mod(modid = Nali.ID)
 public class Nali
@@ -41,6 +46,66 @@ public class Nali
 //        this.bothloader.pairModel();
         if (event.getSide().isClient())
         {
+            FULL_ARRAY_BUFFER = genBuffer(createFloatByteBuffer(new float[]
+            {
+                -1, 1, 0.0F, 1.0F,
+                -1, -1, 0.0F, 0.0F,
+                1, -1, 1.0F, 0.0F,
+
+                -1, 1, 0.0F, 1.0F,
+                1, -1, 1.0F, 0.0F,
+                1, 1, 1.0F, 1.0F
+            }));
+//            FULL_X5_ARRAY_BUFFER = genBuffer(createFloatByteBuffer(new float[]
+//            {
+////                -0.75F, 0.75F, 0.0F, 1.0F,
+////                -0.75F, -0.75F, 0.0F, 0.0F,
+////                0.75F, -0.75F, 1.0F, 0.0F,
+////
+////                -0.75F, 0.75F, 0.0F, 1.0F,
+////                0.75F, -0.75F, 1.0F, 0.0F,
+////                0.75F, 0.75F, 1.0F, 1.0F
+//
+////                -0.75F, 0.75F, 0.25F, 0.75F,
+////                -0.75F, -0.75F, 0.25F, 0.25F,
+////                0.75F, -0.75F, 0.75F, 0.25F,
+////
+////                -0.75F, 0.75F, 0.25F, 0.75F,
+////                0.75F, -0.75F, 0.75F, 0.25F,
+////                0.75F, 0.75F, 0.75F, 0.75F
+//            }));
+            R_MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_MC_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+            R_MC_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+            R_MC2_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_MC2_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+            R_MC2_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+            R_M_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//            R_M_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+            R_M_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+            R_S_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_S_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//            R_S_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+            R_S_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+            R_T_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_T_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//            R_T_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+            R_T_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+            R_G_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_G_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//            R_G_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+            R_G_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+            R_TG_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_TG_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//            R_TG_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+            R_TG_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
 //            this.configuration = new Configuration(event.getSuggestedConfigurationFile());
 //            this.configuration.load();
 //            MyConfig.registerConfig();

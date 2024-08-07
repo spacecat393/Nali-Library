@@ -10,16 +10,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderer.class)
 public abstract class MixinEntityRenderer
 {
-    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 3))
-//    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V", shift = At.Shift.BEFORE, ordinal = 1))
-    private void nali_renderFWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
+//    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 3))
+    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V", shift = At.Shift.BEFORE, ordinal = 19))
+//    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V", shift = At.Shift.BEFORE, ordinal = 16))
+//    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;depthMask(Z)V", shift = At.Shift.BEFORE, ordinal = 3))
+//@Inject(method = "renderWorldPass", at = @At(value = "HEAD"))
+//    @Inject(method = "renderWorldPass", at = @At(value = "TAIL"))
+    private void nali_renderWorldPass(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
     {
-        DrawWorld.run();
-//        DrawWorld.drawFirst();
+        DrawWorld.init();
+//        DrawWorld.run();
+////        DrawWorld.drawFirst();
     }
 
-//    @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V", shift = At.Shift.AFTER))
-//    private void updateCameraAndRender(float partialTicks, long nanoTime, CallbackInfo callbackinfo)
+    //bypass and draw later
+    @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V", shift = At.Shift.AFTER))
+    private void updateCameraAndRender(float partialTicks, long nanoTime, CallbackInfo callbackinfo)
+    {
+        DrawWorld.run();
+    }
+
+//    @Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/profiler/Profiler;endStartSection(Ljava/lang/String;)V", shift = At.Shift.BEFORE, ordinal = 19))
+//    private void nali_renderWorldPass19(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
 //    {
 //        DrawWorld.run();
 //    }

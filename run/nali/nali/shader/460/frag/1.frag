@@ -12,10 +12,10 @@ out vec4 fragColor;
 void main()
 {
     vec4 own_texture_vec4 = texture(own_texture_sampler, fragment_texcoord);
-    if (own_texture_vec4.a == 0)
-    {
-        discard;
-    }
+//    if (own_texture_vec4.a == 0)
+//    {
+//        discard;
+//    }
 
     float main_depth = texture(main_depth_sampler, fragment_texcoord).r;
     float own_depth = texture(own_depth_sampler, fragment_texcoord).r;
@@ -29,27 +29,29 @@ void main()
     if (main_depth > own_depth)
 //    if (gl_FragCoord.z > own_depth)
     {
-////        if (own_texture_vec4.a != 1)
-////        {
+//////        if (own_texture_vec4.a != 1)
+//////        {
+////        vec4 main_texture_vec4 = texture(main_texture_sampler, fragment_texcoord);
+////
+////        float r_s = own_texture_vec4.r;
+////        float g_s = own_texture_vec4.g;
+////        float b_s = own_texture_vec4.b;
+////        float a_s = own_texture_vec4.a;
+////
+////        float r_d = main_texture_vec4.r;
+////        float g_d = main_texture_vec4.g;
+////        float b_d = main_texture_vec4.b;
+////        float a_d = main_texture_vec4.a;
+////
+////        float r_f = a_s * r_s + (1 - a_s) * r_d;
+////        float g_f = a_s * g_s + (1 - a_s) * g_d;
+////        float b_f = a_s * b_s + (1 - a_s) * b_d;
+////        float a_f = a_s + (1 - a_s) * a_d;
+////
+////        own_texture_vec4 = vec4(r_f, g_f, b_f, a_f);
+//////        }
 //        vec4 main_texture_vec4 = texture(main_texture_sampler, fragment_texcoord);
-//
-//        float r_s = own_texture_vec4.r;
-//        float g_s = own_texture_vec4.g;
-//        float b_s = own_texture_vec4.b;
-//        float a_s = own_texture_vec4.a;
-//
-//        float r_d = main_texture_vec4.r;
-//        float g_d = main_texture_vec4.g;
-//        float b_d = main_texture_vec4.b;
-//        float a_d = main_texture_vec4.a;
-//
-//        float r_f = a_s * r_s + (1 - a_s) * r_d;
-//        float g_f = a_s * g_s + (1 - a_s) * g_d;
-//        float b_f = a_s * b_s + (1 - a_s) * b_d;
-//        float a_f = a_s + (1 - a_s) * a_d;
-//
-//        own_texture_vec4 = vec4(r_f, g_f, b_f, a_f);
-////        }
+//        own_texture_vec4 = mix(own_texture_vec4, main_texture_vec4, own_texture_vec4.a);
     }
     else
     {

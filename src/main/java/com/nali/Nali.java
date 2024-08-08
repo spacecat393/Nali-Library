@@ -82,6 +82,14 @@ public class Nali
             R_MC2_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
             R_MC2_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
 
+            R_MCTB_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_MCTB_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+            R_MCTB_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+            R_MCH_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+            R_MCH_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+            R_MCH_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
             R_M_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
             R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
 //            R_M_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
@@ -99,8 +107,13 @@ public class Nali
 
             R_G_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
             R_G_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//            R_G_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
             R_G_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+
+//            R_GD_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+//            R_GD_DEPTH_TEXTURE = GL11.glGenTextures();
+//
+//            R_GDB_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+//            R_GDB_DEPTH_TEXTURE = GL11.glGenTextures();
 
             R_TG_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
             R_TG_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();

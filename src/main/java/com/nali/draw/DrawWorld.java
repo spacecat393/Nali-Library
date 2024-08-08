@@ -154,6 +154,8 @@ public class DrawWorld
             DISPLAY_WIDTH = display_width;
             DISPLAY_HEIGHT = display_height;
 
+            init(R_MCH_FRAMEBUFFER, R_MCH_FRAMEBUFFER_TEXTURE, R_MCH_RENDERBUFFER_TEXTURE);
+            init(R_MCTB_FRAMEBUFFER, R_MCTB_FRAMEBUFFER_TEXTURE, R_MCTB_RENDERBUFFER_TEXTURE);
             init(R_MC_FRAMEBUFFER/*, R_M_RENDERBUFFER*/, R_MC_FRAMEBUFFER_TEXTURE, R_MC_RENDERBUFFER_TEXTURE);
 //            init(R_MC2_FRAMEBUFFER/*, R_M_RENDERBUFFER*/, R_MC2_FRAMEBUFFER_TEXTURE, R_MC2_RENDERBUFFER_TEXTURE);
             OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
@@ -168,6 +170,36 @@ public class DrawWorld
             OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, R_MC2_RENDERBUFFER_TEXTURE, 0);
             OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, R_MC2_FRAMEBUFFER_TEXTURE, 0);
 
+            //
+
+//            OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_MCTB_FRAMEBUFFER);
+//
+//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_MCTB_RENDERBUFFER_TEXTURE);
+//            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, (ByteBuffer)null);
+//
+//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_MCTB_FRAMEBUFFER_TEXTURE);
+//            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA16, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_RGBA, GL11.GL_FLOAT, (ByteBuffer)null);
+//
+//            OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, R_MCTB_RENDERBUFFER_TEXTURE, 0);
+//            OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, R_MCTB_FRAMEBUFFER_TEXTURE, 0);
+//            //
+//
+//            OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_GD_FRAMEBUFFER);
+//
+//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GD_DEPTH_TEXTURE);
+//            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA16, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_RGBA, GL11.GL_FLOAT, (ByteBuffer)null);
+//
+//            OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, R_GD_DEPTH_TEXTURE, 0);
+//
+//            //
+//
+//            OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_GDB_FRAMEBUFFER);
+//
+//            GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GDB_DEPTH_TEXTURE);
+//            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA16, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_RGBA, GL11.GL_FLOAT, (ByteBuffer)null);
+//
+//            OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, R_GDB_DEPTH_TEXTURE, 0);
+
 //            GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_MC_RENDERBUFFER_TEXTURE);
 //            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, (ByteBuffer)null);
 //
@@ -179,18 +211,21 @@ public class DrawWorld
             init(R_G_FRAMEBUFFER/*, R_G_RENDERBUFFER*/, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
             init(R_TG_FRAMEBUFFER/*, R_TG_RENDERBUFFER*/, R_TG_FRAMEBUFFER_TEXTURE, R_TG_RENDERBUFFER_TEXTURE);
         }
+        clear(R_MCH_FRAMEBUFFER);
+        clear(R_MCTB_FRAMEBUFFER);
+        clear(R_MC2_FRAMEBUFFER);
         clear(R_MC_FRAMEBUFFER);
 
-        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
-//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC_FRAMEBUFFER);
-
-        GL30.glBlitFramebuffer
-        (
-            0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,
-            0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,
-            GL11.GL_DEPTH_BUFFER_BIT,
-            GL11.GL_NEAREST
-        );
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
+////        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC_FRAMEBUFFER);
+//
+//        GL30.glBlitFramebuffer
+//        (
+//            0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,
+//            0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,
+//            GL11.GL_DEPTH_BUFFER_BIT,
+//            GL11.GL_NEAREST
+//        );
 
         OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
         OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
@@ -198,7 +233,7 @@ public class DrawWorld
 
     public static void run()
     {
-        GL11.glGetBoolean(GL11.GL_COLOR_WRITEMASK, OPENGL_BYTEBUFFER);
+//        GL11.glGetBoolean(GL11.GL_COLOR_WRITEMASK, OPENGL_BYTEBUFFER);
         //GL11.glDepthMask
 //        GL11.glColorMask(true, true, true, true);
         Minecraft minecraft = Minecraft.getMinecraft();
@@ -207,6 +242,7 @@ public class DrawWorld
 //        GL11.glClearColor(0.0F, 0.0F, 0.0F, 0.0F);
 //        boolean gl_fog = GL11.glIsEnabled(GL11.GL_FOG);
 //        GL11.glDisable(GL11.GL_FOG);
+//        GL11.glEnable(GL11.GL_FOG);
         RenderO.takeDefault();
         GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
         R_GL_DRAW_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
@@ -245,6 +281,8 @@ public class DrawWorld
 //        init(R_TG_FRAMEBUFFER, R_TG_RENDERBUFFER, R_TG_FRAMEBUFFER_TEXTURE, R_TG_RENDERBUFFER_TEXTURE);
         clear(R_TG_FRAMEBUFFER/*, R_TG_RENDERBUFFER*/);
         clear(R_G_FRAMEBUFFER/*, R_G_RENDERBUFFER*/);
+//        clear(R_GD_FRAMEBUFFER);
+//        clear(R_GDB_FRAMEBUFFER);
         clear(R_S_FRAMEBUFFER/*, R_S_RENDERBUFFER*/);
         clear(R_M_FRAMEBUFFER/*, R_M_RENDERBUFFER*/);
 
@@ -283,9 +321,9 @@ public class DrawWorld
 //        OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depth_texture, 0);
 
         int main_framebuffer_texture = framebuffer.framebufferTexture;
-//        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
-//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC_FRAMEBUFFER);
-//
+        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
+        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC_FRAMEBUFFER);
+
 //        GL30.glBlitFramebuffer
 //        (
 //            0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,
@@ -299,18 +337,26 @@ public class DrawWorld
 
 ////        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, 0);
 //        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC_FRAMEBUFFER);
-//        drawQuadDepth(R_MC_RENDERBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
+//        draw2dDepth(R_MC_RENDERBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
 ////        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_MC_FRAMEBUFFER);
 //        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
 
 //        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
-//        drawQuadDepth(R_MC_RENDERBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//        draw2dDepth(R_MC_RENDERBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
 ////        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_MC_FRAMEBUFFER);
 //        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
 
 //        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT/* | GL11.GL_DEPTH_BUFFER_BIT*/);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_BLEND);
+//        GL11.glDisable(GL11.GL_BLEND);
+//        GL11.glDisable(GL11.GL_LIGHT0);
+//        GL11.glDisable(GL11.GL_LIGHT1);
+//        GL11.glDisable(GL11.GL_LIGHT2);
+//        GL11.glDisable(GL11.GL_LIGHT3);
+//        GL11.glDisable(GL11.GL_LIGHT4);
+//        GL11.glDisable(GL11.GL_LIGHT5);
+//        GL11.glDisable(GL11.GL_LIGHT6);
+//        GL11.glDisable(GL11.GL_LIGHT7);
 
 //        GL11.glDisable(GL11.GL_ALPHA_TEST);
 //        GL11.glDisable(GL11.GL_DITHER);
@@ -330,25 +376,93 @@ public class DrawWorld
 //        drawQuad(R_MC_FRAMEBUFFER_TEXTURE);
 //        GL11.glColorMask(true, true, true, false);
 //        drawQuadBlur(R_MC_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
-        drawQuadBlur(main_framebuffer_texture, R_MC_RENDERBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
-        drawQuad(main_framebuffer_texture, R_MC_RENDERBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
 
-//        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
-//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC_FRAMEBUFFER);
+        draw2dMix(main_framebuffer_texture, R_MC_RENDERBUFFER_TEXTURE, R_M_FRAMEBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
+//        draw2dBlur(main_framebuffer_texture, R_MC_RENDERBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//        draw2dMix(main_framebuffer_texture, R_MC_RENDERBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+
         OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
-        drawQuadDepth(R_MC_RENDERBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
-////        OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_MC_FRAMEBUFFER);
+//        draw2dDepthBlur(R_G_RENDERBUFFER_TEXTURE);
+//        draw2dDepthBlur(R_M_RENDERBUFFER_TEXTURE);
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+
+//        draw2dMix(R_MC_FRAMEBUFFER_TEXTURE, R_MC2_FRAMEBUFFER_TEXTURE, R_MC_FRAMEBUFFER_TEXTURE, R_MC_RENDERBUFFER_TEXTURE);
+
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
+//        draw2dDepth(R_MC_RENDERBUFFER_TEXTURE, R_MC2_FRAMEBUFFER_TEXTURE);
+//        draw2dDepth(R_MC_RENDERBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+        draw2dDepth(R_MC_RENDERBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
+//        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
         OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
+//        draw2dDepth(R_MC_RENDERBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
 
 //        OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, 0, 0);
 //        GL11.glDepthMask(false);
 //        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC_FRAMEBUFFER);
-//        drawQuadDepth(R_MC_RENDERBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
+//        draw2dDepth(R_MC_RENDERBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
 //        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
 //        GL11.glDepthMask(true);
 //        OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, R_MC_RENDERBUFFER_TEXTURE, 0);
 
-        drawQuad(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_M_FRAMEBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
+//        draw2dMix(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_M_FRAMEBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
+
+//        draw2dBlur(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//        draw2dMix(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
+//        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+        draw2dBlur(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+        draw2dMix(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+
+        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
+        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+
+        boolean gl_blend = GL11.glIsEnabled(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_BLEND);
+        draw2dMix(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_MCTB_FRAMEBUFFER_TEXTURE, R_MCTB_RENDERBUFFER_TEXTURE);
+        draw2dLite(R_MCH_FRAMEBUFFER_TEXTURE);
+        if (gl_blend)
+        {
+            GL11.glEnable(GL11.GL_BLEND);
+        }
+        else
+        {
+            GL11.glDisable(GL11.GL_BLEND);
+        }
+//        draw2dMix(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_MCH_FRAMEBUFFER_TEXTURE, R_MCH_RENDERBUFFER_TEXTURE);
+
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
+//        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GD_FRAMEBUFFER);
+//        draw2dDepthBlur(R_G_RENDERBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+//
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+//
+//        draw2dBlur(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_GD_DEPTH_TEXTURE);
+
+//        draw2dMix(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_GD_DEPTH_TEXTURE);
+//
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
+////        draw2dDepthBlur(R_G_RENDERBUFFER_TEXTURE);
+////        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
+////        draw2dDepthBlur(R_MC2_FRAMEBUFFER_TEXTURE, R_GDB_DEPTH_TEXTURE);
+//        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_GD_DEPTH_TEXTURE);
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+//
+//        draw2dBlur(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_GDB_DEPTH_TEXTURE);
+
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_MC2_FRAMEBUFFER);
+//        draw2dDepth(R_MC2_FRAMEBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
+//        OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+
+//        draw2dBlur(main_framebuffer_texture, R_MC2_FRAMEBUFFER_TEXTURE, R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE);
 //        drawQuad(main_framebuffer_texture, R_MC_RENDERBUFFER_TEXTURE, R_M_FRAMEBUFFER_TEXTURE, R_M_RENDERBUFFER_TEXTURE);
 
 //        drawQuadBlur(main_framebuffer_texture, R_MC_FRAMEBUFFER_TEXTURE, R_TG_FRAMEBUFFER_TEXTURE, R_TG_RENDERBUFFER_TEXTURE);
@@ -530,7 +644,7 @@ public class DrawWorld
 //                    OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_G_FRAMEBUFFER);
 //                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_G_RENDERBUFFER);
 //                }
-                if (transparent)
+                if (transparent/* || glow*/)
                 {
 //                    OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_S_FRAMEBUFFER);
 //                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_S_RENDERBUFFER);
@@ -590,10 +704,12 @@ public class DrawWorld
 
                 if (transparent && glow)
                 {
+                    GL11.glDisable(GL11.GL_DEPTH_TEST);
+
                     RenderO.disableBuffer(rs);
                     OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_TG_FRAMEBUFFER);
 //                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_TG_RENDERBUFFER);
-                    drawQuad(R_TG_FRAMEBUFFER_TEXTURE, R_TG_RENDERBUFFER_TEXTURE, R_S_FRAMEBUFFER_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
+                    draw2dMix(R_TG_FRAMEBUFFER_TEXTURE, R_TG_RENDERBUFFER_TEXTURE, R_S_FRAMEBUFFER_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
                     RenderO.enableBufferBack(rg, rs);
 
                     if (should_set_texture)
@@ -603,13 +719,17 @@ public class DrawWorld
 
                     OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_M_FRAMEBUFFER);
 //                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_M_RENDERBUFFER);
+
+                    GL11.glEnable(GL11.GL_DEPTH_TEST);
                 }
                 else if (transparent)
                 {
+                    GL11.glDisable(GL11.GL_DEPTH_TEST);
+
                     RenderO.disableBuffer(rs);
                     OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_T_FRAMEBUFFER);
 //                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_T_RENDERBUFFER);
-                    drawQuad(R_T_FRAMEBUFFER_TEXTURE, R_T_RENDERBUFFER_TEXTURE, R_S_FRAMEBUFFER_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
+                    draw2dMix(R_T_FRAMEBUFFER_TEXTURE, R_T_RENDERBUFFER_TEXTURE, R_S_FRAMEBUFFER_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
                     RenderO.enableBufferBack(rg, rs);
 
                     if (should_set_texture)
@@ -619,14 +739,41 @@ public class DrawWorld
 
                     OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_M_FRAMEBUFFER);
 //                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_M_RENDERBUFFER);
+
+                    GL11.glEnable(GL11.GL_DEPTH_TEST);
                 }
                 else if (glow)
                 {
+//                    GL11.glDisable(GL11.GL_DEPTH_TEST);
+//
+//                    RenderO.disableBuffer(rs);
+//                    OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_G_FRAMEBUFFER);
+//                    draw2dMix(R_G_FRAMEBUFFER_TEXTURE, R_G_RENDERBUFFER_TEXTURE, R_S_FRAMEBUFFER_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
+//
+//                    //draw depth to texture
+//                    OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_GD_FRAMEBUFFER);
+//                    draw2dDepth(R_GD_DEPTH_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
+//
+//                    OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_GDB_FRAMEBUFFER);
+//                    draw2dDepthBlur(R_GDB_DEPTH_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
+//                    //
+//
+//                    OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_TG_FRAMEBUFFER);
+//                    draw2dBlur(R_TG_FRAMEBUFFER_TEXTURE, R_TG_RENDERBUFFER_TEXTURE, R_S_FRAMEBUFFER_TEXTURE, R_S_RENDERBUFFER_TEXTURE);
+//                    RenderO.enableBufferBack(rg, rs);
+//
+//                    if (should_set_texture)
+//                    {
+//                        setTexture(rg, rs, byte_array);
+//                    }
+
                     OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, R_M_FRAMEBUFFER);
-//                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_M_RENDERBUFFER);
-//                    OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
-//                    OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
-//                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_GL_RENDERBUFFER_BINDING);
+////                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_M_RENDERBUFFER);
+////                    OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
+////                    OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
+////                    OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_GL_RENDERBUFFER_BINDING);
+//
+//                    GL11.glEnable(GL11.GL_DEPTH_TEST);
                 }
             }
 
@@ -660,7 +807,8 @@ public class DrawWorld
 //        OpenGlHelper.glFramebufferRenderbuffer(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, OpenGlHelper.GL_RENDERBUFFER, renderbuffer);
 
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, framebuffer_texture);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
+        //GL_RGBA8 as minecraft using 32856
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, renderbuffer_texture);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_DEPTH_COMPONENT, DISPLAY_WIDTH, DISPLAY_HEIGHT, 0, GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, (ByteBuffer)null);
 
@@ -675,7 +823,7 @@ public class DrawWorld
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     }
 
-    public static void drawQuad(int s_framebuffer_texture, int depth_texture/*, int s_renderbuffer_texture*/, int framebuffer_texture, int renderbuffer_texture)
+    public static void draw2dMix(int s_framebuffer_texture, int depth_texture/*, int s_renderbuffer_texture*/, int framebuffer_texture, int renderbuffer_texture)
     {
         MemoS rs = S_LIST.get(NaliData.SHADER_STEP + 1);
         OpenGlHelper.glUseProgram(rs.program);
@@ -720,7 +868,7 @@ public class DrawWorld
         GL20.glDisableVertexAttribArray(v);
     }
 
-    public static void drawQuadBlur(int main_framebuffer_texture, int depth_texture, int framebuffer_texture, int renderbuffer_texture)
+    public static void draw2dBlur(int main_framebuffer_texture, int depth_texture, int framebuffer_texture, int renderbuffer_texture)
     {
         MemoS rs = S_LIST.get(NaliData.SHADER_STEP + 2);
         OpenGlHelper.glUseProgram(rs.program);
@@ -747,8 +895,8 @@ public class DrawWorld
         OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[2], 2);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, framebuffer_texture);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 //        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
 //        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
 
@@ -765,7 +913,7 @@ public class DrawWorld
         GL20.glDisableVertexAttribArray(v);
     }
 
-    public static void drawQuad(int framebuffer_texture)
+    public static void draw2dLite(int framebuffer_texture)
     {
         MemoS rs = S_LIST.get(NaliData.SHADER_STEP + 3);
         OpenGlHelper.glUseProgram(rs.program);
@@ -786,9 +934,36 @@ public class DrawWorld
         GL20.glDisableVertexAttribArray(v);
     }
 
-    public static void drawQuadDepth(int main_renderbuffer_texture, int own_renderbuffer_texture)
+    public static void draw2dDepth(int main_renderbuffer_texture, int own_renderbuffer_texture)
     {
         MemoS rs = S_LIST.get(NaliData.SHADER_STEP + 4);
+        OpenGlHelper.glUseProgram(rs.program);
+        int v = rs.attriblocation_int_array[0];
+        GL20.glEnableVertexAttribArray(v);
+
+        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, FULL_ARRAY_BUFFER);
+        GL20.glVertexAttribPointer(v, 4, GL11.GL_FLOAT, false, 0, 0);
+
+        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[0], 0);
+        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, main_renderbuffer_texture);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[1], 1);
+        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, own_renderbuffer_texture);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+
+        GL20.glDisableVertexAttribArray(v);
+    }
+
+    public static void draw2dDepthBlur(int main_renderbuffer_texture, int own_renderbuffer_texture)
+    {
+        MemoS rs = S_LIST.get(NaliData.SHADER_STEP + 5);
         OpenGlHelper.glUseProgram(rs.program);
         int v = rs.attriblocation_int_array[0];
         GL20.glEnableVertexAttribArray(v);

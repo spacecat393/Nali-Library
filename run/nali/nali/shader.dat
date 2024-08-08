@@ -1,5 +1,6 @@
-nali QuadStatic nali o0 nali 0
-nali FullQuadStatic nali o0 nali 1
-nali FullQuadStatic nali o0 nali 2
-nali QuadStatic nali o0 nali 3
-nali QuadDepth nali o0 nali 4
+nali 2d nali o0 nali 0
+nali 2dMix nali o0 nali 1
+nali 2dMix nali o0 nali 2
+nali 2d nali o0 nali 3
+nali 2dDepth nali o0 nali 4
+nali 2dDepth nali o0 nali 5

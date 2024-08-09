@@ -22,7 +22,7 @@ import java.util.Map;
 
 import static com.nali.Nali.ID;
 import static com.nali.Nali.error;
-import static com.nali.system.opengl.memo.client.MemoC.*;
+import static com.nali.system.opengl.memo.client.MemoC.OPENGL_INTBUFFER;
 
 @SideOnly(Side.CLIENT)
 public class ClientLoader
@@ -334,10 +334,15 @@ public class ClientLoader
             GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
             int gl_element_array_buffer_binding = OPENGL_INTBUFFER.get(0);
 
+//            GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING, OPENGL_INTBUFFER);
+//            int gl_vertex_array_binding = OPENGL_INTBUFFER.get(0);
+
             for (String[] string_array : string_2d_array)
             {
                 G_LIST.add(new MemoG(/*index_int_array_list, */memoa0_array_list.get(l), shader_string_2d_array_map.get(string_array[2]), attriblocation_string_2d_array_list.get(l), shader_id_integer_list.get(l++), string_array, path_string));
             }
+
+//            GL30.glBindVertexArray(gl_vertex_array_binding);
 
             OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
             OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, gl_element_array_buffer_binding);

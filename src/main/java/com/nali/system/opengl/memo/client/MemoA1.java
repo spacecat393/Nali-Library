@@ -99,7 +99,13 @@ public class MemoA1
 //            String[] attriblocation_string_array = attriblocation_string_2d_array[i];
 //            String attriblocation_name_string = attriblocation_string_array[0];
             MemoA0 memoa0 = memoa0_array[i];
+
+//            //i
+//            GL20.glVertexAttribPointer(i, memoa0.size, GL11.GL_FLOAT, false, 0, 0);
+//            GL20.glEnableVertexAttribArray(i);
+
             memoa1_array[i] = new MemoA1((float[])memoa0.o, memoa0.size/*, GL11.GL_FLOAT*//*memoa0.type*/);
+
 //            memoa1_array[i] = new MemoA1(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1]));
         }
 
@@ -179,11 +185,22 @@ public class MemoA1
 
 //        FloatBuffer joint_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joint_float_array, true);
 //        ByteBuffer joint_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_joint_float_array, true);
+
+//        //i
+//        GL20.glVertexAttribPointer(j_index, limit_max_joint, GL11.GL_FLOAT, false, 0, 0);
+//        GL20.glEnableVertexAttribArray(j_index);
+
         memoa1_array[j_index] = new MemoA1(temp_joint_float_array, limit_max_joint/*, GL11.GL_FLOAT*/);
 //        memoa1_array[j_index] = new MemoA1(temp_joint_int_array, limit_max_joint, j_memoa0.type);
 //        FloatBuffer weight_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weight_float_array, true);
 //        ByteBuffer weight_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_weight_float_array, true);
+
+//        //i
+//        GL20.glVertexAttribPointer(w_index, limit_max_joint, GL11.GL_FLOAT, false, 0, 0);
+//        GL20.glEnableVertexAttribArray(w_index);
+
         memoa1_array[w_index] = new MemoA1(temp_weight_float_array, limit_max_joint/*, GL11.GL_FLOAT*//*w_memoa0.type*/);
+
         return memoa1_array;
     }
 

@@ -1,6 +1,6 @@
 #version 460 core
 
-uniform sampler2D main_texture_sampler;
+//uniform sampler2D main_texture_sampler;
 uniform sampler2D main_depth_sampler;
 uniform sampler2D own_texture_sampler;
 uniform sampler2D own_depth_sampler;
@@ -53,7 +53,7 @@ void main()
 //    vec4 own_texture_vec4 = texture(own_texture_sampler, fragment_texcoord);
     float own_depth = 1.0;
     vec4 own_texture_vec4 = vec4(0);
-    vec4 main_color_vec4 = vec4(0);
+//    vec4 main_color_vec4 = vec4(0);
     float x = 1920.0/5.0;
     float y = 1080.0/5.0;
 //    float ic = 1.0;
@@ -89,13 +89,13 @@ void main()
 //                discard;
 //                uv_v2.y = 0.9;
             }
-//            own_texture_vec4 += texture(own_texture_sampler, uv_v2)/** * ic * lc*/;
-            vec4 v4 = texture(own_texture_sampler, uv_v2);
-            if (main_color_vec4.a == 0 && v4.a != 0)
-            {
-                main_color_vec4 = v4;
-            }
-            own_texture_vec4 += v4;
+            own_texture_vec4 += texture(own_texture_sampler, uv_v2)/** * ic * lc*/;
+//            vec4 v4 = texture(own_texture_sampler, uv_v2);
+////            if (main_color_vec4.a == 0 && v4.a != 0)
+////            {
+////                main_color_vec4 = v4;
+////            }
+//            own_texture_vec4 += v4;
 //            vec4 v4 = texture(own_texture_sampler, uv_v2);
 //            own_texture_vec4 += v4/** * ic * lc*/;
 //            if (v4.a == 0.0)
@@ -108,6 +108,7 @@ void main()
             {
                 own_depth = new_own_depth;
             }
+//            own_depth += new_own_depth;
         }
 //        ic /= 1.01;
     }
@@ -125,6 +126,7 @@ void main()
 //    + texture(own_texture_sampler, uv_v23);
 //own_texture_vec4 /= 4.0*4.0;
     own_texture_vec4 /= 5.0*5.0;
+//    own_depth /= 5.0*5.0;
 //    own_texture_vec4.rgb *= 2.0;
 //    own_texture_vec4 /= 5.0*5.0;
 //    own_texture_vec4.a = 0.1;
@@ -216,7 +218,7 @@ void main()
 //    float own_depth = texture(own_depth_sampler, fragment_texcoord).r;
     if (main_depth > own_depth)
     {
-        vec4 main_texture_vec4 = texture(main_texture_sampler, fragment_texcoord);
+//        vec4 main_texture_vec4 = texture(main_texture_sampler, fragment_texcoord);
 //        own_texture_vec4.r = main_texture_vec4.r;
 //        own_texture_vec4.g = main_texture_vec4.g;
 //        own_texture_vec4.b = main_texture_vec4.b;
@@ -252,7 +254,9 @@ void main()
 //        own_texture_vec4.rgb = main_texture_vec4.rgb + own_texture_vec4.a;
 //        own_texture_vec4.rgb = main_texture_vec4.rgb + own_texture_vec4.rgb * own_texture_vec4.a;
 
-        own_texture_vec4.rgb = main_texture_vec4.rgb + main_color_vec4.rgb * own_texture_vec4.a;
+//        own_texture_vec4.rgb = main_texture_vec4.rgb + main_color_vec4.rgb * own_texture_vec4.a;
+//        own_texture_vec4.rgb = main_texture_vec4.rgb + own_texture_vec4.rgb * own_texture_vec4.a;
+        own_texture_vec4.rgb = own_texture_vec4.rgb * own_texture_vec4.a;
 //        own_texture_vec4.a = 1.0;
 //        own_texture_vec4.rgb = main_color_vec4.rgb * own_texture_vec4.a;
 
@@ -341,10 +345,10 @@ void main()
 ////            own_texture_vec4.rgb *= main_texture_vec4.rgb / 2.0;
 ////        }
 ////////        fragColor = own_texture_vec4;
-////        if (own_texture_vec4.a < 0.25)
-////        {
-////            discard;
-//        }
+        if (own_texture_vec4.a < 0.25)
+        {
+            discard;
+        }
     }
     else
     {

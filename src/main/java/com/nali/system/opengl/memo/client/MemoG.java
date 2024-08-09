@@ -6,29 +6,46 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL15;
 
-import static com.nali.system.ClientLoader.*;
+import static com.nali.system.ClientLoader.A2_MAP;
+import static com.nali.system.ClientLoader.G_LIST;
 import static com.nali.system.opengl.memo.client.MemoC.createIntByteBuffer;
 
 @SideOnly(Side.CLIENT)
 public class MemoG
 {
-    public MemoA1[] memoa1_array;
+    public MemoA1[] memoa1_array;//vbo
     //int[N] -> IntBuffer
 //    public int index;
     public int index_length;
 //    //shader_id_int -> OpenGLShaderData
 //    public Object shader;
-    public int element_array_buffer;
+    public int ebo;
 
 //    public float[] vertices_float_array;
 //    public int[] index_int_array;
 
     public byte state;//texture_state culling transparent glow
-    public int /*model_id, */texture_id, shader_id;
+    public int
+    texture_id,
+    shader_id;
+//    vao;
 
     public MemoG(/*List<int[]> index_int_array_list, */MemoA0[] memoa0_array, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int shader_id, String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
     {
         String model_folder_string = folder_path + "/model/" + model_string_array[0] + '/';
+
+
+//        this.vao = GL30.glGenVertexArrays();
+//        this.vao = GL45.glCreateVertexArrays();
+//        Nali.error("VAO " + GL30.glIsVertexArray(GL30.glGenVertexArrays()));
+//        Nali.error("VAO " + GL30.glIsVertexArray(GL45.glCreateVertexArrays()));
+
+//        GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING, OPENGL_INTBUFFER);
+//        int gl_vertex_array_binding = OPENGL_INTBUFFER.get(0);
+
+//        GL30.glBindVertexArray(this.vao);
+//        GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+//        int r_gl_element_array_buffer_binding = OPENGL_INTBUFFER.get(0);
 
         this.texture_id = Integer.parseInt(model_string_array[1]);
 //        this.shader_id = Integer.parseInt(model_string_array[2]);
@@ -37,8 +54,16 @@ public class MemoG
         this.state = (byte)(Byte.parseByte(model_string_array[4]) | 2 * Byte.parseByte(model_string_array[5]) | 4 * Byte.parseByte(model_string_array[6]) | 8 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
 
         this.memoa1_array = MemoA1.gen(memoa0_array, shader_string_2d_array, attriblocation_string_2d_array, model_string_array, folder_path/*, shader_string_2d_array*/, shader_id);
-        this.element_array_buffer = OpenGlHelper.glGenBuffers();
+
         int[] index_int_array = FileDataReader.getIntArray(model_folder_string + "index.bin");
+        this.index_length = index_int_array.length;
+
+        this.ebo = OpenGlHelper.glGenBuffers();
+        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.ebo);
+        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, createIntByteBuffer(index_int_array/*, true*/), OpenGlHelper.GL_STATIC_DRAW);
+
+//        GL30.glBindVertexArray(this.vao);
+
         if (model_string_array.length == 9)
         {
 //            index_int_array_list.add(index_int_array);
@@ -57,9 +82,10 @@ public class MemoG
 
             A2_MAP.put(G_LIST.size(), memoa2);
         }
-        this.index_length = index_int_array.length;
-        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.element_array_buffer);
-        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, createIntByteBuffer(index_int_array/*, true*/), OpenGlHelper.GL_STATIC_DRAW);
+
+
+//        GL30.glBindVertexArray(gl_vertex_array_binding);
+//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, r_gl_element_array_buffer_binding);
 
 //        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Reference.MOD_ID + "/" + model_string_array[2] + "/Shader"));
 //        String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(folder_path + "/ShaderList"));

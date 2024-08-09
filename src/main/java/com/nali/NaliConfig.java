@@ -78,6 +78,11 @@ public class NaliConfig
 
     public static class Shader
     {
+//        @Config.Name("Ex-Framebuffer")
+//        @Config.Comment("Post-processing effects")
+//        @Config.RequiresMcRestart
+//        public boolean ex_framebuffer = false;
+
         @Config.Name("GL_SHADING_LANGUAGE_VERSION")
         @Config.Comment("\"120\" \"460\"")
         @Config.RequiresMcRestart

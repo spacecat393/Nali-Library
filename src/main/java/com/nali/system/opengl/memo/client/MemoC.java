@@ -11,7 +11,7 @@ import java.nio.IntBuffer;
 @SideOnly(Side.CLIENT)
 public class MemoC
 {
-    public static ByteBuffer OPENGL_BYTEBUFFER = ByteBuffer.allocateDirect(16).order(ByteOrder.nativeOrder());
+//    public static ByteBuffer OPENGL_BYTEBUFFER = ByteBuffer.allocateDirect(16).order(ByteOrder.nativeOrder());
     public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
 //    public static FloatBuffer CPU_OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     public static FloatBuffer
@@ -22,21 +22,20 @@ public class MemoC
 
     public static int
     FULL_ARRAY_BUFFER = -1,/* FULL_X5_ARRAY_BUFFER = -1,*/
-    R_M_FRAMEBUFFER = -1,
-    R_M_FRAMEBUFFER_TEXTURE = -1,
-    R_M_RENDERBUFFER_TEXTURE = -1,
 
-    R_S_FRAMEBUFFER = -1,
-    R_S_FRAMEBUFFER_TEXTURE = -1,
-    R_S_RENDERBUFFER_TEXTURE = -1,
+//    MC_FRAMEBUFFER = -1,
+//    MC_RENDERBUFFER = -1,
+////    MC_DEPTH_TEXTURE = -1,//switch renderbuffer to depth texture
+//    //use main framebuffer only
+//    R_M_FRAMEBUFFER = -1,
+//    R_M_FRAMEBUFFER_TEXTURE = -1,
+//    R_M_RENDERBUFFER_TEXTURE = -1,
 
-    R_T_FRAMEBUFFER = -1,
-    R_T_FRAMEBUFFER_TEXTURE = -1,
-    R_T_RENDERBUFFER_TEXTURE = -1,
+//    R_S_FRAMEBUFFER = -1,
 
-    R_G_FRAMEBUFFER = -1,
-    R_G_FRAMEBUFFER_TEXTURE = -1,
-    R_G_RENDERBUFFER_TEXTURE = -1,
+//    R_T_FRAMEBUFFER = -1,
+
+//    R_G_FRAMEBUFFER = -1,
 
 //    R_GD_FRAMEBUFFER = -1,
 //    R_GD_DEPTH_TEXTURE = -1,
@@ -44,33 +43,33 @@ public class MemoC
 //    R_GDB_FRAMEBUFFER = -1,
 //    R_GDB_DEPTH_TEXTURE = -1,
 
-    R_TG_FRAMEBUFFER = -1,
-    R_TG_FRAMEBUFFER_TEXTURE = -1,
-    R_TG_RENDERBUFFER_TEXTURE = -1,
+//    R_TG_FRAMEBUFFER = -1,
 
-    R_MC_FRAMEBUFFER = -1,
-    R_MC_FRAMEBUFFER_TEXTURE = -1,
-    R_MC_RENDERBUFFER_TEXTURE = -1,
+////    R_MC_FRAMEBUFFER = -1,
+//    R_MC_FRAMEBUFFER_TEXTURE = -1,
+//    R_MC_RENDERBUFFER_TEXTURE = -1,
 
-    R_MC2_FRAMEBUFFER = -1,
-    R_MC2_FRAMEBUFFER_TEXTURE = -1,
-    R_MC2_RENDERBUFFER_TEXTURE = -1,
+////    R_MC2_FRAMEBUFFER = -1,
+//    R_MC2_FRAMEBUFFER_TEXTURE = -1,
+//    R_MC2_RENDERBUFFER_TEXTURE = -1,
 
-    R_MCTB_FRAMEBUFFER = -1,
-    R_MCTB_FRAMEBUFFER_TEXTURE = -1,
-    R_MCTB_RENDERBUFFER_TEXTURE = -1,
+//    R_MCTB_FRAMEBUFFER = -1,
 
-    R_MCH_FRAMEBUFFER = -1,
-    R_MCH_FRAMEBUFFER_TEXTURE = -1,
-    R_MCH_RENDERBUFFER_TEXTURE = -1,
+
+////    R_MCH_FRAMEBUFFER = -1,
+//    R_MCH_FRAMEBUFFER_TEXTURE = -1,
+//    R_MCH_RENDERBUFFER_TEXTURE = -1,
 
     MAX_BONE,
+//    R_GL_RENDERBUFFER_BINDING,
+//    R_GL_DEPTH_ATTACHMENT,
+//    R_GL_DRAW_FRAMEBUFFER_BINDING,
+//    R_GL_READ_FRAMEBUFFER_BINDING,
 //    SHADERS,
 //    LATER_GL_RENDERBUFFER_BINDING,
-    R_GL_DRAW_FRAMEBUFFER_BINDING,/* LATER_GL_DRAW_FRAMEBUFFER_BINDING,*/
-    R_GL_READ_FRAMEBUFFER_BINDING,/* LATER_GL_READ_FRAMEBUFFER_BINDING,*/
-    R_GL_RENDERBUFFER_BINDING,
+
 //    MY_CURRENT_PROGRAM = -1,
+//    R_GL_VERTEX_ARRAY_BINDING,
     R_GL_CURRENT_PROGRAM,
     R_GL_ELEMENT_ARRAY_BUFFER_BINDING,
     R_GL_ARRAY_BUFFER_BINDING,

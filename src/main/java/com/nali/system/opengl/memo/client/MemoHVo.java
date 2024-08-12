@@ -16,7 +16,7 @@ public class MemoHVo extends MemoH
         StringBuilder stringbuilder = new StringBuilder();
         StringReader.append(stringbuilder, file_string);
 
-        this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER);
+        this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER, file_string);
     }
 //    public static String GL_SHADING_LANGUAGE_VERSION;
 

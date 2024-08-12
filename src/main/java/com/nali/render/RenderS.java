@@ -17,7 +17,8 @@ import org.lwjgl.opengl.GL11;
 import java.util.Arrays;
 
 import static com.nali.math.M4x4.multiplyVec4Mat4;
-import static com.nali.system.ClientLoader.*;
+import static com.nali.system.ClientLoader.A2_MAP;
+import static com.nali.system.ClientLoader.F_LIST;
 import static com.nali.system.Timing.TIMELINE;
 import static com.nali.system.opengl.memo.client.MemoC.OPENGL_FLOATBUFFER;
 import static com.nali.system.opengl.memo.client.MemoC.setFloatBuffer;
@@ -71,7 +72,7 @@ public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends Render
     {
 //        OPENGL_FLOATBUFFER.limit(this.skinning_float_array.length);
         setFloatBuffer(this.skinning_float_array);
-        OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7], false, OPENGL_FLOATBUFFER);
+        OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7/*+1*/], false, OPENGL_FLOATBUFFER);
 //        OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[8], false, OPENGL_FLOATBUFFER);
         super.setUniform(rg, rs, index);
     }
@@ -388,7 +389,6 @@ public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends Render
     @Override
     public void updateDataLater(DrawWorldData drawworlddata)
     {
-        super.updateDataLater(drawworlddata);
         drawworlddata.skinning_float_array = this.skinning_float_array;
     }
 

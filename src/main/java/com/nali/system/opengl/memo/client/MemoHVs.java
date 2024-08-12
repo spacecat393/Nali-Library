@@ -224,6 +224,6 @@ public class MemoHVs extends MemoH
 
         StringReader.append(stringbuilder, file_string + "2.vert");
 
-        this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER);
+        this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER, file_string);
     }
 }

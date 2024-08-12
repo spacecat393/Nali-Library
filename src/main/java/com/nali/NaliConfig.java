@@ -80,8 +80,12 @@ public class NaliConfig
     {
 //        @Config.Name("Ex-Framebuffer")
 //        @Config.Comment("Post-processing effects")
-//        @Config.RequiresMcRestart
 //        public boolean ex_framebuffer = false;
+
+        @Config.Name("Pre-Shaders")
+        @Config.Comment("First compile")
+        @Config.RequiresMcRestart
+        public boolean pre_shader = false;
 
         @Config.Name("GL_SHADING_LANGUAGE_VERSION")
         @Config.Comment("\"120\" \"460\"")
@@ -97,11 +101,6 @@ public class NaliConfig
 //        @Config.Comment("Draw later with order.")
 //        @Config.RequiresMcRestart
 //        public boolean sort = true;
-
-        @Config.Name("Pre-Shaders")
-        @Config.Comment("First compile")
-        @Config.RequiresMcRestart
-        public boolean pre_shader = false;
 
 //        @Config.Name("Max Shaders")
 //        @Config.Comment("Compile on next load")

@@ -13,6 +13,6 @@ public class MemoHFo extends MemoH
         StringBuilder stringbuilder = new StringBuilder();
         StringReader.append(stringbuilder, file_string);
 
-        this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_FRAGMENT_SHADER);
+        this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_FRAGMENT_SHADER, file_string);
     }
 }

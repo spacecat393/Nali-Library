@@ -112,14 +112,18 @@ public class RenderO<RC extends IClientDaO>
         OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
         OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
-        OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3/*+1*/], OPENGL_FIXED_PIPE_FLOATBUFFER);
         GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
-        OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2/*+1*/], OPENGL_FIXED_PIPE_FLOATBUFFER);
+
+//        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[2], 2);
+//        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
+//        setTextureBuffer(Minecraft.getMinecraft().getFramebuffer().framebufferTexture, (byte)0);
     }
 
     public void setTextureUniform(MemoG rg, MemoS rs/*, int index*/)
     {
-        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[4], 0);
+        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[4/*+1*/], 0);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 //        OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememo.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemo.state & 1));
 //        OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, (byte)(openglobjectmemo.state & 1));
@@ -138,7 +142,7 @@ public class RenderO<RC extends IClientDaO>
 
     public void setLightMapUniform(MemoS rs)
     {
-        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5], 1);
+        OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
 //        OpenGlHelper.glUniform1i(openglobjectshadermemo.uniformlocation_int_array[6], 2);
         OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
@@ -152,7 +156,7 @@ public class RenderO<RC extends IClientDaO>
         OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_b);
         OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_s);
         OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
-        OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
+        OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], OPENGL_FIXED_PIPE_FLOATBUFFER);
 //        OpenGlHelper.glUniform2(openglobjectshadermemo.uniformlocation_int_array[7], this.lig_b, this.lig_s);
     }
 
@@ -211,6 +215,9 @@ public class RenderO<RC extends IClientDaO>
 
     public void drawLater()
     {
+//        int pass = net.minecraftforge.client.MinecraftForgeClient.getRenderPass();
+//        if (pass == 0)
+//        {
 //        float lig_b = this.lig_b;
 //        float lig_s = this.lig_s;
 //        //
@@ -270,10 +277,16 @@ public class RenderO<RC extends IClientDaO>
 
 //        this.lig_b = lig_b;
 //        this.lig_s = lig_s;
+//        }
+//        else
+//        {
+//            Nali.LOGGER.info("D");
+//        }
     }
 
     public void updateDataLater(DrawWorldData drawworlddata)
     {
+
     }
 
     public void drawLater(int index)
@@ -298,7 +311,8 @@ public class RenderO<RC extends IClientDaO>
 //        byte_array[4 + 4 + 4] += this.getExtraBit(rg);
 ////        BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
 ////        DrawWorld.add(new ByteArray(byte_array));
-        DrawWorld.add(KEY_MAP.computeIfAbsent(index + " " + this.getTextureBuffer(rg) + " " + this.getShaderID(rg) + " " + (byte)((this.getTransparent(rg) ? 1 : 0) + this.getExtraBit(rg)), k -> this.createByteArray(index)));
+        DrawWorld.add(KEY_MAP.computeIfAbsent(index + " " + this.getTextureBuffer(rg) + " " + this.getShaderID(rg) + " " + (byte)((this.getTransparent(rg) ? 1 : 0) | this.getExtraBit(rg)), k -> this.createByteArray(index)));
+//        DrawWorld.add(KEY_MAP.computeIfAbsent(index + " " + this.getTextureBuffer(rg) + " " + this.getShaderID(rg) + " " + this.getExtraBit(rg), k -> this.createByteArray(index)));
     }
 
     public byte[] createByteArray(int index)
@@ -441,21 +455,13 @@ public class RenderO<RC extends IClientDaO>
         R_GL_TEXTURE_MIN_FILTER_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
         R_GL_TEXTURE_MAG_FILTER_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 
-        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
-        GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
-        R_GL_TEXTURE_BINDING_2D_2 = OPENGL_INTBUFFER.get(0);
-        R_GL_TEXTURE_WRAP_S_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
-        R_GL_TEXTURE_WRAP_T_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
-        R_GL_TEXTURE_MIN_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
-        R_GL_TEXTURE_MAG_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
-
-        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE3);
-        GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
-        R_GL_TEXTURE_BINDING_2D_3 = OPENGL_INTBUFFER.get(0);
-        R_GL_TEXTURE_WRAP_S_3 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
-        R_GL_TEXTURE_WRAP_T_3 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
-        R_GL_TEXTURE_MIN_FILTER_3 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
-        R_GL_TEXTURE_MAG_FILTER_3 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
+//        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
+//        GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
+//        R_GL_TEXTURE_BINDING_2D_2 = OPENGL_INTBUFFER.get(0);
+//        R_GL_TEXTURE_WRAP_S_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
+//        R_GL_TEXTURE_WRAP_T_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
+//        R_GL_TEXTURE_MIN_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
+//        R_GL_TEXTURE_MAG_FILTER_2 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 
 //        setBuffer(openglobjectmemo, openglobjectshadermemo);
 
@@ -548,19 +554,12 @@ public class RenderO<RC extends IClientDaO>
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_1);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_1);
 
-        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GL_TEXTURE_BINDING_2D_2);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, R_GL_TEXTURE_WRAP_S_2);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, R_GL_TEXTURE_WRAP_T_2);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_2);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_2);
-
-        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE3);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GL_TEXTURE_BINDING_2D_3);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, R_GL_TEXTURE_WRAP_S_3);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, R_GL_TEXTURE_WRAP_T_3);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_3);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_3);
+//        OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
+//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GL_TEXTURE_BINDING_2D_2);
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, R_GL_TEXTURE_WRAP_S_2);
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, R_GL_TEXTURE_WRAP_T_2);
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_2);
+//        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_2);
 
         OpenGlHelper.glUseProgram(R_GL_CURRENT_PROGRAM);
 

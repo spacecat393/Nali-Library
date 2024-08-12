@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import static com.nali.Nali.error;
+import static com.nali.Nali.warn;
 
 @SideOnly(Side.CLIENT)
 public abstract class MemoH
@@ -24,7 +25,7 @@ public abstract class MemoH
         return bytebuffer;
     }
 
-    public static int genShader(ByteBuffer bytebuffer, int type)
+    public static int genShader(ByteBuffer bytebuffer, int type, String info_string)
     {
         int shader = OpenGlHelper.glCreateShader(type);
 //        int shader = OpenGlHelper.glCreateShader(type);
@@ -43,6 +44,7 @@ public abstract class MemoH
 //                Nali.error(GLU.gluErrorString(error));
 //            }
 //            Nali.error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
+            warn(info_string);
             error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
         }
 

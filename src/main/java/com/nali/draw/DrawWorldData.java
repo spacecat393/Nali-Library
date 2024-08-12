@@ -8,4 +8,5 @@ public class DrawWorldData
     light0position_v4_float = new float[4],
     skinning_float_array;
     public float lig_b, lig_s;
+//    public byte state;//glow/outline
 }

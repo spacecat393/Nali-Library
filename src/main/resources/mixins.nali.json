@@ -9,8 +9,7 @@
     "IMixinEntityRenderer",
     "MixinGameSettings",
     "MixinMinecraft",
-    "render.ex.framebuffer.MixinEntityRenderer",
-    "render.ex.framebuffer.MixinFramebuffer"
+    "MixinRenderGlobal"
   ],
   "mixins": [
     "IMixinEnumParticleTypes"

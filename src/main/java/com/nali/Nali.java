@@ -14,12 +14,10 @@ import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import static com.nali.draw.DrawWorldExFb.*;
 import static com.nali.system.opengl.memo.client.MemoA1.genBuffer;
 import static com.nali.system.opengl.memo.client.MemoC.FULL_ARRAY_BUFFER;
 import static com.nali.system.opengl.memo.client.MemoC.createFloatByteBuffer;
@@ -57,28 +55,29 @@ public class Nali
                 1, -1, 1.0F, 0.0F,
                 1, 1, 1.0F, 1.0F
             }));
+//            DrawWorldExFb.gen();
 //            if (true)
 //            {
 //            MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-                DEPTH_COLOR0_TEXTURE = GL11.glGenTextures();
-
-                R_MCTB_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-                R_MCTB_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-                R_S_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-                R_S_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-                R_T_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-                R_T_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-                R_G_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-                R_G_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-                R_TG_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-                R_TG_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-                R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-                R_M_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//                DEPTH_COLOR0_TEXTURE = GL11.glGenTextures();
+//
+//                R_MCTB_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//                R_MCTB_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+//                R_S_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//                R_S_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+//                R_T_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//                R_T_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+//                R_G_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//                R_G_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+//                R_TG_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//                R_TG_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+//                R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//                R_M_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
 //            }
 //            MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
 //            MC_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();

@@ -28,8 +28,8 @@ import static com.nali.key.KeyHelper.KEYBINDING_ARRAY;
 @Mixin(GameSettings.class)
 public abstract class MixinGameSettings
 {
-    @Shadow
-    public KeyBinding[] keyBindings;
+//    @Shadow
+//    public KeyBinding[] keyBindings;
     private List<Class> key_class_list;
 //    private int[] int_array;
     private String[] string_array;
@@ -119,12 +119,11 @@ public abstract class MixinGameSettings
     @Inject(method = "saveOptions", at = @At(value = "HEAD"))
     private void nali_firstSaveOptions(CallbackInfo ci)
     {
-        int size = KEYBINDING_ARRAY.length;
+//        int size = KEYBINDING_ARRAY.length;
 //        this.int_array = new int[size];
-        for (int i = 0; i < size; ++i)
+        for (KeyBinding keybinding : KEYBINDING_ARRAY)
         {
-            KeyBinding keybinding = KEYBINDING_ARRAY[i];
-//            this.int_array[i] = keybinding.getKeyCode();
+            //            this.int_array[i] = keybinding.getKeyCode();
             keybinding.setKeyModifierAndCode(keybinding.getKeyModifierDefault(), keybinding.getKeyCodeDefault());
         }
     }
@@ -132,11 +131,10 @@ public abstract class MixinGameSettings
     @Inject(method = "saveOptions", at = @At(value = "TAIL"))
     private void nali_lastSaveOptions(CallbackInfo ci)
     {
-        int size = KEYBINDING_ARRAY.length;
+//        int size = KEYBINDING_ARRAY.length;
 //        this.int_array = new int[size];
-        for (int i = 0; i < size; ++i)
+        for (KeyBinding keybinding : KEYBINDING_ARRAY)
         {
-            KeyBinding keybinding = KEYBINDING_ARRAY[i];
             keybinding.setKeyModifierAndCode(keybinding.getKeyModifierDefault(), 0);
 //            keybinding.setKeyModifierAndCode(keybinding.getKeyModifierDefault(), this.int_array[i]);
         }

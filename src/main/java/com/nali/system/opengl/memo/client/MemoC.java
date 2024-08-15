@@ -11,7 +11,7 @@ import java.nio.IntBuffer;
 @SideOnly(Side.CLIENT)
 public class MemoC
 {
-//    public static ByteBuffer OPENGL_BYTEBUFFER = ByteBuffer.allocateDirect(16).order(ByteOrder.nativeOrder());
+    public static ByteBuffer OPENGL_BYTEBUFFER = ByteBuffer.allocateDirect(16).order(ByteOrder.nativeOrder());
     public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
 //    public static FloatBuffer CPU_OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
     public static FloatBuffer

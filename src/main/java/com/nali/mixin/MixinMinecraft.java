@@ -32,9 +32,19 @@ public abstract class MixinMinecraft
 
 //    private byte state;
 
+//    @Shadow public WorldClient world;
+//    private boolean init = true;
+
     @Inject(method = "runGameLoop", at = @At(value = "HEAD"))
     private void nali_runGameLoop(CallbackInfo callbackinfo)
     {
+//        if (this.init && this.world != null)
+//        {
+//            NaliGL.init();
+//            ClientLoader.loadPreInit();
+//            ClientLoader.loadInit();
+//            this.init = false;
+//        }
         Timing.count();
         for (Sound soundrender : new HashSet<>(SOUNDRENDER_SET))
         {

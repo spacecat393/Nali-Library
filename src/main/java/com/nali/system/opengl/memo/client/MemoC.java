@@ -69,7 +69,7 @@ public class MemoC
 //    LATER_GL_RENDERBUFFER_BINDING,
 
 //    MY_CURRENT_PROGRAM = -1,
-//    R_GL_VERTEX_ARRAY_BINDING,
+    R_GL_VERTEX_ARRAY_BINDING,
     R_GL_CURRENT_PROGRAM,
     R_GL_ELEMENT_ARRAY_BUFFER_BINDING,
     R_GL_ARRAY_BUFFER_BINDING,
@@ -144,9 +144,7 @@ public class MemoC
 
     public static ByteBuffer createIntByteBuffer(int[] int_array)
     {
-        ByteBuffer bytebuffer;
-
-        bytebuffer = ByteBuffer.allocateDirect(int_array.length << 2).order(ByteOrder.nativeOrder());
+        ByteBuffer bytebuffer = ByteBuffer.allocateDirect(int_array.length << 2).order(ByteOrder.nativeOrder());
 
         for (int i : int_array)
         {
@@ -160,9 +158,7 @@ public class MemoC
 
     public static ByteBuffer createFloatByteBuffer(float[] float_array)
     {
-        ByteBuffer bytebuffer;
-
-        bytebuffer = ByteBuffer.allocateDirect(float_array.length << 2).order(ByteOrder.nativeOrder());
+        ByteBuffer bytebuffer = ByteBuffer.allocateDirect(float_array.length << 2).order(ByteOrder.nativeOrder());
 
         for (float f : float_array)
         {

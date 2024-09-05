@@ -2,6 +2,7 @@ package com.nali.system;
 
 import com.nali.Nali;
 import com.nali.NaliConfig;
+import com.nali.NaliGL;
 import com.nali.render.RenderO;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.openal.memo.client.MemoN;
@@ -65,6 +66,8 @@ public class ClientLoader
 //    public int index;
     public static void loadPreInit()
     {
+        NaliGL.init();
+
         File[] file_array = new File(ID).listFiles();
 
         if (file_array == null)
@@ -171,6 +174,7 @@ public class ClientLoader
 //                        this.texture_integer_list.add(this.genTexture(texture_file));
                     }
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, OPENGL_INTBUFFER.get(0));
+//                    Nali.check();
                 }
                 catch (IllegalAccessException | NoSuchFieldException e)
                 {
@@ -225,6 +229,7 @@ public class ClientLoader
                     int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
                     memohvo_list.set(index + step, new MemoHVo(vert_file.toString()));
                 }
+//                Nali.check();
             }
         }
 
@@ -248,6 +253,7 @@ public class ClientLoader
                     int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
                     memohfo_list.set(index + step, new MemoHFo(frag_file.toString()));
                 }
+//                Nali.check();
             }
         }
 
@@ -286,6 +292,7 @@ public class ClientLoader
 //                    S_LIST.add(new MemoS(memohvo_list.get(v + vert_o_integer_list.get(l)).shader, memohfo_list.get(f).shader, string_array/*, path_string*/));
                     S_LIST.add(new MemoS(memohvo_list.get(v + vert_o_integer_map.get(string_array[2])).shader, memohfo_list.get(f).shader, string_array/*, path_string*/));
                 }
+//                Nali.check();
             }
 
 //            ++l;
@@ -331,11 +338,12 @@ public class ClientLoader
 
             GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
             int gl_array_buffer_binding = OPENGL_INTBUFFER.get(0);
-            GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER, OPENGL_INTBUFFER);
+            GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
             int gl_element_array_buffer_binding = OPENGL_INTBUFFER.get(0);
 
 //            GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING, OPENGL_INTBUFFER);
 //            int gl_vertex_array_binding = OPENGL_INTBUFFER.get(0);
+            int gl_vertex_array_binding = NaliGL.glVertexArrayBinding();
 
             for (String[] string_array : string_2d_array)
             {
@@ -343,9 +351,11 @@ public class ClientLoader
             }
 
 //            GL30.glBindVertexArray(gl_vertex_array_binding);
+            NaliGL.glBindVertexArray(gl_vertex_array_binding);
 
             OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
             OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, gl_element_array_buffer_binding);
+//            Nali.check();
         }
 
 //        for (File file : file_array)
@@ -415,6 +425,7 @@ public class ClientLoader
 //                    }
 //                }
             }
+//            Nali.check();
         }
     }
 

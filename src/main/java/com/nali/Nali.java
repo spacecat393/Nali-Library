@@ -174,7 +174,23 @@ public class Nali
 //    @EventHandler
 //    public void onFMLPostInitializationEvent(FMLPostInitializationEvent event)
 //    {
-//        this.bothloader.clear();
+//        if (event.getSide().isClient())
+//        {
+//            ClientLoader.loadPreInit();
+//            ClientLoader.loadInit();
+//        }
+//////        this.bothloader.clear();
+//    }
+
+//    @EventHandler
+//    public void onFMLLoadCompleteEvent(FMLLoadCompleteEvent event)
+//    {
+//        if (event.getSide().isClient())
+//        {
+//            NaliGL.init();
+//            ClientLoader.loadPreInit();
+//            ClientLoader.loadInit();
+//        }
 //    }
 
     public static void error(Throwable t)
@@ -198,4 +214,13 @@ public class Nali
     {
         LOGGER.warn(s);
     }
+
+//    public static void check()
+//    {
+//        int error = GL11.glGetError();
+//        if (error != GL11.GL_NO_ERROR)
+//        {
+//            error(GLU.gluErrorString(error));
+//        }
+//    }
 }

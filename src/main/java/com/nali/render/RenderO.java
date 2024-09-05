@@ -1,11 +1,11 @@
 package com.nali.render;
 
+import com.nali.NaliGL;
 import com.nali.da.client.IClientDaO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.system.bytes.ByteWriter;
-import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoG;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
@@ -360,11 +360,12 @@ public class RenderO<RC extends IClientDaO>
 
         this.setUniform(rg, rs, index);
 
-        GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
+//        GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
+        NaliGL.glDrawElementsTUi0(rg.index_length);
 //        DRAW_CONSUMER.accept(openglobjectmemo);
 
 //        OpenGlHelper.glPopAttrib();
-        disableBuffer(rs);
+//        disableBuffer(rs);
         setDefault();
         this.lig_b = lig_b;
         this.lig_s = lig_s;
@@ -424,6 +425,7 @@ public class RenderO<RC extends IClientDaO>
 
 //        GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING, OPENGL_INTBUFFER);
 //        R_GL_VERTEX_ARRAY_BINDING = OPENGL_INTBUFFER.get(0);
+        R_GL_VERTEX_ARRAY_BINDING = NaliGL.glVertexArrayBinding();
 
         GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
         R_GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
@@ -563,7 +565,7 @@ public class RenderO<RC extends IClientDaO>
 
         OpenGlHelper.glUseProgram(R_GL_CURRENT_PROGRAM);
 
-//        GL30.glBindVertexArray(R_GL_VERTEX_ARRAY_BINDING);
+        NaliGL.glBindVertexArray(R_GL_VERTEX_ARRAY_BINDING);
 
         OpenGlHelper.setActiveTexture(R_GL_ACTIVE_TEXTURE);
         OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, R_GL_ELEMENT_ARRAY_BUFFER_BINDING);
@@ -616,30 +618,31 @@ public class RenderO<RC extends IClientDaO>
 //        MY_CURRENT_PROGRAM = -1;
     }
 
-    public static void disableBuffer(MemoS rs)
-    {
-        for (int i : rs.attriblocation_int_array)
-        {
-            GL20.glDisableVertexAttribArray(i);
-        }
-    }
+//    public static void disableBuffer(MemoS rs)
+//    {
+////        for (int i : rs.attriblocation_int_array)
+////        {
+////            GL20.glDisableVertexAttribArray(i);
+////        }
+//    }
 
     public static void enableBuffer(MemoG rg, MemoS rs)
     {
         int program = rs.program;
-//        GL30.glBindVertexArray(rg.vao);
+        NaliGL.glBindVertexArray(rg.vao);
         OpenGlHelper.glUseProgram(program);
-        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
+//        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
 //        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.element_array_buffer);
 
-        int[] int_array = rs.attriblocation_int_array;
-        for (int i = 0; i < int_array.length; ++i)
-        {
-            MemoA1 a1 = rg.memoa1_array[i];
-            OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
-            GL20.glVertexAttribPointer(int_array[i], a1.size, GL11.GL_FLOAT, false, 0, 0);
-            GL20.glEnableVertexAttribArray(int_array[i]);
-        }
+//        int[] int_array = rs.attriblocation_int_array;
+//        for (int i = 0; i < int_array.length; ++i)
+//        {
+//            MemoA1 a1 = rg.memoa1_array[i];
+//            OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
+//////            GL20.glVertexAttribPointer(int_array[i], a1.size, GL11.GL_FLOAT, false, a1.stride, 0);
+//            GL20.glVertexAttribPointer(int_array[i], a1.size, GL11.GL_FLOAT, false, 0, 0);
+//            GL20.glEnableVertexAttribArray(int_array[i]);
+//        }
 
         if ((rg.state & 2) == 2)
         {

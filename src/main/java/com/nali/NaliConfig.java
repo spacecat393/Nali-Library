@@ -85,17 +85,22 @@ public class NaliConfig
         @Config.Name("Pre-Shaders")
         @Config.Comment("First compile")
         @Config.RequiresMcRestart
-        public boolean pre_shader = false;
+        public boolean pre_shader = true;
+
+        @Config.Name("Use-Switch")
+        @Config.Comment("130+")
+        @Config.RequiresMcRestart
+        public boolean use_switch = false;
 
         @Config.Name("GL_SHADING_LANGUAGE_VERSION")
-        @Config.Comment("\"120\" \"460\"")
+        @Config.Comment("\"100\" \"120\" \"460\"")
         @Config.RequiresMcRestart
-        public String gl_shading_language_version = "460";
+        public String gl_shading_language_version = "100";
 
         @Config.Name("ATTRIBUTE")
         @Config.Comment("\"attribute\" \"in\"")
         @Config.RequiresMcRestart
-        public String attribute = "in";
+        public String attribute = "attribute";
 
 //        @Config.Name("Sort")
 //        @Config.Comment("Draw later with order.")

@@ -132,6 +132,17 @@ public class MemoS
 //        OpenGlHelper.glAttachShader(this.program, (int)this.frag_shader);
         OpenGlHelper.glAttachShader(this.program, this.frag_shader);
 
+//        if (error_string_array[3].equals("o0"))
+//        {
+//            int transformFeedbackID = glGenTransformFeedbacks();
+//            glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, transformFeedbackID);
+
+//            int transformFeedbackBufferID = glGenBuffers();
+//            glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, transformFeedbackBufferID);
+//            glBufferData(GL_TRANSFORM_FEEDBACK_BUFFER, bufferSize, (ByteBuffer)null, GL_STATIC_READ);
+
+//            GL30.glTransformFeedbackVaryings(this.program, new CharSequence[]{"outPosition", "outNormal"}, GL30.GL_SEPARATE_ATTRIBS);
+//        }
         OpenGlHelper.glLinkProgram(this.program);
         GL20.glValidateProgram(this.program);
 

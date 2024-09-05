@@ -1,5 +1,6 @@
 package com.nali.system.opengl.memo.client;
 
+import com.nali.NaliGL;
 import com.nali.system.file.FileDataReader;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,16 +28,17 @@ public class MemoG
     public byte state;//texture_state culling transparent glow
     public int
     texture_id,
-    shader_id;
-//    vao;
+    shader_id,
+    vao;
 
     public MemoG(/*List<int[]> index_int_array_list, */MemoA0[] memoa0_array, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int shader_id, String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/)
     {
         String model_folder_string = folder_path + "/model/" + model_string_array[0] + '/';
 
-
 //        this.vao = GL30.glGenVertexArrays();
 //        this.vao = GL45.glCreateVertexArrays();
+        this.vao = NaliGL.glGenVertexArrays();
+        NaliGL.glBindVertexArray(this.vao);
 //        Nali.error("VAO " + GL30.glIsVertexArray(GL30.glGenVertexArrays()));
 //        Nali.error("VAO " + GL30.glIsVertexArray(GL45.glCreateVertexArrays()));
 
@@ -56,11 +58,15 @@ public class MemoG
         this.memoa1_array = MemoA1.gen(memoa0_array, shader_string_2d_array, attriblocation_string_2d_array, model_string_array, folder_path/*, shader_string_2d_array*/, shader_id);
 
         int[] index_int_array = FileDataReader.getIntArray(model_folder_string + "index.bin");
+//        ByteBuffer bytebuffer = ByteBuffer.allocateDirect().order(ByteOrder.nativeOrder());
+//        bytebuffer.put();
+//        bytebuffer.flip();
         this.index_length = index_int_array.length;
 
         this.ebo = OpenGlHelper.glGenBuffers();
         OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.ebo);
         OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, createIntByteBuffer(index_int_array/*, true*/), OpenGlHelper.GL_STATIC_DRAW);
+//        OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, bytebuffer, OpenGlHelper.GL_STATIC_DRAW);
 
 //        GL30.glBindVertexArray(this.vao);
 
@@ -82,7 +88,6 @@ public class MemoG
 
             A2_MAP.put(G_LIST.size(), memoa2);
         }
-
 
 //        GL30.glBindVertexArray(gl_vertex_array_binding);
 //        OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, r_gl_element_array_buffer_binding);

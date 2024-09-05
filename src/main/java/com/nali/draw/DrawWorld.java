@@ -1,6 +1,7 @@
 package com.nali.draw;
 
 import com.nali.Nali;
+import com.nali.NaliGL;
 import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.render.RenderO;
 import com.nali.system.bytes.ByteReader;
@@ -318,12 +319,25 @@ public class DrawWorld
                     setFloatBuffer(drawworlddata.skinning_float_array);
                     OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7/*+1*/], false, OPENGL_FLOATBUFFER);
                 }
-
 //                OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
-                GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
+//                int buffer = OpenGlHelper.glGenBuffers();
+//                GL30.glBindBufferBase(GL30.GL_TRANSFORM_FEEDBACK_BUFFER, 0, transformFeedbackBufferID);
+//                GL30.glBeginTransformFeedback(GL11.GL_TRIANGLES);
+//                GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
+                NaliGL.glDrawElementsTUi0(rg.index_length);
+//                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, rg.index_length);
+//                GL30.glEndTransformFeedback();
+
+                //read
+                //glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, transformFeedbackBufferID);
+                //ByteBuffer buffer = glMapBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, GL_READ_ONLY);
+
+                //done
+                //glUnmapBuffer(GL_TRANSFORM_FEEDBACK_BUFFER);
+                //glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
             }
 
-            RenderO.disableBuffer(rs);
+//            RenderO.disableBuffer(rs);
         }
     }
 }

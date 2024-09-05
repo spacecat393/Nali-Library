@@ -46,6 +46,7 @@ public class MemoA0
 
             length -= 2;
             memoa0_array[length] = new MemoA0(FileDataReader.getIntArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
+//            memoa0_array[length] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
             length += 1;
             memoa0_array[length] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
         }

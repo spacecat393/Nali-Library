@@ -2,7 +2,7 @@
 //
 //public class NaliData
 //{
-//    public static int
-////    TEXTURE_STEP,
-//    SHADER_STEP;
+//	public static int
+////	TEXTURE_STEP,
+//	SHADER_STEP;
 //}

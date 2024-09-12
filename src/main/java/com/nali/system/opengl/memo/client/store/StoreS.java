@@ -12,5 +12,5 @@
 //@SideOnly(Side.CLIENT)
 //public class StoreS<RG extends MemoGo, RS extends MemoS> extends StoreO<RG, RS>
 //{
-//    public List<MemoAnimation> memoanimation_list = new ArrayList();
+//	public List<MemoAnimation> memoanimation_list = new ArrayList();
 //}

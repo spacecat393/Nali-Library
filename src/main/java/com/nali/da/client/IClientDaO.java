@@ -6,8 +6,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public interface IClientDaO
 {
-    int StartPart();
-    int EndPart();//MaxPart = StartPart - EndPart
-//    int Texture();
-//    int Shader();
+	int StartPart();
+	int EndPart();//MaxPart = StartPart - EndPart
+//	int Texture();
+//	int Shader();
 }

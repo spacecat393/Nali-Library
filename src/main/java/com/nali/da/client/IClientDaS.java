@@ -6,5 +6,5 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public interface IClientDaS extends IClientDaO
 {
-    int FrameID();
+	int FrameID();
 }

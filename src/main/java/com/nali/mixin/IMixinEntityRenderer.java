@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(EntityRenderer.class)
 public interface IMixinEntityRenderer
 {
-    @Accessor("lightmapTexture")
-    DynamicTexture lightmapTexture();
-//    @Accessor("fogColorRed")
-//    float fogColorRed();
-//    @Accessor("fogColorGreen")
-//    float fogColorGreen();
-//    @Accessor("fogColorBlue")
-//    float fogColorBlue();
+	@Accessor("lightmapTexture")
+	DynamicTexture lightmapTexture();
+//	@Accessor("fogColorRed")
+//	float fogColorRed();
+//	@Accessor("fogColorGreen")
+//	float fogColorGreen();
+//	@Accessor("fogColorBlue")
+//	float fogColorBlue();
 }

@@ -8,26 +8,26 @@
 //@Mixin(GlStateManager.class)
 //public abstract class MixinGlStateManager
 //{
-////    @Shadow
-////    private static int activeTextureUnit;
-////    @Final
-////    @Shadow
-////    private static Object[] textureState = null;
+////	@Shadow
+////	private static int activeTextureUnit;
+////	@Final
+////	@Shadow
+////	private static Object[] textureState = null;
 ////
-////    private static Field textureName_textureState_field;
+////	private static Field textureName_textureState_field;
 //
-//    @Overwrite
-//    public static void bindTexture(int texture)
-//    {
-////        if (textureName_textureState_field == null)
-////        {
-////            Field[] field_array = textureState[activeTextureUnit].getClass().getDeclaredFields();
-////            for (Field field : field_array)
-////            {
-////                field;
-////            }
-////        }
+//	@Overwrite
+//	public static void bindTexture(int texture)
+//	{
+////		if (textureName_textureState_field == null)
+////		{
+////			Field[] field_array = textureState[activeTextureUnit].getClass().getDeclaredFields();
+////			for (Field field : field_array)
+////			{
+////				field;
+////			}
+////		}
 //
-//        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-//    }
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+//	}
 //}

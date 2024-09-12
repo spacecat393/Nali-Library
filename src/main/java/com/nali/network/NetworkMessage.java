@@ -5,19 +5,19 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public abstract class NetworkMessage implements IMessage
 {
-    public byte[] data;
+	public byte[] data;
 
-    @Override
-    public void fromBytes(ByteBuf bytebuf)
-    {
-        int length = bytebuf.readableBytes();
-        this.data = new byte[length];
-        bytebuf.readBytes(this.data);
-    }
+	@Override
+	public void fromBytes(ByteBuf bytebuf)
+	{
+		int length = bytebuf.readableBytes();
+		this.data = new byte[length];
+		bytebuf.readBytes(this.data);
+	}
 
-    @Override
-    public void toBytes(ByteBuf bytebuf)
-    {
-        bytebuf.writeBytes(this.data);
-    }
+	@Override
+	public void toBytes(ByteBuf bytebuf)
+	{
+		bytebuf.writeBytes(this.data);
+	}
 }

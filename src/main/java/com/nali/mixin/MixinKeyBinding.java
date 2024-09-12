@@ -13,13 +13,13 @@
 //@Mixin(KeyBinding.class)
 //public abstract class MixinKeyBinding
 //{
-//    @Inject(method = "resetKeyBindingArrayAndHash", at = @At(value = "TAIL"))
-//    private static void nali_resetKeyBindingArrayAndHash(CallbackInfo callbackinfo)
-//    {
-//        for (KeyBinding keybinding : KEYBINDING_ARRAY)
-//        {
-//            keybinding.setKeyModifierAndCode(keybinding.getKeyModifierDefault(), 0);
-//            Minecraft.getMinecraft().gameSettings.setOptionKeyBinding(keybinding, keybinding.getKeyCode());
-//        }
-//    }
+//	@Inject(method = "resetKeyBindingArrayAndHash", at = @At(value = "TAIL"))
+//	private static void nali_resetKeyBindingArrayAndHash(CallbackInfo callbackinfo)
+//	{
+//		for (KeyBinding keybinding : KEYBINDING_ARRAY)
+//		{
+//			keybinding.setKeyModifierAndCode(keybinding.getKeyModifierDefault(), 0);
+//			Minecraft.getMinecraft().gameSettings.setOptionKeyBinding(keybinding, keybinding.getKeyCode());
+//		}
+//	}
 //}

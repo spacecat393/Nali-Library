@@ -6,10 +6,10 @@
 //@SideOnly(Side.CLIENT)
 //public class WorldMath
 //{
-////    public static M4x4 WORLD_M4X4;
-////    public static M4x4 PROJECT_M4X4;
-////    public static M4x4 VIEW_M4X4;
-////    public static float[] RGB_FLOAT_ARRAY;
-////    public static float[] SCREEN_RGBA_FLOAT_ARRAY;
-//    public static Object[] FREE_SKINNING_OBJECT_ARRAY;
+////	public static M4x4 WORLD_M4X4;
+////	public static M4x4 PROJECT_M4X4;
+////	public static M4x4 VIEW_M4X4;
+////	public static float[] RGB_FLOAT_ARRAY;
+////	public static float[] SCREEN_RGBA_FLOAT_ARRAY;
+//	public static Object[] FREE_SKINNING_OBJECT_ARRAY;
 //}

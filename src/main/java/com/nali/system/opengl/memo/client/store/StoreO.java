@@ -11,17 +11,17 @@
 //@SideOnly(Side.CLIENT)
 //public class StoreO<RG extends MemoGo, RS extends MemoS>
 //{
-//    public List<RG> rg_list = new ArrayList();
-//    public List<RS> rs_list = new ArrayList();
-////    @Override
-////    public List<G> getListG()
-////    {
-////        return g_list;
-////    }
+//	public List<RG> rg_list = new ArrayList();
+//	public List<RS> rs_list = new ArrayList();
+////	@Override
+////	public List<G> getListG()
+////	{
+////		return g_list;
+////	}
 ////
-////    @Override
-////    public List<S> getListS()
-////    {
-////        return s_list;
-////    }
+////	@Override
+////	public List<S> getListS()
+////	{
+////		return s_list;
+////	}
 //}

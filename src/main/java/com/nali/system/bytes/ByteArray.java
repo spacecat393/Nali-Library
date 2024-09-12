@@ -4,31 +4,31 @@
 //
 //public class ByteArray
 //{
-//    public byte[] array;
+//	public byte[] array;
 //
-//    public ByteArray(byte[] array)
-//    {
-//        this.array = array;
-//    }
+//	public ByteArray(byte[] array)
+//	{
+//		this.array = array;
+//	}
 //
-//    @Override
-//    public int hashCode()
-//    {
-//        return Arrays.hashCode(this.array);
-//    }
+//	@Override
+//	public int hashCode()
+//	{
+//		return Arrays.hashCode(this.array);
+//	}
 //
-//    @Override
-//    public boolean equals(Object object)
-//    {
-//        if (this == object)
-//        {
-//            return true;
-//        }
-//        if (!(object instanceof ByteArray))
-//        {
-//            return false;
-//        }
-//        ByteArray bytearray = (ByteArray)object;
-//        return Arrays.equals(this.array, bytearray.array);
-//    }
+//	@Override
+//	public boolean equals(Object object)
+//	{
+//		if (this == object)
+//		{
+//			return true;
+//		}
+//		if (!(object instanceof ByteArray))
+//		{
+//			return false;
+//		}
+//		ByteArray bytearray = (ByteArray)object;
+//		return Arrays.equals(this.array, bytearray.array);
+//	}
 //}

@@ -10,23 +10,23 @@ import static com.nali.Nali.error;
 
 public class Reflect
 {
-    public static List<Class> getClasses(String package_name)
-    {
-        List<Class> class_arraylist = new ArrayList();
+	public static List<Class> getClasses(String package_name)
+	{
+		List<Class> class_arraylist = new ArrayList();
 
-        try
-        {
-            ClassPath classpath = ClassPath.from(Thread.currentThread().getContextClassLoader());
-            for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClasses(package_name))
-            {
-                class_arraylist.add(Class.forName(package_name + "." + classInfo.getSimpleName()));
-            }
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            error(e);
-        }
+		try
+		{
+			ClassPath classpath = ClassPath.from(Thread.currentThread().getContextClassLoader());
+			for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClasses(package_name))
+			{
+				class_arraylist.add(Class.forName(package_name + "." + classInfo.getSimpleName()));
+			}
+		}
+		catch (IOException | ClassNotFoundException e)
+		{
+			error(e);
+		}
 
-        return class_arraylist;
-    }
+		return class_arraylist;
+	}
 }

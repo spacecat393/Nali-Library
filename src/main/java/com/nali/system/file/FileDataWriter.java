@@ -8,19 +8,19 @@
 //
 //public class FileDataWriter
 //{
-//    public static void bytes(String path_string, byte[] string_byte)
-//    {
-//        try
-//        {
-//            File file = new File(path_string);
+//	public static void bytes(String path_string, byte[] string_byte)
+//	{
+//		try
+//		{
+//			File file = new File(path_string);
 //
-//            FileOutputStream fileoutputstream = new FileOutputStream(file);
-//            fileoutputstream.write(string_byte);
-//            fileoutputstream.close();
-//        }
-//        catch (IOException ioexception)
-//        {
-//            Main.LOGGER.error(ioexception.getMessage(), ioexception);
-//        }
-//    }
+//			FileOutputStream fileoutputstream = new FileOutputStream(file);
+//			fileoutputstream.write(string_byte);
+//			fileoutputstream.close();
+//		}
+//		catch (IOException ioexception)
+//		{
+//			Main.LOGGER.error(ioexception.getMessage(), ioexception);
+//		}
+//	}
 //}

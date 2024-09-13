@@ -2,6 +2,7 @@ package com.nali.sound;
 
 public interface ISoundDaLe
 {
+	int EAT();
 	int HURT();
 	int DEATH();
 	int PAT();

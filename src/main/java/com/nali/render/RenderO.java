@@ -22,7 +22,10 @@ import static com.nali.system.ClientLoader.*;
 import static com.nali.system.opengl.memo.client.MemoC.*;
 
 @SideOnly(Side.CLIENT)
-public class RenderO<RC extends IClientDaO>
+public class RenderO
+<
+	RC extends IClientDaO
+>
 {
 //	public static int
 //	RENDERBUFFER = -1,

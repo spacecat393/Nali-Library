@@ -24,7 +24,11 @@ import static com.nali.system.opengl.memo.client.MemoC.OPENGL_FLOATBUFFER;
 import static com.nali.system.opengl.memo.client.MemoC.setFloatBuffer;
 
 @SideOnly(Side.CLIENT)
-public class RenderS<BD extends IBothDaSn, RC extends IClientDaS> extends RenderO<RC>
+public class RenderS
+<
+	BD extends IBothDaSn,
+	RC extends IClientDaS
+> extends RenderO<RC>
 {
 	public BD bd;
 

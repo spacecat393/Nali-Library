@@ -69,7 +69,10 @@ public class ClientLoader
 
 		if (file_array != null)
 		{
-			NaliGL.init();
+			if (Nali.VAO)
+			{
+				NaliGL.init();
+			}
 
 			Map<String, Class> data_class_map = new HashMap();
 			List<MemoHVo> memohvo_list = new ArrayList();
@@ -332,14 +335,23 @@ public class ClientLoader
 					error(e);
 				}
 
-				GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-				int gl_array_buffer_binding = OPENGL_INTBUFFER.get(0);
-				GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-				int gl_element_array_buffer_binding = OPENGL_INTBUFFER.get(0);
-
 //			GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING, OPENGL_INTBUFFER);
 //			int gl_vertex_array_binding = OPENGL_INTBUFFER.get(0);
-				int gl_vertex_array_binding = NaliGL.glVertexArrayBinding();
+				int gl_vertex_array_binding;
+
+				int gl_array_buffer_binding;
+				int gl_element_array_buffer_binding;
+				if (Nali.VAO)
+				{
+					gl_vertex_array_binding = NaliGL.glVertexArrayBinding();
+				}
+				else
+				{
+					GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+					gl_array_buffer_binding = OPENGL_INTBUFFER.get(0);
+					GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+					gl_element_array_buffer_binding = OPENGL_INTBUFFER.get(0);
+				}
 
 				for (String[] string_array : string_2d_array)
 				{
@@ -347,10 +359,15 @@ public class ClientLoader
 				}
 
 //			GL30.glBindVertexArray(gl_vertex_array_binding);
-				NaliGL.glBindVertexArray(gl_vertex_array_binding);
-
-				OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
-				OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, gl_element_array_buffer_binding);
+				if (Nali.VAO)
+				{
+					NaliGL.glBindVertexArray(gl_vertex_array_binding);
+				}
+				else
+				{
+					OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
+					OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, gl_element_array_buffer_binding);
+				}
 //			Nali.check();
 			}
 

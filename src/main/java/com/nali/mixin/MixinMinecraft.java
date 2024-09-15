@@ -178,12 +178,12 @@ public abstract class MixinMinecraft
 			});
 			GL43.glDebugMessageCallback(khrdebugcallback);
 		}
+		ClientLoader.loadPreInit();
 	}
 
 	@Inject(method = "init", at = @At(value = "TAIL"))
 	private void nali_init(CallbackInfo callbackinfo)
 	{
-//		ClientLoader.loadPreInit();
 		this.setRender();
 //		I.clientloader.loadInit();
 		ClientLoader.loadInit();

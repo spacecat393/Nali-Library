@@ -324,8 +324,14 @@ public class DrawWorld
 //				GL30.glBindBufferBase(GL30.GL_TRANSFORM_FEEDBACK_BUFFER, 0, transformFeedbackBufferID);
 //				GL30.glBeginTransformFeedback(GL11.GL_TRIANGLES);
 //				GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
-				NaliGL.glDrawElementsTUi0(rg.index_length);
-//				GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, rg.index_length);
+				if (Nali.VAO)
+				{
+					NaliGL.glDrawElementsTUi0(rg.index_length);
+				}
+				else
+				{
+					GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
+				}
 //				GL30.glEndTransformFeedback();
 
 				//read
@@ -337,7 +343,10 @@ public class DrawWorld
 				//glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 			}
 
-//			RenderO.disableBuffer(rs);
+			if (!Nali.VAO)
+			{
+				RenderO.disableBuffer(rs);
+			}
 		}
 	}
 }

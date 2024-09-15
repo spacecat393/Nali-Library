@@ -2,7 +2,6 @@ package com.nali;
 
 import com.nali.network.NetworkRegistry;
 import com.nali.particle.ParticleRegistry;
-import com.nali.system.ClientLoader;
 import com.nali.system.ServerLoader;
 import com.nali.system.opengl.memo.client.MemoC;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -27,11 +26,13 @@ public class Nali
 {
 	public final static String ID = "nali";
 
+	public final static boolean VAO = false;
+
 //	@Instance
 //	public static Nali I;
 
 //	public Configuration configuration;
-	public static Logger LOGGER = LogManager.getLogger(ID);
+	public final static Logger LOGGER = LogManager.getLogger(ID);
 //	public Random random = new Random();
 
 //	@SideOnly(Side.CLIENT)
@@ -150,7 +151,7 @@ public class Nali
 //			Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
 //			this.clientloader = new ClientLoader();
 //			this.clientloader.loadPreInit();
-			ClientLoader.loadPreInit();
+//			ClientLoader.loadPreInit();
 		}
 	}
 

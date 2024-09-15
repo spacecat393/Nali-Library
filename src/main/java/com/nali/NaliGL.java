@@ -10,34 +10,37 @@ public class NaliGL
 
 	static
 	{
-		String os_name = System.getProperty("os.name").toLowerCase();
-		String type = "";
-		if (os_name.contains("win"))
+		if (Nali.VAO)
 		{
-			type += "dll";
-		}
-		else if (os_name.contains("nix") || os_name.contains("nux") || os_name.contains("aix"))
-		{
-			type += "so";
-		}
-		else if (os_name.contains("mac"))
-		{
-			type += "dylib";
-		}
-		else
-		{
-			warn(os_name);
-		}
+			String os_name = System.getProperty("os.name").toLowerCase();
+			String type = "";
+			if (os_name.contains("win"))
+			{
+				type += "dll";
+			}
+			else if (os_name.contains("nix") || os_name.contains("nux") || os_name.contains("aix"))
+			{
+				type += "so";
+			}
+			else if (os_name.contains("mac"))
+			{
+				type += "dylib";
+			}
+			else
+			{
+				warn(os_name);
+			}
 
-		File file = new File("nali/nali/c/libNaliGL." + type);
-		if (file.exists())
-		{
-			System.load(file.getAbsolutePath());
-		}
-		else
-		{
-			warn("SKIP_POINTER");
+			File file = new File("nali/nali/c/libNaliGL." + type);
+			if (file.exists())
+			{
+				System.load(file.getAbsolutePath());
+			}
+			else
+			{
+				warn("SKIP_POINTER");
 //			STATE |= 1;
+			}
 		}
 	}
 

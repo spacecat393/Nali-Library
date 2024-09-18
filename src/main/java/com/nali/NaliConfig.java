@@ -6,11 +6,10 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.nali.Nali.ID;
 
-@SideOnly(Side.CLIENT)
+//@SideOnly(Side.CLIENT)
 @Config(modid = ID)
 public class NaliConfig
 {

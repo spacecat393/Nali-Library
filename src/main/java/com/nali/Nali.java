@@ -3,7 +3,6 @@ package com.nali;
 import com.nali.network.NetworkRegistry;
 import com.nali.particle.ParticleRegistry;
 import com.nali.system.ServerLoader;
-import com.nali.system.opengl.memo.client.MemoC;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -13,9 +12,6 @@ import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import static com.nali.system.opengl.memo.client.MemoA1.genBuffer;
 import static com.nali.system.opengl.memo.client.MemoC.FULL_ARRAY_BUFFER;
@@ -145,7 +141,7 @@ public class Nali
 //			ObjectWorldDraw.loadWithConfig();
 //			KeyRegistryHelper.set();
 //			MemoCurrent.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(NaliConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-			MemoC.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MemoC.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//			MemoC.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MemoC.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
 //			OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 //			Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);

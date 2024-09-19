@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL15;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -464,6 +466,27 @@ public class ClientLoader
 			{
 				data_class_map.put(StringReader.get(data_class)[1], data_class);
 			}
+
+			for (File file : file_array)
+			{
+				try
+				{
+					Class data_class = data_class_map.get(file.getName());
+					if (data_class != null)
+					{
+						int max_bone = (int)data_class.getField("MAX_BONE").get(null);
+						if (MemoC.MAX_BONE < max_bone)
+						{
+							MemoC.MAX_BONE = max_bone;
+						}
+					}
+				}
+				catch (IllegalAccessException | NoSuchFieldException e)
+				{
+//					error(e);
+				}
+			}
+			MemoC.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MemoC.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
 			for (File file : file_array)
 			{

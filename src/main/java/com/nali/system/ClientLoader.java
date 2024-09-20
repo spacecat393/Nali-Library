@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.nali.Nali.*;
-import static com.nali.system.opengl.memo.client.MemoC.OPENGL_INTBUFFER;
+import static com.nali.system.opengl.memo.client.MemoA1.genBuffer;
+import static com.nali.system.opengl.memo.client.MemoC.*;
 
 @SideOnly(Side.CLIENT)
 public class ClientLoader
@@ -67,6 +68,24 @@ public class ClientLoader
 //	public int index;
 	public static void loadPreInit()
 	{
+		int gl_array_buffer_binding;
+
+		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
+		gl_array_buffer_binding = OPENGL_INTBUFFER.get(0);
+
+		FULL_ARRAY_BUFFER = genBuffer(createFloatByteBuffer(new float[]
+		{
+			-1, 1, 0.0F, 1.0F,
+			-1, -1, 0.0F, 0.0F,
+			1, -1, 1.0F, 0.0F,
+
+			-1, 1, 0.0F, 1.0F,
+			1, -1, 1.0F, 0.0F,
+			1, 1, 1.0F, 1.0F
+		}));
+
+		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
+
 		File[] file_array = new File(ID).listFiles();
 
 		if (file_array != null)
@@ -341,7 +360,6 @@ public class ClientLoader
 //			int gl_vertex_array_binding = OPENGL_INTBUFFER.get(0);
 				int gl_vertex_array_binding;
 
-				int gl_array_buffer_binding;
 				int gl_element_array_buffer_binding;
 				if (Nali.VAO)
 				{

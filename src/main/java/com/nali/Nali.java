@@ -7,15 +7,10 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.FMLLaunchHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import static com.nali.system.opengl.memo.client.MemoA1.genBuffer;
-import static com.nali.system.opengl.memo.client.MemoC.FULL_ARRAY_BUFFER;
-import static com.nali.system.opengl.memo.client.MemoC.createFloatByteBuffer;
 
 @Mod(modid = Nali.ID)
 public class Nali
@@ -35,121 +30,121 @@ public class Nali
 //	public ClientLoader clientloader;
 //	public BothLoader bothloader;
 
-	@EventHandler
-	public void onFMLPreInitializationEvent(FMLPreInitializationEvent event)
-	{
-//		this.bothloader = new BothLoader();
-//		this.bothloader.pairModel();
-		if (event.getSide().isClient())
-		{
-			FULL_ARRAY_BUFFER = genBuffer(createFloatByteBuffer(new float[]
-			{
-				-1, 1, 0.0F, 1.0F,
-				-1, -1, 0.0F, 0.0F,
-				1, -1, 1.0F, 0.0F,
-
-				-1, 1, 0.0F, 1.0F,
-				1, -1, 1.0F, 0.0F,
-				1, 1, 1.0F, 1.0F
-			}));
-//			DrawWorldExFb.gen();
-//			if (true)
+//	@EventHandler
+//	public void onFMLPreInitializationEvent(FMLPreInitializationEvent event)
+//	{
+////		this.bothloader = new BothLoader();
+////		this.bothloader.pairModel();
+//		if (event.getSide().isClient())
+//		{
+//			FULL_ARRAY_BUFFER = genBuffer(createFloatByteBuffer(new float[]
 //			{
-//			MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//				DEPTH_COLOR0_TEXTURE = GL11.glGenTextures();
+//				-1, 1, 0.0F, 1.0F,
+//				-1, -1, 0.0F, 0.0F,
+//				1, -1, 1.0F, 0.0F,
 //
-//				R_MCTB_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//				R_MCTB_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-//
-//				R_S_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//				R_S_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-//
-//				R_T_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//				R_T_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-//
-//				R_G_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//				R_G_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-//
-//				R_TG_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//				R_TG_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-//
-//				R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//				R_M_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-//			}
-//			MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			MC_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
-//			FULL_X5_ARRAY_BUFFER = genBuffer(createFloatByteBuffer(new float[]
-//			{
-////				-0.75F, 0.75F, 0.0F, 1.0F,
-////				-0.75F, -0.75F, 0.0F, 0.0F,
-////				0.75F, -0.75F, 1.0F, 0.0F,
-////
-////				-0.75F, 0.75F, 0.0F, 1.0F,
-////				0.75F, -0.75F, 1.0F, 0.0F,
-////				0.75F, 0.75F, 1.0F, 1.0F
-//
-////				-0.75F, 0.75F, 0.25F, 0.75F,
-////				-0.75F, -0.75F, 0.25F, 0.25F,
-////				0.75F, -0.75F, 0.75F, 0.25F,
-////
-////				-0.75F, 0.75F, 0.25F, 0.75F,
-////				0.75F, -0.75F, 0.75F, 0.25F,
-////				0.75F, 0.75F, 0.75F, 0.75F
+//				-1, 1, 0.0F, 1.0F,
+//				1, -1, 1.0F, 0.0F,
+//				1, 1, 1.0F, 1.0F
 //			}));
-
-//			MC_DEPTH_TEXTURE = GL11.glGenTextures();
-
-////			R_MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_MC_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//			R_MC_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-////			R_MC2_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_MC2_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//			R_MC2_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-//			R_MCTB_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-
-////			R_MCH_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_MCH_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-//			R_MCH_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-////			R_M_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
-////			R_M_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
-//			R_M_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
-
-//			R_S_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_S_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
-
-//			R_T_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_T_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
-
-//			R_G_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-
-//			R_GD_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_GD_DEPTH_TEXTURE = GL11.glGenTextures();
+////			DrawWorldExFb.gen();
+////			if (true)
+////			{
+////			MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////				DEPTH_COLOR0_TEXTURE = GL11.glGenTextures();
+////
+////				R_MCTB_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////				R_MCTB_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+////
+////				R_S_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////				R_S_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+////
+////				R_T_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////				R_T_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+////
+////				R_G_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////				R_G_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+////
+////				R_TG_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////				R_TG_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+////
+////				R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////				R_M_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+////			}
+////			MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			MC_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+////			FULL_X5_ARRAY_BUFFER = genBuffer(createFloatByteBuffer(new float[]
+////			{
+//////				-0.75F, 0.75F, 0.0F, 1.0F,
+//////				-0.75F, -0.75F, 0.0F, 0.0F,
+//////				0.75F, -0.75F, 1.0F, 0.0F,
+//////
+//////				-0.75F, 0.75F, 0.0F, 1.0F,
+//////				0.75F, -0.75F, 1.0F, 0.0F,
+//////				0.75F, 0.75F, 1.0F, 1.0F
+////
+//////				-0.75F, 0.75F, 0.25F, 0.75F,
+//////				-0.75F, -0.75F, 0.25F, 0.25F,
+//////				0.75F, -0.75F, 0.75F, 0.25F,
+//////
+//////				-0.75F, 0.75F, 0.25F, 0.75F,
+//////				0.75F, -0.75F, 0.75F, 0.25F,
+//////				0.75F, 0.75F, 0.75F, 0.75F
+////			}));
 //
-//			R_GDB_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_GDB_DEPTH_TEXTURE = GL11.glGenTextures();
-
-//			R_TG_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
-//			R_TG_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
-
-//			this.configuration = new Configuration(event.getSuggestedConfigurationFile());
-//			this.configuration.load();
-//			MyConfig.registerConfig();
-//			ObjectWorldDraw.loadWithConfig();
-//			KeyRegistryHelper.set();
-//			MemoCurrent.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(NaliConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-//			MemoC.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MemoC.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-
-//			OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-//			Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
-//			this.clientloader = new ClientLoader();
-//			this.clientloader.loadPreInit();
-//			ClientLoader.loadPreInit();
-		}
-	}
+////			MC_DEPTH_TEXTURE = GL11.glGenTextures();
+//
+//////			R_MC_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_MC_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////			R_MC_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+//////			R_MC2_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_MC2_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////			R_MC2_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+////			R_MCTB_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+//
+//////			R_MCH_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_MCH_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+////			R_MCH_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+//////			R_M_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_M_FRAMEBUFFER_TEXTURE = GL11.glGenTextures();
+//////			R_M_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+////			R_M_RENDERBUFFER_TEXTURE = GL11.glGenTextures();
+//
+////			R_S_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_S_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+//
+////			R_T_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_T_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+//
+////			R_G_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+//
+////			R_GD_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_GD_DEPTH_TEXTURE = GL11.glGenTextures();
+////
+////			R_GDB_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_GDB_DEPTH_TEXTURE = GL11.glGenTextures();
+//
+////			R_TG_FRAMEBUFFER = OpenGlHelper.glGenFramebuffers();
+////			R_TG_RENDERBUFFER = OpenGlHelper.glGenRenderbuffers();
+//
+////			this.configuration = new Configuration(event.getSuggestedConfigurationFile());
+////			this.configuration.load();
+////			MyConfig.registerConfig();
+////			ObjectWorldDraw.loadWithConfig();
+////			KeyRegistryHelper.set();
+////			MemoCurrent.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(NaliConfig.SHADER.max_bones << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+////			MemoC.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(MemoC.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+//
+////			OpenGLCurrentMemory.OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+////			Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
+////			this.clientloader = new ClientLoader();
+////			this.clientloader.loadPreInit();
+////			ClientLoader.loadPreInit();
+//		}
+//	}
 
 	@EventHandler
 	public void onFMLInitializationEvent(FMLInitializationEvent event)

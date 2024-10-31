@@ -14,7 +14,7 @@ import static com.nali.system.ClientLoader.SOUND_INTEGER_LIST;
 @SideOnly(Side.CLIENT)
 public class Sound
 {
-	public static Set<Sound> SOUNDRENDER_SET = new LinkedHashSet();
+	public static Set<Sound> SOUND_SET = new LinkedHashSet();
 //	public DataLoader dataloader;
 	public int source = -1, id = -1;
 	public boolean pause;
@@ -100,7 +100,7 @@ public class Sound
 				{
 					AL10.alDeleteSources(this.source);
 					this.source = -1;
-					SOUNDRENDER_SET.remove(this);
+					SOUND_SET.remove(this);
 				}
 			}
 			this.pause = pause;
@@ -117,7 +117,7 @@ public class Sound
 //		AL10.alBufferData(this.buffer, AL10.AL_FORMAT_MONO16, this.dataloader.openalmemory.bytebuffer_array[id], this.dataloader.openalmemory.sample_rate_int_array[id]);
 //		AL10.alSourcei(this.source, AL10.AL_BUFFER, this.dataloader.openalmemory.sound_buffer_int_array[id]);
 		AL10.alSourcei(this.source, AL10.AL_BUFFER, SOUND_INTEGER_LIST.get(id)/*.sound_buffer*/);
-		SOUNDRENDER_SET.add(this);
+		SOUND_SET.add(this);
 //		});
 	}
 
@@ -127,8 +127,8 @@ public class Sound
 //		{
 		if (this.source != -1)
 		{
-			AL10.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.SOUND.al_gain);
-			AL10.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.SOUND.al_pitch);
+			AL10.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.AL_GAIN);
+			AL10.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.AL_PITCH);
 			AL10.alSource3f(this.source, AL10.AL_POSITION, x, y, z);
 		}
 //		});

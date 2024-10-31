@@ -8,9 +8,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
 import static com.nali.Nali.error;
-import static com.nali.system.opengl.memo.client.MemoC.createFloatByteBuffer;
 
 @SideOnly(Side.CLIENT)
 public class MemoA1
@@ -226,7 +227,7 @@ public class MemoA1
 //		memoa1_array[j_index] = new MemoA1(temp_joint_float_array, max_joint);
 ////		memoa1_array[j_index] = new MemoA1(temp_joint_float_array, Byte.parseByte(shader_string_array[9]), max_joint);
 ////		memoa1_array[j_index] = new MemoA1((float[])memoa0_array[j_index].o, Byte.parseByte(shader_string_array[9]), max_joint);
-//		memoa1_array[w_index] = new MemoA1((float[])memoa0_array[w_index].o, max_joint);
+//		memoa1_array[w_index] = new MemoA1((float[])memoa0_array[w_indexecfd].o, max_joint);
 
 		return memoa1_array;
 	}
@@ -252,4 +253,42 @@ public class MemoA1
 ////		OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, R_GL_ELEMENT_ARRAY_BUFFER_BINDING);
 //		return buffer;
 //	}
+
+	public static ByteBuffer createIntByteBuffer(int[] int_array)
+	{
+		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(int_array.length << 2).order(ByteOrder.nativeOrder());
+
+		for (int i : int_array)
+		{
+			bytebuffer.putInt(i);
+		}
+
+		bytebuffer.flip();
+
+		return bytebuffer;
+	}
+
+	public static ByteBuffer createFloatByteBuffer(float[] float_array)
+	{
+		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(float_array.length << 2).order(ByteOrder.nativeOrder());
+
+		for (float f : float_array)
+		{
+			bytebuffer.putFloat(f);
+		}
+
+		bytebuffer.flip();
+
+		return bytebuffer;
+	}
+
+	public static void put(FloatBuffer floatbuffer, float[] float_array, int max)
+	{
+		floatbuffer.clear();
+		for (int i = 0; i < max; ++i)
+		{
+			floatbuffer.put(float_array[i]);
+		}
+		floatbuffer.flip();
+	}
 }

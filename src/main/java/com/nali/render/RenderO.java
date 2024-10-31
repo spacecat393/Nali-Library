@@ -5,12 +5,10 @@ import com.nali.NaliGL;
 import com.nali.da.client.IClientDaO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
-import com.nali.mixin.IMixinEntityRenderer;
 import com.nali.system.bytes.ByteWriter;
 import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoG;
 import com.nali.system.opengl.memo.client.MemoS;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -18,10 +16,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.*;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
 import static com.nali.Nali.error;
 import static com.nali.draw.DrawWorld.KEY_MAP;
 import static com.nali.system.ClientLoader.*;
-import static com.nali.system.opengl.memo.client.MemoC.*;
 
 @SideOnly(Side.CLIENT)
 public class RenderO
@@ -29,6 +31,80 @@ public class RenderO
 	RC extends IClientDaO
 >
 {
+	public static ByteBuffer BYTEBUFFER = ByteBuffer.allocateDirect(16).order(ByteOrder.nativeOrder());
+	public static IntBuffer INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
+	public static FloatBuffer FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+
+	public static int
+//		FULL_ARRAY_BUFFER = -1,
+
+//		MAX_BONE,
+
+	//	R_GL_RENDERBUFFER_BINDING,
+	//	R_GL_DEPTH_ATTACHMENT,
+	//	R_GL_DRAW_FRAMEBUFFER_BINDING,
+	//	R_GL_READ_FRAMEBUFFER_BINDING,
+
+		R_GL_VERTEX_ARRAY_BINDING,
+		R_GL_CURRENT_PROGRAM,
+		R_GL_ELEMENT_ARRAY_BUFFER_BINDING,
+		R_GL_ARRAY_BUFFER_BINDING,
+		R_GL_BLEND_EQUATION_RGB,
+		R_GL_BLEND_EQUATION_ALPHA,
+		R_GL_BLEND_SRC_RGB,
+		R_GL_BLEND_SRC_ALPHA,
+		R_GL_BLEND_DST_RGB,
+		R_GL_BLEND_DST_ALPHA,
+
+		R_GL_ACTIVE_TEXTURE,
+	//	GL_ACTIVE_TEXTURE_0;
+	//	GL_ACTIVE_TEXTURE_1;
+	//	GL_ACTIVE_TEXTURE_2;
+		R_GL_TEXTURE_BINDING_2D,
+		R_GL_TEXTURE_BINDING_2D_0,
+		R_GL_TEXTURE_BINDING_2D_1,
+	//	R_GL_TEXTURE_BINDING_2D_2,
+	//	R_GL_TEXTURE_BINDING_2D_3,
+
+	//	GL_FRONT_FACE;
+
+		R_GL_DEPTH_WRITEMASK,
+	//	GL_DEPTH_FUNC;
+
+	//	R_GL_MATRIX_MODE,
+
+	//	GL_TEXTURE_WRAP_S,
+		R_GL_TEXTURE_WRAP_S_0,
+		R_GL_TEXTURE_WRAP_S_1,
+	//	R_GL_TEXTURE_WRAP_S_2,
+	//	R_GL_TEXTURE_WRAP_S_3,
+	//	GL_TEXTURE_WRAP_T,
+		R_GL_TEXTURE_WRAP_T_0,
+		R_GL_TEXTURE_WRAP_T_1,
+	//	R_GL_TEXTURE_WRAP_T_2,
+	//	R_GL_TEXTURE_WRAP_T_3,
+	//	GL_TEXTURE_MIN_FILTER,
+		R_GL_TEXTURE_MIN_FILTER_0,
+		R_GL_TEXTURE_MIN_FILTER_1,
+	//	R_GL_TEXTURE_MIN_FILTER_2,
+	//	R_GL_TEXTURE_MIN_FILTER_3,
+	//	GL_TEXTURE_MAG_FILTER,
+		R_GL_TEXTURE_MAG_FILTER_0,
+		R_GL_TEXTURE_MAG_FILTER_1;
+	//	R_GL_TEXTURE_MAG_FILTER_2;
+	//	R_GL_TEXTURE_MAG_FILTER_3;
+
+	public static boolean
+		R_GL_DEPTH_TEST,
+		R_GL_CULL_FACE,
+		R_GL_BLEND;
+	//	R_GL_TEXTURE_2D;
+	//	GL_LIGHTING;
+
+//	public static float GL_LINE_WIDTH;
+
+//	public static float[] GL_CURRENT_COLOR = new float[4];
+
 //	public static int
 //	RENDERBUFFER = -1,
 //	FRAMEBUFFER = -1,
@@ -110,16 +186,16 @@ public class RenderO
 
 	public void setFixedPipe(MemoS rs)
 	{
-		OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
-		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
-		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3/*+1*/], OPENGL_FIXED_PIPE_FLOATBUFFER);
-		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2/*+1*/], OPENGL_FIXED_PIPE_FLOATBUFFER);
+		FLOATBUFFER.limit(16);
+		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, FLOATBUFFER);
+		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, FLOATBUFFER);
+		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, FLOATBUFFER);
+		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, FLOATBUFFER);
+		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, FLOATBUFFER);
+		FLOATBUFFER.limit(4);
+		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3/*+1*/], FLOATBUFFER);
+		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, FLOATBUFFER);
+		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2/*+1*/], FLOATBUFFER);
 
 //		OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[2], 2);
 //		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
@@ -148,20 +224,17 @@ public class RenderO
 	public void setLightMapUniform(MemoS rs)
 	{
 		OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
-//		OpenGlHelper.glUniform1i(openglobjectshadermemo.uniformlocation_int_array[6], 2);
-		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
-//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
-		setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
+//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
+//		setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 	}
 
 	public void setLightCoord(MemoS rs)
 	{
-		OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
-		OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
-		OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_b);
-		OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_s);
-		OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
-		OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], OPENGL_FIXED_PIPE_FLOATBUFFER);
+		FLOATBUFFER.clear();
+		FLOATBUFFER.put(this.lig_b);
+		FLOATBUFFER.put(this.lig_s);
+		FLOATBUFFER.flip();
+		OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], FLOATBUFFER);
 //		OpenGlHelper.glUniform2(openglobjectshadermemo.uniformlocation_int_array[7], this.lig_b, this.lig_s);
 	}
 
@@ -218,106 +291,43 @@ public class RenderO
 		return (rg.state & 4) == 4;
 	}
 
-	public void drawLater()
+	public void startDrawLater(DrawWorldData drawworlddata)
 	{
-//		int pass = net.minecraftforge.client.MinecraftForgeClient.getRenderPass();
-//		if (pass == 0)
-//		{
-//		float lig_b = this.lig_b;
-//		float lig_s = this.lig_s;
-//		//
-//		Minecraft minecraft = Minecraft.getMinecraft();
-//		int display_width = minecraft.displayWidth, display_height = minecraft.displayHeight;
-//		GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
-//		LATER_GL_DRAW_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-//		GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
-//		LATER_GL_READ_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-//
-//		GL11.glGetInteger(GL30.GL_RENDERBUFFER_BINDING, OPENGL_INTBUFFER);
-//		LATER_GL_RENDERBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-//
-//		OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, RENDERBUFFER);
-//		OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, FRAMEBUFFER);
-//
-//		if ()
-//		{
-//			if (RENDERBUFFER != -1)
-//			{
-//				OpenGlHelper.glDeleteRenderbuffers(RENDERBUFFER);
-//				OpenGlHelper.glDeleteFramebuffers(FRAMEBUFFER);
-//				GL11.glDeleteTextures(RENDERBUFFER_TEXTURE);
-//				GL11.glDeleteTextures(FRAMEBUFFER_TEXTURE);
-//			}
-//			GL11.glBindTexture(GL11.GL_TEXTURE_2D, RENDERBUFFER);
-//			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, display_width, display_height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, (IntBuffer)null);
-//		}
-//		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-//
-//		OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, LATER_GL_RENDERBUFFER_BINDING);
-//		OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, LATER_GL_READ_FRAMEBUFFER_BINDING);
-//		OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, LATER_GL_DRAW_FRAMEBUFFER_BINDING);
-//		//
-
-		DrawWorldData drawworlddata = new DrawWorldData();
-		OPENGL_FIXED_PIPE_FLOATBUFFER.limit(16);
-		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		DrawWorld.add(drawworlddata.projection_m4x4_float, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		DrawWorld.add(drawworlddata.modelview_m4x4_float, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		OPENGL_FIXED_PIPE_FLOATBUFFER.limit(4);
-		DrawWorld.add(drawworlddata.color_v4_float, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		DrawWorld.add(drawworlddata.light0position_v4_float, OPENGL_FIXED_PIPE_FLOATBUFFER);
-		drawworlddata.lig_b = lig_b;
-		drawworlddata.lig_s = lig_s;
-		this.updateDataLater(drawworlddata);
 		for (int i = this.rc.StartPart(); i < this.rc.EndPart(); ++i)
 		{
 			this.drawLater(i);
 		}
 
+		FLOATBUFFER.limit(16);
+		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, FLOATBUFFER);
+		DrawWorld.add(drawworlddata.projection_m4x4_float, FLOATBUFFER);
+		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, FLOATBUFFER);
+		DrawWorld.add(drawworlddata.modelview_m4x4_float, FLOATBUFFER);
+		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, FLOATBUFFER);
+		FLOATBUFFER.limit(4);
+		DrawWorld.add(drawworlddata.color_v4_float, FLOATBUFFER);
+		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, FLOATBUFFER);
+		DrawWorld.add(drawworlddata.light0position_v4_float, FLOATBUFFER);
+		drawworlddata.lig_b = lig_b;
+		drawworlddata.lig_s = lig_s;
+//		this.updateDataLater(drawworlddata);
+	}
+
+	public void endDrawLater(DrawWorldData drawworlddata)
+	{
 		DrawWorld.DRAWWORLDDATA_LIST.add(drawworlddata);
 		++DrawWorld.DATA_SIZE;
-
-//		this.lig_b = lig_b;
-//		this.lig_s = lig_s;
-//		}
-//		else
-//		{
-//			Nali.LOGGER.info("D");
-//		}
 	}
 
-	public void updateDataLater(DrawWorldData drawworlddata)
-	{
-
-	}
+//	public void updateDataLater(DrawWorldData drawworlddata)
+//	{
+//
+//	}
 
 	public void drawLater(int index)
 	{
-//		int model_id = index;
-//		OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)this.dataloader.object_array[index];
-//		OpenGLObjectMemo openglobjectmemo = (OpenGLObjectMemo)I.clientloader.object_list.get(index);
 		MemoG rg = G_LIST.get(index);
-////		this.updateLight(openglobjectmemo);
-//		byte[] byte_array = new byte[4 + 4 + 4 + 1/* + 4*//* + 4*/];
-//		ByteWriter.set(byte_array, index, 0);
-////		BytesWriter.set(byte_array, OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, 4);
-//		ByteWriter.set(byte_array, this.getTextureBuffer(rg), 4);
-////		BytesWriter.set(byte_array, this.getTextureID(openglobjectmemo), 4);
-////		BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
-//		ByteWriter.set(byte_array, this.getShaderID(rg), 4 + 4);
-////		BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);
-////		BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
-////		BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
-////		BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
-//		byte_array[4 + 4 + 4] = (byte)(this.getTransparent(rg) ? 1 : 0);
-//		byte_array[4 + 4 + 4] += this.getExtraBit(rg);
-////		BytesWriter.set(byte_array, this.dataloader.index, 4 + 4 + 4 + 1);
-////		DrawWorld.add(new ByteArray(byte_array));
 		DrawWorld.add(KEY_MAP.computeIfAbsent(index + " " + this.getTextureBuffer(rg) + " " + this.getShaderID(rg) + " " + (byte)((this.getTransparent(rg) ? 1 : 0) | this.getExtraBit(rg)), k -> this.createByteArray(index)));
-//		DrawWorld.add(KEY_MAP.computeIfAbsent(index + " " + this.getTextureBuffer(rg) + " " + this.getShaderID(rg) + " " + this.getExtraBit(rg), k -> this.createByteArray(index)));
 	}
 
 	public byte[] createByteArray(int index)
@@ -434,8 +444,8 @@ public class RenderO
 
 //		OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
 
-		GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, OPENGL_INTBUFFER);
-		R_GL_CURRENT_PROGRAM = OPENGL_INTBUFFER.get(0);
+		GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, INTBUFFER);
+		R_GL_CURRENT_PROGRAM = INTBUFFER.get(0);
 
 //		GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING, OPENGL_INTBUFFER);
 //		R_GL_VERTEX_ARRAY_BINDING = OPENGL_INTBUFFER.get(0);
@@ -445,18 +455,18 @@ public class RenderO
 		}
 		else
 		{
-			GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-			R_GL_ELEMENT_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+			GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, INTBUFFER);
+			R_GL_ELEMENT_ARRAY_BUFFER_BINDING = INTBUFFER.get(0);
 
-			GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, OPENGL_INTBUFFER);
-			R_GL_ARRAY_BUFFER_BINDING = OPENGL_INTBUFFER.get(0);
+			GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, INTBUFFER);
+			R_GL_ARRAY_BUFFER_BINDING = INTBUFFER.get(0);
 		}
 
-		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
-		R_GL_TEXTURE_BINDING_2D = OPENGL_INTBUFFER.get(0);
+		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, INTBUFFER);
+		R_GL_TEXTURE_BINDING_2D = INTBUFFER.get(0);
 
-		GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE, OPENGL_INTBUFFER);
-		R_GL_ACTIVE_TEXTURE = OPENGL_INTBUFFER.get(0);
+		GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE, INTBUFFER);
+		R_GL_ACTIVE_TEXTURE = INTBUFFER.get(0);
 
 //		GL_TEXTURE_WRAP_S = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
 //		GL_TEXTURE_WRAP_T = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
@@ -464,16 +474,16 @@ public class RenderO
 //		GL_TEXTURE_MAG_FILTER = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 
 		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
-		R_GL_TEXTURE_BINDING_2D_0 = OPENGL_INTBUFFER.get(0);
+		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, INTBUFFER);
+		R_GL_TEXTURE_BINDING_2D_0 = INTBUFFER.get(0);
 		R_GL_TEXTURE_WRAP_S_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
 		R_GL_TEXTURE_WRAP_T_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
 		R_GL_TEXTURE_MIN_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
 		R_GL_TEXTURE_MAG_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 
 		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, OPENGL_INTBUFFER);
-		R_GL_TEXTURE_BINDING_2D_1 = OPENGL_INTBUFFER.get(0);
+		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, INTBUFFER);
+		R_GL_TEXTURE_BINDING_2D_1 = INTBUFFER.get(0);
 		R_GL_TEXTURE_WRAP_S_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
 		R_GL_TEXTURE_WRAP_T_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
 		R_GL_TEXTURE_MIN_FILTER_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
@@ -527,24 +537,24 @@ public class RenderO
 
 		R_GL_BLEND = GL11.glIsEnabled(GL11.GL_BLEND);
 
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, OPENGL_INTBUFFER);
-		R_GL_BLEND_EQUATION_RGB = OPENGL_INTBUFFER.get(0);
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, OPENGL_INTBUFFER);
-		R_GL_BLEND_EQUATION_ALPHA = OPENGL_INTBUFFER.get(0);
+		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, INTBUFFER);
+		R_GL_BLEND_EQUATION_RGB = INTBUFFER.get(0);
+		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, INTBUFFER);
+		R_GL_BLEND_EQUATION_ALPHA = INTBUFFER.get(0);
 
 
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, OPENGL_INTBUFFER);
-		R_GL_BLEND_SRC_RGB = OPENGL_INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, OPENGL_INTBUFFER);
-		R_GL_BLEND_SRC_ALPHA = OPENGL_INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, OPENGL_INTBUFFER);
-		R_GL_BLEND_DST_RGB = OPENGL_INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, OPENGL_INTBUFFER);
-		R_GL_BLEND_DST_ALPHA = OPENGL_INTBUFFER.get(0);
+		GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, INTBUFFER);
+		R_GL_BLEND_SRC_RGB = INTBUFFER.get(0);
+		GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, INTBUFFER);
+		R_GL_BLEND_SRC_ALPHA = INTBUFFER.get(0);
+		GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, INTBUFFER);
+		R_GL_BLEND_DST_RGB = INTBUFFER.get(0);
+		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, INTBUFFER);
+		R_GL_BLEND_DST_ALPHA = INTBUFFER.get(0);
 
-
-		GL11.glGetInteger(GL11.GL_DEPTH_WRITEMASK, OPENGL_INTBUFFER);
-		R_GL_DEPTH_WRITEMASK = OPENGL_INTBUFFER.get(0);
+//		OPENGL_BYTEBUFFER.limit(16);
+		GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK, BYTEBUFFER);
+		R_GL_DEPTH_WRITEMASK = BYTEBUFFER.get(0);
 		GL11.glDepthMask(true);
 
 //		GL11.glDisable(GL11.GL_BLEND);
@@ -739,6 +749,13 @@ public class RenderO
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 				break;
 			}
+			case 2:
+			{
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+			}
 			default:
 			{
 				error("TEXTURE_LEAK");
@@ -746,14 +763,14 @@ public class RenderO
 		}
 	}
 
-	public static void setLightMapBuffer(int buffer)
-	{
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-	}
+//	public static void setLightMapBuffer(int buffer)
+//	{
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+//	}
 
 //	public static void retrieve()
 //	{

@@ -1,5 +1,6 @@
 package com.nali.system.file;
 
+import com.nali.system.ClientLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -15,7 +16,7 @@ public class FFmpeg
 {
 	public static byte[] getSounds(String path_string)
 	{
-		return executeByteArray(new ProcessBuilder
+		return executeByteArray(ClientLoader.get
 		(
 			"ffmpeg",
 			"-i", path_string,
@@ -25,21 +26,21 @@ public class FFmpeg
 
 	public static byte[] getTextures(String path_string)
 	{
-		return executeByteArray(new ProcessBuilder
+		return executeByteArray(ClientLoader.get
 		(
 			"ffmpeg",
 			"-i", path_string,
 			"-f", "rawvideo",
-			"-pix_fmt", "rgba",
-			"-"
+			"-pix_fmt", "rgba", "-"
 		));
 	}
 
 	public static int getSampleRate(String path_string)
 	{
-		return executeInt(new ProcessBuilder
+		return executeInt(ClientLoader.get
 		(
-			"ffprobe", "-v", "error",
+			"ffprobe",
+			"-v", "error",
 			"-select_streams", "a:0",
 			"-show_entries", "stream=sample_rate",
 			"-of", "default=noprint_wrappers=1:nokey=1",

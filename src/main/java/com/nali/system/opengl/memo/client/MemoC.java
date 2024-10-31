@@ -1,261 +1,324 @@
-package com.nali.system.opengl.memo.client;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
-@SideOnly(Side.CLIENT)
-public class MemoC
-{
-	public static ByteBuffer OPENGL_BYTEBUFFER = ByteBuffer.allocateDirect(16).order(ByteOrder.nativeOrder());
-	public static IntBuffer OPENGL_INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
-//	public static FloatBuffer CPU_OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-	public static FloatBuffer
-	OPENGL_FIXED_PIPE_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
-	OPENGL_PROJECTION_MATRIX_FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
-//	OPENGL_FIXED_PIPE_FLOATBUFFER_1 = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer(),
-	OPENGL_FLOATBUFFER;
-
-	public static int
-	FULL_ARRAY_BUFFER = -1,/* FULL_X5_ARRAY_BUFFER = -1,*/
-
-//	MC_FRAMEBUFFER = -1,
-//	MC_RENDERBUFFER = -1,
-////	MC_DEPTH_TEXTURE = -1,//switch renderbuffer to depth texture
-//	//use main framebuffer only
-//	R_M_FRAMEBUFFER = -1,
-//	R_M_FRAMEBUFFER_TEXTURE = -1,
-//	R_M_RENDERBUFFER_TEXTURE = -1,
-
-//	R_S_FRAMEBUFFER = -1,
-
-//	R_T_FRAMEBUFFER = -1,
-
-//	R_G_FRAMEBUFFER = -1,
-
-//	R_GD_FRAMEBUFFER = -1,
-//	R_GD_DEPTH_TEXTURE = -1,
+//package com.nali.system.opengl.memo.client;
 //
-//	R_GDB_FRAMEBUFFER = -1,
-//	R_GDB_DEPTH_TEXTURE = -1,
-
-//	R_TG_FRAMEBUFFER = -1,
-
-////	R_MC_FRAMEBUFFER = -1,
-//	R_MC_FRAMEBUFFER_TEXTURE = -1,
-//	R_MC_RENDERBUFFER_TEXTURE = -1,
-
-////	R_MC2_FRAMEBUFFER = -1,
-//	R_MC2_FRAMEBUFFER_TEXTURE = -1,
-//	R_MC2_RENDERBUFFER_TEXTURE = -1,
-
-//	R_MCTB_FRAMEBUFFER = -1,
-
-
-////	R_MCH_FRAMEBUFFER = -1,
-//	R_MCH_FRAMEBUFFER_TEXTURE = -1,
-//	R_MCH_RENDERBUFFER_TEXTURE = -1,
-
-	MAX_BONE,
-//	R_GL_RENDERBUFFER_BINDING,
-//	R_GL_DEPTH_ATTACHMENT,
-//	R_GL_DRAW_FRAMEBUFFER_BINDING,
-//	R_GL_READ_FRAMEBUFFER_BINDING,
-//	SHADERS,
-//	LATER_GL_RENDERBUFFER_BINDING,
-
-//	MY_CURRENT_PROGRAM = -1,
-	R_GL_VERTEX_ARRAY_BINDING,
-	R_GL_CURRENT_PROGRAM,
-	R_GL_ELEMENT_ARRAY_BUFFER_BINDING,
-	R_GL_ARRAY_BUFFER_BINDING,
-	R_GL_BLEND_EQUATION_RGB,
-	R_GL_BLEND_EQUATION_ALPHA,
-	R_GL_BLEND_SRC_RGB,
-	R_GL_BLEND_SRC_ALPHA,
-	R_GL_BLEND_DST_RGB,
-	R_GL_BLEND_DST_ALPHA,
-
-	R_GL_ACTIVE_TEXTURE,
-//	GL_ACTIVE_TEXTURE_0;
-//	GL_ACTIVE_TEXTURE_1;
-//	GL_ACTIVE_TEXTURE_2;
-	R_GL_TEXTURE_BINDING_2D,
-	R_GL_TEXTURE_BINDING_2D_0,
-	R_GL_TEXTURE_BINDING_2D_1,
-//	R_GL_TEXTURE_BINDING_2D_2,
-//	R_GL_TEXTURE_BINDING_2D_3,
-
-//	GL_FRONT_FACE;
-
-	R_GL_DEPTH_WRITEMASK,
-//	GL_DEPTH_FUNC;
-
-//	R_GL_MATRIX_MODE,
-
-//	GL_TEXTURE_WRAP_S,
-	R_GL_TEXTURE_WRAP_S_0,
-	R_GL_TEXTURE_WRAP_S_1,
-//	R_GL_TEXTURE_WRAP_S_2,
-//	R_GL_TEXTURE_WRAP_S_3,
-//	GL_TEXTURE_WRAP_T,
-	R_GL_TEXTURE_WRAP_T_0,
-	R_GL_TEXTURE_WRAP_T_1,
-//	R_GL_TEXTURE_WRAP_T_2,
-//	R_GL_TEXTURE_WRAP_T_3,
-//	GL_TEXTURE_MIN_FILTER,
-	R_GL_TEXTURE_MIN_FILTER_0,
-	R_GL_TEXTURE_MIN_FILTER_1,
-//	R_GL_TEXTURE_MIN_FILTER_2,
-//	R_GL_TEXTURE_MIN_FILTER_3,
-//	GL_TEXTURE_MAG_FILTER,
-	R_GL_TEXTURE_MAG_FILTER_0,
-	R_GL_TEXTURE_MAG_FILTER_1;
-//	R_GL_TEXTURE_MAG_FILTER_2;
-//	R_GL_TEXTURE_MAG_FILTER_3;
-
-	public static boolean
-	R_GL_DEPTH_TEST,
-	R_GL_CULL_FACE,
-	R_GL_BLEND;
-//	R_GL_TEXTURE_2D;
-//	GL_LIGHTING;
-
-	public static float GL_LINE_WIDTH;
-
-	public static float[] GL_CURRENT_COLOR = new float[4];
-
-//	public static Object COLORSTATE_INSTANCE;
-//	public static Field RED_FIELD, GREEN_FIELD, BLUE_FIELD, ALPHA_FIELD;
-//	public static float RED, GREEN, BLUE, ALPHA;
-
-//	static
-//	{
-//		COLORSTATE_INSTANCE = ObfuscationReflectionHelper.getPrivateValue(GlStateManager.class, null, "colorState");
-//		RED_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "red");
-//		GREEN_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "green");
-//		BLUE_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "blue");
-//		ALPHA_FIELD = ObfuscationReflectionHelper.findField(COLORSTATE_INSTANCE.getClass(), "alpha");
-//	}
-
-	public static ByteBuffer createIntByteBuffer(int[] int_array)
-	{
-		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(int_array.length << 2).order(ByteOrder.nativeOrder());
-
-		for (int i : int_array)
-		{
-			bytebuffer.putInt(i);
-		}
-
-		bytebuffer.flip();
-
-		return bytebuffer;
-	}
-
-	public static ByteBuffer createFloatByteBuffer(float[] float_array)
-	{
-		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(float_array.length << 2).order(ByteOrder.nativeOrder());
-
-		for (float f : float_array)
-		{
-			bytebuffer.putFloat(f);
-		}
-
-		bytebuffer.flip();
-
-		return bytebuffer;
-	}
-
-	public static void put(FloatBuffer floatbuffer, float[] float_array, int max)
-	{
-		floatbuffer.clear();
-		for (int i = 0; i < max; ++i)
-		{
-			floatbuffer.put(float_array[i]);
-		}
-		floatbuffer.flip();
-	}
-
-	public static void setFloatBuffer(float[] float_array)
-	{
-		OPENGL_FLOATBUFFER.limit(float_array.length);
-		OPENGL_FLOATBUFFER.clear();
-		OPENGL_FLOATBUFFER.put(float_array);
-		OPENGL_FLOATBUFFER.flip();
-	}
-
-//	public static void setBones(int max_bone)
-//	{
-//		if (OPENGL_FLOATBUFFER_SIZE < max_bone)
-//		{
-//			OPENGL_FLOATBUFFER_SIZE = max_bone;
-////			Nali.LOGGER.info("SIZE " + OpenGLCurrentMemory.OPENGL_FLOATBUFFER_SIZE);
-////			if (OPENGL_FLOATBUFFER != null)
-////			{
-////				cleanFloatBuffer(OPENGL_FLOATBUFFER);
-////			}
+//import net.minecraftforge.fml.relauncher.Side;
+//import net.minecraftforge.fml.relauncher.SideOnly;
 //
-//			OPENGL_FLOATBUFFER = ByteBuffer.allocateDirect(OPENGL_FLOATBUFFER_SIZE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-//		}
-//	}
-
-//	public static void cleanFloatBuffer(FloatBuffer buffer)
-//	{
-//		if (buffer.isDirect())
-//		{
-//			try
-//			{
-//				Field buffer_field = buffer.getClass().getDeclaredField("hb");
-//				buffer_field.setAccessible(true);
-//				ByteBuffer byteBuffer = (ByteBuffer)buffer_field.get(buffer);
+//@SideOnly(Side.CLIENT)
+//public class MemoC
+//{
+////	private void renderEntity(float x, float y, Minecraft minecraft, EntityEntry entityEntry)
+////	{
+////		Entity entity = entityEntry.newInstance(minecraft.player.world);
+////		Render<Entity> render = minecraft.getRenderManager().getEntityRenderObject(entity);
+////
+////		intBuffer.clear();
+////		floatBuffer.clear();
+////
+////		// color
+////		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, floatBuffer);
+////		float colorR = floatBuffer.get(0);
+////		float colorG = floatBuffer.get(1);
+////		float colorB = floatBuffer.get(2);
+////		float colorA = floatBuffer.get(3);
+////
+////		// blendState
+////		boolean blendState = GL11.glIsEnabled(GL11.GL_BLEND);
+////
+////		// depthTest
+////		boolean depthTest = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+////
+////		// cullFace
+////		boolean cullFace = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+////
+////		// light0
+////		boolean light0 = GL11.glIsEnabled(GL11.GL_LIGHT0);
+////
+////		// light1
+////		boolean light1 = GL11.glIsEnabled(GL11.GL_LIGHT1);
+////
+////		// colorMat
+////		boolean colorMat = GL11.glIsEnabled(GL11.GL_COLOR_MATERIAL);
+////
+////		boolean alphaTest = GL11.glIsEnabled(GL11.GL_ALPHA_TEST);
+////		boolean gl_rescale_normal = GL11.glIsEnabled(GL12.GL_RESCALE_NORMAL);
+////		boolean gl_lighting = GL11.glIsEnabled(GL11.GL_LIGHTING);
+////
+////		// colorMatFace & colorMatMode
+////		GL11.glGetInteger(GL11.GL_COLOR_MATERIAL_FACE, intBuffer);
+////		int colorMatFace = intBuffer.get(0);
+////		GL11.glGetInteger(GL11.GL_COLOR_MATERIAL_PARAMETER, intBuffer);
+////		int colorMatMode = intBuffer.get(0);
+////
+////		// depthWriteMask
+////		GL11.glGetInteger(GL11.GL_DEPTH_WRITEMASK, intBuffer);
+////		int depthWriteMask = intBuffer.get(0);
+////
+////		// shadeModel
+////		GL11.glGetInteger(GL11.GL_SHADE_MODEL, intBuffer);
+////		int shadeModel = intBuffer.get(0);
+////
+////		// lightModelAmbient
+////		GL11.glGetFloat(GL11.GL_LIGHT_MODEL_AMBIENT, floatBuffer);
+////		float lightModelAmbientR = floatBuffer.get(0);
+////		float lightModelAmbientG = floatBuffer.get(1);
+////		float lightModelAmbientB = floatBuffer.get(2);
+////		float lightModelAmbientA = floatBuffer.get(3);
+////
+////		//s-l
+////		float[] light00InfoRs = new float[4];
+////		float[] light00InfoGs = new float[4];
+////		float[] light00InfoBs = new float[4];
+////		float[] light00InfoAs = new float[4];
+////		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_SPOT_DIRECTION, floatBuffer);
+////		light00InfoRs[0] = floatBuffer.get(0);
+////		light00InfoGs[0] = floatBuffer.get(1);
+////		light00InfoBs[0] = floatBuffer.get(2);
+////		light00InfoAs[0] = floatBuffer.get(3);
+////		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, floatBuffer);
+////		light00InfoRs[1] = floatBuffer.get(0);
+////		light00InfoGs[1] = floatBuffer.get(1);
+////		light00InfoBs[1] = floatBuffer.get(2);
+////		light00InfoAs[1] = floatBuffer.get(3);
+////		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, floatBuffer);
+////		light00InfoRs[2] = floatBuffer.get(0);
+////		light00InfoGs[2] = floatBuffer.get(1);
+////		light00InfoBs[2] = floatBuffer.get(2);
+////		light00InfoAs[2] = floatBuffer.get(3);
+////		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, floatBuffer);
+////		light00InfoRs[3] = floatBuffer.get(0);
+////		light00InfoGs[3] = floatBuffer.get(1);
+////		light00InfoBs[3] = floatBuffer.get(2);
+////		light00InfoAs[3] = floatBuffer.get(3);
+////
+////		float[] light01InfoRs = new float[4];
+////		float[] light01InfoGs = new float[4];
+////		float[] light01InfoBs = new float[4];
+////		float[] light01InfoAs = new float[4];
+////		GL11.glGetLight(GL11.GL_LIGHT1, GL11.GL_SPOT_DIRECTION, floatBuffer);
+////		light01InfoRs[0] = floatBuffer.get(0);
+////		light01InfoGs[0] = floatBuffer.get(1);
+////		light01InfoBs[0] = floatBuffer.get(2);
+////		light01InfoAs[0] = floatBuffer.get(3);
+////		GL11.glGetLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, floatBuffer);
+////		light01InfoRs[1] = floatBuffer.get(0);
+////		light01InfoGs[1] = floatBuffer.get(1);
+////		light01InfoBs[1] = floatBuffer.get(2);
+////		light01InfoAs[1] = floatBuffer.get(3);
+////		GL11.glGetLight(GL11.GL_LIGHT1, GL11.GL_AMBIENT, floatBuffer);
+////		light01InfoRs[2] = floatBuffer.get(0);
+////		light01InfoGs[2] = floatBuffer.get(1);
+////		light01InfoBs[2] = floatBuffer.get(2);
+////		light01InfoAs[2] = floatBuffer.get(3);
+////		GL11.glGetLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, floatBuffer);
+////		light01InfoRs[3] = floatBuffer.get(0);
+////		light01InfoGs[3] = floatBuffer.get(1);
+////		light01InfoBs[3] = floatBuffer.get(2);
+////		light01InfoAs[3] = floatBuffer.get(3);
+////		//e-l
+////
+////		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, intBuffer);
+////		int R_GL_TEXTURE_BINDING_2D = intBuffer.get(0);
+////		GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE, intBuffer);
+////		int R_GL_ACTIVE_TEXTURE = intBuffer.get(0);
+////
+////		GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
+////		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, intBuffer);
+////		int R_GL_TEXTURE_BINDING_2D_0 = intBuffer.get(0);
+////		int R_GL_TEXTURE_WRAP_S_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
+////		int R_GL_TEXTURE_WRAP_T_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
+////		int R_GL_TEXTURE_MIN_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
+////		int R_GL_TEXTURE_MAG_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
+////
+////		//s-w0
+////		boolean texture0 = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+////
+//////		GL11.glGetTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, );
+////		int gl_texture_env_mode0 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE);
+////		int gl_combine_rgb0 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_RGB);
+////		int gl_combine_alpha0 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_ALPHA);
+////		int gl_source0_rgb0 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_RGB);
+////		int gl_source0_alpha0 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_ALPHA);
+////		int gl_operand0_rgb0 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_RGB);
+////		int gl_operand0_alpha0 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_ALPHA);
+////		//e-w0
+////
+////		GlStateManager.setActiveTexture(GL13.GL_TEXTURE1);
+////		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, intBuffer);
+////		int R_GL_TEXTURE_BINDING_2D_1 = intBuffer.get(0);
+////		int R_GL_TEXTURE_WRAP_S_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
+////		int R_GL_TEXTURE_WRAP_T_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
+////		int R_GL_TEXTURE_MIN_FILTER_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
+////		int R_GL_TEXTURE_MAG_FILTER_1 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
+////
+////		//s-w1
+////		boolean texture1 = GL11.glIsEnabled(GL11.GL_TEXTURE_2D);
+////
+//////		GL11.glGetTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, );
+////		int gl_texture_env_mode1 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE);
+////		int gl_combine_rgb1 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_RGB);
+////		int gl_combine_alpha1 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_ALPHA);
+////		int gl_source0_rgb1 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_RGB);
+////		int gl_source0_alpha1 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_ALPHA);
+////		int gl_operand0_rgb1 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_RGB);
+////		int gl_operand0_alpha1 = GL11.glGetTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_ALPHA);
+////		//e-w1
+////
+////		//<editor-fold desc="rendering">
+////		GlStateManager.pushMatrix();
+////		GlStateManager.translate(x, y, 10);
+////		GlStateManager.scale(-10f, 10f, 10f);
+////		GlStateManager.rotate(180.0f, 0.0f, 0.0f, 1.0f);
+////
+////		GlStateManager.setActiveTexture(R_GL_ACTIVE_TEXTURE);
+//////		GlStateManager.bindTexture(R_GL_TEXTURE_BINDING_2D);
+////
+////		render.doRender(entity, 0, 0, 0, 0, 0);
+////
+////		GlStateManager.popMatrix();
+////		//</editor-fold>
+////
+////		// free alphaTest
+////		if (alphaTest)
+////			GlStateManager.enableAlpha();
+////		else
+////			GlStateManager.disableAlpha();
+////
+////		if (gl_rescale_normal)
+////			GlStateManager.enableRescaleNormal();
+////		else
+////			GlStateManager.disableRescaleNormal();
+////
+////		if (gl_lighting)
+////			GlStateManager.enableLighting();
+////		else
+////			GlStateManager.disableLighting();
+////
+////		//s-ll
+////		setFloatBuffer4(floatBuffer, light01InfoRs[0], light01InfoGs[0], light01InfoBs[0], light01InfoAs[0]);
+////		GlStateManager.glLight(GL11.GL_LIGHT1, GL11.GL_POSITION, floatBuffer);
+////		setFloatBuffer4(floatBuffer, light01InfoRs[1], light01InfoGs[1], light01InfoBs[1], light01InfoAs[1]);
+////		GlStateManager.glLight(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, floatBuffer);
+////		setFloatBuffer4(floatBuffer, light01InfoRs[2], light01InfoGs[2], light01InfoBs[2], light01InfoAs[2]);
+////		GlStateManager.glLight(GL11.GL_LIGHT1, GL11.GL_AMBIENT, floatBuffer);
+////		setFloatBuffer4(floatBuffer, light01InfoRs[3], light01InfoGs[3], light01InfoBs[3], light01InfoAs[3]);
+////		GlStateManager.glLight(GL11.GL_LIGHT1, GL11.GL_SPECULAR, floatBuffer);
+////
+////		setFloatBuffer4(floatBuffer, light00InfoRs[0], light00InfoGs[0], light00InfoBs[0], light00InfoAs[0]);
+////		GlStateManager.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, floatBuffer);
+////		setFloatBuffer4(floatBuffer, light00InfoRs[1], light00InfoGs[1], light00InfoBs[1], light00InfoAs[1]);
+////		GlStateManager.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, floatBuffer);
+////		setFloatBuffer4(floatBuffer, light00InfoRs[2], light00InfoGs[2], light00InfoBs[2], light00InfoAs[2]);
+////		GlStateManager.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT, floatBuffer);
+////		setFloatBuffer4(floatBuffer, light00InfoRs[3], light00InfoGs[3], light00InfoBs[3], light00InfoAs[3]);
+////		GlStateManager.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, floatBuffer);
+////		//e-ll
+////
+////		GlStateManager.setActiveTexture(GL13.GL_TEXTURE0);
+////		GlStateManager.bindTexture(R_GL_TEXTURE_BINDING_2D_0);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, R_GL_TEXTURE_WRAP_S_0);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, R_GL_TEXTURE_WRAP_T_0);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_0);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_0);
+////
+////		//s-r0
+////		if (texture0)
+////			GlStateManager.enableTexture2D();
+////		else
+////			GlStateManager.disableTexture2D();
+////
+//////		GlStateManager.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, gl_texture_env_color0);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, gl_texture_env_mode0);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_RGB, gl_combine_rgb0);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_ALPHA, gl_combine_alpha0);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_RGB, gl_source0_rgb0);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_ALPHA, gl_source0_alpha0);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_RGB, gl_operand0_rgb0);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_ALPHA, gl_operand0_alpha0);
+////		//s-r0
+////
+////		GlStateManager.setActiveTexture(GL13.GL_TEXTURE1);
+////		GlStateManager.bindTexture(R_GL_TEXTURE_BINDING_2D_1);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, R_GL_TEXTURE_WRAP_S_1);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, R_GL_TEXTURE_WRAP_T_1);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_1);
+////		GlStateManager.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_1);
+////
+////		//s-r1
+////		if (texture1)
+////			GlStateManager.enableTexture2D();
+////		else
+////			GlStateManager.disableTexture2D();
+////
+//////		GlStateManager.glTexEnv(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_COLOR, gl_texture_env_color1);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, gl_texture_env_mode1);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_RGB, gl_combine_rgb1);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_COMBINE_ALPHA, gl_combine_alpha1);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_RGB, gl_source0_rgb1);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_SOURCE0_ALPHA, gl_source0_alpha1);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_RGB, gl_operand0_rgb1);
+////		GlStateManager.glTexEnvi(GL11.GL_TEXTURE_ENV, OpenGlHelper.GL_OPERAND0_ALPHA, gl_operand0_alpha1);
+////		//s-r1
+////
+////		GlStateManager.setActiveTexture(R_GL_ACTIVE_TEXTURE);
+////		GlStateManager.bindTexture(R_GL_TEXTURE_BINDING_2D);
+////
+////		// free lightModelAmbient
+////		setFloatBuffer4(floatBuffer, lightModelAmbientR, lightModelAmbientG, lightModelAmbientB, lightModelAmbientA);
+////		GlStateManager.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, floatBuffer);
+////
+////		// free shadeModel
+////		GlStateManager.shadeModel(shadeModel);
+////
+////		// free depthWriteMask
+////		GlStateManager.depthMask(depthWriteMask == 1);
+////
+////		// free colorMatFace & colorMatMode
+////		GlStateManager.colorMaterial(colorMatFace, colorMatMode);
+////
+////		// free colorMat
+////		if (colorMat)
+////			GlStateManager.enableColorMaterial();
+////		else
+////			GlStateManager.disableColorMaterial();
+////
+////		// free light1
+////		if (light1)
+////			GlStateManager.enableLight(1);
+////		else
+////			GlStateManager.disableLight(1);
+////
+////		// free light0
+////		if (light0)
+////			GlStateManager.enableLight(0);
+////		else
+////			GlStateManager.disableLight(0);
+////
+////		// free cullFace
+////		if (cullFace)
+////			GlStateManager.enableCull();
+////		else
+////			GlStateManager.disableCull();
+////
+////		// free depthTest
+////		if (depthTest)
+////			GlStateManager.enableDepth();
+////		else
+////			GlStateManager.disableDepth();
+////
+////		// free blendState
+////		if (blendState)
+////			GlStateManager.enableBlend();
+////		else
+////			GlStateManager.disableBlend();
+////
+////		// free color
+////		GlStateManager.color(colorR, colorG, colorB, colorA);
+////	}
 //
-//				Field cleaner_field = byteBuffer.getClass().getDeclaredField("cleaner");
-//				cleaner_field.setAccessible(true);
-//				sun.misc.Cleaner cleaner = (sun.misc.Cleaner)cleaner_field.get(byteBuffer);
-//
-//				cleaner.clean();
-//			}
-//			catch (Exception e)
-//			{
-//				Nali.error(e);
-//			}
-//		}
-//	}
-
-//	public static void cleanDirectBuffer(ByteBuffer buffer)
-//	{
-//		if (buffer.isDirect())
-//		{
-//			try
-//			{
-//				Field field = buffer.getClass().getDeclaredField("cleaner");
-//				field.setAccessible(true);
-//				sun.misc.Cleaner cleaner = (sun.misc.Cleaner)field.get(buffer);
-//				cleaner.clean();
-//			}
-//			catch (Exception e)
-//			{
-//				Nali.error(e);
-//			}
-//		}
-//	}
-
-//	public static void takeColor()
-//	{
-//		try
-//		{
-//			RED = RED_FIELD.getFloat(COLORSTATE_INSTANCE);
-//			GREEN = GREEN_FIELD.getFloat(COLORSTATE_INSTANCE);
-//			BLUE = BLUE_FIELD.getFloat(COLORSTATE_INSTANCE);
-//			ALPHA = ALPHA_FIELD.getFloat(COLORSTATE_INSTANCE);
-//		}
-//		catch (IllegalAccessException e)
-//		{
-//			Nali.error(e);
-//		}
-//	}
-}
+////	private void setFloatBuffer4(FloatBuffer floatBuffer, float... floats)
+////	{
+////		floatBuffer.clear();
+////		floatBuffer.put(floats);
+////		floatBuffer.flip();
+////	}
+//}

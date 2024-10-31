@@ -3,6 +3,7 @@ package com.nali.system.opengl.memo.client;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -22,7 +23,7 @@ public class MemoT
 //	public int texture_buffer;
 
 //	public MemoTexture(/*String mod_id_string*/File file)
-	public static int gen(/*String mod_id_string*/File file)
+	public static int gen(/*String mod_id_string*/File file, boolean mipmap)
 	{
 //		File[] file_array = new File(mod_id_string + "Textures/").listFiles();
 //		int size = file_array.length;
@@ -77,6 +78,11 @@ public class MemoT
 //			GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.texture_buffer);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture_buffer);
 			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, bytebuffer);
+
+			if (mipmap)
+			{
+				GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+			}
 
 			return texture_buffer;
 

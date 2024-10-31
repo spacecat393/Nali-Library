@@ -8,7 +8,7 @@
 //import org.spongepowered.asm.mixin.injection.Inject;
 //import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //
-//import static com.nali.key.KeyHelper.KEYBINDING_ARRAY;
+//import static com.nali.key.KeyHelper.IKEY_ARRAY;
 //
 //@Mixin(KeyBinding.class)
 //public abstract class MixinKeyBinding
@@ -16,7 +16,7 @@
 //	@Inject(method = "resetKeyBindingArrayAndHash", at = @At(value = "TAIL"))
 //	private static void nali_resetKeyBindingArrayAndHash(CallbackInfo callbackinfo)
 //	{
-//		for (KeyBinding keybinding : KEYBINDING_ARRAY)
+//		for (KeyBinding keybinding : IKEY_ARRAY)
 //		{
 //			keybinding.setKeyModifierAndCode(keybinding.getKeyModifierDefault(), 0);
 //			Minecraft.getMinecraft().gameSettings.setOptionKeyBinding(keybinding, keybinding.getKeyCode());

@@ -7,8 +7,6 @@
 	"compatibilityLevel": "JAVA_8",
 	"client":
 	[
-		"IMixinEntityRenderer",
-		"MixinGameSettings",
 		"MixinMinecraft",
 		"MixinRenderGlobal"
 	],

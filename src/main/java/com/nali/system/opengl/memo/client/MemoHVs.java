@@ -1,5 +1,6 @@
 package com.nali.system.opengl.memo.client;
 
+import com.nali.NaliConfig;
 import com.nali.math.M4x4;
 import com.nali.system.StringReader;
 import com.nali.system.file.FileDataReader;
@@ -8,7 +9,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.nali.Nali.ID;
-import static com.nali.NaliConfig.SHADER;
 
 @SideOnly(Side.CLIENT)
 public class MemoHVs extends MemoH
@@ -20,7 +20,7 @@ public class MemoHVs extends MemoH
 
 	public MemoHVs(String[] shader_string_array)
 	{
-		String folder_path = ID + "/" + shader_string_array[0] + "/shader/" + SHADER.gl_shading_language_version + "/";
+		String folder_path = ID + "/" + shader_string_array[0] + "/shader/" + NaliConfig.GL_SHADING_LANGUAGE_VERSION_STRING + "/";
 
 //		super(shader_string_array);
 //	}
@@ -131,12 +131,12 @@ public class MemoHVs extends MemoH
 		if (max_joint == 1)
 		{
 //			stringbuilder.append(SHADER.attribute + " int joint;\n" + SHADER.attribute + " float weight;\n");
-			stringbuilder.append(SHADER.attribute + " float joint;\n" + SHADER.attribute + " float weight;\n");
+			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING + " float joint;\n" + NaliConfig.ATTRIBUTE_STRING + " float weight;\n");
 		}
 		else
 		{
 //			stringbuilder.append(SHADER.attribute + " ivec" + max_joint + " joint;\n" + SHADER.attribute + " vec" + max_joint + " weight;\n");
-			stringbuilder.append(SHADER.attribute + " vec" + max_joint + " joint;\n" + SHADER.attribute + " vec" + max_joint + " weight;\n");
+			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING + " vec" + max_joint + " joint;\n" + NaliConfig.ATTRIBUTE_STRING + " vec" + max_joint + " weight;\n");
 		}
 		//
 
@@ -163,7 +163,7 @@ public class MemoHVs extends MemoH
 			temp_v = "temp_vertex_v4";
 			temp_n = "temp_normal_v4";
 			stringbuilder.append("vec4 vertex_v4 = vec4(0);\nvec4 normal_v4 = vec4(0);\nfor (int i = 0; i < " + max_joint + "; ++i)\n{\nvec4 temp_vertex_v4 = vec4(vertex, 1.0);\nvec4 temp_normal_v4 = vec4(normal, 0.0);\nint j = 0;\nfloat w = 0.0;\n");
-			if (SHADER.use_switch)
+			if ((NaliConfig.STATE & 2) == 2)
 			{
 				stringbuilder.append("switch (i)\n{\n");
 				for (int i = 0; i < max_joint; ++i)
@@ -205,7 +205,7 @@ public class MemoHVs extends MemoH
 			}
 		}
 
-		if (SHADER.use_switch)
+		if ((NaliConfig.STATE & 2) == 2)
 		{
 			stringbuilder.append("switch (j)\n{\n");
 			for (int j = 0; j < bone_2d_int_array.length; ++j)

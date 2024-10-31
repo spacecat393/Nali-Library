@@ -2,7 +2,7 @@
 	{
 		"modid": "${mod_id}",
 		"name": "${mod_name}",
-		"description": "NaliLibrary",
+		"description": "nalicraft\n\"nalicraft is loading\" 3 Minutes thought by PrototypeTrousers",
 		"version": "${mod_version}",
 		"mcversion": "1.12.2",
 		"url": "https://github.com/spacecat393/Nali-Library",

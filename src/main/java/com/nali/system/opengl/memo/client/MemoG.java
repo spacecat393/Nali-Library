@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL15;
 
 import static com.nali.system.ClientLoader.A2_MAP;
 import static com.nali.system.ClientLoader.G_LIST;
-import static com.nali.system.opengl.memo.client.MemoC.createIntByteBuffer;
 
 @SideOnly(Side.CLIENT)
 public class MemoG
@@ -71,7 +70,7 @@ public class MemoG
 
 		this.ebo = OpenGlHelper.glGenBuffers();
 		OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.ebo);
-		OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, createIntByteBuffer(index_int_array/*, true*/), OpenGlHelper.GL_STATIC_DRAW);
+		OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, MemoA1.createIntByteBuffer(index_int_array/*, true*/), OpenGlHelper.GL_STATIC_DRAW);
 //		OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, bytebuffer, OpenGlHelper.GL_STATIC_DRAW);
 
 //		GL30.glBindVertexArray(this.vao);

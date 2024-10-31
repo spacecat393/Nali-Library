@@ -14,14 +14,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 import static com.nali.math.M4x4.multiplyVec4Mat4;
 import static com.nali.system.ClientLoader.A2_MAP;
 import static com.nali.system.ClientLoader.F_LIST;
 import static com.nali.system.Timing.TIMELINE;
-import static com.nali.system.opengl.memo.client.MemoC.OPENGL_FLOATBUFFER;
-import static com.nali.system.opengl.memo.client.MemoC.setFloatBuffer;
 
 @SideOnly(Side.CLIENT)
 public class RenderS
@@ -30,6 +29,9 @@ public class RenderS
 	RC extends IClientDaS
 > extends RenderO<RC>
 {
+	public static int MAX_BONE;
+	public static FloatBuffer BONE_FLOATBUFFER;
+
 	public BD bd;
 
 	public float scale;
@@ -66,6 +68,13 @@ public class RenderS
 		this.setFrame();
 	}
 
+	public static void setFloatBuffer(float[] float_array)
+	{
+		BONE_FLOATBUFFER.clear();
+		BONE_FLOATBUFFER.put(float_array);
+		BONE_FLOATBUFFER.flip();
+	}
+
 	public void setFrame()
 	{
 		Arrays.fill(this.frame_byte_array, (byte)255);
@@ -76,7 +85,7 @@ public class RenderS
 	{
 //		OPENGL_FLOATBUFFER.limit(this.skinning_float_array.length);
 		setFloatBuffer(this.skinning_float_array);
-		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7/*+1*/], false, OPENGL_FLOATBUFFER);
+		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7/*+1*/], false, BONE_FLOATBUFFER);
 //		OpenGlHelper.glUniformMatrix4(openglobjectshadermemory.uniformlocation_int_array[8], false, OPENGL_FLOATBUFFER);
 		super.setUniform(rg, rs, index);
 	}
@@ -391,8 +400,9 @@ public class RenderS
 	}
 
 	@Override
-	public void updateDataLater(DrawWorldData drawworlddata)
+	public void startDrawLater(DrawWorldData drawworlddata)
 	{
+		super.startDrawLater(drawworlddata);
 		drawworlddata.skinning_float_array = this.skinning_float_array;
 	}
 

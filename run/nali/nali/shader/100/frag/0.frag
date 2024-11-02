@@ -9,5 +9,5 @@ varying vec2 fragment_texcoord;
 
 void main()
 {
-    gl_FragColor = texture2D(texture_sampler, fragment_texcoord) * Color;
+	gl_FragColor = texture2D(texture_sampler, fragment_texcoord) * Color;
 }

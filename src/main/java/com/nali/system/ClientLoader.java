@@ -3,8 +3,7 @@ package com.nali.system;
 import com.nali.Nali;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
-import com.nali.box.BoxTextAZ;
-import com.nali.list.data.NaliData;
+import com.nali.gui.page.PageConfig;
 import com.nali.render.RenderO;
 import com.nali.render.RenderS;
 import com.nali.system.file.FileDataReader;
@@ -17,7 +16,6 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,8 +49,8 @@ public class ClientLoader
 	{
 		List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
 
-		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
-		int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
+//		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
+//		int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
 
 		for (Class data_class : data_class_list)
 		{
@@ -221,22 +219,9 @@ public class ClientLoader
 			}
 			catch (Exception e)
 			{
-				//s0-draw
-				GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, RenderO.INTBUFFER);
-				int gl_current_program = RenderO.INTBUFFER.get(0);
-				GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, RenderO.INTBUFFER);
-				int gl_texture_binding_2d_0 = RenderO.INTBUFFER.get(0);
-				int gl_texture_min_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
-				int gl_texture_mag_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
-
-				MemoS rs = S_LIST.get(NaliData.SHADER_STEP + 3);
-				OpenGlHelper.glUseProgram(rs.program);
-				int v = rs.attriblocation_int_array[0];
-				GL20.glEnableVertexAttribArray(v);
-
-				BoxTextAZ boxtextaz0 = new BoxTextAZ("NALICRAFT".toCharArray());
-				BoxTextAZ boxtextaz1 = new BoxTextAZ("IS".toCharArray());
-				BoxTextAZ boxtextaz2 = new BoxTextAZ("LOADING".toCharArray());
+				PageConfig pageconfig = new PageConfig();
+				pageconfig.take();
+				pageconfig.init();
 
 				byte[] config_byte_array = null;
 				boolean loop = true;
@@ -248,29 +233,14 @@ public class ClientLoader
 
 					if (tmp_width != width || tmp_height != height)
 					{
-						//854 x 480
-						//edit shader and 09
-						int w20 = (int)(0.0234192037470726F * width);
-						int w10 = (int)(0.011709602F * width);
-						int w5 = (int)(0.005854801F * width);
-						int h20 = (int)(0.041666668F * height);
-						int h10 = (int)(0.020833334F * height);
-						int h5 = (int)(0.010416667F * height);
-						int wh20 = Math.min(w20, h20);
-						int wh10 = Math.min(w10, h10);
-						int wh5 = Math.min(w5, h5);
-						boxtextaz0.gen(wh20, wh20, wh20, wh10, width, height);
-						boxtextaz1.gen(wh20 + (/*5 + */wh20 + wh10) * 9, wh20, wh10, wh5, width, height);
-						boxtextaz2.gen(wh20 + (/*5 + */wh20 + wh10) * 9 + (/*5 + */wh10 + wh5) * 2 + wh20, wh20, wh10, wh5, width, height);
 						GL11.glViewport(0, 0, width, height);
 						tmp_width = width;
 						tmp_height = height;
+						pageconfig.gen(width, height);
 					}
 
 					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-					boxtextaz0.draw(rs);
-					boxtextaz1.draw(rs);
-					boxtextaz2.draw(rs);
+					pageconfig.draw();
 					Display.update();
 
 					while (Keyboard.next())
@@ -295,19 +265,8 @@ public class ClientLoader
 					}
 				}
 
-				GL20.glDisableVertexAttribArray(v);
-
-				OpenGlHelper.glUseProgram(gl_current_program);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, gl_texture_binding_2d_0);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, gl_texture_min_filter_0);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, gl_texture_mag_filter_0);
-
-				OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
-
-				OpenGlHelper.glDeleteBuffers(boxtextaz0.array_buffer);
-				OpenGlHelper.glDeleteBuffers(boxtextaz1.array_buffer);
-				OpenGlHelper.glDeleteBuffers(boxtextaz2.array_buffer);
-				//e0-draw
+				pageconfig.free();
+				pageconfig.clear();
 
 				try
 				{
@@ -319,58 +278,6 @@ public class ClientLoader
 				}
 			}
 			//e0-config
-
-//			//s0-draw
-//			GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, RenderO.INTBUFFER);
-//			int gl_current_program = RenderO.INTBUFFER.get(0);
-//			GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, RenderO.INTBUFFER);
-//			int gl_texture_binding_2d_0 = RenderO.INTBUFFER.get(0);
-////			int gl_texture_wrap_s_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
-////			int gl_texture_wrap_t_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
-//			int gl_texture_min_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
-//			int gl_texture_mag_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
-//
-//			MemoS rs = S_LIST.get(NaliData.SHADER_STEP + 3);
-//			OpenGlHelper.glUseProgram(rs.program);
-//			int v = rs.attriblocation_int_array[0];
-//			GL20.glEnableVertexAttribArray(v);
-//
-//			int width = Display.getWidth();
-//			int height = Display.getHeight();
-//			BoxTextAZ boxtextaz0 = new BoxTextAZ("NALICRAFT".toCharArray(), 20, width, height);
-//			BoxTextAZ boxtextaz1 = new BoxTextAZ("IS".toCharArray(), 10, width, height);
-//			BoxTextAZ boxtextaz2 = new BoxTextAZ("LOADING".toCharArray(), 10, width, height);
-//			boxtextaz0.draw(rs, 20.0F / width, 20.0F / height, width, 10);
-//			boxtextaz1.draw(rs, ((5.0F + 20.0F + 10.0F) * 9.0F * 2.0F + 20.0F) / width, 20.0F / height, width, 5);
-//			boxtextaz2.draw(rs, ((5.0F + 20.0F + 10.0F) * (9.0F + 2.0F) * 2.0F + 20.0F) / width, 20.0F / height, width, 5);
-//
-////			BoxTextAZ boxtextaz0 = new BoxTextAZ("NALICRAFT".toCharArray(), (int)(width * 0.02F / 2.0F), width, height);
-////			BoxTextAZ boxtextaz1 = new BoxTextAZ("IS".toCharArray(), (int)(width * 0.02F * 0.5F / 2.0F), width, height);
-////			BoxTextAZ boxtextaz2 = new BoxTextAZ("LOADING".toCharArray(), (int)(width * 0.02F * 0.5F / 2.0F), width, height);
-////			boxtextaz0.draw(rs, 0.01F, 0.01F, width, (int)(width * 0.02F * 0.5F / 2.0F));
-////			boxtextaz1.draw(rs, ((0.02F + 0.02F / 2.0F) * 9.0F * 2.0F + 0.01F), 0.01F, width, (int)(width * 0.02F * 0.25F / 2.0F));// + 5.0F / width
-////			boxtextaz2.draw(rs, ((0.02F + 0.02F / 2.0F) * (9.0F + 2.0F) * 2.0F + 0.01F), 0.01F, width, (int)(width * 0.02F * 0.25F / 2.0F));
-//
-////			BoxText09 boxtext09 = new BoxText09("0942745".toCharArray());
-////			boxtext09.draw(rs);
-//
-//			GL20.glDisableVertexAttribArray(v);
-//
-//			OpenGlHelper.glUseProgram(gl_current_program);
-//			GL11.glBindTexture(GL11.GL_TEXTURE_2D, gl_texture_binding_2d_0);
-////			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, gl_texture_wrap_s_0);
-////			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, gl_texture_wrap_t_0);
-//			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, gl_texture_min_filter_0);
-//			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, gl_texture_mag_filter_0);
-//
-//			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
-//
-//			OpenGlHelper.glDeleteBuffers(boxtextaz0.array_buffer);
-//			OpenGlHelper.glDeleteBuffers(boxtextaz1.array_buffer);
-//			OpenGlHelper.glDeleteBuffers(boxtextaz2.array_buffer);
-//
-//			Display.update();
-//			//e0-draw
 
 //			try
 //			{

@@ -51,7 +51,7 @@ varying vec2 fragment_texcoord;
 
 void main()
 {
-    //tab?
-    gl_Position = vec4(vertex.xy/** + Pos.xy*/, 0.0, 1.0);
-    fragment_texcoord = vertex.zw/** + Pos.zw*/;
+	//tab?
+	gl_Position = vec4(vertex.xy/** + Pos.xy*/, 0.0, 1.0);
+	fragment_texcoord = vertex.zw/** + Pos.zw*/;
 }

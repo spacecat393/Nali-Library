@@ -7,6 +7,6 @@ varying vec2 fragment_texcoord;
 
 void main()
 {
-    gl_Position = vec4(vertex.xy, 0.0, 1.0);
-    fragment_texcoord = vertex.zw;
+	gl_Position = vec4(vertex.xy, 0.0, 1.0);
+	fragment_texcoord = vertex.zw;
 }

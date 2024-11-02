@@ -1,8 +1,7 @@
-package com.nali.box;
+package com.nali.gui.box;
 
 import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
-import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -34,45 +33,37 @@ public class BoxTextAZ
 
 		int length = this.char_array.length;
 		float[] float_array = new float[length * 24];
-		for (int i = 0; i < length; ++i)
+		int l = 0;
+		for (char c : this.char_array)
 		{
-			char c = this.char_array[i];
-			float[] quad_float_array = NaliData.createQuad(x, y, x/* + 5*/ + size, y/* + 5*/ + size, width, height, c, 0, c + 5, 5, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
-			System.arraycopy(quad_float_array, 0, float_array, i * 24, 24);
-			x += space/* + 5*/ + size;
+			float[] quad_float_array = NaliData.createQuad(x, y, x + size, y + size, width, height, c, 0, c + 5, 5, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
+			System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+			x += space + size;
 		}
-
 		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(float_array));
 	}
 
-	public void draw(MemoS rs)
+	public void draw(MemoS rs, float[] v_float_array, float[] c_float_array)
 	{
 		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, this.array_buffer);
 		GL20.glVertexAttribPointer(rs.attriblocation_int_array[0], 4, GL11.GL_FLOAT, false, 0, 0);
 
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientLoader.TEXTURE_INTEGER_LIST.get(NaliData.TEXTURE_STEP));
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientLoader.TEXTURE_INTEGER_LIST.get(NaliData.TEXTURE_STEP));
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-			RenderO.FLOATBUFFER.clear();
-			RenderO.FLOATBUFFER.put(new float[]
-			{
-				0.0F, 0.0F,
-				0.0F, 0.0F
-			});
-			RenderO.FLOATBUFFER.flip();
-			OpenGlHelper.glUniform4(rs.uniformlocation_int_array[0], RenderO.FLOATBUFFER);
+		RenderO.FLOATBUFFER.clear();
+		RenderO.FLOATBUFFER.put(v_float_array);
+		RenderO.FLOATBUFFER.flip();
+		OpenGlHelper.glUniform2(rs.uniformlocation_int_array[0], RenderO.FLOATBUFFER);
 
-			RenderO.FLOATBUFFER.clear();
-			RenderO.FLOATBUFFER.put(new float[]
-			{
-				1.0F, 1.0F, 1.0F, 1.0F
-			});
-			RenderO.FLOATBUFFER.flip();
-			OpenGlHelper.glUniform4(rs.uniformlocation_int_array[1], RenderO.FLOATBUFFER);
-//			OpenGlHelper.(rs.uniformlocation_int_array[2], 0);
+		RenderO.FLOATBUFFER.clear();
+		RenderO.FLOATBUFFER.put(c_float_array);
+		RenderO.FLOATBUFFER.flip();
+		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[1], RenderO.FLOATBUFFER);
 
-			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.char_array.length * 6);
+//		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.char_array.length * 6);
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.char_array.length * 6);
 	}
 
 //	public void draw()

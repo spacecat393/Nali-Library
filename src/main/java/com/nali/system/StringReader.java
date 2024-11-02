@@ -9,23 +9,22 @@ import static com.nali.Nali.error;
 
 public class StringReader
 {
-	public static String[] get(Class clasz)
+	public static String[] get(Class c)
 	{
-		String class_name_string = clasz.getSimpleName();
+		String class_name_string = c.getSimpleName();
 		StringBuilder new_name_stringbuilder = new StringBuilder();
-		StringBuilder mod_id_stringbuilder = new StringBuilder("" + class_name_string.charAt(0));
+		StringBuilder mod_id_stringbuilder = new StringBuilder();
+		mod_id_stringbuilder.append(class_name_string.charAt(0));
 		int i = 1;
-		for (; i < class_name_string.length(); ++i)
+		while (i < class_name_string.length())
 		{
-			char c = class_name_string.charAt(i);
-			if (Character.isUpperCase(c))
+			char class_name_char = class_name_string.charAt(i);
+			if (class_name_char < 97)
 			{
 				break;
 			}
-			else
-			{
-				mod_id_stringbuilder.append(c);
-			}
+			mod_id_stringbuilder.append(class_name_char);
+			++i;
 		}
 		new_name_stringbuilder.append(class_name_string, i, class_name_string.length());
 		return new String[]{new_name_stringbuilder.toString().toLowerCase(), mod_id_stringbuilder.toString().toLowerCase()};

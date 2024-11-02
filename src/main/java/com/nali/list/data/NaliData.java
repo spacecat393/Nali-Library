@@ -5,6 +5,7 @@ import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class NaliData
 //		MAX_BONE
 	public static byte STATE = 1;//preload
 
-	public static int QUAD2D_ARRAY_BUFFER;
+	public static int QUAD_ARRAY_BUFFER;
 
 	public static List<Integer>
 		TEXTURE_INTEGER_LIST = new ArrayList(),
@@ -36,7 +37,10 @@ public class NaliData
 
 	public static void run()
 	{
-		QUAD2D_ARRAY_BUFFER = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(new float[]
+		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
+		int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
+
+		QUAD_ARRAY_BUFFER = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(new float[]
 		{
 			-1, 1, 0.0F, 1.0F,
 			-1, -1, 0.0F, 0.0F,
@@ -48,6 +52,7 @@ public class NaliData
 		}));
 
 //		initFont();
+		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
 	}
 
 //	public static void initFont()

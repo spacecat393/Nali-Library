@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //@Config(modid = ID)
 public class NaliConfig
 {
-	//0 STATE < PRE_SHADER USE_SWITCH
+	//0 STATE
 	//1-4 AL_GAIN
 	//5-8 AL_PITCH
 
@@ -19,9 +19,9 @@ public class NaliConfig
 
 	public static String GL_SHADING_LANGUAGE_VERSION_STRING = "100";
 	public static String ATTRIBUTE_STRING = "attribute";
-	public static byte STATE;
-	public static float AL_GAIN;
-	public static float AL_PITCH;
+	public static byte STATE;//PRE_SHADER USE_SWITCH
+	public static float AL_GAIN = 1.0F;
+	public static float AL_PITCH = 1.0F;
 //	public static byte[] CONFIG_BYTE_ARRAY;
 
 //	@Config.Name("Shader")

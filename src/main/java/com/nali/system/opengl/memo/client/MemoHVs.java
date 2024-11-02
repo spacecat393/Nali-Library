@@ -53,8 +53,8 @@ public class MemoHVs extends MemoH
 //		StringReader.append(stringbuilder, folder_path + "/Shaders/" + GL_SHADING_LANGUAGE_VERSION + "/Vertex" + shader_state + 0);
 //		String file_string = /*Reference.MOD_ID + "/" + */folder_path + "/Vertex" + shader_state;
 		byte[] byte_array = shader_string_array[3].getBytes();
-		String file_string = /*Reference.MOD_ID + "/" + */folder_path + "vert/s/" + new String(byte_array, 1, byte_array.length - 1);
-		StringReader.append(stringbuilder, file_string + "0.vert");
+		StringBuilder file_stringbuilder = new StringBuilder(folder_path).append("vert/s/").append(new String(byte_array, 1, byte_array.length - 1));
+		StringReader.append(stringbuilder, file_stringbuilder + "0.vert");
 //		stringbuilder.append(getVertexHeaderShaderString());
 
 		StringBuilder[] bone_stringbuilder_array = new StringBuilder[this.bone * 2];
@@ -73,7 +73,7 @@ public class MemoHVs extends MemoH
 			for (int b = j * 16; b < bindpose_index; ++b)
 			{
 //				stringbuilder.append(String.valueOf(this.bind_pose_float_array[b]));
-				bone_stringbuilder_array[j].append(String.valueOf(this.bind_pose_float_array[b]));
+				bone_stringbuilder_array[j].append(this.bind_pose_float_array[b]);
 
 				if (b < bindpose_index - 1)
 				{
@@ -101,7 +101,7 @@ public class MemoHVs extends MemoH
 			for (int b = j * 16; b < bindpose_index; ++b)
 			{
 //				stringbuilder.append(String.valueOf(this.bind_pose_float_array[b]));
-				bone_stringbuilder_array[j + this.bone].append(String.valueOf(this.bind_pose_float_array[b]));
+				bone_stringbuilder_array[j + this.bone].append(this.bind_pose_float_array[b]);
 
 				if (b < bindpose_index - 1)
 				{
@@ -124,23 +124,25 @@ public class MemoHVs extends MemoH
 //		{
 //			stringbuilder.append("uniform mat4 frame").append(StringReader.convertNumberToLetter(i + ";\n");
 //		}
-		stringbuilder.append("uniform mat4 frame[" + this.bone + "];\n");
+		stringbuilder.append("uniform mat4 frame[").append(this.bone).append("];\n");
 
 		//
 		byte max_joint = Byte.parseByte(shader_string_array[8]);
 		if (max_joint == 1)
 		{
 //			stringbuilder.append(SHADER.attribute + " int joint;\n" + SHADER.attribute + " float weight;\n");
-			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING + " float joint;\n" + NaliConfig.ATTRIBUTE_STRING + " float weight;\n");
+			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING).append(" float joint;\n")
+				.append(NaliConfig.ATTRIBUTE_STRING).append(" float weight;\n");
 		}
 		else
 		{
 //			stringbuilder.append(SHADER.attribute + " ivec" + max_joint + " joint;\n" + SHADER.attribute + " vec" + max_joint + " weight;\n");
-			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING + " vec" + max_joint + " joint;\n" + NaliConfig.ATTRIBUTE_STRING + " vec" + max_joint + " weight;\n");
+			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING).append(" vec").append(max_joint).append(" joint;\n")
+				.append(NaliConfig.ATTRIBUTE_STRING).append(" vec").append(max_joint).append(" weight;\n");
 		}
 		//
 
-		StringReader.append(stringbuilder, file_string + "1.vert");
+		StringReader.append(stringbuilder, file_stringbuilder + "1.vert");
 
 		//
 //		if (max_joint == 1)
@@ -162,13 +164,13 @@ public class MemoHVs extends MemoH
 			w_string = "w";
 			temp_v = "temp_vertex_v4";
 			temp_n = "temp_normal_v4";
-			stringbuilder.append("vec4 vertex_v4 = vec4(0);\nvec4 normal_v4 = vec4(0);\nfor (int i = 0; i < " + max_joint + "; ++i)\n{\nvec4 temp_vertex_v4 = vec4(vertex, 1.0);\nvec4 temp_normal_v4 = vec4(normal, 0.0);\nint j = 0;\nfloat w = 0.0;\n");
+			stringbuilder.append("vec4 vertex_v4 = vec4(0);\nvec4 normal_v4 = vec4(0);\nfor (int i = 0; i < ").append(max_joint).append("; ++i)\n{\nvec4 temp_vertex_v4 = vec4(vertex, 1.0);\nvec4 temp_normal_v4 = vec4(normal, 0.0);\nint j = 0;\nfloat w = 0.0;\n");
 			if ((NaliConfig.STATE & 2) == 2)
 			{
 				stringbuilder.append("switch (i)\n{\n");
 				for (int i = 0; i < max_joint; ++i)
 				{
-					stringbuilder.append("case " + i + ":\nj = int(joint[" + i + "]);\nw = weight[" + i + "];\nbreak;\n");
+					stringbuilder.append("case ").append(i).append(":\nj = int(joint[").append(i).append("]);\nw = weight[").append(i).append("];\nbreak;\n");
 				}
 				stringbuilder.append("}\n");
 			}
@@ -183,7 +185,7 @@ public class MemoHVs extends MemoH
 						head = "if";
 					}
 
-					stringbuilder.append(head + " (i == " + i + ")\n{\nj = int(joint[" + i + "]);\nw = weight[" + i + "];\n}\n");
+					stringbuilder.append(head).append(" (i == ").append(i).append(")\n{\nj = int(joint[").append(i).append("]);\nw = weight[").append(i).append("];\n}\n");
 				}
 			}
 		}
@@ -212,7 +214,7 @@ public class MemoHVs extends MemoH
 			{
 				int[] back_bone_int_array = this.back_bone_2d_int_array[j];
 
-				stringbuilder.append("case " + j + ":\n");
+				stringbuilder.append("case ").append(j).append(":\n");
 				for (int bone : back_bone_int_array)
 				{
 //					stringbuilder.append(temp_v + " *= bindpose[" + bone + "];\n");
@@ -240,7 +242,7 @@ public class MemoHVs extends MemoH
 					head = "if";
 				}
 
-				stringbuilder.append(head + " (j == " + j + ")\n{\n");
+				stringbuilder.append(head).append(" (j == ").append(j).append(")\n{\n");
 	//			stringbuilder.append(head).append(" (" + j_string + " == " + j + ")\n{\n");
 				for (int bone : back_bone_int_array)
 				{
@@ -261,39 +263,39 @@ public class MemoHVs extends MemoH
 
 		if (max_joint == 1)
 		{
-			stringbuilder.append("vertex_v4 *= " + w_string + ";\nnormal_v4 *= " + w_string + ";\n");
+			stringbuilder.append("vertex_v4 *= ").append(w_string).append(";\nnormal_v4 *= ").append(w_string).append(";\n");
 		}
 		else
 		{
 //			stringbuilder.append("temp_vertex_v4 *= w;\ntemp_normal_v4 *= w;\nvertex_v4 += temp_vertex_v4;\nnormal_v4 += temp_normal_v4;\n}\n");
-			stringbuilder.append("temp_vertex_v4 *= " + w_string + ";\ntemp_normal_v4 *= " + w_string + ";\nvertex_v4 += temp_vertex_v4;\nnormal_v4 += temp_normal_v4;\n}\n");
+			stringbuilder.append("temp_vertex_v4 *= ").append(w_string).append(";\ntemp_normal_v4 *= ").append(w_string).append(";\nvertex_v4 += temp_vertex_v4;\nnormal_v4 += temp_normal_v4;\n}\n");
 		}
 
-		StringReader.append(stringbuilder, file_string + "2.vert");
+		StringReader.append(stringbuilder, file_stringbuilder + "2.vert");
 
-		this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER, file_string);
+		this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER, file_stringbuilder.toString());
 	}
 
 	public void setSB(StringBuilder stringbuilder, String temp_v, String temp_n, int bone, StringBuilder[] bone_stringbuilder_array)
 	{
-		stringbuilder.append(temp_v + " *= mat4(");
+		stringbuilder.append(temp_v).append(" *= mat4(");
 		stringbuilder.append(bone_stringbuilder_array[bone]);
 		stringbuilder.append(");");
 
-		stringbuilder.append(temp_v + " *= frame[" + bone + "];\n");
+		stringbuilder.append(temp_v).append(" *= frame[").append(bone).append("];\n");
 
-		stringbuilder.append(temp_v + " *= mat4(");
+		stringbuilder.append(temp_v).append(" *= mat4(");
 		stringbuilder.append(bone_stringbuilder_array[bone + this.bone]);
 		stringbuilder.append(");");
 		//
 
-		stringbuilder.append(temp_n + " *= mat4(");
+		stringbuilder.append(temp_n).append(" *= mat4(");
 		stringbuilder.append(bone_stringbuilder_array[bone]);
 		stringbuilder.append(");");
 
-		stringbuilder.append(temp_n + " *= frame[" + bone + "];\n");
+		stringbuilder.append(temp_n).append(" *= frame[").append(bone).append("];\n");
 
-		stringbuilder.append(temp_n + " *= mat4(");
+		stringbuilder.append(temp_n).append(" *= mat4(");
 		stringbuilder.append(bone_stringbuilder_array[bone + this.bone]);
 		stringbuilder.append(");");
 		//

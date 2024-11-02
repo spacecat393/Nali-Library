@@ -35,6 +35,7 @@ gradlew.bat
 LICENSE
 gradle
 run/nali/nali/c
+run/nali/nali/tmp
 .settings
 .classpath
 .factorypath

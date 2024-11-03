@@ -20,7 +20,7 @@ public class MemoHVs extends MemoH
 
 	public MemoHVs(String[] shader_string_array)
 	{
-		String folder_path = ID + "/" + shader_string_array[0] + "/shader/" + NaliConfig.GL_SHADING_LANGUAGE_VERSION_STRING + "/";
+		String folder_path = ID + "/" + shader_string_array[0] + "/shader/" + NaliConfig.GLSL + "/";
 
 //		super(shader_string_array);
 //	}
@@ -131,14 +131,14 @@ public class MemoHVs extends MemoH
 		if (max_joint == 1)
 		{
 //			stringbuilder.append(SHADER.attribute + " int joint;\n" + SHADER.attribute + " float weight;\n");
-			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING).append(" float joint;\n")
-				.append(NaliConfig.ATTRIBUTE_STRING).append(" float weight;\n");
+			stringbuilder.append(NaliConfig.ATTRIBUTE).append(" float joint;\n")
+				.append(NaliConfig.ATTRIBUTE).append(" float weight;\n");
 		}
 		else
 		{
 //			stringbuilder.append(SHADER.attribute + " ivec" + max_joint + " joint;\n" + SHADER.attribute + " vec" + max_joint + " weight;\n");
-			stringbuilder.append(NaliConfig.ATTRIBUTE_STRING).append(" vec").append(max_joint).append(" joint;\n")
-				.append(NaliConfig.ATTRIBUTE_STRING).append(" vec").append(max_joint).append(" weight;\n");
+			stringbuilder.append(NaliConfig.ATTRIBUTE).append(" vec").append(max_joint).append(" joint;\n")
+				.append(NaliConfig.ATTRIBUTE).append(" vec").append(max_joint).append(" weight;\n");
 		}
 		//
 

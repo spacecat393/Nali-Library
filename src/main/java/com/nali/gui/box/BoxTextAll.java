@@ -52,6 +52,18 @@ public class BoxTextAll
 				--this.length;
 				x += space + size;
 			}
+			else if (c == '-')
+			{
+				float[] quad_float_array = NaliData.createQuad(x, y + size / 1.625F, x + size, y + size / 2.5F, width, height, 0, 1, 1, 2, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
+				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+				x += space + size;
+			}
+			else if (c == '.')
+			{
+				float[] quad_float_array = NaliData.createQuad(x + size / 1.625F, y, x + size / 2.5F, y + size / 5.0F, width, height, 0, 1, 1, 2, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
+				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+				x += space + size;
+			}
 			else if (/*c > 47 && */c < 58)
 			{
 				short s = (short)((c - 48) * 4 + 26 * 5);
@@ -68,7 +80,7 @@ public class BoxTextAll
 			}
 			else if (c == '_')
 			{
-				float[] quad_float_array = NaliData.createQuad(x, y, x + size, y + size / 5, width, height, 0, 1, 1, 2, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
+				float[] quad_float_array = NaliData.createQuad(x, y, x + size, y + size / 5.0F, width, height, 0, 1, 1, 2, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
 				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
 				x += space + size;
 			}

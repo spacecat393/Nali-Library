@@ -97,6 +97,26 @@ public class NaliData
 		TEXTURE_INTEGER_LIST.clear();
 	}
 
+	public static float[] createQuad(int x0, int y0, int x1, int y1, float v_width, float v_height)
+	{
+		float nx1 = (2.0F * x0 / v_width) - 1.0F;
+		float ny1 = (2.0F * y0 / v_height) - 1.0F;
+
+		float nx2 = (2.0F * x1 / v_width) - 1.0F;
+		float ny2 = (2.0F * y1 / v_height) - 1.0F;
+
+		return new float[]
+		{
+			nx1, ny2,
+			nx1, ny1,
+			nx2, ny1,
+
+			nx1, ny2,
+			nx2, ny1,
+			nx2, ny2,
+		};
+	}
+
 	public static float[] createQuad(int x0, int y0, int x1, int y1, float v_width, float v_height, int u0, int v0, int u1, int v1, float t_width, float t_height)
 	{
 		float nx1 = (2.0F * x0 / v_width) - 1.0F;
@@ -126,6 +146,76 @@ public class NaliData
 			nx2, ny1, nu2, nv1,
 			nx2, ny2, nu2, nv2
 		};
+//		//scale -y
+//		return new float[]
+//		{
+//			nx1, ny1, nu1, nv2,
+//			nx1, ny2, nu1, nv1,
+//			nx2, ny2, nu2, nv1,
+//
+//			nx1, ny1, nu1, nv2,
+//			nx2, ny2, nu2, nv1,
+//			nx2, ny1, nu2, nv2,
+//		};
+//		//rotate z 180
+//		return new float[]
+//		{
+//			nx2, ny1, nu1, nv2,
+//			nx2, ny2, nu1, nv1,
+//			nx1, ny2, nu2, nv1,
+//
+//			nx2, ny1, nu1, nv2,
+//			nx1, ny2, nu2, nv1,
+//			nx1, ny1, nu2, nv2,
+//		};
+	}
+
+	public static float[] createQuad(float x0, float y0, float x1, float y1, float v_width, float v_height, int u0, int v0, int u1, int v1, float t_width, float t_height)
+	{
+		float nx1 = (2.0F * x0 / v_width) - 1.0F;
+		float ny1 = (2.0F * y0 / v_height) - 1.0F;
+
+		float nx2 = (2.0F * x1 / v_width) - 1.0F;
+		float ny2 = (2.0F * y1 / v_height) - 1.0F;
+
+		float nu1 = u0 / t_width;
+		float nv1 = v0 / t_height;
+
+		float nu2 = u1 / t_width;
+		float nv2 = v1 / t_height;
+
+		return new float[]
+		{
+			nx1, ny2, nu1, nv2,
+			nx1, ny1, nu1, nv1,
+			nx2, ny1, nu2, nv1,
+
+			nx1, ny2, nu1, nv2,
+			nx2, ny1, nu2, nv1,
+			nx2, ny2, nu2, nv2
+		};
+//		//scale -y
+//		return new float[]
+//		{
+//			nx1, ny1, nu1, nv2,
+//			nx1, ny2, nu1, nv1,
+//			nx2, ny2, nu2, nv1,
+//
+//			nx1, ny1, nu1, nv2,
+//			nx2, ny2, nu2, nv1,
+//			nx2, ny1, nu2, nv2,
+//		};
+//		//rotate z 180
+//		return new float[]
+//		{
+//			nx2, ny1, nu1, nv2,
+//			nx2, ny2, nu1, nv1,
+//			nx1, ny2, nu2, nv1,
+//
+//			nx2, ny1, nu1, nv2,
+//			nx1, ny2, nu2, nv1,
+//			nx1, ny1, nu2, nv2,
+//		};
 	}
 
 //	public static void setFramebuffer(int x, int y, int width)

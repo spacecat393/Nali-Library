@@ -94,12 +94,16 @@ public class RenderO
 	//	R_GL_TEXTURE_MAG_FILTER_2;
 	//	R_GL_TEXTURE_MAG_FILTER_3;
 
-	public static boolean
-		R_GL_DEPTH_TEST,
-		R_GL_CULL_FACE,
-		R_GL_BLEND;
-	//	R_GL_TEXTURE_2D;
-	//	GL_LIGHTING;
+	//1 GL_DEPTH_TEST
+	//2 R_GL_CULL_FACE
+	//4 R_GL_BLEND
+	public static byte GL_STATE;
+//	public static boolean
+//		R_GL_DEPTH_TEST,
+//		R_GL_CULL_FACE,
+//		R_GL_BLEND;
+//	//	R_GL_TEXTURE_2D;
+//	//	GL_LIGHTING;
 
 //	public static float GL_LINE_WIDTH;
 
@@ -506,7 +510,7 @@ public class RenderO
 //			GL20.glEnableVertexAttribArray(i);
 //		}
 
-		R_GL_DEPTH_TEST = GL11.glIsEnabled(GL11.GL_DEPTH_TEST);
+		GL_STATE |= GL11.glIsEnabled(GL11.GL_DEPTH_TEST) ? 1 : 0;
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 
 //		GL11.glGetInteger(GL11.GL_DEPTH_FUNC, OPENGL_INTBUFFER);
@@ -525,7 +529,7 @@ public class RenderO
 ////			GL11.glDepthMask(true);
 //		}
 
-		R_GL_CULL_FACE = GL11.glIsEnabled(GL11.GL_CULL_FACE);
+		GL_STATE |= GL11.glIsEnabled(GL11.GL_CULL_FACE) ? 2 : 0;
 //		if ((openglobjectmemo.state & 2) == 2)
 //		{
 //			GL11.glEnable(GL11.R_GL_CULL_FACE);
@@ -535,7 +539,7 @@ public class RenderO
 //			GL11.glDisable(GL11.R_GL_CULL_FACE);
 //		}
 
-		R_GL_BLEND = GL11.glIsEnabled(GL11.GL_BLEND);
+		GL_STATE |= GL11.glIsEnabled(GL11.GL_BLEND) ? 4 : 0;
 
 		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, INTBUFFER);
 		R_GL_BLEND_EQUATION_RGB = INTBUFFER.get(0);
@@ -615,7 +619,7 @@ public class RenderO
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MIN_FILTER);
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL_TEXTURE_MAG_FILTER);
 
-		if (R_GL_DEPTH_TEST)
+		if ((GL_STATE & 1) == 1)
 		{
 			GL11.glEnable(GL11.GL_DEPTH_TEST);
 		}
@@ -629,7 +633,7 @@ public class RenderO
 
 //		GL11.glFrontFace(GL_FRONT_FACE);
 
-		if (R_GL_CULL_FACE)
+		if ((GL_STATE & 2) == 2)
 		{
 			GL11.glEnable(GL11.GL_CULL_FACE);
 		}
@@ -638,7 +642,7 @@ public class RenderO
 			GL11.glDisable(GL11.GL_CULL_FACE);
 		}
 
-		if (R_GL_BLEND)
+		if ((GL_STATE & 4) == 4)
 		{
 			GL11.glEnable(GL11.GL_BLEND);
 		}

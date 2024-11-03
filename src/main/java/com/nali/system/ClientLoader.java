@@ -231,36 +231,68 @@ public class ClientLoader
 					int width = Display.getWidth();
 					int height = Display.getHeight();
 
+					int h20 = (int)(0.041666668F * height);
+					int wh20 = Math.min((int)(0.0234192037470726F * width), h20);
+
 					if (tmp_width != width || tmp_height != height)
 					{
 						GL11.glViewport(0, 0, width, height);
 						tmp_width = width;
 						tmp_height = height;
-						pageconfig.gen(width, height);
+						pageconfig.gen(width, height, wh20, h20);
+						if (pageconfig.scroll != 0)
+						{
+							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+						}
 					}
 
 					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-					pageconfig.draw();
+					pageconfig.draw(width, height, wh20);
 					Display.update();
 
 					while (Keyboard.next())
 					{
-						int key = Keyboard.getEventKey();
-//						int i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
-//						warn("KEY: " + key);
-//						warn("I: " + i);
-						//SHIFT 42
-						//ESC 1
-						//left 203
-						//up 200
-						//down 208
-						//right 205
-						//enter 28
-						//space 57
-						if (key == Keyboard.KEY_Q)
+						if (Keyboard.getEventKeyState())
 						{
-//							config_byte_array = new byte[];
-							loop = false;
+							int key = Keyboard.getEventKey();
+	//						int i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+	//						warn("KEY: " + key);
+	//						warn("I: " + i);
+							//SHIFT 42
+							//space 57
+							if (key == Keyboard.KEY_ESCAPE)
+							{
+	//							config_byte_array = new byte[];
+								loop = false;
+							}
+							if (key == Keyboard.KEY_UP)
+							{
+								pageconfig.scroll -= wh20 * 4.0F / height;
+							}
+							if (key == Keyboard.KEY_DOWN)
+							{
+								pageconfig.scroll += wh20 * 4.0F / height;
+							}
+							if (key == Keyboard.KEY_LEFT)
+							{
+								pageconfig.next((byte)-1);
+								pageconfig.gen(width, height, wh20, h20);
+								pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+							}
+							if (key == Keyboard.KEY_RIGHT)
+							{
+								pageconfig.next((byte)1);
+								pageconfig.gen(width, height, wh20, h20);
+								pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+							}
+							if (key == Keyboard.KEY_RETURN)
+							{
+								pageconfig.enter();
+								pageconfig.clear();
+								pageconfig.init();
+								pageconfig.gen(width, height, wh20, h20);
+//								pageconfig.update(width, height, wh20, h20);
+							}
 						}
 					}
 				}
@@ -349,7 +381,7 @@ public class ClientLoader
 
 		for (File file : file_array)
 		{
-			File[] vert_file_array = new File(file + "/shader/" + NaliConfig.GL_SHADING_LANGUAGE_VERSION_STRING + "/vert/o").listFiles();
+			File[] vert_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/vert/o").listFiles();
 			if (vert_file_array != null)
 			{
 				int step = memohvo_list.size();
@@ -371,7 +403,7 @@ public class ClientLoader
 
 		for (File file : file_array)
 		{
-			File[] frag_file_array = new File(file + "/shader/" + NaliConfig.GL_SHADING_LANGUAGE_VERSION_STRING + "/frag").listFiles();
+			File[] frag_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/frag").listFiles();
 			if (frag_file_array != null)
 			{
 				int step = memohfo_list.size();

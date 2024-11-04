@@ -14,6 +14,7 @@ import static com.nali.Nali.error;
 @SideOnly(Side.CLIENT)
 public class FFmpeg
 {
+	//ffmpeg -ss 00:00:10 -i '' -t 10 -f s16le pipe:1
 	public static byte[] getSounds(String path_string)
 	{
 		return executeByteArray(ClientLoader.get
@@ -24,16 +25,16 @@ public class FFmpeg
 		));
 	}
 
-	public static byte[] getTextures(String path_string)
-	{
-		return executeByteArray(ClientLoader.get
-		(
-			"ffmpeg",
-			"-i", path_string,
-			"-f", "rawvideo",
-			"-pix_fmt", "rgba", "-"
-		));
-	}
+//	public static byte[] getTextures(String path_string)
+//	{
+//		return executeByteArray(ClientLoader.get
+//		(
+//			"ffmpeg",
+//			"-i", path_string,
+//			"-f", "rawvideo",
+//			"-pix_fmt", "rgba", "-"
+//		));
+//	}
 
 	public static int getSampleRate(String path_string)
 	{

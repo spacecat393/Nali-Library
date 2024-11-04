@@ -1,9 +1,11 @@
 package com.nali.system;
 
 import com.nali.Nali;
+import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
 import com.nali.gui.page.PageConfig;
+import com.nali.gui.page.PageLoad;
 import com.nali.render.RenderO;
 import com.nali.render.RenderS;
 import com.nali.system.file.FileDataReader;
@@ -13,6 +15,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -21,10 +24,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +41,7 @@ public class ClientLoader
 {
 //	public static List<char[]> TEXT_CHAR_ARRAY_LIST = new ArrayList();
 
+	public static int BGM_SOURCE;
 	public static List<Integer> TEXTURE_INTEGER_LIST = new ArrayList();
 	public static List<Integer> SOUND_INTEGER_LIST = new ArrayList();
 	public static List<MemoG> G_LIST = new ArrayList();//graphic
@@ -56,15 +60,11 @@ public class ClientLoader
 		{
 			try
 			{
-				Method method = data_class.getMethod("run");
-				if (method != null)
-				{
-					method.invoke(null);
-				}
+				data_class.getMethod("run").invoke(null);
 			}
 			catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
 			{
-				error(e);
+//				error(e);
 			}
 		}
 
@@ -74,7 +74,7 @@ public class ClientLoader
 
 		if (file_array != null)
 		{
-			if (Nali.VAO)
+			if (NaliConfig.VAO)
 			{
 				NaliGL.init();
 			}
@@ -137,7 +137,7 @@ public class ClientLoader
 
 			for (File file : file_array)
 			{
-				File shader_file = new File(file + "/shader.dat");
+				File shader_file = new File(file, "shader.dat");
 				if (shader_file.isFile())
 				{
 					String name = file.getName();
@@ -147,7 +147,7 @@ public class ClientLoader
 					shader_string_2d_array_map.put(name, shader_string_2d_array);
 				}
 
-				File model_file = new File(file + "/model.dat");
+				File model_file = new File(file, "model.dat");
 				if (model_file.isFile())
 				{
 					String name_string = file.getName();
@@ -211,11 +211,11 @@ public class ClientLoader
 			//s0-config
 			File tmp_file = new File("nali/nali/tmp");
 			tmp_file.mkdirs();
-			File config_file = new File("nali/nali/tmp/config.bin");
+			Path config_path = new File("nali/nali/tmp/config.bin").toPath();
 
 			try
 			{
-				byte[] byte_array = Files.readAllBytes(config_file.toPath());
+				NaliConfig.set(Files.readAllBytes(config_path));
 			}
 			catch (Exception e)
 			{
@@ -223,7 +223,6 @@ public class ClientLoader
 				pageconfig.take();
 				pageconfig.init();
 
-				byte[] config_byte_array = null;
 				boolean loop = true;
 				int tmp_width = -1, tmp_height = -1;
 				while (loop)
@@ -302,7 +301,7 @@ public class ClientLoader
 
 				try
 				{
-					Files.write(config_file.toPath(), config_byte_array);
+					Files.write(config_path, NaliConfig.getByteArray());
 				}
 				catch (IOException ex)
 				{
@@ -311,14 +310,89 @@ public class ClientLoader
 			}
 			//e0-config
 
+			//s0-sound
+			NaliAL.load();
+			NaliAL.init();
+//		ALCdevice alcdevice = NaliAL.alcOpenDevice(null);
+//		if (alcdevice == null)
+//		{
+//			error("alcOpenDevice");
+//		}
+//		ALCcontext alccontext = NaliAL.alcCreateContext(alcdevice, null);
+//		if (alccontext == null)
+//		{
+//			error("alcCreateContext");
+//		}
+//		NaliAL.alcMakeContextCurrent(alccontext);
+			String bgm = "nali/nali/tmp/" + NaliConfig.BGM_ID;
+			if ((NaliConfig.STATE & 4) == 4 && !new File(bgm).isFile())
+			{
+				try
+				{
+					Process process = ClientLoader.get("yt-dlp", "-f", "bestaudio", "-o", bgm, "https://www.youtube.com/watch?v=" + NaliConfig.BGM_ID).redirectErrorStream(true).start();
+					process.waitFor();
+					process.destroy();
+				}
+				catch (IOException | InterruptedException e)
+				{
+					error(e);
+				}
+			}
+			if ((NaliConfig.STATE & 8) == 8)
+			{
+				int sound_buffer = MemoN.gen(bgm);
+				BGM_SOURCE = NaliAL.alGenSources();
+				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, sound_buffer);
+				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_LOOPING, AL10.AL_TRUE);
+				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.AL_GAIN);
+				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.AL_PITCH);
+				NaliAL.alSourcePlay(BGM_SOURCE);
+			}
+			//e0-sound
+
+			//s0-load
+			PageLoad pageload = new PageLoad();
+			pageload.take();
+			pageload.init();
+//			int tmp_width = -1, tmp_height = -1;
+//			while (true)
+//			{
+			int width = Display.getWidth();
+			int height = Display.getHeight();
+//				if (tmp_width != width || tmp_height != height)
+//				{
+			GL11.glViewport(0, 0, width, height);
+//					tmp_width = width;
+//					tmp_height = height;
+			pageload.gen(width, height);
+//				}
+//				if (false)
+//				{
+//					break;
+//				}
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			pageload.draw();
+			Display.update();
+//			}
+			pageload.free();
+			pageload.clear();
+			//e0-load
+
 //			try
 //			{
-//				Thread.sleep(100000);
+//				Thread.sleep(5000);
 //			}
 //			catch (InterruptedException e)
 //			{
 //				error(e);
 //			}
+
+//			//s0-sound
+//			if ((NaliConfig.STATE & 8) == 8)
+//			{
+//				NaliAL.alSourceStop(source);
+//			}
+//			//e0-sound
 
 			if (second_file_array.length != 0)
 			{
@@ -349,7 +423,7 @@ public class ClientLoader
 
 		for (File file : file_array)
 		{
-			File[] texture_file_array = new File(file + "/texture").listFiles();
+			File[] texture_file_array = new File(file, "texture").listFiles();
 			if (texture_file_array != null)
 			{
 				try
@@ -363,7 +437,7 @@ public class ClientLoader
 					}
 
 					GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, RenderO.INTBUFFER);
-					String[][] texture_string_2d_array = FileDataReader.getMixXStringArray(new File(file + "/texture.dat").toPath());
+					String[][] texture_string_2d_array = FileDataReader.getMixXStringArray(new File(file, "texture.dat").toPath());
 					for (File texture_file : texture_file_array)
 					{
 						String name = texture_file.getName();
@@ -381,7 +455,8 @@ public class ClientLoader
 
 		for (File file : file_array)
 		{
-			File[] vert_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/vert/o").listFiles();
+//			File[] vert_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/vert/o").listFiles();
+			File[] vert_file_array = new File(file, "shader/vert/o").listFiles();
 			if (vert_file_array != null)
 			{
 				int step = memohvo_list.size();
@@ -403,7 +478,8 @@ public class ClientLoader
 
 		for (File file : file_array)
 		{
-			File[] frag_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/frag").listFiles();
+//			File[] frag_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/frag").listFiles();
+			File[] frag_file_array = new File(file, "shader/frag").listFiles();
 			if (frag_file_array != null)
 			{
 				int step = memohfo_list.size();
@@ -473,7 +549,7 @@ public class ClientLoader
 			int gl_vertex_array_binding;
 
 			int gl_element_array_buffer_binding;
-			if (Nali.VAO)
+			if (NaliConfig.VAO)
 			{
 				gl_vertex_array_binding = NaliGL.glVertexArrayBinding();
 			}
@@ -490,7 +566,7 @@ public class ClientLoader
 				G_LIST.add(new MemoG(/*index_int_array_list, */memoa0_array_list.get(l), shader_string_2d_array_map.get(string_array[2]), attriblocation_string_2d_array_list.get(l), shader_id_integer_list.get(l++), string_array, path_string));
 			}
 
-			if (Nali.VAO)
+			if (NaliConfig.VAO)
 			{
 				NaliGL.glBindVertexArray(gl_vertex_array_binding);
 			}
@@ -504,7 +580,7 @@ public class ClientLoader
 		i = 0;
 		for (File file : file_array)
 		{
-			File model_file = new File(file + "/frame.dat");
+			File model_file = new File(file, "frame.dat");
 			if (model_file.isFile())
 			{
 				String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
@@ -550,7 +626,7 @@ public class ClientLoader
 
 			for (File file : file_array)
 			{
-				File[] sound_file_array = new File(file + "/sound").listFiles();
+				File[] sound_file_array = new File(file, "sound").listFiles();
 				if (sound_file_array != null)
 				{
 					try
@@ -567,7 +643,7 @@ public class ClientLoader
 						{
 							String name = sound_file.getName();
 							int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
-							SOUND_INTEGER_LIST.set(index + step, MemoN.gen(sound_file));
+							SOUND_INTEGER_LIST.set(index + step, MemoN.gen(sound_file.getPath()));
 						}
 					}
 					catch (IllegalAccessException | NoSuchFieldException e)

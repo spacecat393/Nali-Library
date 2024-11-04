@@ -10,7 +10,7 @@ public class NaliGL
 
 	static
 	{
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			String os_name = System.getProperty("os.name").toLowerCase();
 			String type = "";
@@ -38,7 +38,7 @@ public class NaliGL
 			}
 			else
 			{
-				warn("SKIP_POINTER");
+				warn("SKIP_GL_POINTER");
 //			STATE |= 1;
 			}
 		}

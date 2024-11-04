@@ -38,7 +38,7 @@ public class ServerLoader
 		int step = 0;
 		for (File file : file_array)
 		{
-			File[] sound_file_array = new File(file + "/sound").listFiles();
+			File[] sound_file_array = new File(file, "sound").listFiles();
 			if (sound_file_array != null)
 			{
 				try

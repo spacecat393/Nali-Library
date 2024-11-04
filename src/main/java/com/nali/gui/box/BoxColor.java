@@ -1,25 +1,33 @@
 package com.nali.gui.box;
 
-import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-public class BoxColor
+@SideOnly(Side.CLIENT)
+public class BoxColor extends BoxV
 {
 	public int array_buffer = -1;
 
-	public void gen(int sx, int sy, int ex, int ey, int width, int height)
+	public void gen(/*int sx, int sy, int ex, int ey, int width, int height*/)
 	{
 		if (this.array_buffer != -1)
 		{
 			OpenGlHelper.glDeleteBuffers(this.array_buffer);
 		}
 
-		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(NaliData.createQuad(sx, sy, ex, ey, width, height)));
+//		this.x0 = sx;
+//		this.y0 = sy;
+//		this.x1 = ex;
+//		this.y1 = ey;
+//		this.v_width = width;
+//		this.v_height = height;
+		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(this.createQuad()));
 	}
 
 	public void draw(MemoS rs, float[] v_float_array, float[] c_float_array)

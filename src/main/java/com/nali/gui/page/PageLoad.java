@@ -1,12 +1,14 @@
 package com.nali.gui.page;
 
-import com.nali.gui.box.BoxText09;
-import com.nali.gui.box.BoxTextAZ;
+import com.nali.gui.box.text.BoxText09;
+import com.nali.gui.box.text.BoxTextAZ;
 import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -20,6 +22,7 @@ import java.time.ZoneId;
 
 import static com.nali.Nali.error;
 
+@SideOnly(Side.CLIENT)
 public class PageLoad
 {
 	public BoxText09 config_date_boxtext09;
@@ -57,7 +60,7 @@ public class PageLoad
 			Instant instant = basicfileattributes.lastModifiedTime().toInstant();
 			LocalDateTime localdatetime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
-			this.config_date_boxtext09 = new BoxText09(new StringBuilder().append(localdatetime.getMonthValue()).append(localdatetime.getDayOfMonth()).append(localdatetime.getYear()).toString().toCharArray());
+			this.config_date_boxtext09 = new BoxText09(("" + localdatetime.getMonthValue() + localdatetime.getDayOfMonth() + localdatetime.getYear()).toCharArray());
 		}
 		catch (Exception ex)
 		{

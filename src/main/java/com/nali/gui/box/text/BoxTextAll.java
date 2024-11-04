@@ -1,14 +1,17 @@
-package com.nali.gui.box;
+package com.nali.gui.box.text;
 
-import com.nali.list.data.NaliData;
+import com.nali.gui.box.BoxVT;
 import com.nali.render.RenderO;
 import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-public class BoxTextAll
+@SideOnly(Side.CLIENT)
+public class BoxTextAll extends BoxVT
 {
 	public char[] char_array;
 	public int
@@ -44,6 +47,9 @@ public class BoxTextAll
 			x1 -= w;
 		}
 
+		this.v_width = width;
+		this.v_height = height;
+
 		for (int i = 0; i < this.char_array.length; ++i)
 		{
 			char c = this.char_array[i];
@@ -54,35 +60,101 @@ public class BoxTextAll
 			}
 			else if (c == '-')
 			{
-				float[] quad_float_array = NaliData.createQuad(x, y + size / 1.625F, x + size, y + size / 2.5F, width, height, 0, 1, 1, 2, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
-				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+				this.x0 = x;
+				this.y0 = y + size / 1.625F;
+				this.x1 = x + size;
+				this.y1 = y + size / 2.5F;
+
+				this.u0 = 0;
+				this.v0 = 1;
+				this.u1 = 1;
+				this.v1 = 2;
+
+				System.arraycopy(this.createQuad(), 0, float_array, l++ * 24, 24);
 				x += space + size;
 			}
 			else if (c == '.')
 			{
-				float[] quad_float_array = NaliData.createQuad(x + size / 1.625F, y, x + size / 2.5F, y + size / 5.0F, width, height, 0, 1, 1, 2, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
-				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+				this.x0 = x + size / 1.625F;
+				this.y0 = y;
+				this.x1 = x + size / 2.5F;
+				this.y1 = y + size / 5.0F;
+
+				this.u0 = 0;
+				this.v0 = 1;
+				this.u1 = 1;
+				this.v1 = 2;
+
+				System.arraycopy(this.createQuad(), 0, float_array, l++ * 24, 24);
 				x += space + size;
 			}
 			else if (/*c > 47 && */c < 58)
 			{
 				short s = (short)((c - 48) * 4 + 26 * 5);
-				float[] quad_float_array = NaliData.createQuad(x, y, x + x0 + size, y + size, width, height, s, 0, s + 4, 5, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
-				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+
+				this.x0 = x;
+				this.y0 = y;
+				this.x1 = x + x0 + size;
+				this.y1 = y + size;
+
+				this.u0 = s;
+				this.v0 = 0;
+				this.u1 = s + 4;
+				this.v1 = 5;
+
+				System.arraycopy(this.createQuad(), 0, float_array, l++ * 24, 24);
 				x += x1;
 			}
 			else if (/*c > 64 && */c < 91)
 			{
 				short s = (short)((c - 65) * 5);
-				float[] quad_float_array = NaliData.createQuad(x, y, x + size, y + size, width, height, s, 0, s + 5, 5, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
-				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+
+				this.x0 = x;
+				this.y0 = y;
+				this.x1 = x + size;
+				this.y1 = y + size;
+
+				this.u0 = s;
+				this.v0 = 0;
+				this.u1 = s + 5;
+				this.v1 = 5;
+
+				System.arraycopy(this.createQuad(), 0, float_array, l++ * 24, 24);
 				x += space + size;
 			}
 			else if (c == '_')
 			{
-				float[] quad_float_array = NaliData.createQuad(x, y, x + size, y + size / 5.0F, width, height, 0, 1, 1, 2, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
-				System.arraycopy(quad_float_array, 0, float_array, l++ * 24, 24);
+				this.x0 = x;
+				this.y0 = y;
+				this.x1 = x + size;
+				this.y1 = y + size / 5.0F;
+
+				this.u0 = 0;
+				this.v0 = 1;
+				this.u1 = 1;
+				this.v1 = 2;
+
+				System.arraycopy(this.createQuad(), 0, float_array, l++ * 24, 24);
 				x += space + size;
+			}
+			else if (c > 96/* && c < 123*/)
+			{
+				float new_size = size / 1.5F;
+				float new_space = size / 1.5F;
+				short s = (short)((c - 97) * 5);
+
+				this.x0 = x;
+				this.y0 = y;
+				this.x1 = x + new_size;
+				this.y1 = y + new_size;
+
+				this.u0 = s;
+				this.v0 = 0;
+				this.u1 = s + 5;
+				this.v1 = 5;
+
+				System.arraycopy(this.createQuad(), 0, float_array, l++ * 24, 24);
+				x += new_space + new_size;
 			}
 		}
 		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(float_array, this.length * 24));

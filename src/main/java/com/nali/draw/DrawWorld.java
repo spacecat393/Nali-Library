@@ -1,6 +1,7 @@
 package com.nali.draw;
 
 import com.nali.Nali;
+import com.nali.NaliConfig;
 import com.nali.NaliGL;
 import com.nali.render.RenderO;
 import com.nali.render.RenderS;
@@ -324,7 +325,7 @@ public class DrawWorld
 //				GL30.glBindBufferBase(GL30.GL_TRANSFORM_FEEDBACK_BUFFER, 0, transformFeedbackBufferID);
 //				GL30.glBeginTransformFeedback(GL11.GL_TRIANGLES);
 //				GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
-				if (Nali.VAO)
+				if (NaliConfig.VAO)
 				{
 					NaliGL.glDrawElementsTUi0(rg.index_length);
 				}
@@ -343,7 +344,7 @@ public class DrawWorld
 				//glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 			}
 
-			if (!Nali.VAO)
+			if (!NaliConfig.VAO)
 			{
 				RenderO.disableBuffer(rs);
 			}

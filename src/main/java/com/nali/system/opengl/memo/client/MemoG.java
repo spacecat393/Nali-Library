@@ -1,6 +1,6 @@
 package com.nali.system.opengl.memo.client;
 
-import com.nali.Nali;
+import com.nali.NaliConfig;
 import com.nali.NaliGL;
 import com.nali.system.file.FileDataReader;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -38,7 +38,7 @@ public class MemoG
 //		this.vao = GL30.glGenVertexArrays();
 //		this.vao = GL45.glCreateVertexArrays();
 
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			this.vao = NaliGL.glGenVertexArrays();
 			NaliGL.glBindVertexArray(this.vao);

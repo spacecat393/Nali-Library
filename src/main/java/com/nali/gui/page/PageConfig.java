@@ -2,17 +2,19 @@ package com.nali.gui.page;
 
 import com.nali.NaliConfig;
 import com.nali.gui.box.BoxColor;
-import com.nali.gui.box.BoxTextAll;
+import com.nali.gui.box.text.BoxTextAll;
 import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
+@SideOnly(Side.CLIENT)
 public class PageConfig
 {
 	public byte state;
@@ -24,6 +26,7 @@ public class PageConfig
 	public float[] c_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 
 	public float scroll;
+//	public BoxTextAll input_boxtextall;
 //		scroll,
 //		max_scroll;
 
@@ -31,22 +34,22 @@ public class PageConfig
 	public byte select = 5;
 
 //	public MemoS rs;
-	public byte gl_state;
+//	public byte gl_state;//GL_BLEND
 	public int
 //		v,
 		gl_current_program,
 		gl_texture_binding_2d_0,
 		gl_texture_min_filter_0,
 		gl_texture_mag_filter_0,
-		gl_array_buffer_binding,
+		gl_array_buffer_binding;
 
-		gl_blend_equation_rgb,
-		gl_blend_equation_alpha,
-
-		gl_blend_src_rgb,
-		gl_blend_src_alpha,
-		gl_blend_dst_rgb,
-		gl_blend_dst_alpha;
+//		gl_blend_equation_rgb,
+//		gl_blend_equation_alpha,
+//
+//		gl_blend_src_rgb,
+//		gl_blend_src_alpha,
+//		gl_blend_dst_rgb,
+//		gl_blend_dst_alpha;
 
 	public void take()
 	{
@@ -58,25 +61,25 @@ public class PageConfig
 		this.gl_texture_mag_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
 		this.gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
-		this.gl_state |= (GL11.glIsEnabled(GL11.GL_BLEND) ? 1 : 0);
 
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, RenderO.INTBUFFER);
-		this.gl_blend_equation_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, RenderO.INTBUFFER);
-		this.gl_blend_equation_alpha = RenderO.INTBUFFER.get(0);
-
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, RenderO.INTBUFFER);
-		this.gl_blend_src_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, RenderO.INTBUFFER);
-		this.gl_blend_src_alpha = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, RenderO.INTBUFFER);
-		this.gl_blend_dst_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, RenderO.INTBUFFER);
-		this.gl_blend_dst_alpha = RenderO.INTBUFFER.get(0);
-
-		GL11.glEnable(GL11.GL_BLEND);
-		GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
-		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+//		this.gl_state |= (GL11.glIsEnabled(GL11.GL_BLEND) ? 1 : 0);
+//		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, RenderO.INTBUFFER);
+//		this.gl_blend_equation_rgb = RenderO.INTBUFFER.get(0);
+//		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, RenderO.INTBUFFER);
+//		this.gl_blend_equation_alpha = RenderO.INTBUFFER.get(0);
+//
+//		GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, RenderO.INTBUFFER);
+//		this.gl_blend_src_rgb = RenderO.INTBUFFER.get(0);
+//		GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, RenderO.INTBUFFER);
+//		this.gl_blend_src_alpha = RenderO.INTBUFFER.get(0);
+//		GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, RenderO.INTBUFFER);
+//		this.gl_blend_dst_rgb = RenderO.INTBUFFER.get(0);
+//		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, RenderO.INTBUFFER);
+//		this.gl_blend_dst_alpha = RenderO.INTBUFFER.get(0);
+//
+//		GL11.glEnable(GL11.GL_BLEND);
+//		GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
+//		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 	}
 
 	public void init()
@@ -109,20 +112,23 @@ public class PageConfig
 //			new BoxTextAll("READ SOUND".toCharArray()),
 
 			new BoxTextAll("OPENAL".toCharArray()),
-			new BoxTextAll(new StringBuilder("AL_GAIN ").append(NaliConfig.AL_GAIN).toString().toCharArray()),
-			new BoxTextAll(new StringBuilder("AL_PITCH ").append(NaliConfig.AL_PITCH).toString().toCharArray()),
+			new BoxTextAll(("AL_GAIN " + NaliConfig.AL_GAIN).toCharArray()),
+			new BoxTextAll(("AL_PITCH " + NaliConfig.AL_PITCH).toCharArray()),
 
 			new BoxTextAll("OPENGL".toCharArray()),
 			new BoxTextAll(((NaliConfig.STATE & 1) == 1 ? "PRE_SHADER YES" : "PRE_SHADER NO").toCharArray()),
 			new BoxTextAll(((NaliConfig.STATE & 2) == 2 ? "USE_SWITCH YES" : "USE_SWITCH NO").toCharArray()),
+			new BoxTextAll("EXTRA".toCharArray()),
+			new BoxTextAll(("BGM_ID " + NaliConfig.BGM_ID).toCharArray()),
 //			new BoxTextAll(new StringBuilder("GLSL ").append(NaliConfig.GLSL).toString().toCharArray()),
-			new BoxTextAll(new StringBuilder("ATTRIBUTE ").append(NaliConfig.ATTRIBUTE.toUpperCase()).toString().toCharArray())
+//			new BoxTextAll(new StringBuilder("ATTRIBUTE ").append(NaliConfig.ATTRIBUTE.toUpperCase()).toString().toCharArray())
 		};
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[3 / 8] |= 1 << 3 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
 		this.group_byte_array[9 / 8] |= 1 << 9 % 8;
+		this.group_byte_array[12 / 8] |= 1 << 12 % 8;
 //		new BoxTextAll(this.type_string.toCharArray())
 	}
 
@@ -206,14 +212,13 @@ public class PageConfig
 		}
 
 		y -= wh40 * this.select;
-		this.boxcolor.gen
-		(
-			wh20,
-			y,
-			x - wh10,
-			y + wh20,
-			width, height
-		);
+		this.boxcolor.x0 = wh20;
+		this.boxcolor.y0 = y;
+		this.boxcolor.x1 = x - wh10;
+		this.boxcolor.y1 = y + wh20;
+		this.boxcolor.v_width = width;
+		this.boxcolor.v_height = height;
+		this.boxcolor.gen();
 	}
 
 	public void draw(int width, int height, int wh20)
@@ -297,16 +302,17 @@ public class PageConfig
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, this.gl_texture_min_filter_0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, this.gl_texture_mag_filter_0);
 		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, this.gl_array_buffer_binding);
-		if ((this.gl_state & 1) == 1)
-		{
-			GL11.glEnable(GL11.GL_BLEND);
-		}
-		else
-		{
-			GL11.glDisable(GL11.GL_BLEND);
-		}
-		GL20.glBlendEquationSeparate(this.gl_blend_equation_rgb, this.gl_blend_equation_alpha);
-		GL14.glBlendFuncSeparate(this.gl_blend_src_rgb, this.gl_blend_dst_rgb, this.gl_blend_src_alpha, this.gl_blend_dst_alpha);
+
+//		if ((this.gl_state & 1) == 1)
+//		{
+//			GL11.glEnable(GL11.GL_BLEND);
+//		}
+//		else
+//		{
+//			GL11.glDisable(GL11.GL_BLEND);
+//		}
+//		GL20.glBlendEquationSeparate(this.gl_blend_equation_rgb, this.gl_blend_equation_alpha);
+//		GL14.glBlendFuncSeparate(this.gl_blend_src_rgb, this.gl_blend_dst_rgb, this.gl_blend_src_alpha, this.gl_blend_dst_alpha);
 	}
 
 	public void clear()
@@ -377,14 +383,14 @@ public class PageConfig
 			}
 			case 13:
 			{
-				if (NaliConfig.ATTRIBUTE != "in")
-				{
-					NaliConfig.ATTRIBUTE = "in";
-				}
-				else
-				{
-					NaliConfig.ATTRIBUTE = "attribute";
-				}
+//				if (NaliConfig.ATTRIBUTE != "in")
+//				{
+//					NaliConfig.ATTRIBUTE = "in";
+//				}
+//				else
+//				{
+//					NaliConfig.ATTRIBUTE = "attribute";
+//				}
 				break;
 			}
 		}

@@ -1,6 +1,6 @@
 package com.nali.system.opengl.memo.client;
 
-import com.nali.Nali;
+import com.nali.NaliConfig;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -114,7 +114,7 @@ public class MemoA1
 
 			memoa1_array[i] = new MemoA1((float[])memoa0.o, memoa0.size/*, GL11.GL_FLOAT*//*memoa0.type*/);
 
-			if (Nali.VAO)
+			if (NaliConfig.VAO)
 			{
 				GL20.glVertexAttribPointer(i, memoa0.size, GL11.GL_FLOAT, false, 0, 0);
 				GL20.glEnableVertexAttribArray(i);
@@ -207,7 +207,7 @@ public class MemoA1
 
 		memoa1_array[j_index] = new MemoA1(temp_joint_float_array, limit_max_joint/*, GL11.GL_FLOAT*/);
 
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			GL20.glVertexAttribPointer(j_index, limit_max_joint, GL11.GL_FLOAT, false, 0, 0);
 			GL20.glEnableVertexAttribArray(j_index);
@@ -218,7 +218,7 @@ public class MemoA1
 
 		memoa1_array[w_index] = new MemoA1(temp_weight_float_array, limit_max_joint/*, GL11.GL_FLOAT*//*w_memoa0.type*/);
 
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			GL20.glVertexAttribPointer(w_index, limit_max_joint, GL11.GL_FLOAT, false, 0, 0);
 			GL20.glEnableVertexAttribArray(w_index);

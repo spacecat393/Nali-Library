@@ -1,6 +1,7 @@
 package com.nali.mixin;
 
-import com.nali.Nali;
+import com.nali.NaliAL;
+import com.nali.NaliConfig;
 import com.nali.sound.Sound;
 import com.nali.system.ClientLoader;
 import com.nali.system.Reflect;
@@ -59,7 +60,7 @@ public abstract class MixinMinecraft
 	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/OpenGlHelper;initializeTextures()V", shift = At.Shift.AFTER))
 	private void nali_debugLayer_init(CallbackInfo callbackinfo)
 	{
-		if (Nali.GL_DEBUG)
+		if (NaliConfig.GL_DEBUG)
 		{
 			GL11.glEnable(KHRDebug.GL_DEBUG_OUTPUT);
 			GL11.glEnable(KHRDebug.GL_DEBUG_OUTPUT_SYNCHRONOUS);
@@ -82,6 +83,12 @@ public abstract class MixinMinecraft
 	{
 		this.setRender();
 		ClientLoader.loadInit();
+		//s0-sound
+		if ((NaliConfig.STATE & 8) == 8)
+		{
+			NaliAL.alSourceStop(ClientLoader.BGM_SOURCE);
+		}
+		//e0-sound
 	}
 
 	private void setRender()

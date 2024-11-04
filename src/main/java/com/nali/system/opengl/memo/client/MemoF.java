@@ -26,7 +26,7 @@ public class MemoF
 		String model_folder_path = folder_path + "/model/" + model_string_array[0];
 		String animation_string = "/frame/";
 
-		if (new File(model_folder_path + animation_string).isDirectory())
+		if (new File(model_folder_path, animation_string).isDirectory())
 		{
 			this.transforms_float_array = FileDataReader.getFloatArray(model_folder_path + animation_string + "transform.bin");
 

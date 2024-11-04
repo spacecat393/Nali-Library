@@ -1,5 +1,7 @@
 package com.nali;
 
+import com.nali.system.bytes.ByteReader;
+import com.nali.system.bytes.ByteWriter;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -7,21 +9,22 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //@Config(modid = ID)
 public class NaliConfig
 {
+	public final static boolean GL_DEBUG = true;
+	public final static boolean VAO = false;
+	public final static String ATTRIBUTE = "attribute";
+
 	//0 STATE
 	//1-4 AL_GAIN
 	//5-8 AL_PITCH
+	//9-12 BGM_ID_COUNT
+	//13-? BGM_ID
 
-	//9-12 GL_SHADING_LANGUAGE_VERSION_COUNT
-	//13-? GL_SHADING_LANGUAGE_VERSION
-
-	//?-?+4 ATTRIBUTE_COUNT
-	//?-? ATTRIBUTE
-
-	public static String GLSL = "100";
-	public static String ATTRIBUTE = "attribute";
+//	public static String GLSL = "100";
+//	public static String ATTRIBUTE = "attribute";
 	public static byte STATE = 1+4+8;//PRE_SHADER USE_SWITCH USE_YT-DLP USE_FFMPEG
 	public static float AL_GAIN = 1.0F;
 	public static float AL_PITCH = 1.0F;
+	public static String BGM_ID = "eeXVnP0zuMo";
 //	public static byte[] CONFIG_BYTE_ARRAY;
 
 //	@Config.Name("Shader")
@@ -78,4 +81,25 @@ public class NaliConfig
 //			}
 //		}
 //	}
+	public static byte[] getByteArray()
+	{
+		byte[] bgm_id_byte_array = BGM_ID.getBytes();
+		int bgm_id_length = bgm_id_byte_array.length;
+		byte[] byte_array = new byte[1+4+4+4 + bgm_id_length];
+		byte_array[0] = STATE;
+		ByteWriter.set(byte_array, AL_GAIN, 1);
+		ByteWriter.set(byte_array, AL_PITCH, 1+4);
+		ByteWriter.set(byte_array, bgm_id_length, 1+4+4);
+		System.arraycopy(bgm_id_byte_array, 0, byte_array, 1+4+4+4, bgm_id_length);
+		return byte_array;
+	}
+
+	public static void set(byte[] byte_array)
+	{
+		STATE = byte_array[0];
+		AL_GAIN = ByteReader.getFloat(byte_array, 1);
+		AL_PITCH = ByteReader.getFloat(byte_array, 1+4);
+		int bgm_id_length = ByteReader.getInt(byte_array, 1+4+4);
+		BGM_ID = new String(byte_array, 1+4+4+4, bgm_id_length);
+	}
 }

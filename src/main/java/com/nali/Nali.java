@@ -17,9 +17,6 @@ public class Nali
 {
 	public final static String ID = "nali";
 
-	public final static boolean GL_DEBUG = true;
-	public final static boolean VAO = false;
-
 //	@Instance
 //	public static Nali I;
 

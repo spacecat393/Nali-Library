@@ -1,6 +1,6 @@
 package com.nali.render;
 
-import com.nali.Nali;
+import com.nali.NaliConfig;
 import com.nali.NaliGL;
 import com.nali.da.client.IClientDaO;
 import com.nali.draw.DrawWorld;
@@ -379,7 +379,7 @@ public class RenderO
 
 		this.setUniform(rg, rs, index);
 
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			NaliGL.glDrawElementsTUi0(rg.index_length);
 		}
@@ -390,7 +390,7 @@ public class RenderO
 //		DRAW_CONSUMER.accept(openglobjectmemo);
 
 //		OpenGlHelper.glPopAttrib();
-		if (!Nali.VAO)
+		if (!NaliConfig.VAO)
 		{
 			disableBuffer(rs);
 		}
@@ -453,7 +453,7 @@ public class RenderO
 
 //		GL11.glGetInteger(GL30.GL_VERTEX_ARRAY_BINDING, OPENGL_INTBUFFER);
 //		R_GL_VERTEX_ARRAY_BINDING = OPENGL_INTBUFFER.get(0);
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			R_GL_VERTEX_ARRAY_BINDING = NaliGL.glVertexArrayBinding();
 		}
@@ -601,7 +601,7 @@ public class RenderO
 
 		OpenGlHelper.glUseProgram(R_GL_CURRENT_PROGRAM);
 
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			NaliGL.glBindVertexArray(R_GL_VERTEX_ARRAY_BINDING);
 		}
@@ -672,14 +672,14 @@ public class RenderO
 	{
 		int program = rs.program;
 
-		if (Nali.VAO)
+		if (NaliConfig.VAO)
 		{
 			NaliGL.glBindVertexArray(rg.vao);
 		}
 
 		OpenGlHelper.glUseProgram(program);
 
-		if (!Nali.VAO)
+		if (!NaliConfig.VAO)
 		{
 			OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
 			int[] int_array = rs.attriblocation_int_array;

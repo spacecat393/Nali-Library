@@ -20,7 +20,8 @@ public class MemoHVs extends MemoH
 
 	public MemoHVs(String[] shader_string_array)
 	{
-		String folder_path = ID + "/" + shader_string_array[0] + "/shader/" + NaliConfig.GLSL + "/";
+//		String attribute = (NaliConfig.STATE & 16) == 0 ? "attribute" : "in";
+		String folder_path = ID + "/" + shader_string_array[0] + "/shader/"/* + NaliConfig.GLSL + "/"*/;
 
 //		super(shader_string_array);
 //	}

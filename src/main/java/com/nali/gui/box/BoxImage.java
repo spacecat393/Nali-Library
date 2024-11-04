@@ -1,25 +1,27 @@
 package com.nali.gui.box;
 
-import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-public class BoxImage
+@SideOnly(Side.CLIENT)
+public class BoxImage extends BoxVT
 {
 	public int array_buffer = -1;
 
-	public void gen(int v_sx, int v_sy, int v_ex, int v_ey, int v_width, int v_height, int t_sx, int t_sy, int t_ex, int t_ey, int t_width, int t_height)
+	public void gen(/*int v_sx, int v_sy, int v_ex, int v_ey, int v_width, int v_height, int t_sx, int t_sy, int t_ex, int t_ey, int t_width, int t_height*/)
 	{
 		if (this.array_buffer != -1)
 		{
 			OpenGlHelper.glDeleteBuffers(this.array_buffer);
 		}
 
-		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(NaliData.createQuad(v_sx, v_sy, v_ex, v_ey, v_width, v_height, t_sx, t_sy, t_ex, t_ey, t_width, t_height)));
+		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(this.createQuad()));
 	}
 
 	public void draw(MemoS rs/*, int texture*/, float[] v_float_array, float[] c_float_array)

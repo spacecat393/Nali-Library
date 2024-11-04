@@ -1,14 +1,17 @@
-package com.nali.gui.box;
+package com.nali.gui.box.text;
 
-import com.nali.list.data.NaliData;
+import com.nali.gui.box.BoxVT;
 import com.nali.render.RenderO;
 import com.nali.system.opengl.memo.client.MemoA1;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-public class BoxText09
+@SideOnly(Side.CLIENT)
+public class BoxText09 extends BoxVT
 {
 	public char[] char_array;
 	public int array_buffer = -1;
@@ -46,11 +49,24 @@ public class BoxText09
 			x1 -= w;
 		}
 
+		this.v_width = width;
+		this.v_height = height;
+
 		for (int i = 0; i < length; ++i)
 		{
 			char c = this.char_array[i];
-			float[] quad_float_array = NaliData.createQuad(x, y, x + x0 + size, y + size, width, height, c + 26 * 5, 0, c + 26 * 5 + 4, 5, NaliData.FONT_WIDTH, NaliData.FONT_HEIGHT);
-			System.arraycopy(quad_float_array, 0, float_array, i * 24, 24);
+
+			this.x0 = x;
+			this.y0 = y;
+			this.x1 = x + x0 + size;
+			this.y1 = y + size;
+
+			this.u0 = c + 26 * 5;
+//			this.v0 = 0;
+			this.u1 = c + 26 * 5 + 4;
+//			this.v1 = 5;
+
+			System.arraycopy(this.createQuad(), 0, float_array, i * 24, 24);
 			x += x1;
 		}
 

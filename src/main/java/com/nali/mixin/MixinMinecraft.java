@@ -2,15 +2,14 @@ package com.nali.mixin;
 
 import com.nali.NaliAL;
 import com.nali.NaliConfig;
+import com.nali.render.RenderO;
 import com.nali.sound.Sound;
 import com.nali.system.ClientLoader;
 import com.nali.system.Reflect;
 import com.nali.system.Timing;
 import net.minecraft.client.Minecraft;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL43;
-import org.lwjgl.opengl.KHRDebug;
-import org.lwjgl.opengl.KHRDebugCallback;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -20,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.nali.Nali.error;
 import static com.nali.Nali.warn;
 import static com.nali.key.Key.KEY_ARRAY;
 import static com.nali.sound.Sound.SOUND_SET;
@@ -81,14 +81,69 @@ public abstract class MixinMinecraft
 	@Inject(method = "init", at = @At(value = "TAIL"))
 	private void nali_init(CallbackInfo callbackinfo)
 	{
+		//use this thread
+		try
+		{
+			SharedDrawable shareddrawable = new SharedDrawable(Display.getDrawable());
+			Display.getDrawable().releaseContext();
+			shareddrawable.makeCurrent();
+		}
+		catch (LWJGLException e)
+		{
+			error(e);
+		}
+		ClientLoader.render();
+
 		this.setRender();
-		ClientLoader.loadInit();
+
+//		ClientLoader.loadInit();
+		if ((NaliConfig.STATE & 1) == 1)
+		{
+			for (Class render_class : Reflect.getClasses("com.nali.list.render.s"))
+			{
+				try
+				{
+					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAS").get(null), render_class.getField("IBOTHDASN").get(null))).draw();
+				}
+				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
+				{
+					error(e);
+				}
+			}
+
+			for (Class render_class : Reflect.getClasses("com.nali.list.render.o"))
+			{
+				try
+				{
+					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAO").get(null))).draw();
+				}
+				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
+				{
+					error(e);
+				}
+			}
+		}
+
 		//s0-sound
-		if ((NaliConfig.STATE & 8) == 8)
+		if ((NaliConfig.STATE & 8+4) == 8+4)
 		{
 			NaliAL.alSourceStop(ClientLoader.BGM_SOURCE);
+			NaliAL.alDeleteSources(ClientLoader.BGM_SOURCE);
+			NaliAL.alDeleteBuffers(ClientLoader.BGM_BUFFER);
+			ClientLoader.BGM_SOURCE = -1;
 		}
 		//e0-sound
+
+		//use current thread
+		try
+		{
+			Display.getDrawable().releaseContext();
+			Display.getDrawable().makeCurrent();
+		}
+		catch (LWJGLException e)
+		{
+			error(e);
+		}
 	}
 
 	private void setRender()

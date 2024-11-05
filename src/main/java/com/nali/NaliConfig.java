@@ -1,9 +1,13 @@
 package com.nali;
 
+import com.nali.gui.page.PageConfig;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 //@Config(modid = ID)
@@ -101,5 +105,88 @@ public class NaliConfig
 		AL_PITCH = ByteReader.getFloat(byte_array, 1+4);
 		int bgm_id_length = ByteReader.getInt(byte_array, 1+4+4);
 		BGM_ID = new String(byte_array, 1+4+4+4, bgm_id_length);
+	}
+
+	public static void render()
+	{
+		PageConfig pageconfig = new PageConfig();
+		pageconfig.take();
+		pageconfig.init();
+
+		boolean loop = true;
+		int tmp_width = -1, tmp_height = -1;
+		while (loop)
+		{
+			int width = Display.getWidth();
+			int height = Display.getHeight();
+
+			int h20 = (int)(0.041666668F * height);
+			int wh20 = Math.min((int)(0.0234192037470726F * width), h20);
+
+			if (tmp_width != width || tmp_height != height)
+			{
+				GL11.glViewport(0, 0, width, height);
+				tmp_width = width;
+				tmp_height = height;
+				pageconfig.gen(width, height, wh20, h20);
+				if (pageconfig.scroll != 0)
+				{
+					pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+				}
+			}
+
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			pageconfig.draw(width, height, wh20);
+			Display.update();
+
+			while (Keyboard.next())
+			{
+				if (Keyboard.getEventKeyState())
+				{
+					int key = Keyboard.getEventKey();
+					//						int i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+					//						warn("KEY: " + key);
+					//						warn("I: " + i);
+					//SHIFT 42
+					//space 57
+					if (key == Keyboard.KEY_ESCAPE)
+					{
+						//							config_byte_array = new byte[];
+						loop = false;
+					}
+					if (key == Keyboard.KEY_UP)
+					{
+						pageconfig.scroll -= wh20 * 4.0F / height;
+					}
+					if (key == Keyboard.KEY_DOWN)
+					{
+						pageconfig.scroll += wh20 * 4.0F / height;
+					}
+					if (key == Keyboard.KEY_LEFT)
+					{
+						pageconfig.next((byte)-1);
+						pageconfig.gen(width, height, wh20, h20);
+						pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+					}
+					if (key == Keyboard.KEY_RIGHT)
+					{
+						pageconfig.next((byte)1);
+						pageconfig.gen(width, height, wh20, h20);
+						pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+					}
+					if (key == Keyboard.KEY_RETURN)
+					{
+						pageconfig.enter();
+						pageconfig.clear();
+						pageconfig.init();
+						pageconfig.gen(width, height, wh20, h20);
+//								pageconfig.update(width, height, wh20, h20);
+					}
+				}
+			}
+		}
+
+		pageconfig.free();
+		pageconfig.clear();
 	}
 }

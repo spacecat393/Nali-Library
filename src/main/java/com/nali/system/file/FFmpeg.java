@@ -1,15 +1,8 @@
 package com.nali.system.file;
 
-import com.nali.system.ClientLoader;
+import com.nali.system.Command;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import static com.nali.Nali.error;
 
 @SideOnly(Side.CLIENT)
 public class FFmpeg
@@ -17,7 +10,7 @@ public class FFmpeg
 	//ffmpeg -ss 00:00:10 -i '' -t 10 -f s16le pipe:1
 	public static byte[] getSounds(String path_string)
 	{
-		return executeByteArray(ClientLoader.get
+		return Command.executeByteArray(Command.get
 		(
 			"ffmpeg",
 			"-i", path_string,
@@ -38,7 +31,7 @@ public class FFmpeg
 
 	public static int getSampleRate(String path_string)
 	{
-		return executeInt(ClientLoader.get
+		return Command.executeInt(Command.get
 		(
 			"ffprobe",
 			"-v", "error",
@@ -104,90 +97,4 @@ public class FFmpeg
 //
 //		return (int)frameRate;
 //	}
-
-	private static String executeString(ProcessBuilder processbuilder)
-	{
-		try
-		{
-			Process process = processbuilder.start();
-			BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-
-			String line;
-			StringBuilder stringbuilder = new StringBuilder();
-			while ((line = bufferedreader.readLine()) != null)
-			{
-				stringbuilder.append(line);
-			}
-
-			BufferedReader error_bufferedreader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			StringBuilder error_stringbuilder = new StringBuilder();
-			while ((line = error_bufferedreader.readLine()) != null)
-			{
-				error_stringbuilder.append(line).append("\n");
-			}
-			if (process.waitFor() != 0)
-			{
-				error(error_stringbuilder.toString());
-			}
-
-			bufferedreader.close();
-			error_bufferedreader.close();
-			process.destroy();
-
-			return stringbuilder.toString().trim();
-		}
-		catch (IOException | NumberFormatException | InterruptedException e)
-		{
-			error(e);
-		}
-
-		return null;
-	}
-
-	private static int executeInt(ProcessBuilder processbuilder)
-	{
-		return Integer.parseInt(executeString(processbuilder));
-	}
-
-	private static byte[] executeByteArray(ProcessBuilder processbuilder)
-	{
-		try
-		{
-			Process process = processbuilder.start();
-			ByteArrayOutputStream bytearrayoutputstream = new ByteArrayOutputStream();
-			byte[] buffer_byte_array = new byte[4096];
-
-			int bytes_read;
-			while ((bytes_read = process.getInputStream().read(buffer_byte_array)) != -1)
-			{
-				bytearrayoutputstream.write(buffer_byte_array, 0, bytes_read);
-			}
-
-			BufferedReader error_bufferedreader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-			StringBuilder error_stringbuilder = new StringBuilder();
-			String line;
-			while ((line = error_bufferedreader.readLine()) != null)
-			{
-				error_stringbuilder.append(line).append("\n");
-			}
-			if (process.waitFor() != 0)
-			{
-				error(error_stringbuilder.toString());
-			}
-
-			byte[] byte_array = bytearrayoutputstream.toByteArray();
-
-			bytearrayoutputstream.close();
-			error_bufferedreader.close();
-			process.destroy();
-
-			return byte_array;
-		}
-		catch (IOException | InterruptedException e)
-		{
-			error(e);
-		}
-
-		return null;
-	}
 }

@@ -50,4 +50,9 @@ public class NaliAL
 	public static native void alSourcef(int source, int pname, float value);
 	public static native void alSourcePlay(int source);
 	public static native void alSourceStop(int source);
+	public static native void alSourcePause(int source);
+	public static native int alGetSourcei(int source, int pname);
+	public static native void alDeleteSources(int source);
+	public static native void alSource3f(int source, int pname, float v1, float v2, float v3);
+	public static native void alDeleteBuffers(int buffer);
 }

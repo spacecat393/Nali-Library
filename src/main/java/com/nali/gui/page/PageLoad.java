@@ -31,8 +31,10 @@ public class PageLoad
 	public float[] c_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 
 	public MemoS rs;
+//	public byte gl_state;//gl_texture_2d
 	public int
 		v,
+//		gl_active_texture,
 		gl_current_program,
 		gl_texture_binding_2d_0,
 		gl_texture_min_filter_0,
@@ -41,6 +43,11 @@ public class PageLoad
 
 	public void take()
 	{
+//		GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE, RenderO.INTBUFFER);
+//		this.gl_active_texture = RenderO.INTBUFFER.get(0);
+
+//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+
 		GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, RenderO.INTBUFFER);
 		this.gl_current_program = RenderO.INTBUFFER.get(0);
 		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, RenderO.INTBUFFER);
@@ -49,6 +56,9 @@ public class PageLoad
 		this.gl_texture_mag_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
 		this.gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
+//		this.gl_state |= GL11.glIsEnabled(GL11.GL_TEXTURE_2D) ? 1 : 0;
+//
+//		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
 	public void init()
@@ -60,7 +70,7 @@ public class PageLoad
 			Instant instant = basicfileattributes.lastModifiedTime().toInstant();
 			LocalDateTime localdatetime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
-			this.config_date_boxtext09 = new BoxText09(("" + localdatetime.getMonthValue() + localdatetime.getDayOfMonth() + localdatetime.getYear()).toCharArray());
+			this.config_date_boxtext09 = new BoxText09((String.format("%02d", localdatetime.getMonthValue()) + String.format("%02d", localdatetime.getDayOfMonth()) + localdatetime.getYear()).toCharArray());
 		}
 		catch (Exception ex)
 		{
@@ -134,11 +144,21 @@ public class PageLoad
 		GL20.glDisableVertexAttribArray(this.v);
 		//e0-shader
 
+//		OpenGlHelper.setActiveTexture(this.gl_active_texture);
+
 		OpenGlHelper.glUseProgram(this.gl_current_program);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.gl_texture_binding_2d_0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, this.gl_texture_min_filter_0);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, this.gl_texture_mag_filter_0);
 		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, this.gl_array_buffer_binding);
+//		if ((this.gl_state & 1) == 1)
+//		{
+//			GL11.glEnable(GL11.GL_TEXTURE_2D);
+//		}
+//		else
+//		{
+//			GL11.glDisable(GL11.GL_TEXTURE_2D);
+//		}
 	}
 
 	public void clear()

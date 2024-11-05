@@ -1,5 +1,6 @@
 package com.nali.sound;
 
+import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
@@ -66,13 +67,13 @@ public class Sound
 //				{
 			if (this.source != -1)
 			{
-				AL10.alDeleteSources(this.source);
+				NaliAL.alDeleteSources(this.source);
 //					AL10.alDeleteBuffers(this.buffer);
 			}
 
 			this.gen(id);
 
-			AL10.alSourcePlay(this.source);
+			NaliAL.alSourcePlay(this.source);
 //				});
 		}
 //		}
@@ -87,18 +88,18 @@ public class Sound
 			{
 				if (pause)
 				{
-					AL10.alSourcePause(this.source);
+					NaliAL.alSourcePause(this.source);
 				}
 				else
 				{
-					AL10.alSourcePlay(this.source);
+					NaliAL.alSourcePlay(this.source);
 				}
 			}
 			else if (!this.pause)
 			{
-				if (AL10.alGetSourcei(this.source, AL10.AL_SOURCE_STATE) == AL10.AL_STOPPED)
+				if (NaliAL.alGetSourcei(this.source, AL10.AL_SOURCE_STATE) == AL10.AL_STOPPED)
 				{
-					AL10.alDeleteSources(this.source);
+					NaliAL.alDeleteSources(this.source);
 					this.source = -1;
 					SOUND_SET.remove(this);
 				}
@@ -112,11 +113,11 @@ public class Sound
 //		Minecraft.getMinecraft().addScheduledTask(() ->
 //		{
 		this.id = id;
-		this.source = AL10.alGenSources();
+		this.source = NaliAL.alGenSources();
 //		this.buffer = AL10.alGenBuffers();
 //		AL10.alBufferData(this.buffer, AL10.AL_FORMAT_MONO16, this.dataloader.openalmemory.bytebuffer_array[id], this.dataloader.openalmemory.sample_rate_int_array[id]);
 //		AL10.alSourcei(this.source, AL10.AL_BUFFER, this.dataloader.openalmemory.sound_buffer_int_array[id]);
-		AL10.alSourcei(this.source, AL10.AL_BUFFER, SOUND_INTEGER_LIST.get(id)/*.sound_buffer*/);
+		NaliAL.alSourcei(this.source, AL10.AL_BUFFER, SOUND_INTEGER_LIST.get(id)/*.sound_buffer*/);
 		SOUND_SET.add(this);
 //		});
 	}
@@ -127,9 +128,9 @@ public class Sound
 //		{
 		if (this.source != -1)
 		{
-			AL10.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.AL_GAIN);
-			AL10.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.AL_PITCH);
-			AL10.alSource3f(this.source, AL10.AL_POSITION, x, y, z);
+			NaliAL.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.AL_GAIN);
+			NaliAL.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.AL_PITCH);
+			NaliAL.alSource3f(this.source, AL10.AL_POSITION, x, y, z);
 		}
 //		});
 	}

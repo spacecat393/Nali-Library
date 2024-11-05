@@ -12,21 +12,22 @@ public class Reflect
 {
 	public static List<Class> getClasses(String package_name)
 	{
-		List<Class> class_arraylist = new ArrayList();
+		List<Class> class_list = new ArrayList();
 
 		try
 		{
 			ClassPath classpath = ClassPath.from(Thread.currentThread().getContextClassLoader());
-			for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClasses(package_name))
+			for (ClassPath.ClassInfo classinfo : classpath.getTopLevelClasses(package_name))
 			{
-				class_arraylist.add(Class.forName(package_name + "." + classInfo.getSimpleName()));
+				class_list.add(classinfo.load());
+//				class_list.add(Class.forName(package_name + "." + classinfo.getSimpleName()));
 			}
 		}
-		catch (IOException | ClassNotFoundException e)
+		catch (IOException/* | ClassNotFoundException*/ e)
 		{
 			error(e);
 		}
 
-		return class_arraylist;
+		return class_list;
 	}
 }

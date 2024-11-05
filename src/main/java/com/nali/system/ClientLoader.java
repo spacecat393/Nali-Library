@@ -4,7 +4,6 @@ import com.nali.Nali;
 import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
-import com.nali.gui.page.PageConfig;
 import com.nali.gui.page.PageLoad;
 import com.nali.render.RenderO;
 import com.nali.render.RenderS;
@@ -14,7 +13,6 @@ import com.nali.system.opengl.memo.client.*;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -41,7 +39,8 @@ public class ClientLoader
 {
 //	public static List<char[]> TEXT_CHAR_ARRAY_LIST = new ArrayList();
 
-	public static int BGM_SOURCE;
+	public static int BGM_BUFFER = -1;
+	public static int BGM_SOURCE = -1;
 	public static List<Integer> TEXTURE_INTEGER_LIST = new ArrayList();
 	public static List<Integer> SOUND_INTEGER_LIST = new ArrayList();
 	public static List<MemoG> G_LIST = new ArrayList();//graphic
@@ -219,85 +218,7 @@ public class ClientLoader
 			}
 			catch (Exception e)
 			{
-				PageConfig pageconfig = new PageConfig();
-				pageconfig.take();
-				pageconfig.init();
-
-				boolean loop = true;
-				int tmp_width = -1, tmp_height = -1;
-				while (loop)
-				{
-					int width = Display.getWidth();
-					int height = Display.getHeight();
-
-					int h20 = (int)(0.041666668F * height);
-					int wh20 = Math.min((int)(0.0234192037470726F * width), h20);
-
-					if (tmp_width != width || tmp_height != height)
-					{
-						GL11.glViewport(0, 0, width, height);
-						tmp_width = width;
-						tmp_height = height;
-						pageconfig.gen(width, height, wh20, h20);
-						if (pageconfig.scroll != 0)
-						{
-							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-						}
-					}
-
-					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-					pageconfig.draw(width, height, wh20);
-					Display.update();
-
-					while (Keyboard.next())
-					{
-						if (Keyboard.getEventKeyState())
-						{
-							int key = Keyboard.getEventKey();
-	//						int i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
-	//						warn("KEY: " + key);
-	//						warn("I: " + i);
-							//SHIFT 42
-							//space 57
-							if (key == Keyboard.KEY_ESCAPE)
-							{
-	//							config_byte_array = new byte[];
-								loop = false;
-							}
-							if (key == Keyboard.KEY_UP)
-							{
-								pageconfig.scroll -= wh20 * 4.0F / height;
-							}
-							if (key == Keyboard.KEY_DOWN)
-							{
-								pageconfig.scroll += wh20 * 4.0F / height;
-							}
-							if (key == Keyboard.KEY_LEFT)
-							{
-								pageconfig.next((byte)-1);
-								pageconfig.gen(width, height, wh20, h20);
-								pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-							}
-							if (key == Keyboard.KEY_RIGHT)
-							{
-								pageconfig.next((byte)1);
-								pageconfig.gen(width, height, wh20, h20);
-								pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-							}
-							if (key == Keyboard.KEY_RETURN)
-							{
-								pageconfig.enter();
-								pageconfig.clear();
-								pageconfig.init();
-								pageconfig.gen(width, height, wh20, h20);
-//								pageconfig.update(width, height, wh20, h20);
-							}
-						}
-					}
-				}
-
-				pageconfig.free();
-				pageconfig.clear();
+				NaliConfig.render();
 
 				try
 				{
@@ -311,25 +232,17 @@ public class ClientLoader
 			//e0-config
 
 			//s0-sound
-			NaliAL.load();
-			NaliAL.init();
-//		ALCdevice alcdevice = NaliAL.alcOpenDevice(null);
-//		if (alcdevice == null)
-//		{
-//			error("alcOpenDevice");
-//		}
-//		ALCcontext alccontext = NaliAL.alcCreateContext(alcdevice, null);
-//		if (alccontext == null)
-//		{
-//			error("alcCreateContext");
-//		}
-//		NaliAL.alcMakeContextCurrent(alccontext);
+			if ((NaliConfig.STATE & 8) == 8)
+			{
+				NaliAL.load();
+				NaliAL.init();
+			}
 			String bgm = "nali/nali/tmp/" + NaliConfig.BGM_ID;
 			if ((NaliConfig.STATE & 4) == 4 && !new File(bgm).isFile())
 			{
 				try
 				{
-					Process process = ClientLoader.get("yt-dlp", "-f", "bestaudio", "-o", bgm, "https://www.youtube.com/watch?v=" + NaliConfig.BGM_ID).redirectErrorStream(true).start();
+					Process process = Command.get("yt-dlp", "-f", "bestaudio", "-o", bgm, "https://www.youtube.com/watch?v=" + NaliConfig.BGM_ID).redirectErrorStream(true).start();
 					process.waitFor();
 					process.destroy();
 				}
@@ -338,11 +251,11 @@ public class ClientLoader
 					error(e);
 				}
 			}
-			if ((NaliConfig.STATE & 8) == 8)
+			if ((NaliConfig.STATE & 8+4) == 8+4)
 			{
-				int sound_buffer = MemoN.gen(bgm);
+				BGM_BUFFER = MemoN.gen(bgm);
 				BGM_SOURCE = NaliAL.alGenSources();
-				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, sound_buffer);
+				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, BGM_BUFFER);
 				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_LOOPING, AL10.AL_TRUE);
 				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.AL_GAIN);
 				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.AL_PITCH);
@@ -350,53 +263,13 @@ public class ClientLoader
 			}
 			//e0-sound
 
-			//s0-load
-			PageLoad pageload = new PageLoad();
-			pageload.take();
-			pageload.init();
-//			int tmp_width = -1, tmp_height = -1;
-//			while (true)
-//			{
-			int width = Display.getWidth();
-			int height = Display.getHeight();
-//				if (tmp_width != width || tmp_height != height)
-//				{
-			GL11.glViewport(0, 0, width, height);
-//					tmp_width = width;
-//					tmp_height = height;
-			pageload.gen(width, height);
-//				}
-//				if (false)
-//				{
-//					break;
-//				}
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			pageload.draw();
-			Display.update();
-//			}
-			pageload.free();
-			pageload.clear();
-			//e0-load
+			render();
 
-//			try
-//			{
-//				Thread.sleep(5000);
-//			}
-//			catch (InterruptedException e)
-//			{
-//				error(e);
-//			}
-
-//			//s0-sound
-//			if ((NaliConfig.STATE & 8) == 8)
-//			{
-//				NaliAL.alSourceStop(source);
-//			}
-//			//e0-sound
-
+			loadSound(first_file_array, first_data_class_map);
 			if (second_file_array.length != 0)
 			{
 				load(second_file_array, second_data_class_map, object_array);
+				loadSound(second_file_array, second_data_class_map);
 			}
 		}
 		else
@@ -606,24 +479,10 @@ public class ClientLoader
 		}
 	}
 
-	public static void loadInit()
+	public static void loadSound(File[] file_array, Map<String, Class> data_class_map)
 	{
-		if (isCommandLive("ffmpeg"))
+		if ((NaliConfig.STATE & 8) == 8)
 		{
-			File[] file_array = new File(ID).listFiles();
-
-			if (file_array == null)
-			{
-				return;
-			}
-
-			Map<String, Class> data_class_map = new HashMap();
-			List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
-			for (Class data_class : data_class_list)
-			{
-				data_class_map.put(StringReader.get(data_class)[1], data_class);
-			}
-
 			for (File file : file_array)
 			{
 				File[] sound_file_array = new File(file, "sound").listFiles();
@@ -653,262 +512,59 @@ public class ClientLoader
 				}
 			}
 		}
-
-		if ((NaliConfig.STATE & 1) == 1)
-		{
-			for (Class render_class : Reflect.getClasses("com.nali.list.render.s"))
-			{
-				try
-				{
-					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAS").get(null), render_class.getField("IBOTHDASN").get(null))).draw();
-				}
-				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
-				{
-					error(e);
-				}
-			}
-
-			for (Class render_class : Reflect.getClasses("com.nali.list.render.o"))
-			{
-				try
-				{
-					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAO").get(null))).draw();
-				}
-				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
-				{
-					error(e);
-				}
-			}
-		}
-
-//		this.data_class_list = null;
-//		this.data_string_list = null;
-//		this.data_class_map = null;
 	}
 
-//	public static void setModels(DataLoader dataloader, String mod_id_string)
-//	{
-//		mod_id_string = ID + '/' + mod_id_string;
-//		DataLoader.check(mod_id_string);
-//
-//		String folder_path = mod_id_string + '/';
-//
-//		dataloader.opengltexturememory = new OpenGLTextureMemory(folder_path);
-//
-//		String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(folder_path + "ShaderList");
-//		int length = shader_string_2d_array.length;
-//		dataloader.openglobjectshadermemory_array = new OpenGLObjectShaderMemory[length];
-//
-//		for (int i = 0; i < length; ++i)
-//		{
-//			String[] string_array = shader_string_2d_array[i];
-//			switch (string_array.length)
+	public static void render()
+	{
+		//s0-load
+		PageLoad pageload = new PageLoad();
+		pageload.take();
+		pageload.init();
+//			int tmp_width = -1, tmp_height = -1;
+//			while (true)
 //			{
-//				case 2:
-//					dataloader.openglobjectshadermemory_array[i] = new OpenGLObjectShaderMemory(string_array, folder_path);
-//					break;
-//				case 3:
-//					dataloader.openglobjectshadermemory_array[i] = new OpenGLSkinningShaderMemory(string_array, folder_path);
-//					break;
-//				default:
-//					error("SHADER_LIST " + i);
-//			}
-//		}
-//
-//		Object[] object_array = FileDataReader.getMixXStringArray(folder_path + "ModelList");
-//		length = object_array.length;
-//		dataloader.object_array = new Object[length];
-//
-//		for (int i = 0; i < length; ++i)
-//		{
-//			String[] string_array = (String[])object_array[i];
-//			switch (string_array.length)
-//			{
-//				case 1:
-////					dataloader.openglanimationmemory_list.add(new OpenGLAnimationMemory(string_array, folder_path));
-//					dataloader.object_array[i] = new OpenGLAnimationMemory(string_array, folder_path);
-//					break;
-//				case 7:
-//					dataloader.object_array[i] = new OpenGLObjectMemory(string_array, folder_path, shader_string_2d_array);
-//					break;
-//				case 8:
-//					dataloader.object_array[i] = new OpenGLSkinningMemory(string_array, folder_path, shader_string_2d_array);
-//					break;
-//				default:
-//					error("MODEL_LIST " + i);
-//			}
-//		}
-//
-//		if (MyConfig.SHADER.pre_shader)
-//		{
-//			for (int i = 0; i < length; ++i)
-//			{
-//				if (dataloader.object_array[i] instanceof OpenGLObjectMemory)
+		int width = Display.getWidth();
+		int height = Display.getHeight();
+//				if (tmp_width != width || tmp_height != height)
 //				{
-//					new ObjectRender(null, new FastClientData(i, i + 1), dataloader)
-//					{
-//						@Override
-//						public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
-//						{
-//						}
-//					}.draw();
+		GL11.glViewport(0, 0, width, height);
+//					tmp_width = width;
+//					tmp_height = height;
+		pageload.gen(width, height);
+//				}
+//				if (false)
+//				{
+//					break;
+//				}
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		pageload.draw();
+		Display.update();
+//			}
+		pageload.free();
+		pageload.clear();
+		//e0-load
+//			while (true)
+//			{
+//				if (false)
+//				{
+//					break;
 //				}
 //			}
-//		}
-//
-////		for (int i = 0; i < model_length; ++i)
-////		{
-////			if (dataloader.memory_object_array[i] instanceof OpenGLObjectMemory)
-////			{
-////				OpenGLObjectMemory openglobjectmemorydata = (OpenGLObjectMemory)dataloader.memory_object_array[i];
-////				int shader_id = (int)openglobjectmemorydata.shader;
-////				openglobjectmemorydata.shader = dataloader.openglobjectshadermemory_array[shader_id];
-////
-////				if (MyConfig.SHADER.pre_shader)
-////				{
-////					new ObjectRender(new GuiObjectData(i, 1), dataloader, new Object[]{dataloader.memory_object_array[i]})
-////					{
-////						@Override
-////						public void setLightCoord(OpenGLObjectShaderMemory openglobjectshadermemory)
-////						{
-////						}
-////					}.objectscreendraw.renderScreen();
-////				}
-////			}
-////		}
-//
-//		DATALOADER_LIST.add(dataloader);
-//		dataloader.index = MAX++;
-//	}
 
-//	public static void setSounds(DataLoader dataloader, String mod_id_string)
-//	{
-//		if (MyConfig.SOUND.ffmpeg)
-//		{
-//			mod_id_string = ID + '/' + mod_id_string;
-////		DataLoader.check(mod_id_string);
-//
-//			String folder_path = mod_id_string + '/';
-////		if (new File(folder_path + "Sounds").isDirectory())
-////		{
-//			dataloader.openalmemory = new OpenALMemory(folder_path);
-////		}
-//		}
-//	}
-
-//	public static void check(String mod_id_string)
-//	{
-//		File file = new File(mod_id_string);
-//		if (!file.isDirectory())
-//		{
-//			error('\"' + file.getPath() + "\" NOT_FOUND");
-//		}
-//	}
-
-//	public static void setMemory()
-//	{
-//		List<Class> RENDER_CLASS_LIST = Reflect.getClasses("com.nali.list.render");
-//		RENDER_CLASS_LIST.sort(Comparator.comparing(Class::getName));
-//		int size = RENDER_CLASS_LIST.size();
-//		MIX_MEMORY_OBJECT_ARRAY = new Object[size][];
-//
-//		int index = 0;
-//		for (int i = 0; i < size; ++i)
-//		{
 //			try
 //			{
-//				Class clasz = RENDER_CLASS_LIST.get(i);
-//				DataLoader dataloader = (DataLoader)clasz.getField("DATALOADER").get(null);
-//				BothData bothdata = (BothData)clasz.getField("BOTHDATA").get(null);
-//				clasz.getField("ID").set(null, index++);
-//				int max_part = bothdata.MaxPart();
-//				MIX_MEMORY_OBJECT_ARRAY[i] = new Object[max_part];
-//				System.arraycopy(dataloader.memory_object_array, bothdata.StepModels(), MIX_MEMORY_OBJECT_ARRAY[i], 0, max_part);
+//				Thread.sleep(5000);
 //			}
-//			catch (NoSuchFieldException | IllegalAccessException e)
+//			catch (InterruptedException e)
 //			{
-//				Nali.error(e);
+//				error(e);
 //			}
-//		}
-//	}
 
-//	public int genTexture(File file)
-//	{
-//		try
-//		{
-//			BufferedImage bufferedimage = ImageIO.read(file);
-//
-//			int width = bufferedimage.getWidth();
-//			int height = bufferedimage.getHeight();
-//
-//			ByteBuffer bytebuffer = ByteBuffer.allocateDirect(width * height * 4);
-//			int[] pixels = new int[width * height];
-//			bufferedimage.getRGB(0, 0, width, height, pixels, 0, width);
-//			int[] new_pixels = new int[width * height];
-//
-//			for (int h = 0; h < height; ++h)
+//			//s0-sound
+//			if ((NaliConfig.STATE & 8) == 8)
 //			{
-////				if (width >= 0)
-////				{
-//				System.arraycopy(pixels, h * width, new_pixels, (height - 1 - h) * width, width);
-////				}
+//				NaliAL.alSourceStop(source);
 //			}
-//
-//			for (int pixel : new_pixels)
-//			{
-//				bytebuffer.put((byte)((pixel >> 16) & 0xFF));
-//				bytebuffer.put((byte)((pixel >> 8) & 0xFF));
-//				bytebuffer.put((byte)(pixel & 0xFF));
-//				bytebuffer.put((byte)((pixel >> 24) & 0xFF));
-//			}
-//
-//			bytebuffer.flip();
-//
-//			int texture_buffer = GL11.glGenTextures();
-//			GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture_buffer);
-//			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, bytebuffer);
-//
-//			return texture_buffer;
-//		}
-//		catch (IOException e)
-//		{
-//			I.error(e);
-//		}
-//
-//		return -1;
-//	}
-
-	public static boolean isCommandLive(String command_string)
-	{
-		try
-		{
-			get(command_string).redirectErrorStream(true).start().destroy();
-			return true;
-		}
-		catch (IOException e)
-		{
-			return false;
-		}
-	}
-
-	public static ProcessBuilder get(String... command_string)
-	{
-		ProcessBuilder processbuilder;
-		String os_name = System.getProperty("os.name").toLowerCase();
-		if (os_name.contains("win"))
-		{
-			String[] windows_command = new String[command_string.length + 2];
-			windows_command[0] = "cmd";
-			windows_command[1] = "/c";
-			System.arraycopy(command_string, 0, windows_command, 2, command_string.length);
-
-			processbuilder = new ProcessBuilder(windows_command);
-		}
-		else
-		{
-			processbuilder = new ProcessBuilder(command_string);
-		}
-
-		return processbuilder;
+//			//e0-sound
 	}
 }

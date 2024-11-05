@@ -6,6 +6,7 @@ import com.nali.gui.box.text.BoxTextAll;
 import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.system.ClientLoader;
+import com.nali.system.Command;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -92,8 +93,8 @@ public class PageConfig
 //		//e0-shader
 
 		//s0-stuff
-		this.state |= ClientLoader.isCommandLive("yt-dlp") ? 1 : 0;
-		this.state |= ClientLoader.isCommandLive("ffmpeg") ? 2 : 0;
+		this.state |= Command.isCommandLive("yt-dlp") ? 1 : 0;
+		this.state |= Command.isCommandLive("ffmpeg") ? 2 : 0;
 		//e0-stuff
 
 		this.boxtextall_array = new BoxTextAll[]
@@ -317,9 +318,9 @@ public class PageConfig
 
 	public void clear()
 	{
-		for (byte i = 0; i < this.boxtextall_array.length; ++i)
+		for (BoxTextAll boxtextall : this.boxtextall_array)
 		{
-			OpenGlHelper.glDeleteBuffers(this.boxtextall_array[i].array_buffer);
+			OpenGlHelper.glDeleteBuffers(boxtextall.array_buffer);
 		}
 	}
 

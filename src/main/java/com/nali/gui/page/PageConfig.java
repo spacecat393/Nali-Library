@@ -3,6 +3,7 @@ package com.nali.gui.page;
 import com.nali.NaliConfig;
 import com.nali.gui.box.BoxColor;
 import com.nali.gui.box.text.BoxTextAll;
+import com.nali.gui.box.text.BoxTextAllMax;
 import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.system.ClientLoader;
@@ -18,7 +19,7 @@ import org.lwjgl.opengl.GL20;
 @SideOnly(Side.CLIENT)
 public class PageConfig
 {
-	public byte state;
+	public byte state;//display_yt-dlp display_ffmpeg enter_mode
 //	public String type_string = "_";
 
 	public byte[] group_byte_array;
@@ -27,13 +28,15 @@ public class PageConfig
 	public float[] c_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 
 	public float scroll;
-//	public BoxTextAll input_boxtextall;
 //		scroll,
 //		max_scroll;
 
 	public BoxColor boxcolor = new BoxColor();
 	public byte select = 5;
 
+	public StringBuilder input_stringbuilder = new StringBuilder();
+	public BoxTextAllMax boxtextallmax;
+	public int select_box;
 //	public MemoS rs;
 //	public byte gl_state;//GL_BLEND
 	public int
@@ -97,9 +100,28 @@ public class PageConfig
 		this.state |= Command.isCommandLive("ffmpeg") ? 2 : 0;
 		//e0-stuff
 
+		//s0-init
+		this.boxtextallmax = new BoxTextAllMax(this.input_stringbuilder.toString().toCharArray());
+
+		String bgm_id;
+		if (NaliConfig.BGM_ID.length() > 11)
+		{
+			bgm_id = NaliConfig.BGM_ID.substring(0, 11) + "...";
+		}
+		else
+		{
+			bgm_id = ("BGM_ID " + NaliConfig.BGM_ID);
+		}
+		//e0-init
+
 		this.boxtextall_array = new BoxTextAll[]
 		{
 			new BoxTextAll("PRE-LOAD".toCharArray()),
+
+//			new BoxTextAll("POINTER".toCharArray()),
+//			new BoxTextAll( ? "SmallPointer ABLE" : "SmallPointer UNABLE").toCharArray()),
+//			new BoxTextAll( ? "NaliGL ABLE" : "NaliGL UNABLE").toCharArray()),
+//			new BoxTextAll( ? "NaliAL ABLE" : "NaliAL UNABLE").toCharArray()),
 
 			new BoxTextAll("COMMAND".toCharArray()),//0
 			new BoxTextAll(((this.state & 2) == 2 ? "FFMPEG ABLE" : "FFMPEG UNABLE").toCharArray()),
@@ -120,7 +142,7 @@ public class PageConfig
 			new BoxTextAll(((NaliConfig.STATE & 1) == 1 ? "PRE_SHADER YES" : "PRE_SHADER NO").toCharArray()),
 			new BoxTextAll(((NaliConfig.STATE & 2) == 2 ? "USE_SWITCH YES" : "USE_SWITCH NO").toCharArray()),
 			new BoxTextAll("EXTRA".toCharArray()),
-			new BoxTextAll(("BGM_ID " + NaliConfig.BGM_ID).toCharArray()),
+			new BoxTextAll(bgm_id.toCharArray()),
 //			new BoxTextAll(new StringBuilder("GLSL ").append(NaliConfig.GLSL).toString().toCharArray()),
 //			new BoxTextAll(new StringBuilder("ATTRIBUTE ").append(NaliConfig.ATTRIBUTE.toUpperCase()).toString().toCharArray())
 		};
@@ -199,6 +221,12 @@ public class PageConfig
 		int x = width / 2 - (wh20 + wh10) * max_length / 2;
 		int y = (int)((1.0F - 0.041666668F) * height) + h20;
 		int wh40 = wh20 * 2;
+		this.boxtextallmax.gen
+		(
+			wh20,
+			y - wh40,
+			wh20, wh10, wh20, width, height
+		);
 		for (byte i = 1; i < this.boxtextall_array.length; ++i)
 		{
 			byte index = (byte)(i - 1);
@@ -212,17 +240,47 @@ public class PageConfig
 			);
 		}
 
-		y -= wh40 * this.select;
-		this.boxcolor.x0 = wh20;
-		this.boxcolor.y0 = y;
-		this.boxcolor.x1 = x - wh10;
-		this.boxcolor.y1 = y + wh20;
+		if ((this.state & 4) == 4)
+		{
+//			int nl_x = 0, nl_y = 0;
+//			int nl_ss = wh20 + wh10;
+//
+//			for (int i = 0; i <= this.select_box; ++i)
+//			{
+//				if (nl_x > width - nl_ss)
+//				{
+//					nl_x = wh20;
+//					nl_y -= nl_ss;
+//				}
+//				nl_x += nl_ss;
+//			}
+
+//			y -= wh40;
+//			this.boxcolor.x0 = nl_x - wh10;
+//			this.boxcolor.y0 = y + nl_y;
+//			this.boxcolor.x1 = nl_x - wh20;
+//			this.boxcolor.y1 = y + nl_y + wh20;
+
+			this.boxcolor.x0 = 0;
+			this.boxcolor.y0 = 0;
+			this.boxcolor.x1 = wh10;
+			this.boxcolor.y1 = wh20;
+		}
+		else
+		{
+			y -= wh40 * this.select;
+			this.boxcolor.x0 = wh20;
+			this.boxcolor.y0 = y;
+			this.boxcolor.x1 = x - wh10;
+			this.boxcolor.y1 = y + wh20;
+		}
+
 		this.boxcolor.v_width = width;
 		this.boxcolor.v_height = height;
 		this.boxcolor.gen();
 	}
 
-	public void draw(int width, int height, int wh20)
+	public void draw(int width, int height, int wh20, int h20)
 	{
 		//s0-shader
 		MemoS rs0 = ClientLoader.S_LIST.get(NaliData.SHADER_STEP);
@@ -254,10 +312,40 @@ public class PageConfig
 		GL20.glEnableVertexAttribArray(v1);
 		//e0-shader
 
-		this.v_float_array[1] = this.scroll;
 		//s0-select
 //		this.boxcolor.draw(rs1, this.v_float_array, this.c_float_array);
-		this.boxcolor.draw(rs1, this.v_float_array, new float[]{0.0F, 1.0F, 0.0F, 1.0F});
+		this.v_float_array[1] = this.scroll;
+
+		if ((this.state & 4) == 4)
+		{
+			int wh10 = wh20 / 2;
+			int nl_ss = wh20 + wh10;
+			int nl_x = wh20, nl_y = 0;
+
+			for (int i = 0; i < this.select_box; ++i)
+			{
+				if (nl_x > width - nl_ss)
+				{
+					nl_x = wh20;
+					nl_y -= nl_ss;
+				}
+				nl_x += nl_ss;
+			}
+
+			nl_x -= wh10;
+			float x = (float)nl_x / width * 2;
+			float y = (1.0F - 0.041666668F + (h20 - (wh20 * 2.0F) + nl_y) / height) * 2;
+			this.v_float_array[0] += x;
+			this.v_float_array[1] += y;
+			this.boxcolor.draw(rs1, this.v_float_array, new float[]{0.0F, 1.0F, 0.0F, 1.0F});
+			this.v_float_array[0] -= x;
+			this.v_float_array[1] -= y;
+		}
+		else
+		{
+			this.boxcolor.draw(rs1, this.v_float_array, new float[]{0.0F, 1.0F, 0.0F, 1.0F});
+		}
+
 		//e0-select
 
 		//s0-shader
@@ -271,15 +359,22 @@ public class PageConfig
 		GL20.glEnableVertexAttribArray(v0);
 //		//e0-shader
 
-		for (byte i = 1; i < this.boxtextall_array.length; ++i)
+		if ((this.state & 4) == 4)
 		{
-			this.boxtextall_array[i].draw(rs0, this.v_float_array, this.c_float_array);
+			this.boxtextallmax.draw(rs0, this.v_float_array, this.c_float_array);
 		}
+		else
+		{
+			for (byte i = 1; i < this.boxtextall_array.length; ++i)
+			{
+				this.boxtextall_array[i].draw(rs0, this.v_float_array, this.c_float_array);
+			}
+		}
+		this.v_float_array[1] = 0;
 
 		//s0-shader
 		GL20.glDisableVertexAttribArray(v0);
 		//e0-shader
-		this.v_float_array[1] = 0;
 
 		GL11.glScissor(RenderO.INTBUFFER.get(0), RenderO.INTBUFFER.get(1), RenderO.INTBUFFER.get(2), RenderO.INTBUFFER.get(3));
 		if (gl_scissor_test)
@@ -322,6 +417,7 @@ public class PageConfig
 		{
 			OpenGlHelper.glDeleteBuffers(boxtextall.array_buffer);
 		}
+		OpenGlHelper.glDeleteBuffers(this.boxtextallmax.array_buffer);
 	}
 
 	public void next(byte step)
@@ -352,6 +448,7 @@ public class PageConfig
 
 	public void enter()
 	{
+//		Nali.warn("S " + this.select);
 		switch (this.select)
 		{
 			case 5:
@@ -366,10 +463,46 @@ public class PageConfig
 			}
 			case 8:
 			{
+				if ((this.state & 4) == 4)
+				{
+					try
+					{
+						NaliConfig.AL_GAIN = Float.parseFloat(this.input_stringbuilder.toString());
+					}
+					catch (Exception e)
+					{
+					}
+				}
+				else
+				{
+					this.input_stringbuilder.setLength(0);
+					this.input_stringbuilder.append(NaliConfig.AL_GAIN);
+					this.select_box = this.input_stringbuilder.length();
+				}
+				this.state ^= 4;
+				this.scroll = 0;
 				break;
 			}
 			case 9:
 			{
+				if ((this.state & 4) == 4)
+				{
+					try
+					{
+						NaliConfig.AL_PITCH = Float.parseFloat(this.input_stringbuilder.toString());
+					}
+					catch (Exception e)
+					{
+					}
+				}
+				else
+				{
+					this.input_stringbuilder.setLength(0);
+					this.input_stringbuilder.append(NaliConfig.AL_PITCH);
+					this.select_box = this.input_stringbuilder.length();
+				}
+				this.state ^= 4;
+				this.scroll = 0;
 				break;
 			}
 			case 11:
@@ -382,16 +515,20 @@ public class PageConfig
 				NaliConfig.STATE ^= 2;
 				break;
 			}
-			case 13:
+			case 14:
 			{
-//				if (NaliConfig.ATTRIBUTE != "in")
-//				{
-//					NaliConfig.ATTRIBUTE = "in";
-//				}
-//				else
-//				{
-//					NaliConfig.ATTRIBUTE = "attribute";
-//				}
+				if ((this.state & 4) == 4)
+				{
+					NaliConfig.BGM_ID = this.input_stringbuilder.toString();
+				}
+				else
+				{
+					this.input_stringbuilder.setLength(0);
+					this.input_stringbuilder.append(NaliConfig.BGM_ID);
+					this.select_box = this.input_stringbuilder.length();
+				}
+				this.state ^= 4;
+				this.scroll = 0;
 				break;
 			}
 		}

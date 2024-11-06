@@ -139,8 +139,8 @@ public class BoxTextAll extends BoxVT
 			}
 			else if (c > 96/* && c < 123*/)
 			{
-				float new_size = size / 1.5F;
-				float new_space = size / 1.5F;
+				float new_size = size / 1.75F;
+				float new_space = size / 1.75F;
 				short s = (short)((c - 97) * 5);
 
 				this.x0 = x;

@@ -12,6 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+//"required-after:mixinbooter", "required-before:nali@[1.2.0]", "required-before:small@[1.2.0]"
 @Mod(modid = Nali.ID)
 public class Nali
 {

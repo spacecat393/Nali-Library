@@ -21,7 +21,6 @@ import org.lwjgl.opengl.GL15;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
@@ -37,8 +36,6 @@ import static com.nali.Nali.*;
 @SideOnly(Side.CLIENT)
 public class ClientLoader
 {
-//	public static List<char[]> TEXT_CHAR_ARRAY_LIST = new ArrayList();
-
 	public static int BGM_BUFFER = -1;
 	public static int BGM_SOURCE = -1;
 	public static List<Integer> TEXTURE_INTEGER_LIST = new ArrayList();
@@ -51,26 +48,18 @@ public class ClientLoader
 	public static void loadPreInit()
 	{
 		List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
-
-//		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
-//		int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
-
-		for (Class data_class : data_class_list)
-		{
-			try
-			{
-				data_class.getMethod("run").invoke(null);
-			}
-			catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
-			{
-//				error(e);
-			}
-		}
-
-//		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
+//		for (Class data_class : data_class_list)
+//		{
+//			try
+//			{
+//				data_class.getMethod("run").invoke(null);
+//			}
+//			catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+//			{
+//			}
+//		}
 
 		File[] file_array = new File(ID).listFiles();
-
 		if (file_array != null)
 		{
 			if (NaliConfig.VAO)
@@ -78,25 +67,36 @@ public class ClientLoader
 				NaliGL.init();
 			}
 
-			Map<String, Class> first_data_class_map = new HashMap();
-			Map<String, Class> second_data_class_map = new HashMap();
-			List<MemoHVo> memohvo_list = new ArrayList();
-			List<MemoHVs> memohvs_list = new ArrayList();
-			List<MemoHFo> memohfo_list = new ArrayList();
-
+			//s0-data
+			int max_ordinal = 0;
 			for (Class data_class : data_class_list)
 			{
 				try
 				{
-					Field field = data_class.getField("STATE");
-					if (field != null && ((byte)field.get(null) & 1) == 1)
-					{
-						first_data_class_map.put(StringReader.get(data_class)[1], data_class);
-					}
-					else
-					{
-						second_data_class_map.put(StringReader.get(data_class)[1], data_class);
-					}
+					Field field = data_class.getField("ORDINAL");
+					max_ordinal = Math.max(max_ordinal, (byte)field.get(null));
+				}
+				catch (IllegalAccessException | NoSuchFieldException e)
+				{
+					error(e);
+				}
+			}
+			++max_ordinal;
+
+			Map<String, Class>[] data_class_map_array = new Map[max_ordinal];
+			int[] ordinal_int_array = new int[max_ordinal];
+			for (int i = 0; i < max_ordinal; ++i)
+			{
+				data_class_map_array[i] = new HashMap();
+			}
+			for (Class data_class : data_class_list)
+			{
+				try
+				{
+					Field field = data_class.getField("ORDINAL");
+					byte ordinal = (byte)field.get(null);
+					data_class_map_array[ordinal].put(StringReader.get(data_class)[1], data_class);
+					++ordinal_int_array[ordinal];
 				}
 				catch (IllegalAccessException | NoSuchFieldException e)
 				{
@@ -104,108 +104,31 @@ public class ClientLoader
 				}
 			}
 
-			File[] first_file_array = new File[first_data_class_map.size()];
-			File[] second_file_array = new File[second_data_class_map.size()];
-
-			int i0 = 0, i1 = 0;
-			for (File file : file_array)
+			File[][] file_2d_array = new File[max_ordinal][];
+			for (int i = 0; i < max_ordinal; ++i)
 			{
-				if (first_data_class_map.get(file.getName()) != null)
-				{
-					first_file_array[i0++] = file;
-				}
-				else
-				{
-					second_file_array[i1++] = file;
-				}
+				file_2d_array[i] = new File[ordinal_int_array[i]];
 			}
 
-			List<String> shader_name_string_list = new ArrayList();
-			List<String> model_name_string_list = new ArrayList();
-			List<String[][]> shader_string_2d_array_list = new ArrayList();
-			Map<String, String[][]> shader_string_2d_array_map = new HashMap();
-			List<String[][]> model_string_2d_array_list = new ArrayList();
-			List<MemoA0[]> memoa0_array_list = new ArrayList();
-			List<String[][]> attriblocation_string_2d_array_list = new ArrayList();
-			List<Integer> shader_id_integer_list = new ArrayList();
-
-			Map<String, Integer> frag_integer_map = new HashMap();
-			Map<String, Integer> vert_o_integer_map = new HashMap();
-
-//			Map<String, String[]> texture_mipmap_map = new HashMap();
-
+			int[] add_int_array = new int[max_ordinal];
 			for (File file : file_array)
 			{
-				File shader_file = new File(file, "shader.dat");
-				if (shader_file.isFile())
+				String name = file.getName();
+				for (int i = 0; i < max_ordinal; ++i)
 				{
-					String name = file.getName();
-					shader_name_string_list.add(name);
-					String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
-					shader_string_2d_array_list.add(shader_string_2d_array);
-					shader_string_2d_array_map.put(name, shader_string_2d_array);
-				}
-
-				File model_file = new File(file, "model.dat");
-				if (model_file.isFile())
-				{
-					String name_string = file.getName();
-					model_name_string_list.add(name_string);
-					String[][] model_string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
-					model_string_2d_array_list.add(model_string_2d_array);
-
-					for (String[] model_string_array : model_string_2d_array)
+					if (data_class_map_array[i].get(name) != null)
 					{
-						int shader_id = Integer.parseInt(model_string_array[3]);
-						shader_id_integer_list.add(shader_id);
-
-						String[][] shader_string_2d_array = shader_string_2d_array_map.get(model_string_array[2]);
-
-						String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + shader_string_2d_array[shader_id][0] + "/shader/" + shader_string_2d_array[shader_id][1] + "/attrib.dat"));
-						attriblocation_string_2d_array_list.add(attriblocation_string_2d_array);
-
-						memoa0_array_list.add(MemoA0.gen(model_string_array, attriblocation_string_2d_array, Nali.ID + "/" + name_string/*, shader_id*/));
+						file_2d_array[i][add_int_array[i]++] = file;
+						break;
 					}
 				}
 			}
 
-			for (Class data_class : data_class_list)
-			{
-				try
-				{
-					Field field = data_class.getField("MAX_BONE");
-					if (field != null)
-					{
-						int max_bone = (int)field.get(null);
-						if (RenderS.MAX_BONE < max_bone)
-						{
-							RenderS.MAX_BONE = max_bone;
-						}
-					}
-				}
-				catch (IllegalAccessException | NoSuchFieldException e)
-				{
-				}
-			}
-			RenderS.BONE_FLOATBUFFER = ByteBuffer.allocateDirect(RenderS.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+			Map<String, MemoHVo[]> memohvo_array_map = new HashMap();
+			Map<String, MemoHFo[]> memohfo_array_map = new HashMap();
+			//e0-data
 
-			Object[] object_array = new Object[]
-			{
-				memohvo_list,
-				memohvs_list,
-				memohfo_list,
-				frag_integer_map,
-				vert_o_integer_map,
-				shader_name_string_list,
-				model_name_string_list,
-				shader_string_2d_array_list,
-				shader_string_2d_array_map,
-				model_string_2d_array_list,
-				memoa0_array_list,
-				attriblocation_string_2d_array_list,
-				shader_id_integer_list
-			};
-			load(first_file_array, first_data_class_map, object_array);
+			load(file_2d_array[0], data_class_map_array[0], memohvo_array_map, memohfo_array_map);
 
 			//s0-config
 			File tmp_file = new File("nali/nali/tmp");
@@ -265,11 +188,48 @@ public class ClientLoader
 
 			render();
 
-			loadSound(first_file_array, first_data_class_map);
-			if (second_file_array.length != 0)
+			for (Class data_class : data_class_list)
 			{
-				load(second_file_array, second_data_class_map, object_array);
-				loadSound(second_file_array, second_data_class_map);
+				try
+				{
+					Field field = data_class.getField("MAX_BONE");
+					if (field != null)
+					{
+						int max_bone = (int)field.get(null);
+						if (RenderS.MAX_BONE < max_bone)
+						{
+							RenderS.MAX_BONE = max_bone;
+						}
+					}
+				}
+				catch (IllegalAccessException | NoSuchFieldException e)
+				{
+				}
+			}
+			RenderS.BONE_FLOATBUFFER = ByteBuffer.allocateDirect(RenderS.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+
+			loadSound(file_2d_array[0], data_class_map_array[0]);
+			for (int i = 1; i < max_ordinal; ++i)
+			{
+				load(file_2d_array[i], data_class_map_array[i], memohvo_array_map, memohfo_array_map);
+				loadSound(file_2d_array[i], data_class_map_array[i]);
+			}
+
+			List<MemoHVo[]> memohvo_array_list = new ArrayList(memohvo_array_map.values());
+			List<MemoHFo[]> memohfo_array_list = new ArrayList(memohfo_array_map.values());
+			for (MemoHVo[] memohvo_array : memohvo_array_list)
+			{
+				for (MemoHVo memohvo : memohvo_array)
+				{
+					OpenGlHelper.glDeleteShader(memohvo.shader);
+				}
+			}
+			for (MemoHFo[] memohfo_array : memohfo_array_list)
+			{
+				for (MemoHFo memohfo : memohfo_array)
+				{
+					OpenGlHelper.glDeleteShader(memohfo.shader);
+				}
 			}
 		}
 		else
@@ -278,22 +238,8 @@ public class ClientLoader
 		}
 	}
 
-	public static void load(File[] file_array, Map<String, Class> data_class_map, Object[] object_array)
+	public static void load(File[] file_array, Map<String, Class> data_class_map, Map<String, MemoHVo[]> memohvo_array_map, Map<String, MemoHFo[]> memohfo_array_map)
 	{
-		List<MemoHVo> memohvo_list = (List)object_array[0];
-		List<MemoHVs> memohvs_list = (List)object_array[1];
-		List<MemoHFo> memohfo_list = (List)object_array[2];
-		Map<String, Integer> frag_integer_map = (Map)object_array[3];
-		Map<String, Integer> vert_o_integer_map = (Map)object_array[4];
-		List<String> shader_name_string_list = (List)object_array[5];
-		List<String> model_name_string_list = (List)object_array[6];
-		List<String[][]> shader_string_2d_array_list = (List)object_array[7];
-		Map<String, String[][]> shader_string_2d_array_map = (Map)object_array[8];
-		List<String[][]> model_string_2d_array_list = (List)object_array[9];
-		List<MemoA0[]> memoa0_array_list = (List)object_array[10];
-		List<String[][]> attriblocation_string_2d_array_list = (List)object_array[11];
-		List<Integer> shader_id_integer_list = (List)object_array[12];
-
 		for (File file : file_array)
 		{
 			File[] texture_file_array = new File(file, "texture").listFiles();
@@ -328,135 +274,147 @@ public class ClientLoader
 
 		for (File file : file_array)
 		{
-//			File[] vert_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/vert/o").listFiles();
 			File[] vert_file_array = new File(file, "shader/vert/o").listFiles();
 			if (vert_file_array != null)
 			{
-				int step = memohvo_list.size();
-				vert_o_integer_map.put(file.getName(), step);
-
-				for (File vert_file : vert_file_array)
-				{
-					memohvo_list.add(null);
-				}
+				MemoHVo[] memohvo_array = new MemoHVo[vert_file_array.length];
 
 				for (File vert_file : vert_file_array)
 				{
 					String name = vert_file.getName();
 					int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
-					memohvo_list.set(index + step, new MemoHVo(vert_file.toString()));
+					memohvo_array[index] = new MemoHVo(vert_file.toString());
 				}
+
+				memohvo_array_map.put(file.getName(), memohvo_array);
 			}
 		}
 
 		for (File file : file_array)
 		{
-//			File[] frag_file_array = new File(file + "/shader/" + NaliConfig.GLSL + "/frag").listFiles();
 			File[] frag_file_array = new File(file, "shader/frag").listFiles();
 			if (frag_file_array != null)
 			{
-				int step = memohfo_list.size();
-				frag_integer_map.put(file.getName(), step);
-
-				for (File frag_file : frag_file_array)
-				{
-					memohfo_list.add(null);
-				}
+				MemoHFo[] memohfo_array = new MemoHFo[frag_file_array.length];
 
 				for (File frag_file : frag_file_array)
 				{
 					String name = frag_file.getName();
 					int index = Integer.parseInt(new String(name.getBytes(), 0, name.lastIndexOf('.')));
-					memohfo_list.set(index + step, new MemoHFo(frag_file.toString()));
+					memohfo_array[index] = new MemoHFo(frag_file.toString());
+				}
+
+				memohfo_array_map.put(file.getName(), memohfo_array);
+			}
+		}
+
+		List<MemoHVs> memohvs_list = new ArrayList();
+		for (File file : file_array)
+		{
+			File shader_file = new File(file, "shader.dat");
+			if (shader_file.isFile())
+			{
+				String name = file.getName();
+				String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(shader_file.toPath());
+
+				try
+				{
+					data_class_map.get(name).getField("SHADER_STEP").set(null, S_LIST.size());
+				}
+				catch (IllegalAccessException | NoSuchFieldException e)
+				{
+					error(e);
+				}
+
+				for (String[] shader_string_array : shader_string_2d_array)
+				{
+					String shader_string = shader_string_array[3];
+					byte[] byte_array = shader_string.getBytes();
+					MemoHFo memohfo = memohfo_array_map.get(shader_string_array[4])[Integer.parseInt(shader_string_array[5])];
+					if (shader_string.charAt(0) == 's')
+					{
+						MemoHVs memohvs = new MemoHVs(shader_string_array);
+						S_LIST.add(new MemoS(memohvs.shader, memohfo.shader, shader_string_array));
+						OpenGlHelper.glDeleteShader(memohvs.shader);
+						memohvs_list.add(memohvs);
+					}
+					else
+					{
+						S_LIST.add(new MemoS
+						(
+							memohvo_array_map.get(shader_string_array[2])[Integer.parseInt(new String(byte_array, 1, byte_array.length - 1))].shader,
+							memohfo.shader, shader_string_array
+						));
+					}
 				}
 			}
 		}
 
-		int i = 0/*, l = 0*/;
-		for (String[][] string_2d_array : shader_string_2d_array_list)
+		for (File file : file_array)
 		{
-			try
+			File model_file = new File(file, "model.dat");
+			if (model_file.isFile())
 			{
-				data_class_map.get(shader_name_string_list.get(i++)).getField("SHADER_STEP").set(null, S_LIST.size());
-			}
-			catch (IllegalAccessException | NoSuchFieldException e)
-			{
-				error(e);
-			}
+				String name = file.getName();
+				String path_string = Nali.ID + "/" + name;
+				String[][] model_string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
 
-			for (String[] string_array : string_2d_array)
-			{
-				String shader_string = string_array[3];
-				byte[] byte_array = shader_string.getBytes();
-				int v = Integer.parseInt(new String(byte_array, 1, byte_array.length - 1));
-				int f = Integer.parseInt(string_array[5]) + frag_integer_map.get(string_array[4]);
-				if (shader_string.charAt(0) == 's')
+				try
 				{
-					MemoHVs memohvs = new MemoHVs(string_array);
-					memohvs_list.add(memohvs);
-					S_LIST.add(new MemoS(memohvs.shader, memohfo_list.get(f).shader, string_array/*, path_string*/));
+					data_class_map.get(name).getField("MODEL_STEP").set(null, G_LIST.size());
+				}
+				catch (IllegalAccessException | NoSuchFieldException e)
+				{
+					error(e);
+				}
+
+				int gl_array_buffer_binding;
+				int gl_vertex_array_binding;
+
+				int gl_element_array_buffer_binding;
+				if (NaliConfig.VAO)
+				{
+					gl_vertex_array_binding = NaliGL.glVertexArrayBinding();
 				}
 				else
 				{
-					S_LIST.add(new MemoS(memohvo_list.get(v + vert_o_integer_map.get(string_array[2])).shader, memohfo_list.get(f).shader, string_array/*, path_string*/));
+					GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
+					gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
+					GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
+					gl_element_array_buffer_binding = RenderO.INTBUFFER.get(0);
+				}
+
+				for (String[] model_string_array : model_string_2d_array)
+				{
+					int shader_id = Integer.parseInt(model_string_array[3]);
+					String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + model_string_array[2] + "/shader.dat"));
+					String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + shader_string_2d_array[shader_id][0] + "/shader/" + shader_string_2d_array[shader_id][1] + "/attrib.dat"));
+
+					G_LIST.add(new MemoG
+					(
+						MemoA0.gen(model_string_array, attriblocation_string_2d_array, path_string),
+						shader_string_2d_array, attriblocation_string_2d_array, shader_id, model_string_array, path_string
+					));
+				}
+
+				if (NaliConfig.VAO)
+				{
+					NaliGL.glBindVertexArray(gl_vertex_array_binding);
+				}
+				else
+				{
+					OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
+					OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, gl_element_array_buffer_binding);
 				}
 			}
 		}
 
-		i = 0;
-		int l = 0;
-		for (String[][] string_2d_array : model_string_2d_array_list)
-		{
-			String path_string = Nali.ID + "/" + model_name_string_list.get(i);
-
-			try
-			{
-				data_class_map.get(model_name_string_list.get(i++)).getField("MODEL_STEP").set(null, G_LIST.size());
-			}
-			catch (IllegalAccessException | NoSuchFieldException e)
-			{
-				error(e);
-			}
-
-			int gl_array_buffer_binding;
-			int gl_vertex_array_binding;
-
-			int gl_element_array_buffer_binding;
-			if (NaliConfig.VAO)
-			{
-				gl_vertex_array_binding = NaliGL.glVertexArrayBinding();
-			}
-			else
-			{
-				GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
-				gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
-				GL11.glGetInteger(GL15.GL_ELEMENT_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
-				gl_element_array_buffer_binding = RenderO.INTBUFFER.get(0);
-			}
-
-			for (String[] string_array : string_2d_array)
-			{
-				G_LIST.add(new MemoG(/*index_int_array_list, */memoa0_array_list.get(l), shader_string_2d_array_map.get(string_array[2]), attriblocation_string_2d_array_list.get(l), shader_id_integer_list.get(l++), string_array, path_string));
-			}
-
-			if (NaliConfig.VAO)
-			{
-				NaliGL.glBindVertexArray(gl_vertex_array_binding);
-			}
-			else
-			{
-				OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
-				OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, gl_element_array_buffer_binding);
-			}
-		}
-
-		i = 0;
 		for (File file : file_array)
 		{
-			File model_file = new File(file, "frame.dat");
-			if (model_file.isFile())
+			File frame_file = new File(file, "frame.dat");
+			if (frame_file.isFile())
 			{
-				String[][] string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
+				String[][] string_2d_array = FileDataReader.getMixXStringArray(frame_file.toPath());
 				try
 				{
 					data_class_map.get(file.getName()).getField("FRAME_STEP").set(null, F_LIST.size());
@@ -466,6 +424,7 @@ public class ClientLoader
 					error(e);
 				}
 
+				int i = 0;
 				for (String[] string_array : string_2d_array)
 				{
 					MemoHVs memohvs = memohvs_list.get(i++);
@@ -516,55 +475,17 @@ public class ClientLoader
 
 	public static void render()
 	{
-		//s0-load
 		PageLoad pageload = new PageLoad();
 		pageload.take();
 		pageload.init();
-//			int tmp_width = -1, tmp_height = -1;
-//			while (true)
-//			{
 		int width = Display.getWidth();
 		int height = Display.getHeight();
-//				if (tmp_width != width || tmp_height != height)
-//				{
 		GL11.glViewport(0, 0, width, height);
-//					tmp_width = width;
-//					tmp_height = height;
 		pageload.gen(width, height);
-//				}
-//				if (false)
-//				{
-//					break;
-//				}
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		pageload.draw();
 		Display.update();
-//			}
 		pageload.free();
 		pageload.clear();
-		//e0-load
-//			while (true)
-//			{
-//				if (false)
-//				{
-//					break;
-//				}
-//			}
-
-//			try
-//			{
-//				Thread.sleep(5000);
-//			}
-//			catch (InterruptedException e)
-//			{
-//				error(e);
-//			}
-
-//			//s0-sound
-//			if ((NaliConfig.STATE & 8) == 8)
-//			{
-//				NaliAL.alSourceStop(source);
-//			}
-//			//e0-sound
 	}
 }

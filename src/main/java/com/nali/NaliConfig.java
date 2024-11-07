@@ -3,6 +3,7 @@ package com.nali;
 import com.nali.gui.page.PageConfig;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -152,7 +153,32 @@ public class NaliConfig
 					if ((pageconfig.state & 4) == 4)
 					{
 						char c = Keyboard.getEventCharacter();
-						if (Character.isLetterOrDigit(c) || c == '.'/* || Character.isSpaceChar(c)*/)
+						if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_C))
+						{
+							GuiScreen.setClipboardString(pageconfig.input_stringbuilder.toString());
+						}
+						else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_V))
+						{
+							String string = GuiScreen.getClipboardString();
+							pageconfig.input_stringbuilder.insert(pageconfig.select_box, string);
+							pageconfig.select_box += string.length();
+
+							pageconfig.clear();
+							pageconfig.init();
+							pageconfig.gen(width, height, wh20, h20);
+							setScrollEdit(pageconfig, wh20, width, height);
+						}
+						else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_X))
+						{
+							pageconfig.input_stringbuilder.setLength(0);
+							pageconfig.select_box = 0;
+
+							pageconfig.clear();
+							pageconfig.init();
+							pageconfig.gen(width, height, wh20, h20);
+							setScrollEdit(pageconfig, wh20, width, height);
+						}
+						else if (Character.isLetterOrDigit(c) || c == '.'/* || Character.isSpaceChar(c)*/)
 						{
 							pageconfig.input_stringbuilder.insert(pageconfig.select_box, c);
 							++pageconfig.select_box;
@@ -195,6 +221,12 @@ public class NaliConfig
 //							pageconfig.gen(width, height, wh20, h20);
 							setScrollEdit(pageconfig, wh20, width, height);
 						}
+						else if (key == Keyboard.KEY_ESCAPE)
+						{
+							pageconfig.state ^= 4;
+							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+							pageconfig.gen(width, height, wh20, h20);
+						}
 					}
 					else
 					{
@@ -219,6 +251,10 @@ public class NaliConfig
 					if (key == Keyboard.KEY_RETURN)
 					{
 						pageconfig.enter();
+						if ((pageconfig.state & 4) == 0)
+						{
+							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+						}
 						pageconfig.clear();
 						pageconfig.init();
 						pageconfig.gen(width, height, wh20, h20);

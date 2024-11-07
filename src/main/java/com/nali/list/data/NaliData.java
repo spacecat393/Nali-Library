@@ -10,7 +10,7 @@ public class NaliData
 //		FRAME_STEP
 //		SOUND_STEP
 //		MAX_BONE
-	public static byte STATE = 1;//preload
+	public static byte ORDINAL = 0;
 
 //	public static int QUAD_ARRAY_BUFFER;
 //

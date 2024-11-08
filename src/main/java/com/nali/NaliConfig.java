@@ -1,14 +1,9 @@
 package com.nali;
 
-import com.nali.gui.page.PageConfig;
 import com.nali.system.bytes.ByteReader;
 import com.nali.system.bytes.ByteWriter;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 //@Config(modid = ID)
@@ -108,190 +103,190 @@ public class NaliConfig
 		BGM_ID = new String(byte_array, 1+4+4+4, bgm_id_length);
 	}
 
-	public static void render()
-	{
-		PageConfig pageconfig = new PageConfig();
-		pageconfig.take();
-		pageconfig.init();
+//	public static void render()
+//	{
+//		PageConfig pageconfig = new PageConfig();
+//		pageconfig.take();
+//		pageconfig.init();
+//
+//		boolean loop = true;
+//		int tmp_width = -1, tmp_height = -1;
+//		while (loop)
+//		{
+//			int width = Display.getWidth();
+//			int height = Display.getHeight();
+//
+//			int h20 = (int)(0.041666668F * height);
+//			int wh20 = Math.min((int)(0.0234192037470726F * width), h20);
+//
+//			if (tmp_width != width || tmp_height != height)
+//			{
+//				GL11.glViewport(0, 0, width, height);
+//				tmp_width = width;
+//				tmp_height = height;
+//				pageconfig.gen(width, height, wh20, h20);
+//				if (pageconfig.scroll != 0)
+//				{
+//					pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+//				}
+//			}
+//
+//			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+//			pageconfig.draw(width, height, wh20, h20);
+//			Display.update();
+//
+////			while (Keyboard.next())
+////			{
+////				if (Keyboard.getEventKeyState())
+////				{
+////					int key = Keyboard.getEventKey();
+////					//						int i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
+////					//						warn("KEY: " + key);
+////					//						warn("I: " + i);
+////					//SHIFT 42
+////					//space 57
+////					if ((pageconfig.state & 4) == 4)
+////					{
+////						char c = Keyboard.getEventCharacter();
+////						if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_C))
+////						{
+////							GuiScreen.setClipboardString(pageconfig.input_stringbuilder.toString());
+////						}
+////						else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_V))
+////						{
+////							String string = GuiScreen.getClipboardString();
+////							pageconfig.input_stringbuilder.insert(pageconfig.select_box, string);
+////							pageconfig.select_box += string.length();
+////
+////							pageconfig.clear();
+////							pageconfig.init();
+////							pageconfig.gen(width, height, wh20, h20);
+////							setScrollEdit(pageconfig, wh20, width, height);
+////						}
+////						else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_X))
+////						{
+////							pageconfig.input_stringbuilder.setLength(0);
+////							pageconfig.select_box = 0;
+////
+////							pageconfig.clear();
+////							pageconfig.init();
+////							pageconfig.gen(width, height, wh20, h20);
+////							setScrollEdit(pageconfig, wh20, width, height);
+////						}
+////						else if (Character.isLetterOrDigit(c) || c == '.'/* || Character.isSpaceChar(c)*/)
+////						{
+////							pageconfig.input_stringbuilder.insert(pageconfig.select_box, c);
+////							++pageconfig.select_box;
+////
+////							pageconfig.clear();
+////							pageconfig.init();
+////							pageconfig.gen(width, height, wh20, h20);
+////							setScrollEdit(pageconfig, wh20, width, height);
+////						}
+////						else if (key == Keyboard.KEY_BACK)
+////						{
+////							if (pageconfig.select_box > 0)
+////							{
+////								pageconfig.input_stringbuilder.deleteCharAt(pageconfig.select_box - 1);
+////								--pageconfig.select_box;
+////							}
+////
+////							pageconfig.clear();
+////							pageconfig.init();
+////							pageconfig.gen(width, height, wh20, h20);
+////							setScrollEdit(pageconfig, wh20, width, height);
+////						}
+////						else if (key == Keyboard.KEY_LEFT)
+////						{
+////							if (pageconfig.select_box > 0)
+////							{
+////								--pageconfig.select_box;
+////							}
+////
+//////							pageconfig.gen(width, height, wh20, h20);
+////							setScrollEdit(pageconfig, wh20, width, height);
+////						}
+////						else if (key == Keyboard.KEY_RIGHT)
+////						{
+////							if (pageconfig.select_box < pageconfig.input_stringbuilder.length())
+////							{
+////								++pageconfig.select_box;
+////							}
+////
+//////							pageconfig.gen(width, height, wh20, h20);
+////							setScrollEdit(pageconfig, wh20, width, height);
+////						}
+////						else if (key == Keyboard.KEY_ESCAPE)
+////						{
+////							pageconfig.state ^= 4;
+////							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+////							pageconfig.gen(width, height, wh20, h20);
+////						}
+////					}
+////					else
+////					{
+////						if (key == Keyboard.KEY_ESCAPE)
+////						{
+////							//							config_byte_array = new byte[];
+////							loop = false;
+////						}
+////						else if (key == Keyboard.KEY_LEFT)
+////						{
+////							pageconfig.next((byte)-1);
+////							pageconfig.gen(width, height, wh20, h20);
+////							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+////						}
+////						else if (key == Keyboard.KEY_RIGHT)
+////						{
+////							pageconfig.next((byte)1);
+////							pageconfig.gen(width, height, wh20, h20);
+////							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+////						}
+////					}
+////					if (key == Keyboard.KEY_RETURN)
+////					{
+////						pageconfig.enter();
+////						if ((pageconfig.state & 4) == 0)
+////						{
+////							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
+////						}
+////						pageconfig.clear();
+////						pageconfig.init();
+////						pageconfig.gen(width, height, wh20, h20);
+//////								pageconfig.update(width, height, wh20, h20);
+////					}
+////					else if (key == Keyboard.KEY_UP)
+////					{
+////						pageconfig.scroll -= wh20 * 4.0F / height;
+////					}
+////					else if (key == Keyboard.KEY_DOWN)
+////					{
+////						pageconfig.scroll += wh20 * 4.0F / height;
+////					}
+////				}
+////			}
+//		}
+//
+//		pageconfig.free();
+//		pageconfig.clear();
+//	}
 
-		boolean loop = true;
-		int tmp_width = -1, tmp_height = -1;
-		while (loop)
-		{
-			int width = Display.getWidth();
-			int height = Display.getHeight();
-
-			int h20 = (int)(0.041666668F * height);
-			int wh20 = Math.min((int)(0.0234192037470726F * width), h20);
-
-			if (tmp_width != width || tmp_height != height)
-			{
-				GL11.glViewport(0, 0, width, height);
-				tmp_width = width;
-				tmp_height = height;
-				pageconfig.gen(width, height, wh20, h20);
-				if (pageconfig.scroll != 0)
-				{
-					pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-				}
-			}
-
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			pageconfig.draw(width, height, wh20, h20);
-			Display.update();
-
-			while (Keyboard.next())
-			{
-				if (Keyboard.getEventKeyState())
-				{
-					int key = Keyboard.getEventKey();
-					//						int i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey();
-					//						warn("KEY: " + key);
-					//						warn("I: " + i);
-					//SHIFT 42
-					//space 57
-					if ((pageconfig.state & 4) == 4)
-					{
-						char c = Keyboard.getEventCharacter();
-						if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_C))
-						{
-							GuiScreen.setClipboardString(pageconfig.input_stringbuilder.toString());
-						}
-						else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_V))
-						{
-							String string = GuiScreen.getClipboardString();
-							pageconfig.input_stringbuilder.insert(pageconfig.select_box, string);
-							pageconfig.select_box += string.length();
-
-							pageconfig.clear();
-							pageconfig.init();
-							pageconfig.gen(width, height, wh20, h20);
-							setScrollEdit(pageconfig, wh20, width, height);
-						}
-						else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_X))
-						{
-							pageconfig.input_stringbuilder.setLength(0);
-							pageconfig.select_box = 0;
-
-							pageconfig.clear();
-							pageconfig.init();
-							pageconfig.gen(width, height, wh20, h20);
-							setScrollEdit(pageconfig, wh20, width, height);
-						}
-						else if (Character.isLetterOrDigit(c) || c == '.'/* || Character.isSpaceChar(c)*/)
-						{
-							pageconfig.input_stringbuilder.insert(pageconfig.select_box, c);
-							++pageconfig.select_box;
-
-							pageconfig.clear();
-							pageconfig.init();
-							pageconfig.gen(width, height, wh20, h20);
-							setScrollEdit(pageconfig, wh20, width, height);
-						}
-						else if (key == Keyboard.KEY_BACK)
-						{
-							if (pageconfig.select_box > 0)
-							{
-								pageconfig.input_stringbuilder.deleteCharAt(pageconfig.select_box - 1);
-								--pageconfig.select_box;
-							}
-
-							pageconfig.clear();
-							pageconfig.init();
-							pageconfig.gen(width, height, wh20, h20);
-							setScrollEdit(pageconfig, wh20, width, height);
-						}
-						else if (key == Keyboard.KEY_LEFT)
-						{
-							if (pageconfig.select_box > 0)
-							{
-								--pageconfig.select_box;
-							}
-
-//							pageconfig.gen(width, height, wh20, h20);
-							setScrollEdit(pageconfig, wh20, width, height);
-						}
-						else if (key == Keyboard.KEY_RIGHT)
-						{
-							if (pageconfig.select_box < pageconfig.input_stringbuilder.length())
-							{
-								++pageconfig.select_box;
-							}
-
-//							pageconfig.gen(width, height, wh20, h20);
-							setScrollEdit(pageconfig, wh20, width, height);
-						}
-						else if (key == Keyboard.KEY_ESCAPE)
-						{
-							pageconfig.state ^= 4;
-							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-							pageconfig.gen(width, height, wh20, h20);
-						}
-					}
-					else
-					{
-						if (key == Keyboard.KEY_ESCAPE)
-						{
-							//							config_byte_array = new byte[];
-							loop = false;
-						}
-						else if (key == Keyboard.KEY_LEFT)
-						{
-							pageconfig.next((byte)-1);
-							pageconfig.gen(width, height, wh20, h20);
-							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-						}
-						else if (key == Keyboard.KEY_RIGHT)
-						{
-							pageconfig.next((byte)1);
-							pageconfig.gen(width, height, wh20, h20);
-							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-						}
-					}
-					if (key == Keyboard.KEY_RETURN)
-					{
-						pageconfig.enter();
-						if ((pageconfig.state & 4) == 0)
-						{
-							pageconfig.scroll = ((float)pageconfig.select * wh20 * 4 - wh20 * 4) / height;
-						}
-						pageconfig.clear();
-						pageconfig.init();
-						pageconfig.gen(width, height, wh20, h20);
-//								pageconfig.update(width, height, wh20, h20);
-					}
-					else if (key == Keyboard.KEY_UP)
-					{
-						pageconfig.scroll -= wh20 * 4.0F / height;
-					}
-					else if (key == Keyboard.KEY_DOWN)
-					{
-						pageconfig.scroll += wh20 * 4.0F / height;
-					}
-				}
-			}
-		}
-
-		pageconfig.free();
-		pageconfig.clear();
-	}
-
-	public static void setScrollEdit(PageConfig pageconfig, int wh20, int width, int height)
-	{
-		int wh10 = wh20 / 2;
-		int nl_ss = wh20 + wh10;
-		int nl_x = wh20, nl_y = 0;
-
-		for (int i = 0; i < pageconfig.select_box; ++i)
-		{
-			if (nl_x > width - nl_ss)
-			{
-				nl_x = wh20;
-				nl_y += nl_ss;
-			}
-			nl_x += nl_ss;
-		}
-
-		pageconfig.scroll = 2.0F * (float)nl_y / height;
-	}
+//	public static void setScrollEdit(PageConfig pageconfig, int wh20, int width, int height)
+//	{
+//		int wh10 = wh20 / 2;
+//		int nl_ss = wh20 + wh10;
+//		int nl_x = wh20, nl_y = 0;
+//
+//		for (int i = 0; i < pageconfig.select_box; ++i)
+//		{
+//			if (nl_x > width - nl_ss)
+//			{
+//				nl_x = wh20;
+//				nl_y += nl_ss;
+//			}
+//			nl_x += nl_ss;
+//		}
+//
+//		pageconfig.scroll = 2.0F * (float)nl_y / height;
+//	}
 }

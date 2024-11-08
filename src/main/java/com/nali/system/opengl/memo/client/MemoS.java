@@ -1,5 +1,6 @@
 package com.nali.system.opengl.memo.client;
 
+import com.nali.Nali;
 import com.nali.system.file.FileDataReader;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -10,7 +11,7 @@ import org.lwjgl.opengl.GL20;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import static com.nali.Nali.*;
+import static com.nali.Nali.ID;
 
 @SideOnly(Side.CLIENT)
 public class MemoS
@@ -56,8 +57,15 @@ public class MemoS
 
 		if (OpenGlHelper.glGetProgrami(this.program, OpenGlHelper.GL_LINK_STATUS) == GL11.GL_FALSE)
 		{
-			warn("F " + Arrays.toString(error_string_array));
-			error(OpenGlHelper.glGetProgramInfoLog(this.program, 32768));
+			Nali.warn("F " + Arrays.toString(error_string_array));
+			Nali.error(OpenGlHelper.glGetProgramInfoLog(this.program, 32768));
 		}
+
+//		//reset memory
+//		OpenGlHelper.glDeleteProgram(this.program);
+//		this.program = OpenGlHelper.glCreateProgram();
+//		OpenGlHelper.glAttachShader(this.program, vert_shader);
+//		OpenGlHelper.glAttachShader(this.program, frag_shader);
+//		OpenGlHelper.glLinkProgram(this.program);
 	}
 }

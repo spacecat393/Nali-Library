@@ -12,14 +12,12 @@ import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.*;
 
 @SideOnly(Side.CLIENT)
-public class PageConfig
+public class PageConfig extends Page
 {
-	public byte state;//display_yt-dlp display_ffmpeg enter_mode
+	public byte state;//display_yt-dlp display_ffmpeg enter_mode loop
 //	public String type_string = "_";
 
 	public byte[] group_byte_array;
@@ -54,6 +52,10 @@ public class PageConfig
 //		gl_blend_src_alpha,
 //		gl_blend_dst_rgb,
 //		gl_blend_dst_alpha;
+
+	public int
+		h20,
+		wh20;
 
 	public void take()
 	{
@@ -532,5 +534,65 @@ public class PageConfig
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void render()
+	{
+		boolean gl_blend = GL11.glIsEnabled(GL11.GL_BLEND);
+		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, RenderO.INTBUFFER);
+		int gl_blend_equation_rgb = RenderO.INTBUFFER.get(0);
+		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, RenderO.INTBUFFER);
+		int gl_blend_equation_alpha = RenderO.INTBUFFER.get(0);
+
+		GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, RenderO.INTBUFFER);
+		int gl_blend_src_rgb = RenderO.INTBUFFER.get(0);
+		GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, RenderO.INTBUFFER);
+		int gl_blend_src_alpha = RenderO.INTBUFFER.get(0);
+		GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, RenderO.INTBUFFER);
+		int gl_blend_dst_rgb = RenderO.INTBUFFER.get(0);
+		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, RenderO.INTBUFFER);
+		int gl_blend_dst_alpha = RenderO.INTBUFFER.get(0);
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
+		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+
+//		PageConfig pageconfig = (PageConfig)PAGE;
+		this.take();
+
+//		while (loop)
+		int width = Display.getWidth();
+		int height = Display.getHeight();
+
+		this.h20 = (int)(0.041666668F * height);
+		this.wh20 = Math.min((int)(0.0234192037470726F * width), this.h20);
+
+		if (WIDTH != width || HEIGHT != height)
+		{
+			GL11.glViewport(0, 0, width, height);
+			this.gen(width, height, this.wh20, this.h20);
+			if (this.scroll != 0)
+			{
+				this.scroll = ((float)this.select * this.wh20 * 4 - this.wh20 * 4) / height;
+			}
+			WIDTH = width;
+			HEIGHT = height;
+		}
+
+//		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		this.draw(width, height, this.wh20, this.h20);
+		this.free();
+
+		if (gl_blend)
+		{
+			GL11.glEnable(GL11.GL_BLEND);
+		}
+		else
+		{
+			GL11.glDisable(GL11.GL_BLEND);
+		}
+		GL20.glBlendEquationSeparate(gl_blend_equation_rgb, gl_blend_equation_alpha);
+		GL14.glBlendFuncSeparate(gl_blend_src_rgb, gl_blend_dst_rgb, gl_blend_src_alpha, gl_blend_dst_alpha);
 	}
 }

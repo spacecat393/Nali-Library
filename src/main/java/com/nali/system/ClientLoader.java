@@ -4,6 +4,10 @@ import com.nali.Nali;
 import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
+import com.nali.gui.key.Key;
+import com.nali.gui.key.KeyConfig;
+import com.nali.gui.page.Page;
+import com.nali.gui.page.PageConfig;
 import com.nali.gui.page.PageLoad;
 import com.nali.render.RenderO;
 import com.nali.render.RenderS;
@@ -21,6 +25,7 @@ import org.lwjgl.opengl.GL15;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.file.Files;
@@ -47,6 +52,9 @@ public class ClientLoader
 
 	public static void loadPreInit()
 	{
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		Display.update();
+
 		List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
 //		for (Class data_class : data_class_list)
 //		{
@@ -141,7 +149,22 @@ public class ClientLoader
 			}
 			catch (Exception e)
 			{
-				NaliConfig.render();
+//				NaliConfig.render();
+				PageConfig pageconfig = new PageConfig();
+				pageconfig.init();
+				Page.PAGE = pageconfig;
+				Key.KEY = new KeyConfig();
+				while ((pageconfig.state & 8) == 0)
+				{
+					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+					Page.PAGE.render();
+					Display.update();
+					Key.KEY.run();
+				}
+
+				pageconfig.clear();
+				Page.PAGE = null;
+				Key.KEY = null;
 
 				try
 				{
@@ -186,7 +209,14 @@ public class ClientLoader
 			}
 			//e0-sound
 
-			render();
+			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+			PageLoad pageload = new PageLoad();
+			pageload.init();
+//			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+			pageload.gen(Display.getWidth(), Display.getHeight());
+			pageload.render();
+			pageload.clear();
+			Display.update();
 
 			for (Class data_class : data_class_list)
 			{
@@ -473,19 +503,39 @@ public class ClientLoader
 		}
 	}
 
-	public static void render()
+//	public static void render()
+//	{
+//		PageLoad pageload = new PageLoad();
+//		pageload.take();
+//		pageload.init();
+//		int width = Display.getWidth();
+//		int height = Display.getHeight();
+//		GL11.glViewport(0, 0, width, height);
+//		pageload.gen(width, height);
+//		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+//		pageload.draw();
+//		Display.update();
+//		pageload.free();
+//		pageload.clear();
+//	}
+
+	public static void setRender()
 	{
-		PageLoad pageload = new PageLoad();
-		pageload.take();
-		pageload.init();
-		int width = Display.getWidth();
-		int height = Display.getHeight();
-		GL11.glViewport(0, 0, width, height);
-		pageload.gen(width, height);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		pageload.draw();
-		Display.update();
-		pageload.free();
-		pageload.clear();
+		preTexture(Reflect.getClasses("com.nali.list.render.o"));
+		preTexture(Reflect.getClasses("com.nali.list.render.s"));
+	}
+
+	public static void preTexture(List<Class> render_class_list)
+	{
+		for (Class render_class : render_class_list)
+		{
+			try
+			{
+				render_class.getMethod("setTextureMap").invoke(null);
+			}
+			catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+			{
+			}
+		}
 	}
 }

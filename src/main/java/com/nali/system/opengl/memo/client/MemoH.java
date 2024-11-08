@@ -48,6 +48,12 @@ public abstract class MemoH
 			error(OpenGlHelper.glGetShaderInfoLog(shader, 1024));
 		}
 
+//		//reset memory
+//		OpenGlHelper.glDeleteShader(shader);
+//		shader = OpenGlHelper.glCreateShader(type);
+//		OpenGlHelper.glShaderSource(shader, bytebuffer);
+//		OpenGlHelper.glCompileShader(shader);
+
 		return shader;
 	}
 }

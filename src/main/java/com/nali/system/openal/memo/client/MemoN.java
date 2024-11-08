@@ -22,7 +22,7 @@ public class MemoN
 
 		int sound_buffer = NaliAL.alGenBuffers();
 //		NaliAL.alBufferData(sound_buffer, AL10.AL_FORMAT_MONO16, MemoryUtil.getAddress(bytebuffer), bytebuffer.remaining(), FFmpeg.getSampleRate(path));
-		NaliAL.alBufferData(sound_buffer, AL10.AL_FORMAT_STEREO16, MemoryUtil.getAddress(bytebuffer), bytebuffer.limit(), FFmpeg.getSampleRate(path));
+		NaliAL.alBufferData(sound_buffer, AL10.AL_FORMAT_STEREO16, MemoryUtil.getAddress(bytebuffer), bytebuffer.limit(), FFmpeg.getSampleRate(path));//AL10.AL_FORMAT_MONO16
 		return sound_buffer;
 	}
 }

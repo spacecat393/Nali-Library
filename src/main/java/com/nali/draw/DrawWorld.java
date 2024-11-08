@@ -146,12 +146,20 @@ public class DrawWorld
 
 		if (!E_MODEL_MAP.isEmpty())
 		{
+//			Nali.warn("model" + E_MODEL_MAP.size());
 			draw(E_MODEL_MAP);
 		}
 //		FIRST_MODEL_MAP.clear();
 
+		if (!E_GLOW_MAP.isEmpty())
+		{
+//			Nali.warn("glow" + E_GLOW_MAP.size());
+			draw(E_GLOW_MAP);
+		}
+
 		if (!E_TRANSLUCENT_MAP.isEmpty())
 		{
+//			Nali.warn("translucent " + E_TRANSLUCENT_MAP.size());
 			GL11.glDepthMask(false);
 //			GL11.glEnable(GL11.GL_CULL_FACE);
 //			GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -250,9 +258,9 @@ public class DrawWorld
 //			OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
 //			setTextureBuffer(Minecraft.getMinecraft().getFramebuffer().framebufferTexture, (byte)0);
 
+			OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
 			if ((byte_array[4 + 4 + 4] & 4) == 4)//color
 			{
-				OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
 //				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 //				setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 
@@ -268,7 +276,6 @@ public class DrawWorld
 			}
 			else
 			{
-				OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
 //				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //				setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
 

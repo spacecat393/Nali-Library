@@ -142,7 +142,7 @@ public class DrawWorld
 //			OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
 //		}
 
-		RenderO.takeDefault();
+		RenderO.take();
 
 		if (!E_MODEL_MAP.isEmpty())
 		{
@@ -198,22 +198,22 @@ public class DrawWorld
 //		DRAWWORLDDATA_LIST.clear();
 //		DATA_SIZE = 0;
 
-		RenderO.setDefault();
+		RenderO.free();
 	}
 
 	public static void runEG()
 	{
 		if (!E_GLOW_MAP.isEmpty())
 		{
-			RenderO.takeDefault();
+			RenderO.take();
 			draw(E_GLOW_MAP);
-			RenderO.setDefault();
+			RenderO.free();
 		}
 	}
 
 	public static void runT()
 	{
-		RenderO.takeDefault();
+		RenderO.take();
 
 		if (!T_MODEL_MAP.isEmpty())
 		{
@@ -226,7 +226,7 @@ public class DrawWorld
 			draw(T_TRANSLUCENT_MAP);
 		}
 
-		RenderO.setDefault();
+		RenderO.free();
 	}
 
 	public static void clear()

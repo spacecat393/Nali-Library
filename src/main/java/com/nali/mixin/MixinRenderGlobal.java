@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static com.nali.draw.DrawWorld.*;
 
-@Mixin(RenderGlobal.class)
+@Mixin(value = RenderGlobal.class, priority = Integer.MAX_VALUE)
 public abstract class MixinRenderGlobal
 {
 	private static int PASS;

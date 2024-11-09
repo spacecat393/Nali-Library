@@ -1,6 +1,7 @@
 package com.nali.mixin;
 
 import com.nali.NaliConfig;
+import com.nali.gui.page.Page;
 import com.nali.gui.page.PageLoad;
 import com.nali.render.RenderO;
 import com.nali.system.ClientLoader;
@@ -31,8 +32,7 @@ public abstract class MixinFMLClientHandler
 
 		PageLoad pageload = new PageLoad();
 		pageload.init();
-		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		pageload.gen(Display.getWidth(), Display.getHeight());
+		Page.WIDTH = -1;
 		pageload.render();
 		pageload.clear();
 		Display.update();

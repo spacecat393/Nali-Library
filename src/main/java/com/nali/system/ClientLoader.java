@@ -4,7 +4,6 @@ import com.nali.Nali;
 import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyConfig;
 import com.nali.gui.page.Page;
 import com.nali.gui.page.PageConfig;
@@ -52,7 +51,6 @@ public class ClientLoader
 
 	public static void loadPreInit()
 	{
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		Display.update();
 
 		List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
@@ -149,22 +147,18 @@ public class ClientLoader
 			}
 			catch (Exception e)
 			{
-//				NaliConfig.render();
 				PageConfig pageconfig = new PageConfig();
 				pageconfig.init();
-				Page.PAGE = pageconfig;
-				Key.KEY = new KeyConfig();
+				KeyConfig keyconfig = new KeyConfig();
 				while ((pageconfig.state & 8) == 0)
 				{
 					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-					Page.PAGE.render();
+					pageconfig.render();
 					Display.update();
-					Key.KEY.run();
+					keyconfig.run();
 				}
 
 				pageconfig.clear();
-				Page.PAGE = null;
-				Key.KEY = null;
 
 				try
 				{
@@ -212,8 +206,7 @@ public class ClientLoader
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 			PageLoad pageload = new PageLoad();
 			pageload.init();
-//			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-			pageload.gen(Display.getWidth(), Display.getHeight());
+			Page.WIDTH = -1;
 			pageload.render();
 			pageload.clear();
 			Display.update();
@@ -502,22 +495,6 @@ public class ClientLoader
 			}
 		}
 	}
-
-//	public static void render()
-//	{
-//		PageLoad pageload = new PageLoad();
-//		pageload.take();
-//		pageload.init();
-//		int width = Display.getWidth();
-//		int height = Display.getHeight();
-//		GL11.glViewport(0, 0, width, height);
-//		pageload.gen(width, height);
-//		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-//		pageload.draw();
-//		Display.update();
-//		pageload.free();
-//		pageload.clear();
-//	}
 
 	public static void setRender()
 	{

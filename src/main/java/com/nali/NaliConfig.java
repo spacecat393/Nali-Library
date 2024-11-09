@@ -22,7 +22,7 @@ public class NaliConfig
 //	public static String GLSL = "100";
 //	public static String ATTRIBUTE = "attribute";
 	public static byte STATE = 1+4+8;//PRE_SHADER USE_SWITCH USE_YT-DLP USE_FFMPEG
-	public static float AL_GAIN = 1.0F;
+	public static float AL_GAIN = 0.5F;
 	public static float AL_PITCH = 1.0F;
 	public static String BGM_ID = "eeXVnP0zuMo";
 //	public static byte[] CONFIG_BYTE_ARRAY;

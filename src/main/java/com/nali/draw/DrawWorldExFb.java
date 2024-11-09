@@ -171,7 +171,7 @@
 //		GL30.glGetFramebufferAttachmentParameter(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL30.GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME, OPENGL_INTBUFFER);
 //		GL_DEPTH_ATTACHMENT = OPENGL_INTBUFFER.get(0);
 //
-//		RenderO.takeDefault();
+//		RenderO.take();
 //
 ////		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 //
@@ -294,7 +294,7 @@
 ////		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, gl_texture_min_filter_4);
 ////		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, gl_texture_mag_filter_4);
 //
-//		RenderO.setDefault();
+//		RenderO.free();
 //
 //		OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, GL_COLOR_ATTACHMENT0, 0);
 //		OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, GL_DEPTH_ATTACHMENT, 0);
@@ -566,7 +566,7 @@
 //		}
 //
 //		//0
-////		ObjectRender.setDefault();
+////		ObjectRender.free();
 //	}
 //
 //	public static void setTexture(MemoG rg, MemoS rs, byte[] byte_array)

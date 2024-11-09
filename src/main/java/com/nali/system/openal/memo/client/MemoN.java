@@ -1,5 +1,6 @@
 package com.nali.system.openal.memo.client;
 
+import com.nali.Nali;
 import com.nali.NaliAL;
 import com.nali.system.file.FFmpeg;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,14 +16,54 @@ public class MemoN
 {
 	public static int gen(String path)
 	{
-		byte[] byte_array = FFmpeg.getSounds(path);
-		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(byte_array.length << 2).order(ByteOrder.nativeOrder());
-		bytebuffer.put(byte_array);
-		bytebuffer.flip();//?
-
 		int sound_buffer = NaliAL.alGenBuffers();
-//		NaliAL.alBufferData(sound_buffer, AL10.AL_FORMAT_MONO16, MemoryUtil.getAddress(bytebuffer), bytebuffer.remaining(), FFmpeg.getSampleRate(path));
-		NaliAL.alBufferData(sound_buffer, AL10.AL_FORMAT_STEREO16, MemoryUtil.getAddress(bytebuffer), bytebuffer.limit(), FFmpeg.getSampleRate(path));//AL10.AL_FORMAT_MONO16
+		int channels = Integer.parseInt(FFmpeg.getSelect(path, "channels"));
+//		String channel_layout = FFmpeg.getSelect(path, "channel_layout");
+		int format = -1;
+		if (channels == 2)
+		{
+			format = AL10.AL_FORMAT_STEREO16;
+//			if (channel_layout.equals("stereo"))
+//			{
+//				format = AL10.AL_FORMAT_STEREO16;
+//			}
+//			else if (channel_layout.equals("mono"))
+//			{
+//				format = AL10.AL_FORMAT_MONO16;
+//			}
+//			else
+//			{
+//				Nali.error("CHANNEL_LAYOUT " + channel_layout);
+//			}
+		}
+		else if (channels == 1)
+		{
+			format = AL10.AL_FORMAT_MONO16;
+//			if (channel_layout.equals("stereo"))
+//			{
+//				format = AL10.AL_FORMAT_STEREO8;
+//			}
+//			else if (channel_layout.equals("mono"))
+//			{
+//				format = AL10.AL_FORMAT_MONO8;
+//			}
+//			else
+//			{
+//				Nali.error("CHANNEL_LAYOUT " + channel_layout);
+//			}
+		}
+		else
+		{
+			Nali.error("CHANNELS " + channels);
+		}
+
+		byte[] byte_array = FFmpeg.getSounds(path);
+		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(byte_array.length).order(ByteOrder.nativeOrder());
+		bytebuffer.put(byte_array);
+		bytebuffer.flip();
+
+		//read sound follow ffmpeg file
+		NaliAL.alBufferData(sound_buffer, format, MemoryUtil.getAddress(bytebuffer), bytebuffer.limit(), Integer.parseInt(FFmpeg.getSelect(path, "sample_rate")));
 		return sound_buffer;
 	}
 }

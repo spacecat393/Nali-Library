@@ -55,4 +55,6 @@ public class NaliAL
 	public static native void alDeleteSources(int source);
 	public static native void alSource3f(int source, int pname, float v1, float v2, float v3);
 	public static native void alDeleteBuffers(int buffer);
+	public static native void alListener3f(int pname, float v1, float v2, float v3);
+	public static native void alListenerfv(int pname, long value);
 }

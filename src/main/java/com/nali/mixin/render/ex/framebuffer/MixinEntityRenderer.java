@@ -102,7 +102,7 @@
 //////	//		OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
 ////////			clear(R_MCTB_FRAMEBUFFER_TEXTURE, R_MCTB_RENDERBUFFER_TEXTURE);
 //////
-////////			RenderO.takeDefault();
+////////			RenderO.take();
 ////////			GL11.glDisable(GL11.GL_DEPTH_TEST);
 //////
 ////////			OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, DEPTH_COLOR0_TEXTURE, 0);
@@ -145,7 +145,7 @@
 ////////			OpenGlHelper.glBindBuffer(GL21.GL_PIXEL_PACK_BUFFER, 0);
 //////
 //////
-////////			RenderO.setDefault();
+////////			RenderO.free();
 ////			clear(R_MCTB_FRAMEBUFFER_TEXTURE, R_MCTB_RENDERBUFFER_TEXTURE);
 ////////			OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_COLOR_ATTACHMENT0, GL11.GL_TEXTURE_2D, R_MCTB_FRAMEBUFFER_TEXTURE, 0);
 ////////			OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, PBO_DEPTH_TEXTURE, 0);
@@ -228,7 +228,7 @@
 ////			OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, GL_DEPTH_ATTACHMENT, 0);
 ////			GlStateManager.depthMask(false);
 ////
-//////			RenderO.takeDefault();
+//////			RenderO.take();
 //////			GL11.glDisable(GL11.GL_DEPTH_TEST);
 //////
 //////			OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
@@ -248,7 +248,7 @@
 //////			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, gl_texture_min_filter_2);
 //////			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, gl_texture_mag_filter_2);
 //////
-//////			RenderO.setDefault();
+//////			RenderO.free();
 ////
 //////		!GL11.glViewport(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT);
 ////

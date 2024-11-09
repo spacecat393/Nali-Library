@@ -4,10 +4,14 @@ import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.gui.key.Key;
 import com.nali.gui.page.Page;
+import com.nali.render.RenderO;
 import com.nali.sound.Sound;
 import com.nali.system.ClientLoader;
 import com.nali.system.Timing;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import org.lwjgl.MemoryUtil;
+import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL43;
 import org.lwjgl.opengl.KHRDebug;
@@ -30,6 +34,45 @@ public abstract class MixinMinecraft
 	private void nali_runGameLoop(CallbackInfo callbackinfo)
 	{
 		Timing.count();
+
+		EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
+		if (entityplayersp != null)
+		{
+			NaliAL.alListener3f(AL10.AL_POSITION, (float)entityplayersp.posX, (float)entityplayersp.posY, (float)entityplayersp.posZ);
+
+			float ry = (float) Math.toRadians(entityplayersp.rotationYaw);
+//			float rp = (float) Math.toRadians(entityplayersp.rotationPitch);
+//			float rp = 0;
+
+//			float sry = (float)Math.sin(ry);
+//			float cry = (float)Math.cos(ry);
+
+//			float srp = (float)Math.sin(rp);
+//			float crp = (float)Math.cos(rp);
+//			float crp = 1;
+			RenderO.FLOATBUFFER.clear();
+			RenderO.FLOATBUFFER.put(new float[]
+			{
+//				-sry * crp,
+//				-srp,
+//				cry * crp,
+//				sry * srp,
+//				crp,
+//				-cry * srp
+				-(float)Math.sin(ry)/* * crp*/,
+				0,
+				(float)Math.cos(ry)/* * crp*/,
+				0,
+				1/*crp*/,
+				0
+			});
+			RenderO.FLOATBUFFER.flip();
+			NaliAL.alListenerfv(AL10.AL_ORIENTATION, MemoryUtil.getAddress(RenderO.FLOATBUFFER));
+		}
+		else
+		{
+			NaliAL.alListener3f(AL10.AL_POSITION, 0, 0, 0);
+		}
 
 		for (Sound sound : new HashSet<>(SOUND_SET))
 		{
@@ -97,76 +140,6 @@ public abstract class MixinMinecraft
 	@Inject(method = "init", at = @At(value = "TAIL"))
 	private void nali_init(CallbackInfo callbackinfo)
 	{
-//		//use this thread
-//		SharedDrawable shareddrawable = null;
-//		Drawable drawable = Display.getDrawable();
-//		try
-//		{
-////			Drawable d = IMixinSplashProgress.d();
-////			d.releaseContext();
-////			d.destroy();
-////			drawable.destroy();
-////			drawable.releaseContext();
-//			shareddrawable = new SharedDrawable(drawable);
-//			shareddrawable.makeCurrent();
-//		}
-//		catch (LWJGLException e)
-//		{
-//			error(e);
-//		}
-//
-////		Display.update();
-////		ClientLoader.render();
-//		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-//		PageLoad pageload = new PageLoad();
-//		pageload.init();
-//		pageload.render();
-//		pageload.clear();
-//		Display.update();
-////		while(true)if(false)break;
-//
-//		this.setRender();
-//
-////		ClientLoader.loadInit();
-//		if ((NaliConfig.STATE & 1) == 1)
-//		{
-//			for (Class render_class : Reflect.getClasses("com.nali.list.render.s"))
-//			{
-//				try
-//				{
-//					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAS").get(null), render_class.getField("IBOTHDASN").get(null))).draw();
-//				}
-//				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
-//				{
-//					error(e);
-//				}
-//			}
-//
-//			for (Class render_class : Reflect.getClasses("com.nali.list.render.o"))
-//			{
-//				try
-//				{
-//					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAO").get(null))).draw();
-//				}
-//				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
-//				{
-//					error(e);
-//				}
-//			}
-//		}
-//
-//		//use current thread
-//		try
-//		{
-//			shareddrawable.releaseContext();
-//			shareddrawable.destroy();
-//			drawable.makeCurrent();
-//		}
-//		catch (LWJGLException e)
-//		{
-//			error(e);
-//		}
-
 		//s0-sound
 		if ((NaliConfig.STATE & 8+4) == 8+4)
 		{

@@ -9,7 +9,7 @@
 ////	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderEntities(Lnet/minecraft/entity/Entity;Lnet/minecraft/client/renderer/culling/ICamera;F)V", shift = At.Shift.AFTER))
 ////	private void nali_renderWorldPassE(int pass, float partialTicks, long finishTimeNano, CallbackInfo callbackinfo)
 ////	{
-////		RenderO.takeDefault();
+////		RenderO.take();
 ////
 ////		draw(FIRST_MODEL_MAP);
 ////
@@ -19,7 +19,7 @@
 ////			draw(SECOND_MODEL_MAP);
 ////		}
 ////
-////		RenderO.setDefault();
+////		RenderO.free();
 ////	}
 //
 ////	@Inject(method = "renderWorldPass", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;renderBlockLayer(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I", shift = At.Shift.BEFORE, ordinal = 3))
@@ -40,13 +40,13 @@
 ////	{
 ////		if (!SECOND_MODEL_MAP.isEmpty())
 ////		{
-////			RenderO.takeDefault();
+////			RenderO.take();
 ////
 ////			GL11.glDepthMask(false);
 ////			draw(SECOND_MODEL_MAP);
 ////			SECOND_MODEL_MAP.clear();
 ////
-////			RenderO.setDefault();
+////			RenderO.free();
 ////		}
 ////
 ////		DRAWWORLDDATA_LIST.clear();

@@ -2,6 +2,7 @@ package com.nali.sound;
 
 import com.nali.NaliAL;
 import com.nali.NaliConfig;
+import com.nali.system.ClientLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -10,73 +11,31 @@ import org.lwjgl.openal.AL10;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import static com.nali.system.ClientLoader.SOUND_INTEGER_LIST;
-
 @SideOnly(Side.CLIENT)
-public class Sound
+public abstract class Sound
 {
 	public static Set<Sound> SOUND_SET = new LinkedHashSet();
-//	public DataLoader dataloader;
 	public int source = -1, id = -1;
 	public boolean pause;
 
-//	public static SoundRender getSoundRender(/*DataLoader dataloader, */int id)
-//	{
-////		if (dataloader.openalmemory == null)
-//		if (id == -1)
-//		{
-//			return new NoSoundRender();
-//		}
-//		else
-//		{
-//			SoundRender soundrender = new SoundRender();
-////			soundrender.dataloader = dataloader;
-////		this.gen(id);
-//			return soundrender;
-//		}
-//	}
-
-//	public void rePlay(int id)
-//	{
-//		if (id != -1)
-//		{
-//			if (this.id == id && this.source != -1)
-//			{
-//				AL10.alSourceRewind(this.source);
-//
-//				AL10.alSourcePlay(this.source);
-//			}
-//			else
-//			{
-//				AL10.alDeleteSources(this.source);
-//
-//				this.gen(id);
-//
-//				AL10.alSourcePlay(this.source);
-//			}
-//		}
-//	}
-
 	public void play(int id)
 	{
-//		if (id != -1)
-//		{
-		if (this.id != id || this.source == -1)
+		if (id > -1 && id < ClientLoader.SOUND_INTEGER_LIST.size())
 		{
-//				Minecraft.getMinecraft().addScheduledTask(() ->
-//				{
-			if (this.source != -1)
+			if (this.id != id || this.source == -1)
 			{
-				NaliAL.alDeleteSources(this.source);
-//					AL10.alDeleteBuffers(this.buffer);
+				if (this.source != -1)
+				{
+					NaliAL.alDeleteSources(this.source);
+				}
+
+				this.gen(id);
+
+//			Nali.warn("S " + NaliAL.alGetSourcei(this.source, AL10.AL_SOURCE_STATE));
+				NaliAL.alSourcePlay(this.source);
+//			Nali.warn("S " + NaliAL.alGetSourcei(this.source, AL10.AL_SOURCE_STATE));
 			}
-
-			this.gen(id);
-
-			NaliAL.alSourcePlay(this.source);
-//				});
 		}
-//		}
 	}
 
 	public void loop()
@@ -110,28 +69,35 @@ public class Sound
 
 	public void gen(int id)
 	{
-//		Minecraft.getMinecraft().addScheduledTask(() ->
+//		if (id > -1 && id < ClientLoader.SOUND_INTEGER_LIST.size())
 //		{
 		this.id = id;
 		this.source = NaliAL.alGenSources();
-//		this.buffer = AL10.alGenBuffers();
-//		AL10.alBufferData(this.buffer, AL10.AL_FORMAT_MONO16, this.dataloader.openalmemory.bytebuffer_array[id], this.dataloader.openalmemory.sample_rate_int_array[id]);
-//		AL10.alSourcei(this.source, AL10.AL_BUFFER, this.dataloader.openalmemory.sound_buffer_int_array[id]);
-		NaliAL.alSourcei(this.source, AL10.AL_BUFFER, SOUND_INTEGER_LIST.get(id)/*.sound_buffer*/);
+		NaliAL.alSourcei(this.source, AL10.AL_BUFFER, ClientLoader.SOUND_INTEGER_LIST.get(id));
+//			NaliAL.alSourcei(this.source, AL10.AL_LOOPING, AL10.AL_FALSE);
+//			NaliAL.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.AL_GAIN);
+//			NaliAL.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.AL_PITCH);
+//			NaliAL.alSource3f(this.source, AL10.AL_POSITION, x, y, z);
 		SOUND_SET.add(this);
-//		});
+//		}
 	}
 
-	public void set(float x, float y, float z)
+	public void set(float x, float y, float z/*, float ry, float rp*/)
 	{
-//		Minecraft.getMinecraft().addScheduledTask(() ->
-//		{
 		if (this.source != -1)
 		{
 			NaliAL.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.AL_GAIN);
 			NaliAL.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.AL_PITCH);
 			NaliAL.alSource3f(this.source, AL10.AL_POSITION, x, y, z);
+
+//			AL10.alSource3f(this.source, AL10.AL_DIRECTION, (float)(Math.cos(ry) * Math.cos(rp)), (float)Math.sin(rp), (float)(Math.sin(ry) * Math.cos(rp)));
+//			Nali.warn("X " + x);
+//			Nali.warn("Y " + y);
+//			Nali.warn("Z " + z);
+//			NaliAL.alSource3f(this.source, AL10.AL_POSITION, (float)(entityplayersp.posX - x), (float)(entityplayersp.posY - y), (float)(entityplayersp.posZ - z));
+//			NaliAL.alSource3f(this.source, AL10.AL_POSITION, (float)(x - entityplayersp.posX), (float)(y - entityplayersp.posY), (float)(z - entityplayersp.posZ));
 		}
-//		});
 	}
+
+	public abstract int getSoundBuffer(byte id);
 }

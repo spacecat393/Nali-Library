@@ -86,11 +86,6 @@ public class Command
 		return null;
 	}
 
-	public static int executeInt(ProcessBuilder processbuilder)
-	{
-		return Integer.parseInt(executeString(processbuilder));
-	}
-
 	public static byte[] executeByteArray(ProcessBuilder processbuilder)
 	{
 		try

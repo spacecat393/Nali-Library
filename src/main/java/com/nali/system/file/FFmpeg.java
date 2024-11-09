@@ -10,6 +10,8 @@ public class FFmpeg
 	//ffmpeg -ss 00:00:10 -i '' -t 10 -f s16le pipe:1
 	public static byte[] getSounds(String path_string)
 	{
+		//s16le 16bit
+		//s8 8bit
 		return Command.executeByteArray(Command.get
 		(
 			"ffmpeg",
@@ -29,14 +31,17 @@ public class FFmpeg
 //		));
 //	}
 
-	public static int getSampleRate(String path_string)
+	//sample_rate
+	//channels
+	//channel_layout
+	public static String getSelect(String path_string, String data)
 	{
-		return Command.executeInt(Command.get
+		return Command.executeString(Command.get
 		(
 			"ffprobe",
 			"-v", "error",
 			"-select_streams", "a:0",
-			"-show_entries", "stream=sample_rate",
+			"-show_entries", "stream=" + data,
 			"-of", "default=noprint_wrappers=1:nokey=1",
 			path_string
 		));

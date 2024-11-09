@@ -337,7 +337,7 @@
 //		MemoS rs = S_LIST.get(this.getShaderID(rg));
 ////		OpenGLObjectShaderMemo openglobjectshadermemo = I.clientloader.openglobjectshadermemo_list.get(this.clientdata.Shader());
 //		this.updateLight(rg);
-//		takeDefault();
+//		take();
 //		enableBuffer(rg, rs);
 ////		setTransparent(this.getTransparent(rg));
 //
@@ -354,7 +354,7 @@
 //
 ////		OpenGlHelper.glPopAttrib();
 //		disableBuffer(rs);
-//		setDefault();
+//		free();
 //		this.lig_b = lig_b;
 //		this.lig_s = lig_s;
 //	}
@@ -400,7 +400,7 @@
 //		}
 //	}
 //
-//	public static void takeDefault(/*OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo*/)
+//	public static void take(/*OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo*/)
 //	{
 ////		takeColor();
 //
@@ -521,7 +521,7 @@
 ////		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 //	}
 //
-//	public static void setDefault(/*OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo*/)
+//	public static void free(/*OpenGLObjectMemo openglobjectmemo, OpenGLObjectShaderMemo openglobjectshadermemo*/)
 //	{
 ////		OpenGLObjectShaderMemo openglobjectshadermemo = (OpenGLObjectShaderMemo)openglobjectmemo.shader;
 //

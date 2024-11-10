@@ -39,7 +39,7 @@ public class KeyConfig extends Key
 
 						pageconfig.clear();
 						pageconfig.init();
-						pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
+						pageconfig.gen();
 						this.setScrollEdit(pageconfig, pageconfig.wh20, Page.WIDTH, Page.HEIGHT);
 					}
 					else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_X))
@@ -49,7 +49,7 @@ public class KeyConfig extends Key
 
 						pageconfig.clear();
 						pageconfig.init();
-						pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
+						pageconfig.gen();
 						this.setScrollEdit(pageconfig, pageconfig.wh20, Page.WIDTH, Page.HEIGHT);
 					}
 					else if (Character.isLetterOrDigit(c) || c == '.'/* || Character.isSpaceChar(c)*/)
@@ -59,7 +59,7 @@ public class KeyConfig extends Key
 
 						pageconfig.clear();
 						pageconfig.init();
-						pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
+						pageconfig.gen();
 						this.setScrollEdit(pageconfig, pageconfig.wh20, Page.WIDTH, Page.HEIGHT);
 					}
 					else if (key == Keyboard.KEY_BACK)
@@ -72,7 +72,7 @@ public class KeyConfig extends Key
 
 						pageconfig.clear();
 						pageconfig.init();
-						pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
+						pageconfig.gen();
 						this.setScrollEdit(pageconfig, pageconfig.wh20, Page.WIDTH, Page.HEIGHT);
 					}
 					else if (key == Keyboard.KEY_LEFT)
@@ -99,7 +99,7 @@ public class KeyConfig extends Key
 					{
 						pageconfig.state ^= 4;
 						pageconfig.scroll = ((float)pageconfig.select * pageconfig.wh20 * 4 - pageconfig.wh20 * 4) / Page.HEIGHT;
-						pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
+						pageconfig.gen();
 					}
 				}
 				else
@@ -112,13 +112,13 @@ public class KeyConfig extends Key
 					else if (key == Keyboard.KEY_LEFT)
 					{
 						pageconfig.next((byte)-1);
-						pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
+						pageconfig.gen();
 						pageconfig.scroll = ((float)pageconfig.select * pageconfig.wh20 * 4 - pageconfig.wh20 * 4) / Page.HEIGHT;
 					}
 					else if (key == Keyboard.KEY_RIGHT)
 					{
 						pageconfig.next((byte)1);
-						pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
+						pageconfig.gen();
 						pageconfig.scroll = ((float)pageconfig.select * pageconfig.wh20 * 4 - pageconfig.wh20 * 4) / Page.HEIGHT;
 					}
 				}
@@ -131,8 +131,7 @@ public class KeyConfig extends Key
 					}
 					pageconfig.clear();
 					pageconfig.init();
-					pageconfig.gen(Page.WIDTH, Page.HEIGHT, pageconfig.wh20, pageconfig.h20);
-//								pageconfig.update(width, height, wh20, h20);
+					pageconfig.gen();
 				}
 				else if (key == Keyboard.KEY_UP)
 				{

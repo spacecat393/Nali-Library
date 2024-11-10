@@ -25,40 +25,8 @@ public class PageLoad extends Page
 {
 	public BoxText09 config_date_boxtext09;
 	public BoxTextAZ[] boxtextaz_array;
-	public float[] v_float_array = new float[]{0.0F, 0.0F};
-	public float[] c_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
 
-//	public MemoS rs;
-//	public byte gl_state;//gl_texture_2d
-	public int
-//		v,
-//		gl_active_texture,
-		gl_current_program,
-		gl_texture_binding_2d_0,
-		gl_texture_min_filter_0,
-		gl_texture_mag_filter_0,
-		gl_array_buffer_binding;
-
-	public void take()
-	{
-//		GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE, RenderO.INTBUFFER);
-//		this.gl_active_texture = RenderO.INTBUFFER.get(0);
-
-//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-
-		GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, RenderO.INTBUFFER);
-		this.gl_current_program = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, RenderO.INTBUFFER);
-		this.gl_texture_binding_2d_0 = RenderO.INTBUFFER.get(0);
-		this.gl_texture_min_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
-		this.gl_texture_mag_filter_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
-		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
-		this.gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
-//		this.gl_state |= GL11.glIsEnabled(GL11.GL_TEXTURE_2D) ? 1 : 0;
-//
-//		GL11.glEnable(GL11.GL_TEXTURE_2D);
-	}
-
+	@Override
 	public void init()
 	{
 		//s0-date
@@ -84,38 +52,40 @@ public class PageLoad extends Page
 		};
 	}
 
-	public void gen(int width, int height)
+	@Override
+	public void gen()
 	{
 		//854 x 480
-		int wh20 = Math.min((int)(0.0234192037470726F * width), (int)(0.041666668F * height));
-		int wh10 = Math.min((int)(0.011709602F * width), (int)(0.020833334F * height));
-		int wh5 = Math.min((int)(0.005854801F * width), (int)(0.010416667F * height));
+		int wh20 = Math.min((int)(0.0234192037470726F * WIDTH), (int)(0.041666668F * HEIGHT));
+		int wh10 = Math.min((int)(0.011709602F * WIDTH), (int)(0.020833334F * HEIGHT));
+		int wh5 = Math.min((int)(0.005854801F * WIDTH), (int)(0.010416667F * HEIGHT));
 		this.config_date_boxtext09.gen
 		(
 			wh20,
 			(int)(wh20 * 2.5F),
-			wh10, wh5, width, height
+			wh10, wh5, WIDTH, HEIGHT
 		);
 		this.boxtextaz_array[0].gen
 		(
 			wh20,
 			wh20,
-			wh20, wh10, width, height
+			wh20, wh10, WIDTH, HEIGHT
 		);
 		this.boxtextaz_array[1].gen
 		(
 			wh20 + (wh20 + wh10) * 9,
 			wh20,
-			wh10, wh5, width, height
+			wh10, wh5, WIDTH, HEIGHT
 		);
 		this.boxtextaz_array[2].gen
 		(
 			wh20 + (wh20 + wh10) * 9 + (wh10 + wh5) * 2 + wh20,
 			wh20,
-			wh10, wh5, width, height
+			wh10, wh5, WIDTH, HEIGHT
 		);
 	}
 
+	@Override
 	public void draw()
 	{
 		//s0-shader
@@ -130,9 +100,9 @@ public class PageLoad extends Page
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
 		this.config_date_boxtext09.draw(rs, this.v_float_array, this.c_float_array);
-		for (byte i = 0; i < this.boxtextaz_array.length; ++i)
+		for (BoxTextAZ boxtextaz : this.boxtextaz_array)
 		{
-			this.boxtextaz_array[i].draw(rs, this.v_float_array, this.c_float_array);
+			boxtextaz.draw(rs, this.v_float_array, this.c_float_array);
 		}
 
 		//s0-shader
@@ -140,31 +110,13 @@ public class PageLoad extends Page
 		//e0-shader
 	}
 
-	public void free()
-	{
-//		OpenGlHelper.setActiveTexture(this.gl_active_texture);
-
-		OpenGlHelper.glUseProgram(this.gl_current_program);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.gl_texture_binding_2d_0);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, this.gl_texture_min_filter_0);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, this.gl_texture_mag_filter_0);
-		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, this.gl_array_buffer_binding);
-//		if ((this.gl_state & 1) == 1)
-//		{
-//			GL11.glEnable(GL11.GL_TEXTURE_2D);
-//		}
-//		else
-//		{
-//			GL11.glDisable(GL11.GL_TEXTURE_2D);
-//		}
-	}
-
+	@Override
 	public void clear()
 	{
 		OpenGlHelper.glDeleteBuffers(this.config_date_boxtext09.array_buffer);
-		for (byte i = 0; i < this.boxtextaz_array.length; ++i)
+		for (BoxTextAZ boxtextaz : this.boxtextaz_array)
 		{
-			OpenGlHelper.glDeleteBuffers(this.boxtextaz_array[i].array_buffer);
+			OpenGlHelper.glDeleteBuffers(boxtextaz.array_buffer);
 		}
 	}
 
@@ -190,24 +142,20 @@ public class PageLoad extends Page
 		GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
 		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-//		PageLoad pageload = (PageLoad)PAGE;
 		this.take();
-//		pageload.init();
 		int width = Display.getWidth();
 		int height = Display.getHeight();
 		if (WIDTH != width || HEIGHT != height)
 		{
-			GL11.glViewport(0, 0, width, height);
-			this.gen(width, height);
 			WIDTH = width;
 			HEIGHT = height;
+			GL11.glViewport(0, 0, width, height);
+			this.gen();
 		}
 
 //		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		this.draw();
-//		Display.update();
 		this.free();
-//		pageload.clear();
 
 		if (gl_blend)
 		{

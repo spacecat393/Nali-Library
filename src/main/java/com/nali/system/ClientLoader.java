@@ -150,6 +150,7 @@ public class ClientLoader
 				PageConfig pageconfig = new PageConfig();
 				pageconfig.init();
 				KeyConfig keyconfig = new KeyConfig();
+				Page.PAGE = pageconfig;
 				while ((pageconfig.state & 8) == 0)
 				{
 					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -157,6 +158,7 @@ public class ClientLoader
 					Display.update();
 					keyconfig.run();
 				}
+				Page.PAGE = null;
 
 				pageconfig.clear();
 

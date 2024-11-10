@@ -69,10 +69,12 @@ public abstract class MixinMinecraft
 			RenderO.FLOATBUFFER.flip();
 			NaliAL.alListenerfv(AL10.AL_ORIENTATION, MemoryUtil.getAddress(RenderO.FLOATBUFFER));
 		}
-		else
-		{
-			NaliAL.alListener3f(AL10.AL_POSITION, 0, 0, 0);
-		}
+//		else
+//		{
+//			NaliAL.alListenerfv(AL10.AL_ORIENTATION, MemoryUtil.getAddress(RenderO.FLOATBUFFER));
+//
+//			NaliAL.alListener3f(AL10.AL_POSITION, 0, 0, 0);
+//		}
 
 		for (Sound sound : new HashSet<>(SOUND_SET))
 		{

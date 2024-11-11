@@ -1,9 +1,13 @@
 package com.nali;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.io.File;
 
 import static com.nali.Nali.warn;
 
+@SideOnly(Side.CLIENT)
 public class NaliGL
 {
 //	public static byte STATE;

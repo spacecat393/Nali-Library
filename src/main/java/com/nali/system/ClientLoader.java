@@ -4,7 +4,8 @@ import com.nali.Nali;
 import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
-import com.nali.gui.key.KeyConfig;
+import com.nali.gui.key.Key;
+import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.Page;
 import com.nali.gui.page.PageConfig;
 import com.nali.gui.page.PageLoad;
@@ -149,16 +150,17 @@ public class ClientLoader
 			{
 				PageConfig pageconfig = new PageConfig();
 				pageconfig.init();
-				KeyConfig keyconfig = new KeyConfig();
+				Key.KEY = new KeySelect();
 				Page.PAGE = pageconfig;
-				while ((pageconfig.state & 8) == 0)
+				while ((pageconfig.state & 2) == 0)
 				{
 					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-					pageconfig.render();
+					Page.PAGE.render();
 					Display.update();
-					keyconfig.run();
+					Key.KEY.run();
 				}
 				Page.PAGE = null;
+				Key.KEY = null;
 
 				pageconfig.clear();
 
@@ -199,8 +201,8 @@ public class ClientLoader
 				BGM_SOURCE = NaliAL.alGenSources();
 				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, BGM_BUFFER);
 				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_LOOPING, AL10.AL_TRUE);
-				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.AL_GAIN);
-				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.AL_PITCH);
+				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[1] * NaliConfig.FLOAT_ARRAY[0]);
+				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[6] * NaliConfig.FLOAT_ARRAY[0]);
 				NaliAL.alSourcePlay(BGM_SOURCE);
 			}
 			//e0-sound

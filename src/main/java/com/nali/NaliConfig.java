@@ -23,18 +23,20 @@ public class NaliConfig
 //	public static String ATTRIBUTE = "attribute";
 	public static byte STATE = 1+4+8;//PRE_SHADER USE_SWITCH USE_YT-DLP USE_FFMPEG
 
-	public static float
-		AL_GAIN_ALL = 1.0F,
-		AL_GAIN_BGM = 0.25F,
-		AL_GAIN_ENTITY = 1.0F,
-		AL_GAIN_BLOCK = 1.0F,
-		AL_GAIN_EFFECT = 1.0F,
+	public static float[] FLOAT_ARRAY =
+	{
+		1.0F,//0 ALL
+		0.25F,//1 BGM
+		1.0F,//2 ENTITY
+		1.0F,//3 BLOCK
+		1.0F,//4 EFFECT
 
-		AL_PITCH_ALL = 1.0F,
-		AL_PITCH_BGM = 1.0F,
-		AL_PITCH_ENTITY = 1.0F,
-		AL_PITCH_BLOCK = 1.0F,
-		AL_PITCH_EFFECT = 1.0F;
+		1.0F,//5 ALL
+		1.0F,//6 BGM
+		1.0F,//7 ENTITY
+		1.0F,//8 BLOCK
+		1.0F//9 EFFECT
+	};
 
 	public static String BGM_ID = "eeXVnP0zuMo";
 //	public static byte[] CONFIG_BYTE_ARRAY;
@@ -97,41 +99,33 @@ public class NaliConfig
 	{
 		byte[] bgm_id_byte_array = BGM_ID.getBytes();
 		int bgm_id_length = bgm_id_byte_array.length;
-		byte[] byte_array = new byte[1+4+4+4+4+4+4+4+4+4+4+4 + bgm_id_length];
-		byte_array[0] = STATE;
-		ByteWriter.set(byte_array, AL_GAIN_ALL, 1);
-		ByteWriter.set(byte_array, AL_GAIN_BGM, 1+4);
-		ByteWriter.set(byte_array, AL_GAIN_ENTITY, 1+4+4);
-		ByteWriter.set(byte_array, AL_GAIN_BLOCK, 1+4+4+4);
-		ByteWriter.set(byte_array, AL_GAIN_EFFECT, 1+4+4+4+4);
+		byte[] byte_array = new byte[1 + 4 * 10 + 4 + bgm_id_length];
+		int index = 0;
+		byte_array[index++] = STATE;
+		for (float v : FLOAT_ARRAY)
+		{
+			ByteWriter.set(byte_array, v, index);
+			index += 4;
+		}
 
-		ByteWriter.set(byte_array, AL_PITCH_ALL, 1+4+4+4+4+4);
-		ByteWriter.set(byte_array, AL_PITCH_BGM, 1+4+4+4+4+4+4);
-		ByteWriter.set(byte_array, AL_PITCH_ENTITY, 1+4+4+4+4+4+4+4);
-		ByteWriter.set(byte_array, AL_PITCH_BLOCK, 1+4+4+4+4+4+4+4+4);
-		ByteWriter.set(byte_array, AL_PITCH_EFFECT, 1+4+4+4+4+4+4+4+4+4);
-
-		ByteWriter.set(byte_array, bgm_id_length, 1+4+4+4+4+4+4+4+4+4+4);
-		System.arraycopy(bgm_id_byte_array, 0, byte_array, 1+4+4+4+4+4+4+4+4+4+4+4, bgm_id_length);
+		ByteWriter.set(byte_array, bgm_id_length, index);
+		index += 4;
+		System.arraycopy(bgm_id_byte_array, 0, byte_array, index, bgm_id_length);
 		return byte_array;
 	}
 
 	public static void set(byte[] byte_array)
 	{
-		STATE = byte_array[0];
-		AL_GAIN_ALL = ByteReader.getFloat(byte_array, 1);
-		AL_GAIN_BGM = ByteReader.getFloat(byte_array, 1+4);
-		AL_GAIN_ENTITY = ByteReader.getFloat(byte_array, 1+4+4);
-		AL_GAIN_BLOCK = ByteReader.getFloat(byte_array, 1+4+4+4);
-		AL_GAIN_EFFECT = ByteReader.getFloat(byte_array, 1+4+4+4+4);
+		int index = 0;
+		STATE = byte_array[index++];
+		for (int i = 0; i < FLOAT_ARRAY.length; ++i)
+		{
+			FLOAT_ARRAY[i] = ByteReader.getFloat(byte_array, index);
+			index += 4;
+		}
 
-		AL_PITCH_ALL = ByteReader.getFloat(byte_array, 1+4+4+4+4+4);
-		AL_PITCH_BGM = ByteReader.getFloat(byte_array, 1+4+4+4+4+4+4);
-		AL_PITCH_ENTITY = ByteReader.getFloat(byte_array, 1+4+4+4+4+4+4+4);
-		AL_PITCH_BLOCK = ByteReader.getFloat(byte_array, 1+4+4+4+4+4+4+4+4);
-		AL_PITCH_EFFECT = ByteReader.getFloat(byte_array, 1+4+4+4+4+4+4+4+4+4);
-
-		int bgm_id_length = ByteReader.getInt(byte_array, 1+4+4+4+4+4+4+4+4+4+4);
-		BGM_ID = new String(byte_array, 1+4+4+4+4+4+4+4+4+4+4+4, bgm_id_length);
+		int bgm_id_length = ByteReader.getInt(byte_array, index);
+		index += 4;
+		BGM_ID = new String(byte_array, index, bgm_id_length);
 	}
 }

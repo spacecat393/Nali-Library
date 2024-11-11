@@ -1,5 +1,6 @@
 package com.nali.gui.page;
 
+import com.nali.gui.key.Key;
 import com.nali.render.RenderO;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,4 +52,13 @@ public abstract class Page
 	}
 
 	public abstract void render();
+
+	public void set(Page page, Key key)
+	{
+		this.clear();
+		PAGE = page;
+		PAGE.init();
+		WIDTH = -1;
+		Key.KEY = key;
+	}
 }

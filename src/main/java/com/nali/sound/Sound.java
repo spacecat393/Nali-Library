@@ -1,7 +1,6 @@
 package com.nali.sound;
 
 import com.nali.NaliAL;
-import com.nali.NaliConfig;
 import com.nali.system.ClientLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
@@ -86,8 +85,9 @@ public abstract class Sound
 	{
 		if (this.source != -1)
 		{
-			NaliAL.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.AL_GAIN);
-			NaliAL.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.AL_PITCH);
+//			NaliAL.alSourcef(this.source, AL10.AL_GAIN, NaliConfig.AL_GAIN);
+//			NaliAL.alSourcef(this.source, AL10.AL_PITCH, NaliConfig.AL_PITCH);
+			this.set();
 			NaliAL.alSource3f(this.source, AL10.AL_POSITION, x, y, z);
 
 //			AL10.alSource3f(this.source, AL10.AL_DIRECTION, (float)(Math.cos(ry) * Math.cos(rp)), (float)Math.sin(rp), (float)(Math.sin(ry) * Math.cos(rp)));
@@ -99,5 +99,6 @@ public abstract class Sound
 		}
 	}
 
+	public abstract void set();
 	public abstract int getSoundBuffer(byte id);
 }

@@ -1,11 +1,17 @@
 package com.nali.gui.page;
 
+import com.nali.Nali;
 import com.nali.NaliConfig;
 import com.nali.gui.box.text.BoxTextAll;
+import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @SideOnly(Side.CLIENT)
 public class PageConfig extends PageSelect
@@ -46,15 +52,34 @@ public class PageConfig extends PageSelect
 	}
 
 	@Override
+	public void exit()
+	{
+		try
+		{
+			Files.write(Paths.get("nali/nali/tmp/config.bin"), NaliConfig.getByteArray());
+		}
+		catch (IOException e)
+		{
+			Nali.error(e);
+		}
+
+		super.exit();
+	}
+
+	@Override
 	public void enter()
 	{
 //		Nali.warn("S " + this.select);
 		switch (this.select)
 		{
 			case 2:
+				PAGE_LIST.add(this);
+				KEY_LIST.add(Key.KEY);
 				this.set(new PageCheck(), new KeySelect());
 				break;
 			case 3:
+				PAGE_LIST.add(this);
+				KEY_LIST.add(Key.KEY);
 				this.set(new PageConfigSound(), new KeyEdit());
 				break;
 			case 5:
@@ -67,10 +92,5 @@ public class PageConfig extends PageSelect
 				this.back();
 				break;
 		}
-	}
-
-	@Override
-	public void back()
-	{
 	}
 }

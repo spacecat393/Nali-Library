@@ -29,8 +29,8 @@ public class KeyEdit extends KeySelect
 
 				pageedit.clear();
 				pageedit.init();
-				pageedit.gen();
-				this.setScrollEdit(pageedit, pageedit.wh20, Page.WIDTH, Page.HEIGHT);
+				this.setScrollEdit(pageedit);
+				Page.WIDTH = -1;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_X))
 			{
@@ -39,18 +39,18 @@ public class KeyEdit extends KeySelect
 
 				pageedit.clear();
 				pageedit.init();
-				pageedit.gen();
-				this.setScrollEdit(pageedit, pageedit.wh20, Page.WIDTH, Page.HEIGHT);
+				this.setScrollEdit(pageedit);
+				Page.WIDTH = -1;
 			}
-			else if (Character.isLetterOrDigit(c) || c == '.'/* || Character.isSpaceChar(c)*/)
+			else if (Character.isLetterOrDigit(c) || c == '.' || c == '-' || c == '_'/* || Character.isSpaceChar(c)*/)
 			{
 				pageedit.input_stringbuilder.insert(pageedit.select_box, c);
 				++pageedit.select_box;
 
 				pageedit.clear();
 				pageedit.init();
-				pageedit.gen();
-				this.setScrollEdit(pageedit, pageedit.wh20, Page.WIDTH, Page.HEIGHT);
+				this.setScrollEdit(pageedit);
+				Page.WIDTH = -1;
 			}
 			else if (key == Keyboard.KEY_BACK)
 			{
@@ -62,8 +62,8 @@ public class KeyEdit extends KeySelect
 
 				pageedit.clear();
 				pageedit.init();
-				pageedit.gen();
-				this.setScrollEdit(pageedit, pageedit.wh20, Page.WIDTH, Page.HEIGHT);
+				this.setScrollEdit(pageedit);
+				Page.WIDTH = -1;
 			}
 			else if (key == Keyboard.KEY_LEFT)
 			{
@@ -72,8 +72,7 @@ public class KeyEdit extends KeySelect
 					--pageedit.select_box;
 				}
 
-//							pageedit.gen(width, height, wh20, h20);
-				this.setScrollEdit(pageedit, pageedit.wh20, Page.WIDTH, Page.HEIGHT);
+				this.setScrollEdit(pageedit);
 			}
 			else if (key == Keyboard.KEY_RIGHT)
 			{
@@ -82,14 +81,32 @@ public class KeyEdit extends KeySelect
 					++pageedit.select_box;
 				}
 
-//							pageedit.gen(width, height, wh20, h20);
-				this.setScrollEdit(pageedit, pageedit.wh20, Page.WIDTH, Page.HEIGHT);
+				this.setScrollEdit(pageedit);
 			}
 			else if (key == Keyboard.KEY_ESCAPE)
 			{
 				pageedit.state ^= 1;
-				pageedit.scroll = ((float) pageedit.select * pageedit.wh20 * 4 - pageedit.wh20 * 4) / Page.HEIGHT;
-				pageedit.gen();
+				pageedit.scroll = ((float) pageedit.select * pageedit.wh40 * 2 - pageedit.wh40 * 2) / Page.HEIGHT;
+				Page.WIDTH = -1;
+			}
+			else if (this.key == Keyboard.KEY_UP)
+			{
+				pageedit.select_box -= 15;
+				if (pageedit.select_box < 0)
+				{
+					pageedit.select_box = 0;
+				}
+				this.setScrollEdit(pageedit);
+			}
+			else if (this.key == Keyboard.KEY_DOWN)
+			{
+				pageedit.select_box += 15;
+				int length = pageedit.input_stringbuilder.length();
+				if (pageedit.select_box > length)
+				{
+					pageedit.select_box = length;
+				}
+				this.setScrollEdit(pageedit);
 			}
 		}
 		else
@@ -98,22 +115,21 @@ public class KeyEdit extends KeySelect
 		}
 	}
 
-	public void setScrollEdit(PageEdit pageconfig, int wh20, int width, int height)
+	public void setScrollEdit(PageEdit pageconfig)
 	{
-		int wh10 = wh20 / 2;
-		int nl_ss = wh20 + wh10;
-		int nl_x = wh20, nl_y = 0;
+		float nl_ss = pageconfig.wh20 + pageconfig.wh10;
+		float nl_x = pageconfig.wh20, nl_y = 0;
 
 		for (int i = 0; i < pageconfig.select_box; ++i)
 		{
-			if (nl_x > width - nl_ss)
+			if (nl_x > Page.WIDTH - nl_ss)
 			{
-				nl_x = wh20;
+				nl_x = pageconfig.wh20;
 				nl_y += nl_ss;
 			}
 			nl_x += nl_ss;
 		}
 
-		pageconfig.scroll = 2.0F * (float)nl_y / height;
+		pageconfig.scroll = 2.0F * nl_y / Page.HEIGHT;
 	}
 }

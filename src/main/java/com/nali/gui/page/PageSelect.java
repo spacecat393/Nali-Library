@@ -11,7 +11,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 
 @SideOnly(Side.CLIENT)
@@ -26,7 +25,7 @@ public abstract class PageSelect extends Page
 	public byte[] group_byte_array;
 	public BoxTextAll[] boxtextall_array;
 
-	public int
+	public float
 		wh10,
 		h20,
 		wh20,
@@ -59,8 +58,8 @@ public abstract class PageSelect extends Page
 			max_length = Math.max(max_length, this.boxtextall_array[i].char_array.length);
 		}
 
-		this.x = WIDTH / 2 - (this.wh20 + this.wh10) * max_length / 2;
-		this.y = (int)((1.0F - 0.041666668F) * HEIGHT) + this.h20;
+		this.x = WIDTH / 2.0F - (this.wh20 + this.wh10) * max_length / 2;
+		this.y = ((1.0F - 0.041666668F) * HEIGHT) + this.h20;
 
 		for (byte i = 1; i < this.boxtextall_array.length; ++i)
 		{
@@ -84,7 +83,7 @@ public abstract class PageSelect extends Page
 
 	public void genBoxColor()
 	{
-		int y = this.y - this.wh40 * this.select;
+		float y = this.y - this.wh40 * this.select;
 		this.boxcolor.x0 = this.wh20;
 		this.boxcolor.y0 = y;
 		this.boxcolor.x1 = this.x - this.wh10;
@@ -114,7 +113,7 @@ public abstract class PageSelect extends Page
 		GL11.glGetInteger(GL11.GL_SCISSOR_BOX, RenderO.INTBUFFER);
 
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-		GL11.glScissor(0, this.wh20 * 3, WIDTH, HEIGHT - this.wh20 * 4);
+		GL11.glScissor(0, (int)(this.wh20 * 3), WIDTH, (int)(HEIGHT - this.wh20 * 4));
 
 		//s0-shader
 		OpenGlHelper.glUseProgram(this.rs1.program);
@@ -180,34 +179,15 @@ public abstract class PageSelect extends Page
 	@Override
 	public void render()
 	{
-		boolean gl_blend = GL11.glIsEnabled(GL11.GL_BLEND);
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, RenderO.INTBUFFER);
-		int gl_blend_equation_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, RenderO.INTBUFFER);
-		int gl_blend_equation_alpha = RenderO.INTBUFFER.get(0);
-
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, RenderO.INTBUFFER);
-		int gl_blend_src_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, RenderO.INTBUFFER);
-		int gl_blend_src_alpha = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, RenderO.INTBUFFER);
-		int gl_blend_dst_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, RenderO.INTBUFFER);
-		int gl_blend_dst_alpha = RenderO.INTBUFFER.get(0);
-
-		GL11.glEnable(GL11.GL_BLEND);
-		GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
-		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-
 		this.take();
 
 		int width = Display.getWidth();
 		int height = Display.getHeight();
 
-		this.wh10 = Math.min((int)(0.011709602F * width), (int)(0.020833334F * height));
-		this.h20 = (int)(0.041666668F * height);
-		this.wh20 = Math.min((int)(0.0234192037470726F * width), this.h20);
-		this.wh40 = Math.min((int)(0.0234192037470726F * 2 * width), (int)(0.041666668F * 2 * height));
+		this.wh10 = Math.min((0.011709602F * width), (0.020833334F * height));
+		this.h20 = (0.041666668F * height);
+		this.wh20 = Math.min((0.0234192037470726F * width), this.h20);
+		this.wh40 = Math.min((0.0234192037470726F * 2 * width), (0.041666668F * 2 * height));
 
 		if (WIDTH != width || HEIGHT != height)
 		{
@@ -215,26 +195,11 @@ public abstract class PageSelect extends Page
 			HEIGHT = height;
 			GL11.glViewport(0, 0, width, height);
 			this.gen();
-			if (this.scroll != 0)
-			{
-				this.scroll = ((float)this.select * this.wh20 * 4 - this.wh20 * 4) / height;
-			}
 		}
 
 //		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		this.draw();
 		this.free();
-
-		if (gl_blend)
-		{
-			GL11.glEnable(GL11.GL_BLEND);
-		}
-		else
-		{
-			GL11.glDisable(GL11.GL_BLEND);
-		}
-		GL20.glBlendEquationSeparate(gl_blend_equation_rgb, gl_blend_equation_alpha);
-		GL14.glBlendFuncSeparate(gl_blend_src_rgb, gl_blend_dst_rgb, gl_blend_src_alpha, gl_blend_dst_alpha);
 	}
 
 	public void next(byte step)
@@ -264,5 +229,32 @@ public abstract class PageSelect extends Page
 	}
 
 	public abstract void enter();
-	public abstract void back();
+
+	public void back()
+	{
+		if (PAGE_LIST.isEmpty())
+		{
+			this.exit();
+		}
+		else
+		{
+			int index = PAGE_LIST.size() - 1;
+			this.set(PAGE_LIST.get(index), KEY_LIST.get(index));
+			PAGE_LIST.remove(index);
+			KEY_LIST.remove(index);
+		}
+	}
+
+	@Override
+	public void exit()
+	{
+		for (Page page : PAGE_LIST)
+		{
+			if (page != this)
+			{
+				page.exit();
+			}
+		}
+		this.state |= 2;
+	}
 }

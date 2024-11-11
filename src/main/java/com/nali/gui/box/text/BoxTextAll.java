@@ -23,7 +23,7 @@ public class BoxTextAll extends BoxVT
 		this.char_array = char_array;
 	}
 
-	public void gen(int x, int y, int size, int space, int width, int height)
+	public void gen(float x, float y, float size, float space, float width, float height)
 	{
 		if (this.array_buffer != -1)
 		{
@@ -35,9 +35,9 @@ public class BoxTextAll extends BoxVT
 
 		int l = 0;
 
-		int w = (int)(size * 0.2F);
-		int x0 = 0;
-		int x1 = space + size;
+		float w = (int)(size * 0.2F);
+		float x0 = 0;
+		float x1 = space + size;
 		if (x + size > w)
 		{
 			x0 = -w;
@@ -61,9 +61,9 @@ public class BoxTextAll extends BoxVT
 			else if (c == '-')
 			{
 				this.x0 = x;
-				this.y0 = y + size / 1.625F;
+				this.y0 = y + size / 2.5F;
 				this.x1 = x + size;
-				this.y1 = y + size / 2.5F;
+				this.y1 = y + size / 1.625F;
 
 				this.u0 = 0;
 				this.v0 = 1;
@@ -75,9 +75,9 @@ public class BoxTextAll extends BoxVT
 			}
 			else if (c == '.')
 			{
-				this.x0 = x + size / 1.625F;
+				this.x0 = x + size / 2.5F;
 				this.y0 = y;
-				this.x1 = x + size / 2.5F;
+				this.x1 = x + size / 1.625F;
 				this.y1 = y + size / 5.0F;
 
 				this.u0 = 0;

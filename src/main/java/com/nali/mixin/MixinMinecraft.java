@@ -4,18 +4,18 @@ import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.gui.key.Key;
 import com.nali.gui.page.Page;
+import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.sound.Sound;
 import com.nali.system.ClientLoader;
 import com.nali.system.Timing;
+import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.MemoryUtil;
 import org.lwjgl.openal.AL10;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL43;
-import org.lwjgl.opengl.KHRDebug;
-import org.lwjgl.opengl.KHRDebugCallback;
+import org.lwjgl.opengl.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -105,7 +105,73 @@ public abstract class MixinMinecraft
 	{
 		if (Page.PAGE != null)
 		{
+			boolean gl_blend = GL11.glIsEnabled(GL11.GL_BLEND);
+			GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, RenderO.INTBUFFER);
+			int gl_blend_equation_rgb = RenderO.INTBUFFER.get(0);
+			GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, RenderO.INTBUFFER);
+			int gl_blend_equation_alpha = RenderO.INTBUFFER.get(0);
+
+			GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, RenderO.INTBUFFER);
+			int gl_blend_src_rgb = RenderO.INTBUFFER.get(0);
+			GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, RenderO.INTBUFFER);
+			int gl_blend_src_alpha = RenderO.INTBUFFER.get(0);
+			GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, RenderO.INTBUFFER);
+			int gl_blend_dst_rgb = RenderO.INTBUFFER.get(0);
+			GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, RenderO.INTBUFFER);
+			int gl_blend_dst_alpha = RenderO.INTBUFFER.get(0);
+
+			GL11.glEnable(GL11.GL_BLEND);
+			GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
+			GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+
+			//s0-drawColor
+
+			//s1-take
+			GL11.glGetInteger(GL20.GL_CURRENT_PROGRAM, RenderO.INTBUFFER);
+			int gl_current_program = RenderO.INTBUFFER.get(0);
+			GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
+			int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
+			//e1-take
+
+			MemoS rs = ClientLoader.S_LIST.get(NaliData.SHADER_STEP + 1);
+			OpenGlHelper.glUseProgram(rs.program);
+			int v = rs.attriblocation_int_array[0];
+			GL20.glEnableVertexAttribArray(v);
+			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, Page.QUAD2D_ARRAY_BUFFER);
+			GL20.glVertexAttribPointer(rs.attriblocation_int_array[0], 2, GL11.GL_FLOAT, false, 0, 0);
+
+			RenderO.FLOATBUFFER.clear();
+			RenderO.FLOATBUFFER.put(new float[2]);
+			RenderO.FLOATBUFFER.flip();
+			OpenGlHelper.glUniform2(rs.uniformlocation_int_array[0], RenderO.FLOATBUFFER);
+
+			RenderO.FLOATBUFFER.clear();
+			RenderO.FLOATBUFFER.put(new float[]{0.0F, 0.0F, 0.0F, 0.5F});
+			RenderO.FLOATBUFFER.flip();
+			OpenGlHelper.glUniform4(rs.uniformlocation_int_array[1], RenderO.FLOATBUFFER);
+
+			GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+			GL20.glDisableVertexAttribArray(v);
+
+			//s1-free
+			OpenGlHelper.glUseProgram(gl_current_program);
+			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
+			//e1-free
+
+			//e0-drawColor
+
 			Page.PAGE.render();
+
+			if (gl_blend)
+			{
+				GL11.glEnable(GL11.GL_BLEND);
+			}
+			else
+			{
+				GL11.glDisable(GL11.GL_BLEND);
+			}
+			GL20.glBlendEquationSeparate(gl_blend_equation_rgb, gl_blend_equation_alpha);
+			GL14.glBlendFuncSeparate(gl_blend_src_rgb, gl_blend_dst_rgb, gl_blend_src_alpha, gl_blend_dst_alpha);
 		}
 	}
 

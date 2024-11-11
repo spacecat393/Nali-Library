@@ -61,8 +61,8 @@ public abstract class PageEdit extends PageSelect
 	{
 		if ((this.state & 1) == 1)
 		{
-			int nl_ss = this.wh20 + this.wh10;
-			int nl_x = this.wh20, nl_y = 0;
+			float nl_ss = this.wh20 + this.wh10;
+			float nl_x = this.wh20, nl_y = 0;
 
 			for (int i = 0; i < this.select_box; ++i)
 			{
@@ -75,8 +75,8 @@ public abstract class PageEdit extends PageSelect
 			}
 
 			nl_x -= this.wh10;
-			float x = (float)nl_x / WIDTH * 2;
-			float y = (1.0F - 0.041666668F + (this.h20 - (this.wh20 * 2.0F) + nl_y) / HEIGHT) * 2;
+			float x = nl_x / WIDTH * 2;
+			float y = (1.0F - 0.041666668F + (this.h20 - this.wh40 + nl_y) / HEIGHT) * 2;
 			this.v_float_array[0] += x;
 			this.v_float_array[1] += y;
 			this.boxcolor.draw(this.rs1, this.v_float_array, new float[]{0.0F, 1.0F, 0.0F, 1.0F});

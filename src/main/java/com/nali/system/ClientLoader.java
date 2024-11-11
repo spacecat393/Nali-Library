@@ -9,6 +9,7 @@ import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.Page;
 import com.nali.gui.page.PageConfig;
 import com.nali.gui.page.PageLoad;
+import com.nali.gui.page.PageSelect;
 import com.nali.render.RenderO;
 import com.nali.render.RenderS;
 import com.nali.system.file.FileDataReader;
@@ -148,30 +149,31 @@ public class ClientLoader
 			}
 			catch (Exception e)
 			{
-				PageConfig pageconfig = new PageConfig();
-				pageconfig.init();
+				Page.PAGE = new PageConfig();
+				Page.PAGE.init();
 				Key.KEY = new KeySelect();
-				Page.PAGE = pageconfig;
-				while ((pageconfig.state & 2) == 0)
+				while ((((PageSelect)Page.PAGE).state & 2) == 0)
 				{
 					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 					Page.PAGE.render();
 					Display.update();
 					Key.KEY.run();
 				}
+				Page.PAGE.clear();
+
+				Page.PAGE_LIST.clear();
+				Page.KEY_LIST.clear();
 				Page.PAGE = null;
 				Key.KEY = null;
 
-				pageconfig.clear();
-
-				try
-				{
-					Files.write(config_path, NaliConfig.getByteArray());
-				}
-				catch (IOException ex)
-				{
-					error(ex);
-				}
+//				try
+//				{
+//					Files.write(config_path, NaliConfig.getByteArray());
+//				}
+//				catch (IOException ex)
+//				{
+//					error(ex);
+//				}
 			}
 			//e0-config
 
@@ -214,6 +216,21 @@ public class ClientLoader
 			pageload.render();
 			pageload.clear();
 			Display.update();
+
+			GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
+			int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
+			Page.QUAD2D_ARRAY_BUFFER = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(new float[]
+			{
+				-1, 1,
+				-1, -1,
+				1, -1,
+
+				-1, 1,
+				1, -1,
+				1, 1
+			}));
+
+			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
 
 			for (Class data_class : data_class_list)
 			{

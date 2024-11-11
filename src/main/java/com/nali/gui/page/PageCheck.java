@@ -1,7 +1,6 @@
 package com.nali.gui.page;
 
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.KeySelect;
 import com.nali.system.Command;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -73,11 +72,5 @@ public class PageCheck extends PageSelect
 	public void enter()
 	{
 		this.back();
-	}
-
-	@Override
-	public void back()
-	{
-		this.set(new PageConfig(), new KeySelect());
 	}
 }

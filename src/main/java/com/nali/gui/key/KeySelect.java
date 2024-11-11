@@ -27,19 +27,11 @@ public class KeySelect extends Key
 					pageselect.enter();
 					if ((pageselect.state & 1) == 0)
 					{
-						pageselect.scroll = ((float) pageselect.select * pageselect.wh20 * 4 - pageselect.wh20 * 4) / Page.HEIGHT;
+						pageselect.scroll = ((float) pageselect.select * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
 					}
 					pageselect.clear();
 					pageselect.init();
-					pageselect.gen();
-				}
-				else if (this.key == Keyboard.KEY_UP)
-				{
-					pageselect.scroll -= pageselect.wh20 * 4.0F / Page.HEIGHT;
-				}
-				else if (this.key == Keyboard.KEY_DOWN)
-				{
-					pageselect.scroll += pageselect.wh20 * 4.0F / Page.HEIGHT;
+					Page.WIDTH = -1;
 				}
 			}
 		}
@@ -48,26 +40,33 @@ public class KeySelect extends Key
 	public void enter()
 	{
 		PageSelect pageselect = (PageSelect)Page.PAGE;
-		if (this.key == Keyboard.KEY_BACK)
+		if (this.key == Keyboard.KEY_UP)
+		{
+			pageselect.scroll -= pageselect.wh40 * 2 / Page.HEIGHT;
+		}
+		else if (this.key == Keyboard.KEY_DOWN)
+		{
+			pageselect.scroll += pageselect.wh40 * 2 / Page.HEIGHT;
+		}
+		else if (this.key == Keyboard.KEY_BACK)
 		{
 			pageselect.back();
 		}
 		else if (this.key == Keyboard.KEY_ESCAPE)
 		{
-			//							config_byte_array = new byte[];
-			pageselect.state |= 2;
+			pageselect.exit();
 		}
 		else if (this.key == Keyboard.KEY_LEFT)
 		{
 			pageselect.next((byte)-1);
-			pageselect.gen();
-			pageselect.scroll = ((float) pageselect.select * pageselect.wh20 * 4 - pageselect.wh20 * 4) / Page.HEIGHT;
+			pageselect.scroll = (pageselect.select * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
+			Page.WIDTH = -1;
 		}
 		else if (this.key == Keyboard.KEY_RIGHT)
 		{
 			pageselect.next((byte)1);
-			pageselect.gen();
-			pageselect.scroll = ((float) pageselect.select * pageselect.wh20 * 4 - pageselect.wh20 * 4) / Page.HEIGHT;
+			pageselect.scroll = (pageselect.select * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
+			Page.WIDTH = -1;
 		}
 	}
 }

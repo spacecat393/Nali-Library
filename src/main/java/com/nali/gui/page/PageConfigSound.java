@@ -2,7 +2,6 @@ package com.nali.gui.page;
 
 import com.nali.NaliConfig;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.KeySelect;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -75,14 +74,14 @@ public class PageConfigSound extends PageEdit
 			byte index;
 			if (select_pitch)
 			{
-				index = (byte)(this.select - 11);
+				index = (byte)(this.select - 6);
 			}
 			else
 			{
 				index = (byte)(this.select - 5);
 			}
 
-			if ((this.state & 4) == 4)
+			if ((this.state & 1) == 1)
 			{
 				try
 				{
@@ -98,7 +97,7 @@ public class PageConfigSound extends PageEdit
 				this.input_stringbuilder.append(NaliConfig.FLOAT_ARRAY[index]);
 				this.select_box = this.input_stringbuilder.length();
 			}
-			this.state ^= 4;
+			this.state ^= 1;
 			this.scroll = 0;
 		}
 		else
@@ -115,9 +114,9 @@ public class PageConfigSound extends PageEdit
 					NaliConfig.STATE ^= 8;
 					break;
 				}
-				case 11:
+				case 17:
 				{
-					if ((this.state & 4) == 4)
+					if ((this.state & 1) == 1)
 					{
 						NaliConfig.BGM_ID = this.input_stringbuilder.toString();
 					}
@@ -127,20 +126,14 @@ public class PageConfigSound extends PageEdit
 						this.input_stringbuilder.append(NaliConfig.BGM_ID);
 						this.select_box = this.input_stringbuilder.length();
 					}
-					this.state ^= 4;
+					this.state ^= 1;
 					this.scroll = 0;
 					break;
 				}
-				case 13:
+				case 19:
 					this.back();
 					break;
 			}
 		}
-	}
-
-	@Override
-	public void back()
-	{
-		this.set(new PageConfig(), new KeySelect());
 	}
 }

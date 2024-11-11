@@ -1,6 +1,7 @@
 package com.nali.sound;
 
 import com.nali.NaliAL;
+import com.nali.NaliConfig;
 import com.nali.system.ClientLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.relauncher.Side;
@@ -101,4 +102,22 @@ public abstract class Sound
 
 	public abstract void set();
 	public abstract int getSoundBuffer(byte id);
+
+	public static void setE(int source)
+	{
+		NaliAL.alSourcef(source, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[2] * NaliConfig.FLOAT_ARRAY[0]);
+		NaliAL.alSourcef(source, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[7] * NaliConfig.FLOAT_ARRAY[0]);
+	}
+
+	public static void setB(int source)
+	{
+		NaliAL.alSourcef(source, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[3] * NaliConfig.FLOAT_ARRAY[0]);
+		NaliAL.alSourcef(source, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[8] * NaliConfig.FLOAT_ARRAY[0]);
+	}
+
+	public static void setF(int source)
+	{
+		NaliAL.alSourcef(source, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[4] * NaliConfig.FLOAT_ARRAY[0]);
+		NaliAL.alSourcef(source, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[9] * NaliConfig.FLOAT_ARRAY[0]);
+	}
 }

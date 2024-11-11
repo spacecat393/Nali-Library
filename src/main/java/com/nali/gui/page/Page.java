@@ -9,11 +9,18 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SideOnly(Side.CLIENT)
 public abstract class Page
 {
 	public static Page PAGE;
 	public static int WIDTH, HEIGHT;
+	public static int QUAD2D_ARRAY_BUFFER;
+
+	public static List<Page> PAGE_LIST = new ArrayList();
+	public static List<Key> KEY_LIST = new ArrayList();
 
 	public float[] v_float_array = new float[]{0.0F, 0.0F};
 	public float[] c_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
@@ -61,4 +68,6 @@ public abstract class Page
 		WIDTH = -1;
 		Key.KEY = key;
 	}
+
+	public abstract void exit();
 }

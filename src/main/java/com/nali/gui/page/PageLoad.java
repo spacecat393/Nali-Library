@@ -3,13 +3,14 @@ package com.nali.gui.page;
 import com.nali.gui.box.text.BoxText09;
 import com.nali.gui.box.text.BoxTextAZ;
 import com.nali.list.data.NaliData;
-import com.nali.render.RenderO;
 import com.nali.system.ClientLoader;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -123,25 +124,6 @@ public class PageLoad extends Page
 	@Override
 	public void render()
 	{
-		boolean gl_blend = GL11.glIsEnabled(GL11.GL_BLEND);
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, RenderO.INTBUFFER);
-		int gl_blend_equation_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL20.GL_BLEND_EQUATION_ALPHA, RenderO.INTBUFFER);
-		int gl_blend_equation_alpha = RenderO.INTBUFFER.get(0);
-
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_RGB, RenderO.INTBUFFER);
-		int gl_blend_src_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_SRC_ALPHA, RenderO.INTBUFFER);
-		int gl_blend_src_alpha = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_RGB, RenderO.INTBUFFER);
-		int gl_blend_dst_rgb = RenderO.INTBUFFER.get(0);
-		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, RenderO.INTBUFFER);
-		int gl_blend_dst_alpha = RenderO.INTBUFFER.get(0);
-
-		GL11.glEnable(GL11.GL_BLEND);
-		GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
-		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-
 		this.take();
 		int width = Display.getWidth();
 		int height = Display.getHeight();
@@ -156,16 +138,10 @@ public class PageLoad extends Page
 //		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		this.draw();
 		this.free();
+	}
 
-		if (gl_blend)
-		{
-			GL11.glEnable(GL11.GL_BLEND);
-		}
-		else
-		{
-			GL11.glDisable(GL11.GL_BLEND);
-		}
-		GL20.glBlendEquationSeparate(gl_blend_equation_rgb, gl_blend_equation_alpha);
-		GL14.glBlendFuncSeparate(gl_blend_src_rgb, gl_blend_dst_rgb, gl_blend_src_alpha, gl_blend_dst_alpha);
+	@Override
+	public void exit()
+	{
 	}
 }

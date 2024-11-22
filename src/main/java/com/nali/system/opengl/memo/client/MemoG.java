@@ -1,8 +1,10 @@
 package com.nali.system.opengl.memo.client;
 
+import com.nali.Nali;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
 import com.nali.system.file.FileDataReader;
+import com.nali.system.opengl.memo.MemoA2;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,9 +22,9 @@ public class MemoG
 
 	public byte state;//texture_state culling transparent glow
 	public int
-	texture_id,
-	shader_id,
-	vao;
+		texture_id,
+		shader_id,
+		vao;
 
 	public MemoG(MemoA0[] memoa0_array, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int shader_id, String[] model_string_array, String folder_path)
 	{
@@ -60,6 +62,7 @@ public class MemoG
 			memoa2.weight_float_array = (float[])memoa0_array[size - 1].o;
 			memoa2.max_joint = Byte.parseByte(model_string_array[8]);
 
+//			Nali.A2_LIST;
 			A2_MAP.put(G_LIST.size(), memoa2);
 		}
 	}

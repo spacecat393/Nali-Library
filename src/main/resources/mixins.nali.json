@@ -12,5 +12,8 @@
   "mixins": [
     "IMixinEnumParticleTypes",
     "MixinFMLClientHandler"
+  ],
+  "server": [
+    "MixinDedicatedServer"
   ]
 }

@@ -1,6 +1,7 @@
 package com.nali.mixin;
 
 import com.nali.NaliConfig;
+import com.nali.da.IBothDaO;
 import com.nali.gui.page.Page;
 import com.nali.gui.page.PageLoad;
 import com.nali.render.RenderO;
@@ -15,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Comparator;
+import java.util.List;
 
 import static com.nali.Nali.error;
 
@@ -37,33 +40,42 @@ public abstract class MixinFMLClientHandler
 		pageload.clear();
 		Display.update();
 
-		ClientLoader.setRender();
+		ClientLoader.preTexture(Reflect.getClasses("com.nali.list.render"));
+//		ClientLoader.setRender();
 
 		if ((NaliConfig.STATE & 1) == 1)
 		{
-			for (Class render_class : Reflect.getClasses("com.nali.list.render.s"))
-			{
-				try
-				{
-					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAS").get(null), render_class.getField("IBOTHDASN").get(null))).draw();
-				}
-				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
-				{
-					error(e);
-				}
-			}
+			List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
+			List<Class> da_class_list = Reflect.getClasses("com.nali.list.da");
+			render_class_list.sort(Comparator.comparing(Class::getName));
+			da_class_list.sort(Comparator.comparing(Class::getName));
 
-			for (Class render_class : Reflect.getClasses("com.nali.list.render.o"))
+			for (int i = 0; i < render_class_list.size(); ++i)
 			{
+				Class render_class = render_class_list.get(i);
+				Class da_class = da_class_list.get(i);
+
 				try
 				{
-					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("ICLIENTDAO").get(null))).draw();
+					IBothDaO bd = (IBothDaO)da_class.getField("IDA").get(null);
+					((RenderO)render_class.getConstructors()[0].newInstance()).draw(bd);
 				}
 				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
 				{
 					error(e);
 				}
 			}
+//			for (Class render_class : Reflect.getClasses("com.nali.list.render.o"))
+//			{
+//				try
+//				{
+//					((RenderO)render_class.getConstructors()[0].newInstance(render_class.getField("IDA").get(null))).draw();
+//				}
+//				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
+//				{
+//					error(e);
+//				}
+//			}
 		}
 	}
 }

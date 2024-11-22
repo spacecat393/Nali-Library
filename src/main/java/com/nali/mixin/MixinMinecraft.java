@@ -8,11 +8,13 @@ import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.sound.Sound;
 import com.nali.system.ClientLoader;
+import com.nali.system.Reflect;
 import com.nali.system.Timing;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.MemoryUtil;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.*;
@@ -96,6 +98,7 @@ public abstract class MixinMinecraft
 		}
 		else
 		{
+			KeyBinding.unPressAllKeys();
 			Key.KEY.run();
 		}
 	}
@@ -180,7 +183,8 @@ public abstract class MixinMinecraft
 	{
 //		if (Minecraft.getMinecraft().getTextureManager() != null)
 //		{
-		ClientLoader.setRender();
+		ClientLoader.preTexture(Reflect.getClasses("com.nali.list.render"));
+//		ClientLoader.setRender();
 //		}
 	}
 
@@ -202,7 +206,7 @@ public abstract class MixinMinecraft
 			});
 			GL43.glDebugMessageCallback(khrdebugcallback);
 		}
-		ClientLoader.loadPreInit();
+		new ClientLoader().init();
 	}
 
 	@Inject(method = "init", at = @At(value = "TAIL"))

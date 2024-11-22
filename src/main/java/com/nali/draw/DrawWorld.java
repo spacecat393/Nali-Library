@@ -32,8 +32,7 @@ import static com.nali.system.ClientLoader.S_LIST;
 public class DrawWorld
 {
 	public static List<DrawWorldData> DRAWWORLDDATA_LIST = new ArrayList();
-	public static int
-	DATA_SIZE;
+	public static int DATA_SIZE;
 
 	public static Map<String, byte[]> KEY_MAP = new HashMap();
 	public static Map<byte[], List<Integer>> E_MODEL_MAP = new HashMap();

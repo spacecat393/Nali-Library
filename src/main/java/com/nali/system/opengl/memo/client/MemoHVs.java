@@ -36,17 +36,18 @@ public class MemoHVs extends MemoH
 //		String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[4] + "/Model/" + shader_string_array[5];
 //		String model_folder_path = ID + "/" + shader_string_array[5] + "/model/" + shader_string_array[6];
 		String model_folder_path = ID + "/" + shader_string_array[6] + "/model/" + shader_string_array[7];
-		String frame_string = "/frame/";
 
 //		float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + frame_string + "BindPoses");
-		this.bind_pose_float_array = FileDataReader.getFloatArray(model_folder_path + frame_string + "bindpose.bin");
+		String frame_folder_path = model_folder_path + "/frame/";
+		this.bind_pose_float_array = FileDataReader.getFloatArray(frame_folder_path + "bindpose.bin");
 
 		this.bone = this.bind_pose_float_array.length / 16;
 //		this.max_bones = this.bind_poses_float_array.length / 16;
 		int[][] bone_2d_int_array = new int[this.bone][];
+		String bone_folder_path = frame_folder_path + "bone/";
 		for (int i = 0; i < this.bone; ++i)
 		{
-			bone_2d_int_array[i] = FileDataReader.getIntArray(model_folder_path + frame_string + "bone/" + i + ".bin");
+			bone_2d_int_array[i] = FileDataReader.getIntArray(bone_folder_path + i + ".bin");
 		}
 
 		StringBuilder stringbuilder = new StringBuilder();

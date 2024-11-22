@@ -14,6 +14,7 @@ import com.nali.render.RenderO;
 import com.nali.render.RenderS;
 import com.nali.system.file.FileDataReader;
 import com.nali.system.openal.memo.client.MemoN;
+import com.nali.system.opengl.memo.MemoF2;
 import com.nali.system.opengl.memo.client.*;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,10 +38,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nali.Nali.*;
+import static com.nali.Nali.error;
 
 @SideOnly(Side.CLIENT)
-public class ClientLoader
+public class ClientLoader extends BothLoader
 {
 	public static int BGM_BUFFER = -1;
 	public static int BGM_SOURCE = -1;
@@ -48,123 +49,57 @@ public class ClientLoader
 	public static List<Integer> SOUND_INTEGER_LIST = new ArrayList();
 	public static List<MemoG> G_LIST = new ArrayList();//graphic
 	public static List<MemoS> S_LIST = new ArrayList();//shader
-	public static List<MemoF> F_LIST = new ArrayList();//frame
-	public static Map<Integer, MemoA2> A2_MAP = new HashMap();//3d skinning cpu
+//	public static List<MemoF> F_LIST = new ArrayList();//frame
 
-	public static void loadPreInit()
+//	//temp
+//	public List<MemoHVs> memohvs_list = new ArrayList();
+
+	public void init()
 	{
 		Display.update();
 
-		List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
-//		for (Class data_class : data_class_list)
-//		{
-//			try
-//			{
-//				data_class.getMethod("run").invoke(null);
-//			}
-//			catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
-//			{
-//			}
-//		}
-
-		File[] file_array = new File(ID).listFiles();
-		if (file_array != null)
+		if (NaliConfig.VAO)
 		{
-			if (NaliConfig.VAO)
+			NaliGL.init();
+		}
+
+		super.init();
+	}
+
+	public void load(int max_ordinal, List<Class> data_class_list, File[][] file_2d_array, Map<String, Class>[] data_class_map_array)
+	{
+		Map<String, MemoHVo[]> memohvo_array_map = new HashMap();
+		Map<String, MemoHFo[]> memohfo_array_map = new HashMap();
+
+		this.load(file_2d_array[0], data_class_map_array[0], memohvo_array_map, memohfo_array_map);
+
+		//s0-config
+		File tmp_file = new File("nali/nali/tmp");
+		tmp_file.mkdirs();
+		Path config_path = new File("nali/nali/tmp/config.bin").toPath();
+
+		try
+		{
+			NaliConfig.set(Files.readAllBytes(config_path));
+		}
+		catch (Exception e)
+		{
+			Page.PAGE = new PageConfig();
+			Page.PAGE.init();
+			Key.KEY = new KeySelect();
+			while ((((PageSelect)Page.PAGE).state & 2) == 0)
 			{
-				NaliGL.init();
+				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+				Page.PAGE.render();
+				Display.update();
+				Key.KEY.run();
 			}
+			Page.PAGE.clear();
 
-			//s0-data
-			int max_ordinal = 0;
-			for (Class data_class : data_class_list)
-			{
-				try
-				{
-					Field field = data_class.getField("ORDINAL");
-					max_ordinal = Math.max(max_ordinal, (byte)field.get(null));
-				}
-				catch (IllegalAccessException | NoSuchFieldException e)
-				{
-					error(e);
-				}
-			}
-			++max_ordinal;
-
-			Map<String, Class>[] data_class_map_array = new Map[max_ordinal];
-			int[] ordinal_int_array = new int[max_ordinal];
-			for (int i = 0; i < max_ordinal; ++i)
-			{
-				data_class_map_array[i] = new HashMap();
-			}
-			for (Class data_class : data_class_list)
-			{
-				try
-				{
-					Field field = data_class.getField("ORDINAL");
-					byte ordinal = (byte)field.get(null);
-					data_class_map_array[ordinal].put(StringReader.get(data_class)[1], data_class);
-					++ordinal_int_array[ordinal];
-				}
-				catch (IllegalAccessException | NoSuchFieldException e)
-				{
-					error(e);
-				}
-			}
-
-			File[][] file_2d_array = new File[max_ordinal][];
-			for (int i = 0; i < max_ordinal; ++i)
-			{
-				file_2d_array[i] = new File[ordinal_int_array[i]];
-			}
-
-			int[] add_int_array = new int[max_ordinal];
-			for (File file : file_array)
-			{
-				String name = file.getName();
-				for (int i = 0; i < max_ordinal; ++i)
-				{
-					if (data_class_map_array[i].get(name) != null)
-					{
-						file_2d_array[i][add_int_array[i]++] = file;
-						break;
-					}
-				}
-			}
-
-			Map<String, MemoHVo[]> memohvo_array_map = new HashMap();
-			Map<String, MemoHFo[]> memohfo_array_map = new HashMap();
-			//e0-data
-
-			load(file_2d_array[0], data_class_map_array[0], memohvo_array_map, memohfo_array_map);
-
-			//s0-config
-			File tmp_file = new File("nali/nali/tmp");
-			tmp_file.mkdirs();
-			Path config_path = new File("nali/nali/tmp/config.bin").toPath();
-
-			try
-			{
-				NaliConfig.set(Files.readAllBytes(config_path));
-			}
-			catch (Exception e)
-			{
-				Page.PAGE = new PageConfig();
-				Page.PAGE.init();
-				Key.KEY = new KeySelect();
-				while ((((PageSelect)Page.PAGE).state & 2) == 0)
-				{
-					GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-					Page.PAGE.render();
-					Display.update();
-					Key.KEY.run();
-				}
-				Page.PAGE.clear();
-
-				Page.PAGE_LIST.clear();
-				Page.KEY_LIST.clear();
-				Page.PAGE = null;
-				Key.KEY = null;
+			Page.PAGE_LIST.clear();
+			Page.KEY_LIST.clear();
+			Page.PAGE = null;
+			Key.KEY = null;
 
 //				try
 //				{
@@ -174,116 +109,113 @@ public class ClientLoader
 //				{
 //					error(ex);
 //				}
+		}
+		//e0-config
+
+		//s0-sound
+		if ((NaliConfig.STATE & 8) == 8)
+		{
+			NaliAL.load();
+			NaliAL.init();
+		}
+		String bgm = "nali/nali/tmp/" + NaliConfig.BGM_ID;
+		if ((NaliConfig.STATE & 4) == 4 && !new File(bgm).isFile())
+		{
+			try
+			{
+				Process process = Command.get("yt-dlp", "-f", "bestaudio", "-o", bgm, "https://www.youtube.com/watch?v=" + NaliConfig.BGM_ID).redirectErrorStream(true).start();
+				process.waitFor();
+				process.destroy();
 			}
-			//e0-config
-
-			//s0-sound
-			if ((NaliConfig.STATE & 8) == 8)
+			catch (IOException | InterruptedException e)
 			{
-				NaliAL.load();
-				NaliAL.init();
-			}
-			String bgm = "nali/nali/tmp/" + NaliConfig.BGM_ID;
-			if ((NaliConfig.STATE & 4) == 4 && !new File(bgm).isFile())
-			{
-				try
-				{
-					Process process = Command.get("yt-dlp", "-f", "bestaudio", "-o", bgm, "https://www.youtube.com/watch?v=" + NaliConfig.BGM_ID).redirectErrorStream(true).start();
-					process.waitFor();
-					process.destroy();
-				}
-				catch (IOException | InterruptedException e)
-				{
-					error(e);
-				}
-			}
-			if ((NaliConfig.STATE & 8+4) == 8+4)
-			{
-				BGM_BUFFER = MemoN.gen(bgm);
-				BGM_SOURCE = NaliAL.alGenSources();
-				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, BGM_BUFFER);
-				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_LOOPING, AL10.AL_TRUE);
-				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[1] * NaliConfig.FLOAT_ARRAY[0]);
-				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[6] * NaliConfig.FLOAT_ARRAY[0]);
-				NaliAL.alSourcePlay(BGM_SOURCE);
-			}
-			//e0-sound
-
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-			PageLoad pageload = new PageLoad();
-			pageload.init();
-			Page.WIDTH = -1;
-			pageload.render();
-			pageload.clear();
-			Display.update();
-
-			GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
-			int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
-			Page.QUAD2D_ARRAY_BUFFER = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(new float[]
-			{
-				-1, 1,
-				-1, -1,
-				1, -1,
-
-				-1, 1,
-				1, -1,
-				1, 1
-			}));
-
-			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
-
-			for (Class data_class : data_class_list)
-			{
-				try
-				{
-					Field field = data_class.getField("MAX_BONE");
-					if (field != null)
-					{
-						int max_bone = (int)field.get(null);
-						if (RenderS.MAX_BONE < max_bone)
-						{
-							RenderS.MAX_BONE = max_bone;
-						}
-					}
-				}
-				catch (IllegalAccessException | NoSuchFieldException e)
-				{
-				}
-			}
-			RenderS.BONE_FLOATBUFFER = ByteBuffer.allocateDirect(RenderS.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-
-			loadSound(file_2d_array[0], data_class_map_array[0]);
-			for (int i = 1; i < max_ordinal; ++i)
-			{
-				load(file_2d_array[i], data_class_map_array[i], memohvo_array_map, memohfo_array_map);
-				loadSound(file_2d_array[i], data_class_map_array[i]);
-			}
-
-			List<MemoHVo[]> memohvo_array_list = new ArrayList(memohvo_array_map.values());
-			List<MemoHFo[]> memohfo_array_list = new ArrayList(memohfo_array_map.values());
-			for (MemoHVo[] memohvo_array : memohvo_array_list)
-			{
-				for (MemoHVo memohvo : memohvo_array)
-				{
-					OpenGlHelper.glDeleteShader(memohvo.shader);
-				}
-			}
-			for (MemoHFo[] memohfo_array : memohfo_array_list)
-			{
-				for (MemoHFo memohfo : memohfo_array)
-				{
-					OpenGlHelper.glDeleteShader(memohfo.shader);
-				}
+				error(e);
 			}
 		}
-		else
+		if ((NaliConfig.STATE & 8+4) == 8+4)
 		{
-			warn("SKIP_DATA");
+			BGM_BUFFER = MemoN.gen(bgm);
+			BGM_SOURCE = NaliAL.alGenSources();
+			NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, BGM_BUFFER);
+			NaliAL.alSourcei(BGM_SOURCE, AL10.AL_LOOPING, AL10.AL_TRUE);
+			NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[1] * NaliConfig.FLOAT_ARRAY[0]);
+			NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[6] * NaliConfig.FLOAT_ARRAY[0]);
+			NaliAL.alSourcePlay(BGM_SOURCE);
+		}
+		//e0-sound
+
+		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		PageLoad pageload = new PageLoad();
+		pageload.init();
+		Page.WIDTH = -1;
+		pageload.render();
+		pageload.clear();
+		Display.update();
+
+		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
+		int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
+		Page.QUAD2D_ARRAY_BUFFER = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(new float[]
+		{
+			-1, 1,
+			-1, -1,
+			1, -1,
+
+			-1, 1,
+			1, -1,
+			1, 1
+		}));
+
+		OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, gl_array_buffer_binding);
+
+		for (Class data_class : data_class_list)
+		{
+			try
+			{
+				Field field = data_class.getField("MAX_BONE");
+				if (field != null)
+				{
+					int max_bone = (int)field.get(null);
+					if (RenderS.MAX_BONE < max_bone)
+					{
+						RenderS.MAX_BONE = max_bone;
+					}
+				}
+			}
+			catch (IllegalAccessException | NoSuchFieldException e)
+			{
+			}
+		}
+		RenderS.BONE_FLOATBUFFER = ByteBuffer.allocateDirect(RenderS.MAX_BONE << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
+
+		this.loadSound(file_2d_array[0], data_class_map_array[0]);
+		for (int i = 1; i < max_ordinal; ++i)
+		{
+			this.load(file_2d_array[i], data_class_map_array[i], memohvo_array_map, memohfo_array_map);
+			this.loadSound(file_2d_array[i], data_class_map_array[i]);
+		}
+
+		List<MemoHVo[]> memohvo_array_list = new ArrayList(memohvo_array_map.values());
+		List<MemoHFo[]> memohfo_array_list = new ArrayList(memohfo_array_map.values());
+		for (MemoHVo[] memohvo_array : memohvo_array_list)
+		{
+			for (MemoHVo memohvo : memohvo_array)
+			{
+				OpenGlHelper.glDeleteShader(memohvo.shader);
+			}
+		}
+		for (MemoHFo[] memohfo_array : memohfo_array_list)
+		{
+			for (MemoHFo memohfo : memohfo_array)
+			{
+				OpenGlHelper.glDeleteShader(memohfo.shader);
+			}
 		}
 	}
 
-	public static void load(File[] file_array, Map<String, Class> data_class_map, Map<String, MemoHVo[]> memohvo_array_map, Map<String, MemoHFo[]> memohfo_array_map)
+	public void load(File[] file_array, Map<String, Class> data_class_map, Map<String, MemoHVo[]> memohvo_array_map, Map<String, MemoHFo[]> memohfo_array_map)
 	{
+		List<MemoHVs> memohvs_list = new ArrayList();
+
 		for (File file : file_array)
 		{
 			File[] texture_file_array = new File(file, "texture").listFiles();
@@ -352,7 +284,6 @@ public class ClientLoader
 			}
 		}
 
-		List<MemoHVs> memohvs_list = new ArrayList();
 		for (File file : file_array)
 		{
 			File shader_file = new File(file, "shader.dat");
@@ -400,14 +331,14 @@ public class ClientLoader
 			if (model_file.isFile())
 			{
 				String name = file.getName();
-				String path_string = Nali.ID + "/" + name;
+				String path_string = file.getPath();
 				String[][] model_string_2d_array = FileDataReader.getMixXStringArray(model_file.toPath());
 
 				try
 				{
 					data_class_map.get(name).getField("MODEL_STEP").set(null, G_LIST.size());
 				}
-				catch (IllegalAccessException | NoSuchFieldException e)
+				catch (NoSuchFieldException | IllegalAccessException e)
 				{
 					error(e);
 				}
@@ -458,31 +389,36 @@ public class ClientLoader
 			File frame_file = new File(file, "frame.dat");
 			if (frame_file.isFile())
 			{
-				String[][] string_2d_array = FileDataReader.getMixXStringArray(frame_file.toPath());
+				String path = file.getPath();
+				String[][] frame_string_2d_array = FileDataReader.getMixXStringArray(frame_file.toPath());
+
 				try
 				{
-					data_class_map.get(file.getName()).getField("FRAME_STEP").set(null, F_LIST.size());
+					data_class_map.get(file.getName()).getField("FRAME_STEP").set(null, F2_LIST.size());
 				}
-				catch (IllegalAccessException | NoSuchFieldException e)
+				catch (NoSuchFieldException | IllegalAccessException e)
 				{
 					error(e);
 				}
 
 				int i = 0;
-				for (String[] string_array : string_2d_array)
+				for (String[] frame_string_array : frame_string_2d_array)
 				{
 					MemoHVs memohvs = memohvs_list.get(i++);
-					MemoF memof = new MemoF(memohvs.bone, string_array, file.getPath());
-					memof.bind_pose_float_array = memohvs.bind_pose_float_array;
-					memof.back_bone_2d_int_array = memohvs.back_bone_2d_int_array;
+//					MemoF memof = new MemoF(memohvs.bone, frame_string_array, path);
+					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.back_bone_2d_int_array, frame_string_array, path);
+//					MemoF memof = new MemoF(memohvs.bone, memof2.transforms_float_array);
+//						memof.bind_pose_float_array = memohvs.bind_pose_float_array;
+//						memof.back_bone_2d_int_array = memohvs.back_bone_2d_int_array;
 
-					F_LIST.add(memof);
+//					F_LIST.add(memof);
+					F2_LIST.add(memof2);
 				}
 			}
 		}
 	}
 
-	public static void loadSound(File[] file_array, Map<String, Class> data_class_map)
+	public void loadSound(File[] file_array, Map<String, Class> data_class_map)
 	{
 		if ((NaliConfig.STATE & 8) == 8)
 		{
@@ -517,11 +453,11 @@ public class ClientLoader
 		}
 	}
 
-	public static void setRender()
-	{
-		preTexture(Reflect.getClasses("com.nali.list.render.o"));
-		preTexture(Reflect.getClasses("com.nali.list.render.s"));
-	}
+//	public static void setRender()
+//	{
+//		preTexture(Reflect.getClasses("com.nali.list.render"));
+////		preTexture(Reflect.getClasses("com.nali.list.render.s"));
+//	}
 
 	public static void preTexture(List<Class> render_class_list)
 	{

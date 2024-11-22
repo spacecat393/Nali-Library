@@ -2,7 +2,7 @@ package com.nali.render;
 
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
-import com.nali.da.client.IClientDaO;
+import com.nali.da.IBothDaO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.system.bytes.ByteWriter;
@@ -28,7 +28,7 @@ import static com.nali.system.ClientLoader.*;
 @SideOnly(Side.CLIENT)
 public class RenderO
 <
-	RC extends IClientDaO
+	BD extends IBothDaO
 >
 {
 	public static ByteBuffer BYTEBUFFER = ByteBuffer.allocateDirect(16).order(ByteOrder.nativeOrder());
@@ -118,7 +118,7 @@ public class RenderO
 //	public DataLoader dataloader;
 //	public Object[] memo_object_array;
 //	public BothData bothdata;
-	public RC rc;
+//	public RC rc;
 
 //	public EntitiesRenderMemo entitiesrendermemo;
 //	public ObjectScreenDraw objectscreendraw;
@@ -129,32 +129,32 @@ public class RenderO
 //	public byte[] glow_byte_array;
 	public float lig_b = -1.0F, lig_s = -1.0F;
 
-	public RenderO(RC rc)
-	{
-//		this.entitiesrendermemo = entitiesrendermemo;
-//		this.bothdata = bothdata;
-		this.rc = rc;
-//		this.dataloader = dataloader;
-
-//		int max_part = bothdata.MaxPart();
-//		int max_part = clientdata.EndPart() - clientdata.StartPart();
-//		int step_models = bothdata.StepModels();
-
-//		this.texture_index_int_array = new int[max_part];
-
-//		this.memo_object_array = MIX_MEMORY_OBJECT_ARRAY[i];
-//		this.memo_object_array = new Object[max_part];
-//		this.model_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
-//		this.glow_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
-
-//		System.arraycopy(this.dataloader.memo_object_array, step_models, this.memo_object_array, 0, max_part);
-
-//		this.setGlow();
-//		this.setModel();
-
-//		this.objectscreendraw = this.getObjectScreenDraw();
-//		this.objectworlddraw = this.getObjectWorldDraw();
-	}
+//	public RenderO(RC rc)
+//	{
+////		this.entitiesrendermemo = entitiesrendermemo;
+////		this.bothdata = bothdata;
+//		this.rc = rc;
+////		this.dataloader = dataloader;
+//
+////		int max_part = bothdata.MaxPart();
+////		int max_part = clientdata.EndPart() - clientdata.StartPart();
+////		int step_models = bothdata.StepModels();
+//
+////		this.texture_index_int_array = new int[max_part];
+//
+////		this.memo_object_array = MIX_MEMORY_OBJECT_ARRAY[i];
+////		this.memo_object_array = new Object[max_part];
+////		this.model_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
+////		this.glow_byte_array = new byte[(int)Math.ceil(max_part / 8.0D)];
+//
+////		System.arraycopy(this.dataloader.memo_object_array, step_models, this.memo_object_array, 0, max_part);
+//
+////		this.setGlow();
+////		this.setModel();
+//
+////		this.objectscreendraw = this.getObjectScreenDraw();
+////		this.objectworlddraw = this.getObjectWorldDraw();
+//	}
 
 //	public ObjectRender(BothData bothdata, DataLoader dataloader/*, Object[] memo_object_array*/)
 //	{
@@ -295,9 +295,9 @@ public class RenderO
 		return (rg.state & 4) == 4;
 	}
 
-	public void startDrawLater(DrawWorldData drawworlddata)
+	public void startDrawLater(BD bd, DrawWorldData drawworlddata)
 	{
-		for (int i = this.rc.StartPart(); i < this.rc.EndPart(); ++i)
+		for (int i = bd.O_StartPart(); i < bd.O_EndPart(); ++i)
 		{
 			this.drawLater(i);
 		}
@@ -346,9 +346,9 @@ public class RenderO
 		return byte_array;
 	}
 
-	public void draw()
+	public void draw(BD bd)
 	{
-		for (int i = this.rc.StartPart(); i < this.rc.EndPart(); ++i)
+		for (int i = bd.O_StartPart(); i < bd.O_EndPart(); ++i)
 		{
 //			if ((this.model_byte_array[i / 8] >> i % 8 & 1) == 1)
 //			{

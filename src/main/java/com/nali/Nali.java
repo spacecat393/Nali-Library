@@ -50,6 +50,25 @@ public class Nali
 //	{
 //	}
 
+//	@EventHandler
+//	public void onFMLServerStartedEvent(FMLServerStartedEvent event)
+//	{
+////		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+//		if (event.getSide() == Side.SERVER)
+//		{
+//			ServerLoader.init();
+//		}
+//	}
+//
+//	@EventHandler
+//	public void onFMLServerStoppingEvent(FMLServerStoppingEvent event)
+//	{
+//		if ()
+//		{
+//
+//		}
+//	}
+
 	public static void error(Throwable t)
 	{
 		LOGGER.error(t, t);

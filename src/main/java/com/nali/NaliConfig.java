@@ -10,6 +10,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class NaliConfig
 {
 	public final static boolean GL_DEBUG = true;
+	//vao need bind buffer first on MemoG
 	public final static boolean VAO = false;
 	public final static String ATTRIBUTE = "attribute";
 

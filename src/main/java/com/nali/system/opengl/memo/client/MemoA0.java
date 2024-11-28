@@ -1,8 +1,13 @@
 package com.nali.system.opengl.memo.client;
 
+import com.nali.Nali;
 import com.nali.system.file.FileDataReader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @SideOnly(Side.CLIENT)
 public class MemoA0
@@ -45,7 +50,15 @@ public class MemoA0
 			}
 
 			length -= 2;
-			memoa0_array[length] = new MemoA0(FileDataReader.getIntArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
+//			memoa0_array[length] = new MemoA0(FileDataReader.getIntArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
+			try
+			{
+				memoa0_array[length] = new MemoA0(Files.readAllBytes(Paths.get(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin")), Byte.parseByte(model_string_array[8]));
+			}
+			catch (IOException e)
+			{
+				Nali.error(e);
+			}
 //			memoa0_array[length] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));
 			length += 1;
 			memoa0_array[length] = new MemoA0(FileDataReader.getFloatArray(model_folder_string + attriblocation_string_2d_array[length][0] + ".bin"), Byte.parseByte(model_string_array[8]));

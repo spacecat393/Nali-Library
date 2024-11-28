@@ -602,15 +602,18 @@ public class RenderO
 
 		if (!NaliConfig.VAO)
 		{
-			OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
+			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, rg.buffer);
 			int[] int_array = rs.attriblocation_int_array;
 			for (int i = 0; i < int_array.length; ++i)
+//			for (int i = 0; i < 2; ++i)
 			{
 				MemoA1 a1 = rg.memoa1_array[i];
-				OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
-				GL20.glVertexAttribPointer(int_array[i], a1.size, GL11.GL_FLOAT, false, 0, 0);
+//				OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
 				GL20.glEnableVertexAttribArray(int_array[i]);
+//				GL20.glVertexAttribPointer(int_array[i], a1.size, a1.type, false, 0, 0);
+				GL20.glVertexAttribPointer(int_array[i], a1.size, a1.type, false, rg.stride, a1.offset);
 			}
+			OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
 		}
 
 		if ((rg.state & 2) == 2)

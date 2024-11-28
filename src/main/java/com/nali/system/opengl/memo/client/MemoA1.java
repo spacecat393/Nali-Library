@@ -16,17 +16,18 @@ import static com.nali.Nali.error;
 @SideOnly(Side.CLIENT)
 public class MemoA1
 {
-	//float[N] -> FloatBuffer
-//	public Object object;
-	public int buffer;
+	public Object o;
+//	public int buffer;
 	public byte /*stride, */size;
-//	public int type;
+	public int type;
+	public byte offset;
 
-	public MemoA1(float[] float_array, byte size/*, int type*/)
+	public MemoA1(float[] float_array, byte size, int type, byte offset)
 	{
 //		if (o instanceof float[])
 //		{
-		this.buffer = genBuffer(createFloatByteBuffer(float_array));
+		this.o = float_array;
+//		this.buffer = genBuffer(createFloatByteBuffer(float_array));
 //		}
 //		else if (o instanceof int[])
 //		{
@@ -38,9 +39,27 @@ public class MemoA1
 //		}
 		this.size = size;
 //		this.stride = (byte)(this.size * 4);
-//		this.type = type;
+		this.type = type;
+		this.offset = offset;
 	}
 
+	public MemoA1(byte[] byte_array, byte size, int type, byte offset)
+	{
+//		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(byte_array.length * 2).order(ByteOrder.nativeOrder());
+////		bytebuffer.put(byte_array);
+//		for (byte b : byte_array)
+//		{
+////			bytebuffer.put((byte)(b & 0xFF));
+//			bytebuffer.putShort((short)(b & 0xFF));
+////			bytebuffer.putInt(b & 0xFF);
+//		}
+//		bytebuffer.flip();
+		this.o = byte_array;
+//		this.buffer = genBuffer(bytebuffer);
+		this.size = size;
+		this.type = type;
+		this.offset = offset;
+	}
 //	public MemoA1(float[] float_array, byte stride, byte size)
 //	{
 //		this.buffer = genBuffer(createFloatByteBuffer(float_array));
@@ -55,7 +74,7 @@ public class MemoA1
 //		this.size = size;
 //	}
 
-	public static MemoA1[] gen(MemoA0[] memoa0_array, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, String[] model_string_array, String folder_path/*, String[][] shader_string_2d_array*/, int shader_id)
+	public static MemoA1[] gen(MemoA0[] memoa0_array, String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, String[] model_string_array/*, String folder_path*//*, String[][] shader_string_2d_array*/, int shader_id)
 	{
 //		String model_folder_string = folder_path + "/Model/" + model_string_array[0] + '/';
 //		String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + model_string_array[2] + "/ShaderList"));
@@ -106,19 +125,32 @@ public class MemoA1
 //		this.vertices_float_array = FileDataReader.getFloatArray(model_folder_string + "/Vertices");
 
 		MemoA1[] memoa1_array = new MemoA1[memoa0_array.length];
+		byte offset = 0;
+
+		byte stride;
+		if (NaliConfig.VAO)
+		{
+			for (int i = 0; i < length; ++i)
+			{
+				stride += memoa0_array[i].size * 4;
+			}
+		}
+
 		for (int i = 0; i < length; ++i)
 		{
 //			String[] attriblocation_string_array = attriblocation_string_2d_array[i];
 //			String attriblocation_name_string = attriblocation_string_array[0];
 			MemoA0 memoa0 = memoa0_array[i];
 
-			memoa1_array[i] = new MemoA1((float[])memoa0.o, memoa0.size/*, GL11.GL_FLOAT*//*memoa0.type*/);
+			memoa1_array[i] = new MemoA1((float[])memoa0.o, memoa0.size, GL11.GL_FLOAT, offset);
 
 			if (NaliConfig.VAO)
 			{
-				GL20.glVertexAttribPointer(i, memoa0.size, GL11.GL_FLOAT, false, 0, 0);
+				GL20.glVertexAttribPointer(i, memoa0.size, GL11.GL_FLOAT, false, stride, offset);
 				GL20.glEnableVertexAttribArray(i);
 			}
+
+			offset += memoa0.size * 4;
 
 //			memoa1_array[i] = new MemoA1(FileDataReader.getFloatArray(model_folder_string + Character.toUpperCase(attriblocation_name_string.charAt(0)) + attriblocation_name_string.substring(1)), Byte.parseByte(attriblocation_string_array[1]));
 		}
@@ -144,22 +176,23 @@ public class MemoA1
 ////		float[] joint_float_array = (float[])memoa0_array[j_index].t;
 		MemoA0 j_memoa0 = memoa0_array[j_index];
 		MemoA0 w_memoa0 = memoa0_array[w_index];
-		int[] joint_int_array = (int[])j_memoa0.o;
+		byte[] joint_byte_array = (byte[])j_memoa0.o;
 //////		float[] weight_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
 //////		float[] weight_float_array = FileDataReader.getFloatArray(model_folder_string + "/Weights");
 		float[] weight_float_array = (float[])w_memoa0.o;
 //////		float[] temp_joint_float_array = joint_float_array;
-		int size = joint_int_array.length;
-		float[] temp_joint_float_array = new float[size];
-		for (int i = 0; i < size; ++i)
-		{
-			if (joint_int_array[i] == -1)
-			{
-				joint_int_array[i] = 0;
-			}
-			temp_joint_float_array[i] = joint_int_array[i];
-		}
+		int size = joint_byte_array.length;
+//		float[] temp_joint_float_array = new float[size];
+//		for (int i = 0; i < size; ++i)
+//		{
+////			if (joint_int_array[i] == -1)
+////			{
+////				joint_int_array[i] = 0;
+////			}
+//			temp_joint_float_array[i] = joint_int_array[i];
+//		}
 //		int[] temp_joint_int_array = joint_int_array;
+		byte[] temp_joint_byte_array = joint_byte_array;
 		float[] temp_weight_float_array = weight_float_array;
 
 		byte limit_max_joint = Byte.parseByte(shader_string_array[8]);
@@ -172,30 +205,35 @@ public class MemoA1
 //			int joint_int_array_length = joint_int_array.length;
 			int new_size = joint_float_array_length + (joint_float_array_length / max_joint) * step;
 //			int new_size = joint_int_array_length + (joint_int_array_length / max_joint) * step;
-			temp_joint_float_array = new float[new_size];
+//			temp_joint_float_array = new float[new_size];
+			temp_joint_byte_array = new byte[new_size];
 //			temp_joint_int_array = new int[new_size];
 			temp_weight_float_array = new float[new_size];
 			int index = 0;
 			int temp_index = 0;
 
-			for (int x = 0; x < temp_joint_float_array.length; x += limit_max_joint)
+//			for (int x = 0; x < temp_joint_float_array.length; x += limit_max_joint)
+			for (int x = 0; x < temp_joint_byte_array.length; x += limit_max_joint)
 //			for (int x = 0; x < temp_joint_int_array.length; x += limit_max_joint)
 			{
 				for (int y = 0; y < max_joint; ++y)
 				{
 //					temp_joint_float_array[temp_index] = joint_float_array[index];
-					temp_joint_float_array[temp_index] = joint_int_array[index];
+//					temp_joint_float_array[temp_index] = joint_int_array[index];
+					temp_joint_byte_array[temp_index] = joint_byte_array[index];
 //					temp_joint_int_array[temp_index] = joint_int_array[index];
 					temp_weight_float_array[temp_index++] = weight_float_array[index++];
 				}
+				temp_index += step;
 
-				for (int y = 0; y < step; ++y)
-				{
-//					temp_joint_float_array[temp_index] = -1;
-					temp_joint_float_array[temp_index] = 0;
-//					temp_joint_int_array[temp_index] = -1;
-					temp_weight_float_array[temp_index++] = 0.0F;
-				}
+//				for (int y = 0; y < step; ++y)
+//				{
+////					temp_joint_float_array[temp_index] = -1;
+////					temp_joint_float_array[temp_index] = 0;
+//					temp_joint_byte_array[temp_index] = 0;
+////					temp_joint_int_array[temp_index] = -1;
+//					temp_weight_float_array[temp_index++] = 0.0F;
+//				}
 			}
 
 //			this.joint_float_array = temp_joint_float_array;
@@ -205,24 +243,40 @@ public class MemoA1
 //		FloatBuffer joint_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_joint_float_array, true);
 //		ByteBuffer joint_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_joint_float_array, true);
 
-		memoa1_array[j_index] = new MemoA1(temp_joint_float_array, limit_max_joint/*, GL11.GL_FLOAT*/);
+		MemoA1 last_memoa1 = memoa1_array[memoa1_array.length - 2-1];
+		byte offset = (byte)(last_memoa1.offset + last_memoa1.size * 4);
+//		memoa1_array[j_index] = new MemoA1(temp_joint_byte_array, limit_max_joint, GL11.GL_SHORT, offset);
+		memoa1_array[j_index] = new MemoA1(temp_joint_byte_array, limit_max_joint, GL11.GL_UNSIGNED_BYTE, offset);
+//		memoa1_array[j_index] = new MemoA1(temp_joint_byte_array, limit_max_joint, GL11.GL_FLOAT, offset);
 
+		byte stride;
 		if (NaliConfig.VAO)
 		{
-			GL20.glVertexAttribPointer(j_index, limit_max_joint, GL11.GL_FLOAT, false, 0, 0);
+			stride = (byte)(offset + limit_max_joint + limit_max_joint * 4);
+//			stride = (byte)(offset + limit_max_joint * 2 + limit_max_joint * 4);
+//			GL20.glVertexAttribPointer(j_index, limit_max_joint, GL11.GL_FLOAT, false, 0, 0);
+//			GL20.glVertexAttribPointer(j_index, limit_max_joint, GL11.GL_SHORT, false, stride, offset);
+			GL20.glVertexAttribPointer(j_index, limit_max_joint, GL11.GL_UNSIGNED_BYTE, false, stride, offset);
 			GL20.glEnableVertexAttribArray(j_index);
 		}
+
+//		offset += limit_max_joint * 2;
+		offset += limit_max_joint;
+//		offset += limit_max_joint * 4;
+
 //		memoa1_array[j_index] = new MemoA1(temp_joint_int_array, limit_max_joint, j_memoa0.type);
 //		FloatBuffer weight_floatbuffer = OpenGLBuffer.createFloatBuffer(temp_weight_float_array, true);
 //		ByteBuffer weight_bytebuffer = OpenGLBuffer.createFloatByteBuffer(temp_weight_float_array, true);
 
-		memoa1_array[w_index] = new MemoA1(temp_weight_float_array, limit_max_joint/*, GL11.GL_FLOAT*//*w_memoa0.type*/);
+		memoa1_array[w_index] = new MemoA1(temp_weight_float_array, limit_max_joint, GL11.GL_FLOAT, offset);
 
 		if (NaliConfig.VAO)
 		{
-			GL20.glVertexAttribPointer(w_index, limit_max_joint, GL11.GL_FLOAT, false, 0, 0);
+			GL20.glVertexAttribPointer(w_index, limit_max_joint, GL11.GL_FLOAT, false, stride, offset);
 			GL20.glEnableVertexAttribArray(w_index);
 		}
+
+//		offset += limit_max_joint * 4;
 
 //		memoa1_array[j_index] = new MemoA1(temp_joint_float_array, max_joint);
 ////		memoa1_array[j_index] = new MemoA1(temp_joint_float_array, Byte.parseByte(shader_string_array[9]), max_joint);

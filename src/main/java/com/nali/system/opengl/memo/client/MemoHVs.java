@@ -1,5 +1,6 @@
 package com.nali.system.opengl.memo.client;
 
+import com.nali.Nali;
 import com.nali.NaliConfig;
 import com.nali.math.M4x4;
 import com.nali.system.StringReader;
@@ -7,6 +8,10 @@ import com.nali.system.file.FileDataReader;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static com.nali.Nali.ID;
 
@@ -16,7 +21,8 @@ public class MemoHVs extends MemoH
 //	public int max_bones;
 	public int bone;
 	public float[] bind_pose_float_array;
-	public int[][] back_bone_2d_int_array;
+//	public int[][] back_bone_2d_int_array;
+	public short[][] back_bone_2d_short_array;
 
 	public MemoHVs(String[] shader_string_array)
 	{
@@ -35,19 +41,40 @@ public class MemoHVs extends MemoH
 //		String model_folder_path = folder_path + "/Models/" + shader_string_array[5];
 //		String model_folder_path = Reference.MOD_ID + "/" + shader_string_array[4] + "/Model/" + shader_string_array[5];
 //		String model_folder_path = ID + "/" + shader_string_array[5] + "/model/" + shader_string_array[6];
-		String model_folder_path = ID + "/" + shader_string_array[6] + "/model/" + shader_string_array[7];
+//		String model_folder_path = ID + "/" + shader_string_array[6] + "/model/" + shader_string_array[7];
+		String model_folder_path = ID + "/" + shader_string_array[6] + "/model/" + shader_string_array[7] + "/";
 
 //		float[] bind_poses_float_array = FileDataReader.getFloatArray(model_folder_path + frame_string + "BindPoses");
-		String frame_folder_path = model_folder_path + "/frame/";
-		this.bind_pose_float_array = FileDataReader.getFloatArray(frame_folder_path + "bindpose.bin");
+//		String frame_folder_path = model_folder_path + "/frame/";
+//		this.bind_pose_float_array = FileDataReader.getFloatArray(frame_folder_path + "bindpose.bin");
+		this.bind_pose_float_array = FileDataReader.getFloatArray(model_folder_path + "bindpose.bin");
 
 		this.bone = this.bind_pose_float_array.length / 16;
 //		this.max_bones = this.bind_poses_float_array.length / 16;
-		int[][] bone_2d_int_array = new int[this.bone][];
-		String bone_folder_path = frame_folder_path + "bone/";
+//		int[][] bone_2d_int_array = new int[this.bone][];
+//		byte[][] bone_2d_byte_array = new byte[this.bone][];
+		short[][] bone_2d_short_array = new short[this.bone][];
+//		String bone_folder_path = frame_folder_path + "bone/";
+		String bone_folder_path = model_folder_path + "bone/";
 		for (int i = 0; i < this.bone; ++i)
 		{
-			bone_2d_int_array[i] = FileDataReader.getIntArray(bone_folder_path + i + ".bin");
+//			bone_2d_int_array[i] = FileDataReader.getIntArray(bone_folder_path + i + ".bin");
+			try
+			{
+				byte[] bone_byte_array = Files.readAllBytes(Paths.get(bone_folder_path + i + ".bin"));
+				int bone_byte_length = bone_byte_array.length;
+				bone_2d_short_array[i] = new short[bone_byte_length];
+				for (int l = 0; l < bone_byte_length; ++l)
+				{
+//					byte bone_byte = bone_byte_array[l];
+					bone_2d_short_array[i][l] = (short)(bone_byte_array[l] & 0xFF);
+//					bone_2d_short_array[i][l] = (short)(bone_byte_array[bone_byte_length - 1 - l] & 0xFF);
+				}
+			}
+			catch (IOException e)
+			{
+				Nali.error(e);
+			}
 		}
 
 		StringBuilder stringbuilder = new StringBuilder();
@@ -192,32 +219,43 @@ public class MemoHVs extends MemoH
 			}
 		}
 		//
-
-//		int[][] back_bones_2d_int_array = new int[this.max_bones][];
-		this.back_bone_2d_int_array = new int[this.bone][];
-
-		for (int j = 0; j < this.bone; ++j)
-		{
-			int[] bone_int_array = bone_2d_int_array[j];
-			this.back_bone_2d_int_array[j] = new int[bone_int_array.length];
-
-			int b_index = 0;
-			for (int b = bone_int_array.length - 1; b > -1; --b)
-			{
-				int[] b_bones = this.back_bone_2d_int_array[j];
-				b_bones[b_index++] = bone_int_array[b];
-			}
-		}
+//
+////		int[][] back_bones_2d_int_array = new int[this.max_bones][];
+////		this.back_bone_2d_int_array = new int[this.bone][];
+//		this.back_bone_2d_short_array = new short[this.bone][];
+//
+//		for (int j = 0; j < this.bone; ++j)
+//		{
+////			int[] bone_int_array = bone_2d_int_array[j];
+//			short[] bone_short_array = bone_2d_short_array[j];
+////			this.back_bone_2d_int_array[j] = new int[bone_int_array.length];
+//			this.back_bone_2d_short_array[j] = new short[bone_short_array.length];
+//
+//			int b_index = 0;
+////			for (int b = bone_int_array.length - 1; b > -1; --b)
+//			for (int b = bone_short_array.length - 1; b > -1; --b)
+//			{
+//////				int[] b_bones = this.back_bone_2d_int_array[j];
+////				short[] back_bone_short_array = this.back_bone_2d_short_array[j];
+////				back_bone_short_array[b_index++] = bone_short_array[b];
+//				this.back_bone_2d_short_array[j][b_index++] = bone_short_array[b];
+//			}
+//		}
+		this.back_bone_2d_short_array = bone_2d_short_array;
 
 		if ((NaliConfig.STATE & 2) == 2)
 		{
+			//switch won't work with float and slow than if else
 			stringbuilder.append("switch (j)\n{\n");
-			for (int j = 0; j < bone_2d_int_array.length; ++j)
+//			for (int j = 0; j < bone_2d_int_array.length; ++j)
+			for (int j = 0; j < bone_2d_short_array.length; ++j)
 			{
-				int[] back_bone_int_array = this.back_bone_2d_int_array[j];
+//				int[] back_bone_int_array = this.back_bone_2d_int_array[j];
+				short[] back_bone_short_array = this.back_bone_2d_short_array[j];
 
 				stringbuilder.append("case ").append(j).append(":\n");
-				for (int bone : back_bone_int_array)
+//				for (int bone : back_bone_int_array)
+				for (short bone : back_bone_short_array)
 				{
 //					stringbuilder.append(temp_v + " *= bindpose[" + bone + "];\n");
 //					stringbuilder.append(temp_v + " *= frame[" + bone + "];\n");
@@ -233,9 +271,11 @@ public class MemoHVs extends MemoH
 		}
 		else
 		{
-			for (int j = 0; j < bone_2d_int_array.length; ++j)
+//			for (int j = 0; j < bone_2d_int_array.length; ++j)
+			for (int j = 0; j < bone_2d_short_array.length; ++j)
 			{
-				int[] back_bone_int_array = this.back_bone_2d_int_array[j];
+//				int[] back_bone_int_array = this.back_bone_2d_int_array[j];
+				short[] back_bone_short_array = this.back_bone_2d_short_array[j];
 
 				String head = "else if";
 
@@ -246,7 +286,8 @@ public class MemoHVs extends MemoH
 
 				stringbuilder.append(head).append(" (j == ").append(j).append(")\n{\n");
 	//			stringbuilder.append(head).append(" (" + j_string + " == " + j + ")\n{\n");
-				for (int bone : back_bone_int_array)
+//				for (int bone : back_bone_int_array)
+				for (short bone : back_bone_short_array)
 				{
 //					stringbuilder.append(temp_v + " *= bindpose[" + bone + "];\n");
 //	//				stringbuilder.append("temp_vertex_v4 *= frame").append(StringReader.convertNumberToLetter(bone + ";\n");
@@ -278,28 +319,30 @@ public class MemoHVs extends MemoH
 		this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER, file_stringbuilder.toString());
 	}
 
-	public void setSB(StringBuilder stringbuilder, String temp_v, String temp_n, int bone, StringBuilder[] bone_stringbuilder_array)
+	public void setSB(StringBuilder stringbuilder, String temp_v, String temp_n, short bone, StringBuilder[] bone_stringbuilder_array)
 	{
 		stringbuilder.append(temp_v).append(" *= mat4(");
+//		Nali.warn("bsa " + bone_stringbuilder_array.length);
+//		Nali.warn("bone " + bone);
 		stringbuilder.append(bone_stringbuilder_array[bone]);
-		stringbuilder.append(");");
+		stringbuilder.append(");\n");
 
 		stringbuilder.append(temp_v).append(" *= frame[").append(bone).append("];\n");
 
 		stringbuilder.append(temp_v).append(" *= mat4(");
 		stringbuilder.append(bone_stringbuilder_array[bone + this.bone]);
-		stringbuilder.append(");");
+		stringbuilder.append(");\n");
 		//
 
 		stringbuilder.append(temp_n).append(" *= mat4(");
 		stringbuilder.append(bone_stringbuilder_array[bone]);
-		stringbuilder.append(");");
+		stringbuilder.append(");\n");
 
 		stringbuilder.append(temp_n).append(" *= frame[").append(bone).append("];\n");
 
 		stringbuilder.append(temp_n).append(" *= mat4(");
 		stringbuilder.append(bone_stringbuilder_array[bone + this.bone]);
-		stringbuilder.append(");");
+		stringbuilder.append(");\n");
 		//
 
 //		stringbuilder.append(temp_v + " *= bindpose[" + bone + "];\n");

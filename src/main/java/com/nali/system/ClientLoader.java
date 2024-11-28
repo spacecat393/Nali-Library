@@ -406,7 +406,8 @@ public class ClientLoader extends BothLoader
 				{
 					MemoHVs memohvs = memohvs_list.get(i++);
 //					MemoF memof = new MemoF(memohvs.bone, frame_string_array, path);
-					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.back_bone_2d_int_array, frame_string_array, path);
+//					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.back_bone_2d_int_array, frame_string_array, path);
+					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.back_bone_2d_short_array, frame_string_array, path);
 //					MemoF memof = new MemoF(memohvs.bone, memof2.transforms_float_array);
 //						memof.bind_pose_float_array = memohvs.bind_pose_float_array;
 //						memof.back_bone_2d_int_array = memohvs.back_bone_2d_int_array;

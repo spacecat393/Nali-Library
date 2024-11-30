@@ -6,7 +6,7 @@ import com.nali.da.IBothDaO;
 import com.nali.draw.DrawWorld;
 import com.nali.draw.DrawWorldData;
 import com.nali.system.bytes.ByteWriter;
-import com.nali.system.opengl.memo.client.MemoA1;
+import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoG;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -607,11 +607,11 @@ public class RenderO
 			for (int i = 0; i < int_array.length; ++i)
 //			for (int i = 0; i < 2; ++i)
 			{
-				MemoA1 a1 = rg.memoa1_array[i];
+				MemoA memoa = rg.memoa_array[i];
 //				OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
 				GL20.glEnableVertexAttribArray(int_array[i]);
 //				GL20.glVertexAttribPointer(int_array[i], a1.size, a1.type, false, 0, 0);
-				GL20.glVertexAttribPointer(int_array[i], a1.size, a1.type, false, rg.stride, a1.offset);
+				GL20.glVertexAttribPointer(int_array[i], memoa.size, memoa.type, false, rg.stride, memoa.offset);
 			}
 			OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
 		}

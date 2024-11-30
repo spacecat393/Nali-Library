@@ -1,7 +1,7 @@
 package com.nali.gui.box;
 
 import com.nali.render.RenderO;
-import com.nali.system.opengl.memo.client.MemoA1;
+import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,7 +27,7 @@ public class BoxColor extends BoxV
 //		this.y1 = ey;
 //		this.v_width = width;
 //		this.v_height = height;
-		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(this.createQuad()));
+		this.array_buffer = MemoA.genBuffer(MemoA.createFloatByteBuffer(this.createQuad()));
 	}
 
 	public void draw(MemoS rs, float[] v_float_array, float[] c_float_array)

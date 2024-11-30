@@ -213,7 +213,7 @@ public abstract class MixinMinecraft
 	private void nali_init(CallbackInfo callbackinfo)
 	{
 		//s0-sound
-		if ((NaliConfig.STATE & 8+4) == 8+4)
+		if ((NaliConfig.STATE & 8+4) == 8+4 && ClientLoader.BGM_BUFFER != -1)
 		{
 			NaliAL.alSourceStop(ClientLoader.BGM_SOURCE);
 			NaliAL.alDeleteSources(ClientLoader.BGM_SOURCE);

@@ -118,29 +118,32 @@ public class ClientLoader extends BothLoader
 			NaliAL.load();
 			NaliAL.init();
 		}
-		String bgm = "nali/nali/tmp/" + NaliConfig.BGM_ID;
-		if ((NaliConfig.STATE & 4) == 4 && !new File(bgm).isFile())
+		String bgm = "nali/nali/tmp/bgm";
+		if (!NaliConfig.BGM_ID.isEmpty())
 		{
-			try
+			if ((NaliConfig.STATE & 4) == 4 && !new File(bgm).isFile())
 			{
-				Process process = Command.get("yt-dlp", "-f", "bestaudio", "-o", bgm, "https://www.youtube.com/watch?v=" + NaliConfig.BGM_ID).redirectErrorStream(true).start();
-				process.waitFor();
-				process.destroy();
+				try
+				{
+					Process process = Command.get("yt-dlp", "-f", "bestaudio", "-o", bgm, NaliConfig.BGM_ID).redirectErrorStream(true).start();
+					process.waitFor();
+					process.destroy();
+				}
+				catch (IOException | InterruptedException e)
+				{
+					error(e);
+				}
 			}
-			catch (IOException | InterruptedException e)
+			if ((NaliConfig.STATE & 8+4) == 8+4)
 			{
-				error(e);
+				BGM_BUFFER = MemoN.gen(bgm);
+				BGM_SOURCE = NaliAL.alGenSources();
+				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, BGM_BUFFER);
+				NaliAL.alSourcei(BGM_SOURCE, AL10.AL_LOOPING, AL10.AL_TRUE);
+				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[1] * NaliConfig.FLOAT_ARRAY[0]);
+				NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[6] * NaliConfig.FLOAT_ARRAY[0]);
+				NaliAL.alSourcePlay(BGM_SOURCE);
 			}
-		}
-		if ((NaliConfig.STATE & 8+4) == 8+4)
-		{
-			BGM_BUFFER = MemoN.gen(bgm);
-			BGM_SOURCE = NaliAL.alGenSources();
-			NaliAL.alSourcei(BGM_SOURCE, AL10.AL_BUFFER, BGM_BUFFER);
-			NaliAL.alSourcei(BGM_SOURCE, AL10.AL_LOOPING, AL10.AL_TRUE);
-			NaliAL.alSourcef(BGM_SOURCE, AL10.AL_GAIN, NaliConfig.FLOAT_ARRAY[1] * NaliConfig.FLOAT_ARRAY[0]);
-			NaliAL.alSourcef(BGM_SOURCE, AL10.AL_PITCH, NaliConfig.FLOAT_ARRAY[6] * NaliConfig.FLOAT_ARRAY[0]);
-			NaliAL.alSourcePlay(BGM_SOURCE);
 		}
 		//e0-sound
 
@@ -154,7 +157,7 @@ public class ClientLoader extends BothLoader
 
 		GL11.glGetInteger(GL15.GL_ARRAY_BUFFER_BINDING, RenderO.INTBUFFER);
 		int gl_array_buffer_binding = RenderO.INTBUFFER.get(0);
-		Page.QUAD2D_ARRAY_BUFFER = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(new float[]
+		Page.QUAD2D_ARRAY_BUFFER = MemoA.genBuffer(MemoA.createFloatByteBuffer(new float[]
 		{
 			-1, 1,
 			-1, -1,
@@ -365,11 +368,7 @@ public class ClientLoader extends BothLoader
 					String[][] shader_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + model_string_array[2] + "/shader.dat"));
 					String[][] attriblocation_string_2d_array = FileDataReader.getMixXStringArray(Paths.get(Nali.ID + "/" + shader_string_2d_array[shader_id][0] + "/shader/" + shader_string_2d_array[shader_id][1] + "/attrib.dat"));
 
-					G_LIST.add(new MemoG
-					(
-						MemoA0.gen(model_string_array, attriblocation_string_2d_array, path_string),
-						shader_string_2d_array, attriblocation_string_2d_array, shader_id, model_string_array, path_string
-					));
+					G_LIST.add(new MemoG(shader_string_2d_array, attriblocation_string_2d_array, shader_id, model_string_array, path_string));
 				}
 
 				if (NaliConfig.VAO)
@@ -407,7 +406,7 @@ public class ClientLoader extends BothLoader
 					MemoHVs memohvs = memohvs_list.get(i++);
 //					MemoF memof = new MemoF(memohvs.bone, frame_string_array, path);
 //					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.back_bone_2d_int_array, frame_string_array, path);
-					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.back_bone_2d_short_array, frame_string_array, path);
+					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.bone_2d_short_array, frame_string_array, path);
 //					MemoF memof = new MemoF(memohvs.bone, memof2.transforms_float_array);
 //						memof.bind_pose_float_array = memohvs.bind_pose_float_array;
 //						memof.back_bone_2d_int_array = memohvs.back_bone_2d_int_array;

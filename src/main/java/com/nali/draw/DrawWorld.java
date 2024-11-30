@@ -6,7 +6,7 @@ import com.nali.NaliGL;
 import com.nali.render.RenderO;
 import com.nali.render.RenderS;
 import com.nali.system.bytes.ByteReader;
-import com.nali.system.opengl.memo.client.MemoA1;
+import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoG;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -43,8 +43,6 @@ public class DrawWorld
 	public static Map<byte[], List<Integer>> T_MODEL_MAP = new HashMap();
 	public static Map<byte[], List<Integer>> T_TRANSLUCENT_MAP = new HashMap();
 
-//	public static byte INDEX;
-
 	public static void add(byte[] byte_array)
 	{
 		List<Integer> index_integer_list;
@@ -69,16 +67,6 @@ public class DrawWorld
 			{
 				index_integer_list = E_GLOW_MAP.get(byte_array);
 				data_map = E_GLOW_MAP;
-//			switch (INDEX)
-//			{
-////				case 1:
-////					break;
-//				case 1:
-//					index_integer_list = GLOW_MAP.get(byte_array);
-//					break;
-//				default:
-//					index_integer_list = MODEL_MAP.get(byte_array);
-//			}
 			}
 			else if ((byte_array[4 + 4 + 4] & 1) == 1)
 			{
@@ -114,88 +102,23 @@ public class DrawWorld
 
 	public static void runE()
 	{
-//		Minecraft minecraft = Minecraft.getMinecraft();
-//		int display_width = minecraft.displayWidth,
-//		display_height = minecraft.displayHeight;
-//		if (display_width != DISPLAY_WIDTH || display_height != DISPLAY_HEIGHT)
-//		{
-//			GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
-//			R_GL_DRAW_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-//			GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
-//			R_GL_READ_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-//
-//			GL11.glGetInteger(GL30.GL_RENDERBUFFER_BINDING, OPENGL_INTBUFFER);
-//			R_GL_RENDERBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-//
-//			DISPLAY_WIDTH = display_width;
-//			DISPLAY_HEIGHT = display_height;
-//
-//			OpenGlHelper.glBindFramebuffer(OpenGlHelper.GL_FRAMEBUFFER, MC_FRAMEBUFFER);
-//			OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, MC_RENDERBUFFER);
-//
-//			OpenGlHelper.glRenderbufferStorage(OpenGlHelper.GL_RENDERBUFFER, GL14.GL_DEPTH_COMPONENT24, DISPLAY_WIDTH, DISPLAY_HEIGHT);
-//			OpenGlHelper.glFramebufferRenderbuffer(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, OpenGlHelper.GL_RENDERBUFFER, MC_RENDERBUFFER);
-//
-//			OpenGlHelper.glBindRenderbuffer(OpenGlHelper.GL_RENDERBUFFER, R_GL_RENDERBUFFER_BINDING);
-//			OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
-//			OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
-//		}
-
 		RenderO.take();
 
 		if (!E_MODEL_MAP.isEmpty())
 		{
-//			Nali.warn("model" + E_MODEL_MAP.size());
 			draw(E_MODEL_MAP);
 		}
-//		FIRST_MODEL_MAP.clear();
 
 		if (!E_GLOW_MAP.isEmpty())
 		{
-//			Nali.warn("glow" + E_GLOW_MAP.size());
 			draw(E_GLOW_MAP);
 		}
 
 		if (!E_TRANSLUCENT_MAP.isEmpty())
 		{
-//			Nali.warn("translucent " + E_TRANSLUCENT_MAP.size());
 			GL11.glDepthMask(false);
-//			GL11.glEnable(GL11.GL_CULL_FACE);
-//			GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-//			GL11.glGetInteger(GL30.GL_DRAW_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
-//			R_GL_DRAW_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-////			GL11.glGetInteger(GL30.GL_READ_FRAMEBUFFER_BINDING, OPENGL_INTBUFFER);
-////			R_GL_READ_FRAMEBUFFER_BINDING = OPENGL_INTBUFFER.get(0);
-//
-//			GL30.glGetFramebufferAttachmentParameter(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL30.GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME, OPENGL_INTBUFFER);
-//			R_GL_DEPTH_ATTACHMENT = OPENGL_INTBUFFER.get(0);
-//
-//			OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, MC_FRAMEBUFFER);
-//
-//			GL30.glBlitFramebuffer
-//			(
-//				0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,
-//				0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT,
-//				GL11.GL_DEPTH_BUFFER_BIT,
-//				GL11.GL_NEAREST
-//			);
-//
-//			OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
-//			OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, MC_RENDERBUFFER, 0);
-////			GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
-
 			draw(E_TRANSLUCENT_MAP);
-//			SECOND_MODEL_MAP.clear();
-//
-//			OpenGlHelper.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, R_GL_DRAW_FRAMEBUFFER_BINDING);
-////			OpenGlHelper.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, R_GL_READ_FRAMEBUFFER_BINDING);
-//
-//			OpenGlHelper.glFramebufferTexture2D(OpenGlHelper.GL_FRAMEBUFFER, OpenGlHelper.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, R_GL_DEPTH_ATTACHMENT, 0);
 		}
-
-//		DRAWWORLDDATA_LIST.clear();
-//		DATA_SIZE = 0;
 
 		RenderO.free();
 	}
@@ -253,18 +176,10 @@ public class DrawWorld
 
 			RenderO.enableBuffer(rg, rs);
 
-//			OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[2], 2);
-//			OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE2);
-//			setTextureBuffer(Minecraft.getMinecraft().getFramebuffer().framebufferTexture, (byte)0);
-
 			OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
 			if ((byte_array[4 + 4 + 4] & 4) == 4)//color
 			{
-//				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-//				setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
-
 				int color = ByteReader.getInt(byte_array, 4);
-//				FLOATBUFFER.limit(3);
 				FLOATBUFFER.clear();
 				FLOATBUFFER.put(((color >> 16) & 0xFF) / 255.0F);
 				FLOATBUFFER.put(((color >> 8) & 0xFF) / 255.0F);
@@ -275,10 +190,6 @@ public class DrawWorld
 			}
 			else
 			{
-//				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
-//				setLightMapBuffer(((IMixinEntityRenderer)Minecraft.getMinecraft().entityRenderer).lightmapTexture().getGlTextureId());
-
-//				OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[4/*+1*/], 0);
 				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 				setTextureBuffer(ByteReader.getInt(byte_array, 4), (byte)(rg.state & 1));
 			}
@@ -287,23 +198,19 @@ public class DrawWorld
 			{
 				DrawWorldData drawworlddata = DRAWWORLDDATA_LIST.get(integer);
 
-//				boolean transparent = (byte_array[4 + 4 + 4] & 1) == 1;
-//				RenderO.setTransparentStart(transparent);
-
 				FLOATBUFFER.limit(16);
-				MemoA1.put(FLOATBUFFER, drawworlddata.projection_m4x4_float, 16);
+				MemoA.put(FLOATBUFFER, drawworlddata.projection_m4x4_float, 16);
 				OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, FLOATBUFFER);
-				MemoA1.put(FLOATBUFFER, drawworlddata.modelview_m4x4_float, 16);
+				MemoA.put(FLOATBUFFER, drawworlddata.modelview_m4x4_float, 16);
 				OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, FLOATBUFFER);
 				FLOATBUFFER.limit(4);
-				MemoA1.put(FLOATBUFFER, drawworlddata.color_v4_float, 4);
+				MemoA.put(FLOATBUFFER, drawworlddata.color_v4_float, 4);
 				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3/*+1*/], FLOATBUFFER);
-				MemoA1.put(FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
+				MemoA.put(FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
 				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2/*+1*/], FLOATBUFFER);
 
 				if ((rg.state & 8) == 8)
 				{
-//					FLOATBUFFER.limit(2);
 					FLOATBUFFER.clear();
 					FLOATBUFFER.put(-1.0f);
 					FLOATBUFFER.put(-1.0f);
@@ -312,7 +219,6 @@ public class DrawWorld
 				}
 				else
 				{
-//					FLOATBUFFER.limit(2);
 					FLOATBUFFER.clear();
 					FLOATBUFFER.put(drawworlddata.lig_b);
 					FLOATBUFFER.put(drawworlddata.lig_s);
@@ -320,17 +226,12 @@ public class DrawWorld
 					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], FLOATBUFFER);
 				}
 
-//				if (drawworlddata.skinning_float_array != null)
 				if ((byte_array[4 + 4 + 4] & 2) == 2)
 				{
 					RenderS.setFloatBuffer(drawworlddata.skinning_float_array);
 					OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7/*+1*/], false, RenderS.BONE_FLOATBUFFER);
 				}
-//				OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
-//				int buffer = OpenGlHelper.glGenBuffers();
-//				GL30.glBindBufferBase(GL30.GL_TRANSFORM_FEEDBACK_BUFFER, 0, transformFeedbackBufferID);
-//				GL30.glBeginTransformFeedback(GL11.GL_TRIANGLES);
-//				GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
+
 				if (NaliConfig.VAO)
 				{
 					NaliGL.glDrawElementsTUi0(rg.index_length);
@@ -339,15 +240,6 @@ public class DrawWorld
 				{
 					GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
 				}
-//				GL30.glEndTransformFeedback();
-
-				//read
-				//glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, transformFeedbackBufferID);
-				//ByteBuffer buffer = glMapBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, GL_READ_ONLY);
-
-				//done
-				//glUnmapBuffer(GL_TRANSFORM_FEEDBACK_BUFFER);
-				//glBindBuffer(GL_TRANSFORM_FEEDBACK_BUFFER, 0);
 			}
 
 			if (!NaliConfig.VAO)

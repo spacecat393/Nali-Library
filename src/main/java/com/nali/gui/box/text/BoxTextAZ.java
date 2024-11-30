@@ -2,7 +2,7 @@ package com.nali.gui.box.text;
 
 import com.nali.gui.box.BoxVT;
 import com.nali.render.RenderO;
-import com.nali.system.opengl.memo.client.MemoA1;
+import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -56,7 +56,7 @@ public class BoxTextAZ extends BoxVT
 			System.arraycopy(this.createQuad(), 0, float_array, l++ * 24, 24);
 			x += space + size;
 		}
-		this.array_buffer = MemoA1.genBuffer(MemoA1.createFloatByteBuffer(float_array));
+		this.array_buffer = MemoA.genBuffer(MemoA.createFloatByteBuffer(float_array));
 	}
 
 	public void draw(MemoS rs, float[] v_float_array, float[] c_float_array)

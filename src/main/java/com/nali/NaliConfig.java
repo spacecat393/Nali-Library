@@ -10,7 +10,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class NaliConfig
 {
 	public final static boolean GL_DEBUG = true;
-	//vao need bind buffer first on MemoG
 	public final static boolean VAO = false;
 	public final static String ATTRIBUTE = "attribute";
 
@@ -39,7 +38,7 @@ public class NaliConfig
 		1.0F//9 EFFECT
 	};
 
-	public static String BGM_ID = "eeXVnP0zuMo";
+	public static String BGM_ID = "";
 //	public static byte[] CONFIG_BYTE_ARRAY;
 
 //	@Config.Name("Shader")

@@ -24,6 +24,15 @@ import static com.nali.Nali.error;
 @Mixin(FMLClientHandler.class)
 public abstract class MixinFMLClientHandler
 {
+//	@Redirect(remap = false, method = "beginMinecraftLoading", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/client/SplashProgress;start()V"))
+//	private void nali_beginMinecraftLoading()
+//	{
+//		if ((NaliConfig.STATE & 32) == 0)
+//		{
+//			SplashProgress.start();
+//		}
+//	}
+
 	@Inject(remap = false, method = "finishMinecraftLoading", at = @At(value = "TAIL"))
 	private void nali_finishMinecraftLoading(CallbackInfo callbackinfo)
 	{
@@ -76,6 +85,16 @@ public abstract class MixinFMLClientHandler
 //					error(e);
 //				}
 //			}
+		}
+
+		if ((NaliConfig.STATE & 16) == 16)
+		{
+			//need test
+			//free memory and rebuild
+			ClientLoader clientloader = new ClientLoader();
+			clientloader.free();
+			clientloader.init();
+			ClientLoader.preTexture(Reflect.getClasses("com.nali.list.render"));
 		}
 	}
 }

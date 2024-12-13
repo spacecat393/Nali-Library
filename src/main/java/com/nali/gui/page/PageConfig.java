@@ -31,39 +31,38 @@ public class PageConfig extends PageSelect
 			new BoxTextAll("MENU".toCharArray()),//0
 			new BoxTextAll("CHECK".toCharArray()),
 			new BoxTextAll("SOUND-CONFIG".toCharArray()),
+			new BoxTextAll("OPENGL-CONFIG".toCharArray()),
 
-//			new BoxTextAll("DOWNLOAD FILE".toCharArray()),
-//			new BoxTextAll("START PROCESS".toCharArray()),
-//			new BoxTextAll(((NaliConfig.STATE & 4) == 4 ? "USE_YT-DLP YES" : "USE_YT-DLP NO").toCharArray()),
-//			new BoxTextAll(((NaliConfig.STATE & 8) == 8 ? "USE_FFMPEG YES" : "USE_FFMPEG NO").toCharArray()),
-//			new BoxTextAll("READ SOUND".toCharArray()),
-
-			new BoxTextAll("OPENGL".toCharArray()),
-			new BoxTextAll(((NaliConfig.STATE & 1) == 1 ? "PRE_SHADER YES" : "PRE_SHADER NO").toCharArray()),
-			new BoxTextAll(((NaliConfig.STATE & 2) == 2 ? "USE_SWITCH YES" : "USE_SWITCH NO").toCharArray()),
+			new BoxTextAll("EXTRA".toCharArray()),
+			new BoxTextAll(((NaliConfig.STATE & 32) == 32 ? "DISABLE_SP_LOAD YES" : "DISABLE_SP_LOAD NO").toCharArray()),
 
 			new BoxTextAll("ACTION".toCharArray()),
 			new BoxTextAll("DONE".toCharArray())
 		};
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
-		this.group_byte_array[3 / 8] |= 1 << 3 % 8;
+		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
 	}
 
 	@Override
 	public void exit()
 	{
-		try
+		this.save();
+		if (PAGE == this)
 		{
-			Files.write(Paths.get("nali/nali/tmp/config.bin"), NaliConfig.getByteArray());
+			super.exit();
 		}
-		catch (IOException e)
-		{
-			Nali.error(e);
-		}
+	}
 
-		super.exit();
+	@Override
+	public void back()
+	{
+		if (PAGE == this)
+		{
+			this.save();
+		}
+		super.back();
 	}
 
 	@Override
@@ -82,15 +81,29 @@ public class PageConfig extends PageSelect
 				KEY_LIST.add(Key.KEY);
 				this.set(new PageConfigSound(), new KeyEdit());
 				break;
-			case 5:
-				NaliConfig.STATE ^= 1;
+			case 4:
+				PAGE_LIST.add(this);
+				KEY_LIST.add(Key.KEY);
+				this.set(new PageConfigOpenGL(), new KeySelect());
 				break;
 			case 6:
-				NaliConfig.STATE ^= 2;
+				NaliConfig.STATE ^= 32;
 				break;
 			case 8:
 				this.back();
 				break;
+		}
+	}
+
+	public void save()
+	{
+		try
+		{
+			Files.write(Paths.get("nali/nali/tmp/config.bin"), NaliConfig.getByteArray());
+		}
+		catch (IOException e)
+		{
+			Nali.error(e);
 		}
 	}
 }

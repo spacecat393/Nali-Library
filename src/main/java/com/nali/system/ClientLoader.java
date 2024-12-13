@@ -43,6 +43,7 @@ import static com.nali.Nali.error;
 @SideOnly(Side.CLIENT)
 public class ClientLoader extends BothLoader
 {
+	public byte state;//start bgm first_update
 	public static int BGM_BUFFER = -1;
 	public static int BGM_SOURCE = -1;
 	public static List<Integer> TEXTURE_INTEGER_LIST = new ArrayList();
@@ -54,9 +55,13 @@ public class ClientLoader extends BothLoader
 //	//temp
 //	public List<MemoHVs> memohvs_list = new ArrayList();
 
+	@Override
 	public void init()
 	{
-		Display.update();
+		if ((this.state & 4) == 4)
+		{
+			Display.update();
+		}
 
 		if (NaliConfig.VAO)
 		{
@@ -64,6 +69,87 @@ public class ClientLoader extends BothLoader
 		}
 
 		super.init();
+	}
+
+	public void free()
+	{
+//		OpenGlHelper.glDeleteShader;
+		for (Integer integer : TEXTURE_INTEGER_LIST)
+		{
+			GL11.glDeleteTextures(integer);
+		}
+		TEXTURE_INTEGER_LIST.clear();
+
+		for (Integer integer : SOUND_INTEGER_LIST)
+		{
+			NaliAL.alDeleteBuffers(integer);
+		}
+		SOUND_INTEGER_LIST.clear();
+
+		for (MemoG memog : G_LIST)
+		{
+			OpenGlHelper.glDeleteBuffers(memog.buffer);
+			OpenGlHelper.glDeleteBuffers(memog.ebo);
+			if (NaliConfig.VAO)
+			{
+				//delete vao
+//				NaliGL.
+			}
+		}
+		G_LIST.clear();
+
+		for (MemoS memos : S_LIST)
+		{
+			OpenGlHelper.glDeleteProgram(memos.program);
+		}
+		S_LIST.clear();
+
+		F2_LIST.clear();
+		A2_MAP.clear();
+
+		List<Class> data_class_list = Reflect.getClasses("com.nali.list.data");
+		for (Class data_class : data_class_list)
+		{
+			try
+			{
+				data_class.getField("TEXTURE_STEP").set(null, 0);
+			}
+			catch (IllegalAccessException | NoSuchFieldException e)
+			{
+			}
+
+			try
+			{
+				data_class.getField("SHADER_STEP").set(null, 0);
+			}
+			catch (IllegalAccessException | NoSuchFieldException e)
+			{
+			}
+
+			try
+			{
+				data_class.getField("MODEL_STEP").set(null, 0);
+			}
+			catch (IllegalAccessException | NoSuchFieldException e)
+			{
+			}
+
+			try
+			{
+				data_class.getField("FRAME_STEP").set(null, 0);
+			}
+			catch (IllegalAccessException | NoSuchFieldException e)
+			{
+			}
+
+			try
+			{
+				data_class.getField("SOUND_STEP").set(null, 0);
+			}
+			catch (IllegalAccessException | NoSuchFieldException e)
+			{
+			}
+		}
 	}
 
 	public void load(int max_ordinal, List<Class> data_class_list, File[][] file_2d_array, Map<String, Class>[] data_class_map_array)
@@ -119,7 +205,7 @@ public class ClientLoader extends BothLoader
 			NaliAL.init();
 		}
 		String bgm = "nali/nali/tmp/bgm";
-		if (!NaliConfig.BGM_ID.isEmpty())
+		if (!NaliConfig.BGM_ID.isEmpty() && (this.state & 1) == 1)
 		{
 			if ((NaliConfig.STATE & 4) == 4 && !new File(bgm).isFile())
 			{
@@ -406,7 +492,7 @@ public class ClientLoader extends BothLoader
 					MemoHVs memohvs = memohvs_list.get(i++);
 //					MemoF memof = new MemoF(memohvs.bone, frame_string_array, path);
 //					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.back_bone_2d_int_array, frame_string_array, path);
-					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.bone_2d_short_array, frame_string_array, path);
+					MemoF2 memof2 = new MemoF2(memohvs.bone, memohvs.bind_pose_float_array, memohvs.bone_2d_byte_array, frame_string_array, path);
 //					MemoF memof = new MemoF(memohvs.bone, memof2.transforms_float_array);
 //						memof.bind_pose_float_array = memohvs.bind_pose_float_array;
 //						memof.back_bone_2d_int_array = memohvs.back_bone_2d_int_array;

@@ -11,7 +11,8 @@
   ],
   "mixins": [
     "IMixinEnumParticleTypes",
-    "MixinFMLClientHandler"
+    "MixinFMLClientHandler",
+    "MixinSplashProgress"
   ],
   "server": [
     "MixinDedicatedServer"

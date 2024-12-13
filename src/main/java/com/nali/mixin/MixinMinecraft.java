@@ -9,11 +9,11 @@ import com.nali.render.RenderO;
 import com.nali.sound.Sound;
 import com.nali.system.ClientLoader;
 import com.nali.system.Reflect;
-import com.nali.system.Timing;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.MemoryUtil;
 import org.lwjgl.openal.AL10;
@@ -32,10 +32,19 @@ import static com.nali.sound.Sound.SOUND_SET;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
 {
+	@Inject(method = "drawSplashScreen", at = @At(value = "HEAD"), cancellable = true)
+	private void nali_drawSplashScreen(TextureManager textureManagerInstance, CallbackInfo ci)
+	{
+		if ((NaliConfig.STATE & 32) == 32)
+		{
+			ci.cancel();
+		}
+	}
+
 	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
 	private void nali_runGameLoop(CallbackInfo callbackinfo)
 	{
-		Timing.count();
+//		Timing.count();
 
 		EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
 		if (entityplayersp != null)
@@ -206,7 +215,9 @@ public abstract class MixinMinecraft
 			});
 			GL43.glDebugMessageCallback(khrdebugcallback);
 		}
-		new ClientLoader().init();
+		ClientLoader clientloader = new ClientLoader();
+		clientloader.state |= 1+4;
+		clientloader.init();
 	}
 
 	@Inject(method = "init", at = @At(value = "TAIL"))

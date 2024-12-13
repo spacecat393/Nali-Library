@@ -14,13 +14,12 @@ import static com.nali.math.M4x4.multiplyVec4Mat4;
 
 public class MemoF2
 {
-	public int
-		bone,
-		length;
+	public int bone;
+	public short max_key;
 
 	//inv bindpose
 	public float[] bind_pose_float_array;
-	public short[][] bone_2d_short_array;
+	public byte[][] bone_2d_byte_array;
 
 	public float[] transforms_float_array;
 
@@ -32,7 +31,7 @@ public class MemoF2
 
 		this.bone = this.bind_pose_float_array.length / 16;
 
-		this.bone_2d_short_array = new short[this.bone][];
+		this.bone_2d_byte_array = new byte[this.bone][];
 
 		String bone_folder_path = frame_folder_path + "bone/";
 		for (int i = 0; i < this.bone; ++i)
@@ -40,13 +39,7 @@ public class MemoF2
 			M4x4.inverse(this.bind_pose_float_array, i * 16);
 			try
 			{
-				byte[] bone_byte_array = Files.readAllBytes(Paths.get(bone_folder_path + i + ".bin"));
-				int bone_byte_length = bone_byte_array.length;
-				this.bone_2d_short_array[i] = new short[bone_byte_length];
-				for (int l = 0; l < bone_byte_length; ++l)
-				{
-					this.bone_2d_short_array[i][l] = (short)(bone_byte_array[l] & 0xFF);
-				}
+				this.bone_2d_byte_array[i] = Files.readAllBytes(Paths.get(bone_folder_path + i + ".bin"));
 			}
 			catch (IOException e)
 			{
@@ -55,17 +48,17 @@ public class MemoF2
 		}
 
 		this.transforms_float_array = FileDataReader.getFloatArray(frame_folder_path + "transform.bin");
-		this.length = this.transforms_float_array.length / 16 / this.bone;
+		this.max_key = (short)(this.transforms_float_array.length / 16 / this.bone);
 	}
 
-	public MemoF2(int bone, float[] bind_pose_float_array, short[][] back_bone_2d_short_array, String[] frame_string_array, String folder_path)
+	public MemoF2(int bone, float[] bind_pose_float_array, byte[][] bone_2d_byte_array, String[] frame_string_array, String folder_path)
 	{
 		this.bone = bone;
 		this.transforms_float_array = FileDataReader.getFloatArray(folder_path + "/model/" + frame_string_array[0] + "/transform.bin");
-		this.length = this.transforms_float_array.length / 16 / this.bone;
+		this.max_key = (short)(this.transforms_float_array.length / 16 / this.bone);
 
 		this.bind_pose_float_array = bind_pose_float_array;
-		this.bone_2d_short_array = back_bone_2d_short_array;
+		this.bone_2d_byte_array = bone_2d_byte_array;
 	}
 
 	public float[] get3DSkinning(float[] skinning_float_array, float x, float y, float z, float x0, float y0, float z0, int i, int v)
@@ -93,9 +86,9 @@ public class MemoF2
 				temp_vec4_float_array[2] = vertex_float_array[vi + 2] + z0;
 				temp_vec4_float_array[3] = 1.0F;
 
-				for (int b = 0; b < this.bone_2d_short_array[joint].length; ++b)
+				for (int b = 0; b < this.bone_2d_byte_array[joint].length; ++b)
 				{
-					int index = this.bone_2d_short_array[joint][b] * 16;
+					int index = (this.bone_2d_byte_array[joint][b] & 0xFF) * 16;
 					float[] bindpose_mat4 = new float[16], skinning_mat4 = new float[16];
 					System.arraycopy(this.bind_pose_float_array, index, bindpose_mat4, 0, 16);
 					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
@@ -156,9 +149,9 @@ public class MemoF2
 				temp_vec4_float_array[2] = vertex_float_array[vi + 2] + z0;
 				temp_vec4_float_array[3] = 1.0F;
 
-				for (int b = 0; b < this.bone_2d_short_array[joint].length; ++b)
+				for (int b = 0; b < this.bone_2d_byte_array[joint].length; ++b)
 				{
-					int index = this.bone_2d_short_array[joint][b] * 16;
+					int index = (this.bone_2d_byte_array[joint][b] & 0xFF) * 16;
 					float[] bindpose_mat4 = new float[16], skinning_mat4 = new float[16];
 					System.arraycopy(this.bind_pose_float_array, index, bindpose_mat4, 0, 16);
 					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
@@ -215,9 +208,9 @@ public class MemoF2
 
 		if (joint != -1)
 		{
-			for (int b = 0; b < this.bone_2d_short_array[joint].length; ++b)
+			for (int b = 0; b < this.bone_2d_byte_array[joint].length; ++b)
 			{
-				M4x4.multiply(skinning_float_array, mat4_float_array, this.bone_2d_short_array[joint][b] * 16, 0);
+				M4x4.multiply(skinning_float_array, mat4_float_array, (this.bone_2d_byte_array[joint][b] & 0xFF) * 16, 0);
 			}
 		}
 		return mat4_float_array;

@@ -20,7 +20,7 @@ public class MemoHVs extends MemoH
 {
 	public int bone;
 	public float[] bind_pose_float_array;
-	public short[][] bone_2d_short_array;
+	public byte[][] bone_2d_byte_array;
 
 	public MemoHVs(String[] shader_string_array)
 	{
@@ -30,19 +30,13 @@ public class MemoHVs extends MemoH
 		this.bind_pose_float_array = FileDataReader.getFloatArray(model_folder_path + "bindpose.bin");
 
 		this.bone = this.bind_pose_float_array.length / 16;
-		this.bone_2d_short_array = new short[this.bone][];
+		this.bone_2d_byte_array = new byte[this.bone][];
 		String bone_folder_path = model_folder_path + "bone/";
 		for (int i = 0; i < this.bone; ++i)
 		{
 			try
 			{
-				byte[] bone_byte_array = Files.readAllBytes(Paths.get(bone_folder_path + i + ".bin"));
-				int bone_byte_length = bone_byte_array.length;
-				this.bone_2d_short_array[i] = new short[bone_byte_length];
-				for (int l = 0; l < bone_byte_length; ++l)
-				{
-					this.bone_2d_short_array[i][l] = (short)(bone_byte_array[l] & 0xFF);
-				}
+				this.bone_2d_byte_array[i] = Files.readAllBytes(Paths.get(bone_folder_path + i + ".bin"));
 			}
 			catch (IOException e)
 			{
@@ -150,12 +144,12 @@ public class MemoHVs extends MemoH
 		{
 			//switch won't work with float and slow than if else
 			stringbuilder.append("switch (j)\n{\n");
-			for (int j = 0; j < bone_2d_short_array.length; ++j)
+			for (int j = 0; j < this.bone_2d_byte_array.length; ++j)
 			{
-				short[] back_bone_short_array = this.bone_2d_short_array[j];
+				byte[] bone_byte_array = this.bone_2d_byte_array[j];
 
 				stringbuilder.append("case ").append(j).append(":\n");
-				for (short bone : back_bone_short_array)
+				for (byte bone : bone_byte_array)
 				{
 					this.setSB(stringbuilder, temp_v, temp_n, bone, bone_stringbuilder_array);
 				}
@@ -165,9 +159,9 @@ public class MemoHVs extends MemoH
 		}
 		else
 		{
-			for (int j = 0; j < bone_2d_short_array.length; ++j)
+			for (int j = 0; j < this.bone_2d_byte_array.length; ++j)
 			{
-				short[] back_bone_short_array = this.bone_2d_short_array[j];
+				byte[] bone_byte_array = this.bone_2d_byte_array[j];
 
 				String head = "else if";
 
@@ -177,7 +171,7 @@ public class MemoHVs extends MemoH
 				}
 
 				stringbuilder.append(head).append(" (j == ").append(j).append(")\n{\n");
-				for (short bone : back_bone_short_array)
+				for (byte bone : bone_byte_array)
 				{
 					this.setSB(stringbuilder, temp_v, temp_n, bone, bone_stringbuilder_array);
 				}
@@ -199,26 +193,27 @@ public class MemoHVs extends MemoH
 		this.shader = genShader(getFrom(stringbuilder), OpenGlHelper.GL_VERTEX_SHADER, file_stringbuilder.toString());
 	}
 
-	public void setSB(StringBuilder stringbuilder, String temp_v, String temp_n, short bone, StringBuilder[] bone_stringbuilder_array)
+	public void setSB(StringBuilder stringbuilder, String temp_v, String temp_n, byte bone, StringBuilder[] bone_stringbuilder_array)
 	{
+		short new_bone = (short)(bone & 0xFF);
 		stringbuilder.append(temp_v).append(" *= mat4(");
-		stringbuilder.append(bone_stringbuilder_array[bone]);
+		stringbuilder.append(bone_stringbuilder_array[new_bone]);
 		stringbuilder.append(");\n");
 
-		stringbuilder.append(temp_v).append(" *= frame[").append(bone).append("];\n");
+		stringbuilder.append(temp_v).append(" *= frame[").append(new_bone).append("];\n");
 
 		stringbuilder.append(temp_v).append(" *= mat4(");
-		stringbuilder.append(bone_stringbuilder_array[bone + this.bone]);
+		stringbuilder.append(bone_stringbuilder_array[new_bone + this.bone]);
 		stringbuilder.append(");\n");
 
 		stringbuilder.append(temp_n).append(" *= mat4(");
-		stringbuilder.append(bone_stringbuilder_array[bone]);
+		stringbuilder.append(bone_stringbuilder_array[new_bone]);
 		stringbuilder.append(");\n");
 
-		stringbuilder.append(temp_n).append(" *= frame[").append(bone).append("];\n");
+		stringbuilder.append(temp_n).append(" *= frame[").append(new_bone).append("];\n");
 
 		stringbuilder.append(temp_n).append(" *= mat4(");
-		stringbuilder.append(bone_stringbuilder_array[bone + this.bone]);
+		stringbuilder.append(bone_stringbuilder_array[new_bone + this.bone]);
 		stringbuilder.append(");\n");
 	}
 }

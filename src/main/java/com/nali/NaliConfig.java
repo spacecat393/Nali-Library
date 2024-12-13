@@ -21,7 +21,7 @@ public class NaliConfig
 
 //	public static String GLSL = "100";
 //	public static String ATTRIBUTE = "attribute";
-	public static byte STATE = 1+4+8;//PRE_SHADER USE_SWITCH USE_YT-DLP USE_FFMPEG
+	public static byte STATE = 1+4+8+16;//PRE_SHADER USE_SWITCH USE_YT-DLP USE_FFMPEG FREE_MEMORY DISABLE_MC_LOAD
 
 	public static float[] FLOAT_ARRAY =
 	{

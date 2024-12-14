@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //@Config(modid = ID)
 public class NaliConfig
 {
-	public final static boolean GL_DEBUG = true;
+	public final static boolean GL_DEBUG = false;
 	public final static boolean VAO = false;
 	public final static String ATTRIBUTE = "attribute";
 

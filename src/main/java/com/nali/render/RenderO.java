@@ -442,7 +442,7 @@ public class RenderO
 
 	public static void take()
 	{
-		GL_STATE |= (GL11.glIsEnabled(GL11.GL_DEPTH_TEST) ? 1 : 0) | (GL11.glIsEnabled(GL11.GL_CULL_FACE) ? 2 : 0) | (GL11.glIsEnabled(GL11.GL_BLEND) ? 4 : 0);
+		GL_STATE = (byte)((GL11.glIsEnabled(GL11.GL_DEPTH_TEST) ? 1 : 0) | (GL11.glIsEnabled(GL11.GL_CULL_FACE) ? 2 : 0) | (GL11.glIsEnabled(GL11.GL_BLEND) ? 4 : 0));
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_BLEND);
 

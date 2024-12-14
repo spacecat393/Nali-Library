@@ -47,7 +47,7 @@ public abstract class MixinMinecraft
 //		Timing.count();
 
 		EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
-		if (entityplayersp != null)
+		if ((NaliConfig.STATE & 8) == 8 && entityplayersp != null)
 		{
 			NaliAL.alListener3f(AL10.AL_POSITION, (float)entityplayersp.posX, (float)entityplayersp.posY, (float)entityplayersp.posZ);
 

@@ -7,6 +7,6 @@ public interface IBothDaS
 	int S_FrameID();
 //	byte S_FPS();
 
-	//start end size
-	short[] S_KeyShortArray();
+//	//start end size
+//	short[] S_KeyShortArray();
 }

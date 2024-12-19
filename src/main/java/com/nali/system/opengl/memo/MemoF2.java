@@ -1,6 +1,7 @@
 package com.nali.system.opengl.memo;
 
 import com.nali.Nali;
+import com.nali.da.IBothDaS;
 import com.nali.math.M4x4;
 import com.nali.math.Quaternion;
 import com.nali.system.BothLoader;
@@ -214,5 +215,83 @@ public class MemoF2
 			}
 		}
 		return mat4_float_array;
+	}
+
+	public void initSkinning(IBothDaS bd, float[] skinning_float_array)
+	{
+		int max_bones = BothLoader.F2_LIST.get(bd.S_FrameID()).bone;
+
+		for (int i = 0; i < max_bones; ++i)
+		{
+			System.arraycopy(M4x4.IDENTITY, 0, skinning_float_array, i * 16, 16);
+		}
+	}
+
+	public void setSkinning(IBothDaS bd, float[] skinning_float_array, short[] key_short_array)
+	{
+		int frame_id = bd.S_FrameID();
+		MemoF2 bf2 = BothLoader.F2_LIST.get(frame_id);
+		int max_frame = bd.S_MaxFrame();
+		short max_key = bf2.max_key;
+//		short[] key_short_array = bd.S_KeyShortArray();
+//		byte fps = bd.S_FPS();
+
+//		for (int i = 0; i < max_frame; ++i)
+//		{
+//			int index = i * 2;
+//			//to this
+//			this.frame_float_array[index] = (this.time_short_array[index] & 0xFFFF) / ((float)Short.MAX_VALUE / key_short_array[this.key_index_byte_array[index] + 2]);
+//			++index;
+//			this.frame_float_array[index] = (this.time_short_array[index] & 0xFFFF) / ((float)Short.MAX_VALUE / key_short_array[this.key_index_byte_array[index] + 2]);
+//		}
+
+		for (int i = 0; i < bf2.bone; ++i)
+		{
+			for (int l = 0; l < max_frame; ++l)
+			{
+//				if ((this.frame_byte_array[l / 8] >> l % 8 & 1) == 1)
+//				{
+				//clean
+//					int index = l * 2;
+//					float start_frame = this.frame_float_array[index];
+//					float end_frame = this.frame_float_array[index + 1];
+//					float new_start_frame = start_frame - (int)start_frame;
+//					float new_end_frame = end_frame - (int)end_frame;
+////					int start_key_frame = (int)Math.ceil(start_frame);
+////					int end_key_frame = (int)Math.ceil(end_frame);
+//					int start_key_frame;
+//					int end_key_frame;
+////					short min_start_key = key_short_array[this.key_index_byte_array[index]];
+////					short max_start_key = key_short_array[this.key_index_byte_array[index] + 2];
+////
+////					short min_end_key = key_short_array[this.key_index_byte_array[index + 1]];
+////					short max_end_key = key_short_array[this.key_index_byte_array[index + 1] + 2];
+////					start_key_frame += min_start_key;
+////					end_key_frame += min_end_key;
+//
+//					if (start_frame < end_frame)
+//					{
+//						start_key_frame = max_start_key;
+//						end_key_frame = ;
+//					}
+//					else if (start_frame > end_frame)
+//					{
+//						start_key_frame = min_start_key;
+//					}
+//
+//					System.arraycopy(bf2.transforms_float_array, ((int)start_frame + max_key * i) * 16, this.current_mat4, 0, 16);
+//					System.arraycopy(bf2.transforms_float_array, ((int)end_frame + max_key * i) * 16, this.current_mat4, 16, 16);
+//
+//					M4x4.lerp(this.current_mat4, bf2.transforms_float_array, 0, (start_key_frame + max_key * i) * 16, new_start_frame);
+//					M4x4.lerp(this.current_mat4, bf2.transforms_float_array, 0, (end_key_frame + max_key * i) * 16, new_end_frame);
+//
+//					M4x4.lerp(this.current_mat4, this.current_mat4, 0, 16, Minecraft.getMinecraft().getRenderPartialTicks());
+//					M4x4.multiply(this.current_mat4, this.skinning_float_array, 0, i * 16);
+				M4x4.multiply(bf2.transforms_float_array, skinning_float_array, (key_short_array[l] + max_key * i) * 16, i * 16);
+//				}
+			}
+
+			M4x4.inverse(skinning_float_array, i * 16);
+		}
 	}
 }

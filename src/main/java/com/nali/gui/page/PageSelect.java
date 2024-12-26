@@ -21,6 +21,7 @@ public abstract class PageSelect extends Page
 
 	public BoxColor boxcolor = new BoxColor();
 	public byte select;
+	public byte min_select = 2;
 
 	public byte[] group_byte_array;
 	public BoxTextAll[] boxtextall_array;
@@ -206,13 +207,13 @@ public abstract class PageSelect extends Page
 	{
 		while (true)
 		{
-			if (this.select == 2/*5*/ && step < 0)
+			if (this.select == this.min_select && step < 0)
 			{
 				this.select = (byte)(this.boxtextall_array.length - 1);
 			}
 			else if (this.select == this.boxtextall_array.length - 1 && step > 0)
 			{
-				this.select = 2/*5*/;
+				this.select = this.min_select;
 			}
 			else
 			{

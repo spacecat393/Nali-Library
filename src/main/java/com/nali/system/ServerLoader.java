@@ -102,6 +102,8 @@ public class ServerLoader extends BothLoader
 				}
 			}
 		}
+
+		this.loadDa();
 	}
 
 //	public static void pairSound()

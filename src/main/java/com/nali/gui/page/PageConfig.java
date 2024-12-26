@@ -49,19 +49,13 @@ public class PageConfig extends PageSelect
 	public void exit()
 	{
 		this.save();
-		if (PAGE == this)
-		{
-			super.exit();
-		}
+		super.exit();
 	}
 
 	@Override
 	public void back()
 	{
-		if (PAGE == this)
-		{
-			this.save();
-		}
+		this.save();
 		super.back();
 	}
 

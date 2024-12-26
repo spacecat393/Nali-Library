@@ -6,11 +6,16 @@
   "minVersion": "0.8.5",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "MixinEntityRenderer",
+    "MixinGlStateManager",
     "MixinMinecraft",
-    "MixinRenderGlobal"
+    "MixinRender",
+    "MixinRenderGlobal",
+    "MixinTileEntityRendererDispatcher"
   ],
   "mixins": [
     "IMixinEnumParticleTypes",
+    "MixinEntityLivingBase",
     "MixinFMLClientHandler",
     "MixinSplashProgress"
   ],

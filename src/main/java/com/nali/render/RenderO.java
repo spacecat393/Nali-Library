@@ -35,6 +35,7 @@ public class RenderO
 	public static IntBuffer INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
 	public static FloatBuffer FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
+	public static float R_GL_ALPHA_TEST_REF;
 	public static int
 //		FULL_ARRAY_BUFFER = -1,
 
@@ -212,7 +213,7 @@ public class RenderO
 		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 //		OpenGLBuffer.setTextureBuffer((int)this.dataloader.opengltexturememo.texture_array[this.texture_index_int_array[index]], (byte)(openglobjectmemo.state & 1));
 //		OpenGLBuffer.setTextureBuffer(OPENGLTEXTUREMEMORY_LIST.get(this.getTextureID(openglobjectmemo)).texture_buffer, (byte)(openglobjectmemo.state & 1));
-		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.state & 1));
+		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.flag & 1+2));
 //		OpenGLBuffer.setTextureBuffer(this.getTextureID(openglobjectmemo), (byte)(openglobjectmemo.state & 1));
 //		OpenGLBuffer.setTextureBuffer(this.clientdata.Texture(), (byte)(openglobjectmemo.state & 1));
 	}
@@ -287,12 +288,12 @@ public class RenderO
 
 	public boolean getGlow(MemoG rg)
 	{
-		return (rg.state & 8) == 8;
+		return (rg.flag & 16) == 16;
 	}
 
 	public boolean getTransparent(MemoG rg)
 	{
-		return (rg.state & 4) == 4;
+		return (rg.flag & 8) == 8;
 	}
 
 	public void startDrawLater(BD bd, DrawWorldData drawworlddata)
@@ -367,7 +368,7 @@ public class RenderO
 		MemoS rs = S_LIST.get(this.getShaderID(rg));
 //		OpenGLObjectShaderMemo openglobjectshadermemo = I.clientloader.openglobjectshadermemo_list.get(this.clientdata.Shader());
 		this.updateLight(rg);
-		take();
+//		take();
 		enableBuffer(rg, rs);
 //		setTransparentStart(this.getTransparent(rg));
 
@@ -394,7 +395,7 @@ public class RenderO
 		{
 			disableBuffer(rs);
 		}
-		free();
+//		free();
 		this.lig_b = lig_b;
 		this.lig_s = lig_s;
 	}
@@ -445,6 +446,11 @@ public class RenderO
 		GL_STATE = (byte)((GL11.glIsEnabled(GL11.GL_DEPTH_TEST) ? 1 : 0) | (GL11.glIsEnabled(GL11.GL_CULL_FACE) ? 2 : 0) | (GL11.glIsEnabled(GL11.GL_BLEND) ? 4 : 0));
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_BLEND);
+
+		RenderO.FLOATBUFFER.limit(16);
+		GL11.glGetFloat(GL11.GL_ALPHA_TEST_REF, RenderO.FLOATBUFFER);
+		R_GL_ALPHA_TEST_REF = RenderO.FLOATBUFFER.get(0);
+		GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);
 
 		GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK, BYTEBUFFER);
 		R_GL_DEPTH_WRITEMASK = BYTEBUFFER.get(0);
@@ -548,6 +554,8 @@ public class RenderO
 			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, R_GL_ARRAY_BUFFER_BINDING);
 		}
 
+		GL11.glAlphaFunc(GL11.GL_GREATER, R_GL_ALPHA_TEST_REF);
+
 		GL20.glBlendEquationSeparate(R_GL_BLEND_EQUATION_RGB, R_GL_BLEND_EQUATION_ALPHA);
 		GL14.glBlendFuncSeparate(R_GL_BLEND_SRC_RGB, R_GL_BLEND_DST_RGB, R_GL_BLEND_SRC_ALPHA, R_GL_BLEND_DST_ALPHA);
 
@@ -578,7 +586,7 @@ public class RenderO
 			GL11.glDisable(GL11.GL_BLEND);
 		}
 
-		GL11.glDepthMask(R_GL_DEPTH_WRITEMASK == 1);
+		GL11.glDepthMask((R_GL_DEPTH_WRITEMASK & 1) == 1);
 	}
 
 	public static void disableBuffer(MemoS rs)
@@ -603,20 +611,21 @@ public class RenderO
 		if (!NaliConfig.VAO)
 		{
 			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, rg.buffer);
-			int[] int_array = rs.attriblocation_int_array;
-			for (int i = 0; i < int_array.length; ++i)
+			int[] attriblocation_int_array = rs.attriblocation_int_array;
+			for (int i = 0; i < attriblocation_int_array.length; ++i)
 //			for (int i = 0; i < 2; ++i)
 			{
+				int attriblocation = attriblocation_int_array[i];
 				MemoA memoa = rg.memoa_array[i];
 //				OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, a1.buffer);
-				GL20.glEnableVertexAttribArray(int_array[i]);
+				GL20.glEnableVertexAttribArray(attriblocation);
 //				GL20.glVertexAttribPointer(int_array[i], a1.size, a1.type, false, 0, 0);
-				GL20.glVertexAttribPointer(int_array[i], memoa.size, memoa.type, false, rg.stride, memoa.offset);
+				GL20.glVertexAttribPointer(attriblocation, memoa.size, memoa.type, false, rg.stride, memoa.offset);
 			}
 			OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
 		}
 
-		if ((rg.state & 2) == 2)
+		if ((rg.flag & 4) == 4)
 		{
 			GL11.glEnable(GL11.GL_CULL_FACE);
 		}
@@ -663,30 +672,34 @@ public class RenderO
 		{
 			case 0:
 			{
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 				break;
 			}
 			case 1:
 			{
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 				break;
 			}
 			case 2:
 			{
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
 				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+				break;
 			}
 			default:
 			{
-				error("TEXTURE_LEAK");
+				error("TEXTURE_LEAK " + texture_state);
 			}
 		}
 	}

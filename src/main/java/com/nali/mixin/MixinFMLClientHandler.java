@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,7 +37,10 @@ public abstract class MixinFMLClientHandler
 	{
 		GL11.glClearColor(0, 0, 0, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		Display.update();
+		if ((NaliConfig.STATE & 32) == 0)
+		{
+			Display.update();
+		}
 
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -49,11 +51,41 @@ public abstract class MixinFMLClientHandler
 		pageload.clear();
 		Display.update();
 
+//		List<Class> da_class_list = Reflect.getClasses("com.nali.list.da");
+//		for (Class da_class : da_class_list)
+//		{
+//			try
+//			{
+//				Field field = da_class.getField("IDA");
+//				field.set(null, field.getType().newInstance());
+//			}
+//			catch (NoSuchFieldException | IllegalAccessException | InstantiationException e)
+//			{
+//				error(e);
+//			}
+//		}
+//		List<Class> block_class_list = Reflect.getClasses("com.nali.list.block");
+//		for (Class block_class : block_class_list)
+//		{
+//			try
+//			{
+//				block_class.getMethod("newC").invoke(null);
+//			}
+//			catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
+//			{
+//				error(e);
+//			}
+//		}
+
 		ClientLoader.preTexture(Reflect.getClasses("com.nali.list.render"));
 //		ClientLoader.setRender();
 
 		if ((NaliConfig.STATE & 1) == 1)
 		{
+			GL11.glPushMatrix();
+			GL11.glTranslatef(0, 0, Float.MAX_VALUE);
+			RenderO.take();
+
 			List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
 			List<Class> da_class_list = Reflect.getClasses("com.nali.list.da");
 			render_class_list.sort(Comparator.comparing(Class::getName));
@@ -67,9 +99,9 @@ public abstract class MixinFMLClientHandler
 				try
 				{
 					IBothDaO bd = (IBothDaO)da_class.getField("IDA").get(null);
-					((RenderO)render_class.getConstructors()[0].newInstance()).draw(bd);
+					((RenderO)render_class.newInstance()).draw(bd);
 				}
-				catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchFieldException e)
+				catch (IllegalAccessException | InstantiationException | NoSuchFieldException e)
 				{
 					error(e);
 				}
@@ -85,6 +117,9 @@ public abstract class MixinFMLClientHandler
 //					error(e);
 //				}
 //			}
+
+			RenderO.free();
+			GL11.glPopMatrix();
 		}
 
 		if ((NaliConfig.STATE & 16) == 16)

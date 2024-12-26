@@ -248,16 +248,6 @@ public abstract class PageSelect extends Page
 	@Override
 	public void exit()
 	{
-//		for (Page page : PAGE_LIST)
-		for (int i = PAGE_LIST.size() - 1; i > -1; --i)
-		{
-			Page page = PAGE_LIST.get(i);
-
-			if (page != this)
-			{
-				page.exit();
-			}
-		}
 		this.state |= 2;
 	}
 }

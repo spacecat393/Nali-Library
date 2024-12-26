@@ -4,7 +4,6 @@ import com.nali.system.Reflect;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import static com.nali.Nali.error;
@@ -26,9 +25,9 @@ public abstract class Key
 			try
 			{
 //				key_class.getField("ID").set(null, i);
-				KEY_ARRAY[i] = (Key)key_class.getConstructors()[0].newInstance();
+				KEY_ARRAY[i] = (Key)key_class/*.getConstructors()[0]*/.newInstance();
 			}
-			catch (InstantiationException | IllegalAccessException | InvocationTargetException/* | NoSuchFieldException*/ e)
+			catch (InstantiationException | IllegalAccessException/* | InvocationTargetException*//* | NoSuchFieldException*/ e)
 			{
 				error(e);
 			}

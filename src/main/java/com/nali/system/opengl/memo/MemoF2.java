@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 
 import static com.nali.math.M4x4.multiplyVec4Mat4;
 
+//need test
 public class MemoF2
 {
 	public int bone;
@@ -28,13 +29,13 @@ public class MemoF2
 	{
 		String frame_folder_path = folder_path + "/model/" + frame_string_array[0]/* + "/frame/"*/;
 
-		this.bind_pose_float_array = FileDataReader.getFloatArray(frame_folder_path + "bindpose.bin");
+		this.bind_pose_float_array = FileDataReader.getFloatArray(frame_folder_path + "/bindpose.bin");
 
 		this.bone = this.bind_pose_float_array.length / 16;
 
 		this.bone_2d_byte_array = new byte[this.bone][];
 
-		String bone_folder_path = frame_folder_path + "bone/";
+		String bone_folder_path = frame_folder_path + "/bone/";
 		for (int i = 0; i < this.bone; ++i)
 		{
 			M4x4.inverse(this.bind_pose_float_array, i * 16);
@@ -48,7 +49,7 @@ public class MemoF2
 			}
 		}
 
-		this.transforms_float_array = FileDataReader.getFloatArray(frame_folder_path + "transform.bin");
+		this.transforms_float_array = FileDataReader.getFloatArray(frame_folder_path + "/transform.bin");
 		this.max_key = (short)(this.transforms_float_array.length / 16 / this.bone);
 	}
 
@@ -94,7 +95,7 @@ public class MemoF2
 					System.arraycopy(this.bind_pose_float_array, index, bindpose_mat4, 0, 16);
 					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
 
-					M4x4.inverse(bindpose_mat4, 0);
+//					M4x4.inverse(bindpose_mat4, 0);
 					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
 
 					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, skinning_mat4);
@@ -157,7 +158,7 @@ public class MemoF2
 					System.arraycopy(this.bind_pose_float_array, index, bindpose_mat4, 0, 16);
 					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
 
-					M4x4.inverse(bindpose_mat4, 0);
+//					M4x4.inverse(bindpose_mat4, 0);
 					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
 
 					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, skinning_mat4);

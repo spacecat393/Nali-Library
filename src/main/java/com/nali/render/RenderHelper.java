@@ -40,6 +40,7 @@ public class RenderHelper
 			itextureobject = new SimpleTexture(resourcelocation);
 //			Nali.LOGGER.info("SimpleTexture " + itextureobject);
 			texturemanager.loadTexture(resourcelocation, itextureobject);
+//			itextureobject = texturemanager.getTexture(resourcelocation);
 		}
 //		Nali.LOGGER.info("itextureobject " + itextureobject);
 

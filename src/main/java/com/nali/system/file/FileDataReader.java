@@ -1,8 +1,5 @@
 package com.nali.system.file;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +7,7 @@ import java.nio.file.Paths;
 
 import static com.nali.Nali.error;
 
-@SideOnly(Side.CLIENT)
+//@SideOnly(Side.CLIENT)
 public class FileDataReader
 {
 	public static float[] getFloatArray(String path_string)

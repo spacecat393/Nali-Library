@@ -70,4 +70,13 @@ public abstract class Page
 	}
 
 	public abstract void exit();
+
+	public static void exitAll()
+	{
+		for (int i = PAGE_LIST.size() - 1; i > -1; --i)
+		{
+			Page page = PAGE_LIST.get(i);
+			page.exit();
+		}
+	}
 }

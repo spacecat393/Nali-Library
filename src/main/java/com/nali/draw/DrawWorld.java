@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nali.render.RenderO.FLOATBUFFER;
-import static com.nali.render.RenderO.setTextureBuffer;
 import static com.nali.system.ClientLoader.G_LIST;
 import static com.nali.system.ClientLoader.S_LIST;
 
@@ -109,6 +107,7 @@ public class DrawWorld
 			draw(E_MODEL_MAP);
 		}
 
+		//model texture
 		if (!E_GLOW_MAP.isEmpty())
 		{
 			draw(E_GLOW_MAP);
@@ -125,6 +124,7 @@ public class DrawWorld
 
 	public static void runEG()
 	{
+		//outline
 		if (!E_GLOW_MAP.isEmpty())
 		{
 			RenderO.take();
@@ -171,6 +171,7 @@ public class DrawWorld
 		{
 			byte[] byte_array = keyset_byte_2d_array[g];
 			List<Integer> index_integer_list = values_integer_list[g];
+//			Nali.warn("rg " + ByteReader.getInt(byte_array, 0));
 			MemoG rg = G_LIST.get(ByteReader.getInt(byte_array, 0));
 			MemoS rs = S_LIST.get(ByteReader.getInt(byte_array, 4 + 4));
 
@@ -180,50 +181,53 @@ public class DrawWorld
 			if ((byte_array[4 + 4 + 4] & 4) == 4)//color
 			{
 				int color = ByteReader.getInt(byte_array, 4);
-				FLOATBUFFER.clear();
-				FLOATBUFFER.put(((color >> 16) & 0xFF) / 255.0F);
-				FLOATBUFFER.put(((color >> 8) & 0xFF) / 255.0F);
-				FLOATBUFFER.put((color & 0xFF) / 255.0F);
-				FLOATBUFFER.put(((color >> 24) & 0xFF) / 255.0F);
-				FLOATBUFFER.flip();
-				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[4/*+1*/], FLOATBUFFER);
+				RenderO.FLOATBUFFER.clear();
+				RenderO.FLOATBUFFER.put(((color >> 16) & 0xFF) / 255.0F);
+				RenderO.FLOATBUFFER.put(((color >> 8) & 0xFF) / 255.0F);
+				RenderO.FLOATBUFFER.put((color & 0xFF) / 255.0F);
+				RenderO.FLOATBUFFER.put(((color >> 24) & 0xFF) / 255.0F);
+				RenderO.FLOATBUFFER.flip();
+				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[4/*+1*/], RenderO.FLOATBUFFER);
 			}
 			else
 			{
 				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-				setTextureBuffer(ByteReader.getInt(byte_array, 4), (byte)(rg.state & 1));
+//				Nali.warn("texture " + ByteReader.getInt(byte_array, 4));
+//				Nali.warn("texture_state " + (rg.state & 1));
+				RenderO.setTextureBuffer(ByteReader.getInt(byte_array, 4), (byte)(rg.flag & 1+2));
 			}
 
 			for (Integer integer : index_integer_list)
 			{
 				DrawWorldData drawworlddata = DRAWWORLDDATA_LIST.get(integer);
+//				Nali.warn("g" + g + " i" + integer);
 
-				FLOATBUFFER.limit(16);
-				MemoA.put(FLOATBUFFER, drawworlddata.projection_m4x4_float, 16);
-				OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, FLOATBUFFER);
-				MemoA.put(FLOATBUFFER, drawworlddata.modelview_m4x4_float, 16);
-				OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, FLOATBUFFER);
-				FLOATBUFFER.limit(4);
-				MemoA.put(FLOATBUFFER, drawworlddata.color_v4_float, 4);
-				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3/*+1*/], FLOATBUFFER);
-				MemoA.put(FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
-				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2/*+1*/], FLOATBUFFER);
+				RenderO.FLOATBUFFER.limit(16);
+				MemoA.put(RenderO.FLOATBUFFER, drawworlddata.projection_m4x4_float, 16);
+				OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, RenderO.FLOATBUFFER);
+				MemoA.put(RenderO.FLOATBUFFER, drawworlddata.modelview_m4x4_float, 16);
+				OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, RenderO.FLOATBUFFER);
+				RenderO.FLOATBUFFER.limit(4);
+				MemoA.put(RenderO.FLOATBUFFER, drawworlddata.color_v4_float, 4);
+				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3/*+1*/], RenderO.FLOATBUFFER);
+				MemoA.put(RenderO.FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
+				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2/*+1*/], RenderO.FLOATBUFFER);
 
-				if ((rg.state & 8) == 8)
+				if ((rg.flag & 16) == 16)
 				{
-					FLOATBUFFER.clear();
-					FLOATBUFFER.put(-1.0f);
-					FLOATBUFFER.put(-1.0f);
-					FLOATBUFFER.flip();
-					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], FLOATBUFFER);
+					RenderO.FLOATBUFFER.clear();
+					RenderO.FLOATBUFFER.put(-1.0f);
+					RenderO.FLOATBUFFER.put(-1.0f);
+					RenderO.FLOATBUFFER.flip();
+					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], RenderO.FLOATBUFFER);
 				}
 				else
 				{
-					FLOATBUFFER.clear();
-					FLOATBUFFER.put(drawworlddata.lig_b);
-					FLOATBUFFER.put(drawworlddata.lig_s);
-					FLOATBUFFER.flip();
-					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], FLOATBUFFER);
+					RenderO.FLOATBUFFER.clear();
+					RenderO.FLOATBUFFER.put(drawworlddata.lig_b);
+					RenderO.FLOATBUFFER.put(drawworlddata.lig_s);
+					RenderO.FLOATBUFFER.flip();
+					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], RenderO.FLOATBUFFER);
 				}
 
 				if ((byte_array[4 + 4 + 4] & 2) == 2)

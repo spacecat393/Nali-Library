@@ -55,6 +55,7 @@ public class KeySelect extends Key
 		else if (this.key == Keyboard.KEY_ESCAPE)
 		{
 			pageselect.exit();
+			Page.exitAll();
 		}
 		else if (this.key == Keyboard.KEY_LEFT)
 		{

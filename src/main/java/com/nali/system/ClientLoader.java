@@ -299,6 +299,8 @@ public class ClientLoader extends BothLoader
 				OpenGlHelper.glDeleteShader(memohfo.shader);
 			}
 		}
+
+		this.loadDa();
 	}
 
 	public void load(File[] file_array, Map<String, Class> data_class_map, Map<String, MemoHVo[]> memohvo_array_map, Map<String, MemoHFo[]> memohfo_array_map)

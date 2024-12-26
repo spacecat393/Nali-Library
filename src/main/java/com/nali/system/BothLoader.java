@@ -100,5 +100,23 @@ public abstract class BothLoader
 			warn("SKIP_DATA");
 		}
 	}
+
+	public void loadDa()
+	{
+		List<Class> da_class_list = Reflect.getClasses("com.nali.list.da");
+		for (Class da_class : da_class_list)
+		{
+			try
+			{
+				Field field = da_class.getField("IDA");
+				field.set(null, field.getType().newInstance());
+			}
+			catch (NoSuchFieldException | IllegalAccessException | InstantiationException e)
+			{
+				error(e);
+			}
+		}
+	}
+
 	public abstract void load(int max_ordinal, List<Class> data_class_list, File[][] file_2d_array, Map<String, Class>[] data_class_map_array);
 }

@@ -1,18 +1,26 @@
 package com.nali.mixin;
 
 import com.nali.list.da.BothDaSky;
-import com.nali.render.RenderO;
 import com.nali.list.render.RenderSky;
+import com.nali.render.RenderO;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.RayTraceResult;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.awt.*;
 
 import static com.nali.draw.DrawWorld.*;
 
@@ -20,6 +28,11 @@ import static com.nali.draw.DrawWorld.*;
 @Mixin(RenderGlobal.class)
 public abstract class MixinRenderGlobal
 {
+	@Shadow
+	public static void drawSelectionBoundingBox(AxisAlignedBB box, float red, float green, float blue, float alpha)
+	{
+	}
+
 	private static int PASS;
 	//*extra-s0
 	private static float X_ANGLE/* = 359.0F*/, Z_ANGLE/* = 359.0F*/;
@@ -219,6 +232,35 @@ public abstract class MixinRenderGlobal
 
 		RenderO.free();
 //		ci.cancel();
+	}
+
+	@Redirect(method = "drawSelectionBox", at = @At(value = "FIELD", target = "Lnet/minecraft/util/math/RayTraceResult;typeOfHit:Lnet/minecraft/util/math/RayTraceResult$Type;"))
+	public RayTraceResult.Type nali_drawSelectionBox_Type(RayTraceResult instance)
+	{
+		return RayTraceResult.Type.BLOCK;
+	}
+
+	@Redirect(method = "drawSelectionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/state/IBlockState;getMaterial()Lnet/minecraft/block/material/Material;"))
+	public Material nali_drawSelectionBox_Material(IBlockState instance)
+	{
+		return Material.GRASS;
+	}
+
+	@Redirect(method = "drawSelectionBox", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/RenderGlobal;drawSelectionBoundingBox(Lnet/minecraft/util/math/AxisAlignedBB;FFFF)V"))
+	public void nali_drawSelectionBox_Material(AxisAlignedBB box, float red, float green, float blue, float alpha)
+	{
+//		if (Minecraft.getMinecraft().objectMouseOver.entityHit != null)
+//		{
+//			alpha = 1.0F;
+////			GlStateManager.glLineWidth(20.0F);
+//		}
+////		else
+////		{
+////			alpha = 0.25F;
+////		}
+		float c = Minecraft.getSystemTime() % 1000 / 1000.0F;
+		Color color = Color.getHSBColor(c, 1.0F, 1.0F);
+		drawSelectionBoundingBox(box, color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, 1.0F);
 	}
 	//*extra-e0
 

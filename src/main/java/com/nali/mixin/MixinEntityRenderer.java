@@ -1,6 +1,10 @@
 package com.nali.mixin;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.RayTraceResult;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -13,6 +17,10 @@ public abstract class MixinEntityRenderer
 {
 	@Shadow
 	private float farPlaneDistance;
+
+	@Shadow @Final private Minecraft mc;
+
+	@Shadow private Entity pointedEntity;
 
 	//won't work with Nothirium
 	@Overwrite
@@ -39,6 +47,66 @@ public abstract class MixinEntityRenderer
 		this.farPlaneDistance = 64 * 16;
 //		this.farPlaneDistance = 64 * 64 * 64 * 64 * 64;
 	}
+
+//	@Redirect(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 0))
+//	private void nali_getMouseOver(Minecraft instance, RayTraceResult value)
+//	{
+//		Nali.warn("RayTraceResult " + value);
+//		if (value != null || value.typeOfHit == RayTraceResult.Type.MISS)
+//		{
+//			this.mc.objectMouseOver = new RayTraceResult(value.hitVec, value.sideHit, value.getBlockPos());
+//			Nali.warn("new RayTraceResult " + this.mc.objectMouseOver);
+//		}
+//	}
+
+	@Overwrite
+	private boolean isDrawBlockOutline()
+	{
+		return this.mc.objectMouseOver != null && this.mc.objectMouseOver.getBlockPos() != null;
+	}
+
+	@Redirect(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 0))
+	private void nali_getMouseOver(Minecraft instance, RayTraceResult value)
+	{
+		if (value != null)
+		{
+			this.mc.objectMouseOver = value;
+			if (value.typeOfHit == RayTraceResult.Type.MISS)
+			{
+				value.typeOfHit = RayTraceResult.Type.BLOCK;
+			}
+		}
+	}
+
+	//display box on entity
+//	@Redirect(method = "getMouseOver", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;objectMouseOver:Lnet/minecraft/util/math/RayTraceResult;", ordinal = 5))
+//	private void nali_getMouseOver5(Minecraft instance, RayTraceResult value)
+//	{
+//		((IMixinRayTraceResult)value).blockPos(new BlockPos(value.hitVec));
+//		this.mc.objectMouseOver = value;
+////		this.mc.objectMouseOver.sideHit = getEnumFacing(this.mc.player.getLookVec());
+//	}
+
+//	private static EnumFacing getEnumFacing(Vec3d look_vec3d)
+//	{
+//		double absX = Math.abs(look_vec3d.x);
+//		double absY = Math.abs(look_vec3d.y);
+//		double absZ = Math.abs(look_vec3d.z);
+//
+//		if (absX > absY && absX > absZ)
+//		{
+//			return look_vec3d.x > 0 ? EnumFacing.EAST : EnumFacing.WEST;
+//		}
+//		else if (absY > absX && absY > absZ)
+//		{
+//			return look_vec3d.y > 0 ? EnumFacing.UP : EnumFacing.DOWN;
+//		}
+//		else
+//		{
+//			return look_vec3d.z > 0 ? EnumFacing.SOUTH : EnumFacing.NORTH;
+//		}
+//	}
+
 //	//	private static BoxImage BOXIMAGE;
 //	private static RenderSky RENDERSKY = new RenderSky();
 //

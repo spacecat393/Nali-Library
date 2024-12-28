@@ -18,14 +18,10 @@ public class PageConfigSound extends PageEdit
 	{
 		super.init();
 
-		String bgm_id;
-		if (NaliConfig.BGM_ID.length() > 11)
+		String bgm_id = "BGM_ID " + NaliConfig.BGM_ID;
+		if (bgm_id.length() > 20)
 		{
-			bgm_id = NaliConfig.BGM_ID.substring(0, 11) + "...";
-		}
-		else
-		{
-			bgm_id = ("BGM_ID " + NaliConfig.BGM_ID);
+			bgm_id = bgm_id.substring(0, 20) + "...";
 		}
 
 		this.boxtextall_array = new BoxTextAll[]

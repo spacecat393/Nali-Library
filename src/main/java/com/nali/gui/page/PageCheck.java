@@ -12,10 +12,10 @@ public class PageCheck extends PageSelect
 {
 	public byte state;//display_yt-dlp display_ffmpeg SmallPointer NaliGL NaliAL
 
-	public PageCheck()
+	@Override
+	public void init()
 	{
 		String[] file_name_array = new File("nali/nali/c").list();
-		this.select = 9;
 		this.state |=
 			(Command.isCommandLive("yt-dlp") ? 1 : 0) |
 			(Command.isCommandLive("ffmpeg") ? 2 : 0);
@@ -34,11 +34,7 @@ public class PageCheck extends PageSelect
 				this.state |= 16;
 			}
 		}
-	}
 
-	@Override
-	public void init()
-	{
 		this.boxtextall_array = new BoxTextAll[]
 		{
 			new BoxTextAll("CHECK".toCharArray()),
@@ -61,6 +57,7 @@ public class PageCheck extends PageSelect
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
+		this.select = 9;
 	}
 
 	@Override

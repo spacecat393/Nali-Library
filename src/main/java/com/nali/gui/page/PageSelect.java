@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL20;
 @SideOnly(Side.CLIENT)
 public abstract class PageSelect extends Page
 {
-	public byte state;//enter_mode loop
+	public byte state;//enter_mode loop set_select
 	public float scroll;
 
 	public BoxColor boxcolor = new BoxColor();

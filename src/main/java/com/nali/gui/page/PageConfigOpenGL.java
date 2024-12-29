@@ -8,11 +8,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class PageConfigOpenGL extends PageSelect
 {
-	public PageConfigOpenGL()
-	{
-		this.select = 2;
-	}
-
 	@Override
 	public void init()
 	{
@@ -32,6 +27,12 @@ public class PageConfigOpenGL extends PageSelect
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
+
+		if ((this.state & 4) == 0)
+		{
+			this.select = 2;
+			this.state |= 4;
+		}
 	}
 
 	@Override

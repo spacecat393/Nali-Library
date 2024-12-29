@@ -16,11 +16,6 @@ import java.nio.file.Paths;
 @SideOnly(Side.CLIENT)
 public class PageConfig extends PageSelect
 {
-	public PageConfig()
-	{
-		this.select = 2;
-	}
-
 	@Override
 	public void init()
 	{
@@ -39,10 +34,17 @@ public class PageConfig extends PageSelect
 			new BoxTextAll("ACTION".toCharArray()),
 			new BoxTextAll("DONE".toCharArray())
 		};
+
 		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
+
+		if ((this.state & 4) == 0)
+		{
+			this.select = 2;
+			this.state |= 4;
+		}
 	}
 
 	@Override

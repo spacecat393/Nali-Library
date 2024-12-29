@@ -8,11 +8,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class PageConfigSound extends PageEdit
 {
-	public PageConfigSound()
-	{
-		this.select = 2;
-	}
-
 	@Override
 	public void init()
 	{
@@ -59,6 +54,12 @@ public class PageConfigSound extends PageEdit
 		this.group_byte_array[9 / 8] |= 1 << 9 % 8;
 		this.group_byte_array[15 / 8] |= 1 << 15 % 8;
 		this.group_byte_array[17 / 8] |= 1 << 17 % 8;
+
+		if ((this.state & 4) == 0)
+		{
+			this.select = 2;
+			this.state |= 4;
+		}
 	}
 
 	@Override

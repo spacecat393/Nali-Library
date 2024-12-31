@@ -33,7 +33,7 @@ public class PageLoad extends Page
 		//s0-date
 		try
 		{
-			BasicFileAttributes basicfileattributes = Files.readAttributes(Paths.get("nali/nali/tmp/config.bin"), BasicFileAttributes.class);
+			BasicFileAttributes basicfileattributes = Files.readAttributes(Paths.get("nali/nali/tmp/config"), BasicFileAttributes.class);
 			Instant instant = basicfileattributes.lastModifiedTime().toInstant();
 			LocalDateTime localdatetime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 

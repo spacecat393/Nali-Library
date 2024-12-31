@@ -162,7 +162,7 @@ public class ClientLoader extends BothLoader
 		//s0-config
 		File tmp_file = new File("nali/nali/tmp");
 		tmp_file.mkdirs();
-		Path config_path = new File("nali/nali/tmp/config.bin").toPath();
+		Path config_path = new File("nali/nali/tmp/config").toPath();
 
 		try
 		{

@@ -95,7 +95,7 @@ public class PageConfig extends PageSelect
 	{
 		try
 		{
-			Files.write(Paths.get("nali/nali/tmp/config.bin"), NaliConfig.getByteArray());
+			Files.write(Paths.get("nali/nali/tmp/config"), NaliConfig.getByteArray());
 		}
 		catch (IOException e)
 		{

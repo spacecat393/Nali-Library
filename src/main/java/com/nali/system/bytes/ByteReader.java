@@ -1,17 +1,22 @@
 package com.nali.system.bytes;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
+
 import java.util.UUID;
 
 public class ByteReader
 {
-//	public static NBTTagCompound deserializeNBT(byte[] data)
-//	{
-//		ByteBuf bytebuf = ByteBufAllocator.DEFAULT.buffer();
-//		bytebuf.writeBytes(data);
-//		NBTTagCompound nbttagcompound = ByteBufUtils.readTag(bytebuf);
-//		bytebuf.release();
-//		return nbttagcompound;
-//	}
+	public static NBTTagCompound deserializeNBT(byte[] data)
+	{
+		ByteBuf bytebuf = ByteBufAllocator.DEFAULT.buffer();
+		bytebuf.writeBytes(data);
+		NBTTagCompound nbttagcompound = ByteBufUtils.readTag(bytebuf);
+		bytebuf.release();
+		return nbttagcompound;
+	}
 
 	public static int getInt(byte[] byte_array, int index)
 	{

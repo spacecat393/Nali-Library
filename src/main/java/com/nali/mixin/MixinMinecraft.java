@@ -14,18 +14,22 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.MouseHelper;
 import org.lwjgl.MemoryUtil;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.opengl.*;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import javax.annotation.Nullable;
 import java.util.HashSet;
 
 import static com.nali.Nali.warn;
@@ -35,6 +39,12 @@ import static com.nali.sound.Sound.SOUND_SET;
 @Mixin(Minecraft.class)
 public abstract class MixinMinecraft
 {
+	@Shadow public MouseHelper mouseHelper;
+
+	@Shadow @Nullable public GuiScreen currentScreen;
+
+	@Shadow public abstract void displayGuiScreen(@Nullable GuiScreen guiScreenIn);
+
 	//*extra-s0
 	@Redirect(method = "setIngameFocus", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;leftClickCounter:I"))
 	private void nali_setIngameFocus(Minecraft instance, int value)
@@ -151,7 +161,9 @@ public abstract class MixinMinecraft
 		}
 		else
 		{
+			//add mouse
 			KeyBinding.unPressAllKeys();
+			this.mouseHelper.ungrabMouseCursor();
 			Key.KEY.run();
 		}
 	}
@@ -161,6 +173,11 @@ public abstract class MixinMinecraft
 	{
 		if (Page.PAGE != null)
 		{
+			if (this.currentScreen != null)
+			{
+				this.displayGuiScreen(null);
+			}
+
 			boolean gl_blend = GL11.glIsEnabled(GL11.GL_BLEND);
 			GL11.glGetInteger(GL20.GL_BLEND_EQUATION_RGB, RenderO.INTBUFFER);
 			int gl_blend_equation_rgb = RenderO.INTBUFFER.get(0);

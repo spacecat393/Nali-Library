@@ -4,8 +4,8 @@ public class NaliData
 {
 	public static int
 		TEXTURE_STEP,
-		SHADER_STEP,
-		MODEL_STEP;
+		SHADER_STEP;
+//		MODEL_STEP
 //		ANIMATION_STEP
 //		FRAME_STEP
 //		SOUND_STEP

@@ -85,7 +85,7 @@ public class RenderS
 	public void setUniform(MemoG rg, MemoS rs, int index)
 	{
 		setFloatBuffer(this.skinning_float_array);
-		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7], false, BONE_FLOATBUFFER);
+		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[6], false, BONE_FLOATBUFFER);
 		super.setUniform(rg, rs, index);
 	}
 

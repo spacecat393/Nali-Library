@@ -438,15 +438,15 @@
 //				{
 //					OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
 //					OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
-//					OPENGL_FIXED_PIPE_FLOATBUFFER.put(drawworlddata.lig_b);
-//					OPENGL_FIXED_PIPE_FLOATBUFFER.put(drawworlddata.lig_s);
+//					OPENGL_FIXED_PIPE_FLOATBUFFER.put(drawworlddata.light_b);
+//					OPENGL_FIXED_PIPE_FLOATBUFFER.put(drawworlddata.light_s);
 //					OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
 ////					FloatBuffer floatbuffer = ByteBuffer.allocateDirect(2 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
-////					floatbuffer.put(drawworlddata.lig_b);
-////					floatbuffer.put(drawworlddata.lig_s);
+////					floatbuffer.put(drawworlddata.light_b);
+////					floatbuffer.put(drawworlddata.light_s);
 ////					floatbuffer.flip();
 //					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
-////					OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], drawworlddata.lig_b, drawworlddata.lig_s);
+////					OpenGlHelper.glUniform2(openglobjectshadermemory.uniformlocation_int_array[7], drawworlddata.light_b, drawworlddata.light_s);
 //				}
 //
 ////				if (animation)

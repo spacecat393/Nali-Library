@@ -45,7 +45,7 @@
 ////	public int[] texture_index_int_array;
 ////	public byte[] model_byte_array;
 ////	public byte[] glow_byte_array;
-//	public float lig_b = -1.0F, lig_s = -1.0F;
+//	public float light_b = -1.0F, light_s = -1.0F;
 //
 //	public RenderOClone(RC rc)
 //	{
@@ -152,11 +152,11 @@
 //	{
 //		OPENGL_FIXED_PIPE_FLOATBUFFER.limit(2);
 //		OPENGL_FIXED_PIPE_FLOATBUFFER.clear();
-//		OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_b);
-//		OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.lig_s);
+//		OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.light_b);
+//		OPENGL_FIXED_PIPE_FLOATBUFFER.put(this.light_s);
 //		OPENGL_FIXED_PIPE_FLOATBUFFER.flip();
 //		OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6], OPENGL_FIXED_PIPE_FLOATBUFFER);
-////		OpenGlHelper.glUniform2(openglobjectshadermemo.uniformlocation_int_array[7], this.lig_b, this.lig_s);
+////		OpenGlHelper.glUniform2(openglobjectshadermemo.uniformlocation_int_array[7], this.light_b, this.light_s);
 //	}
 //
 ////	public void updateLightCoord()
@@ -214,8 +214,8 @@
 //
 //	public void drawLater()
 //	{
-////		float lig_b = this.lig_b;
-////		float lig_s = this.lig_s;
+////		float light_b = this.light_b;
+////		float light_s = this.light_s;
 ////		//
 ////		Minecraft minecraft = Minecraft.getMinecraft();
 ////		int display_width = minecraft.displayWidth, display_height = minecraft.displayHeight;
@@ -260,8 +260,8 @@
 //		DrawWorld.add(drawworlddata.color_v4_float, OPENGL_FIXED_PIPE_FLOATBUFFER);
 //		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, OPENGL_FIXED_PIPE_FLOATBUFFER);
 //		DrawWorld.add(drawworlddata.light0position_v4_float, OPENGL_FIXED_PIPE_FLOATBUFFER);
-//		drawworlddata.lig_b = lig_b;
-//		drawworlddata.lig_s = lig_s;
+//		drawworlddata.light_b = light_b;
+//		drawworlddata.light_s = light_s;
 //		this.updateDataLater(drawworlddata);
 //		for (int i = this.rc.StartPart(); i < this.rc.EndPart(); ++i)
 //		{
@@ -271,8 +271,8 @@
 //		DrawWorld.DRAWWORLDDATA_LIST.add(drawworlddata);
 //		++DrawWorld.DATA_SIZE;
 //
-////		this.lig_b = lig_b;
-////		this.lig_s = lig_s;
+////		this.light_b = light_b;
+////		this.light_s = light_s;
 //	}
 //
 //	public void updateDataLater(DrawWorldData drawworlddata)
@@ -294,8 +294,8 @@
 //////		BytesWriter.set(byte_array, this.clientdata.Texture(), 4);
 ////		ByteWriter.set(byte_array, this.getShaderID(rg), 4 + 4);
 //////		BytesWriter.set(byte_array, this.clientdata.Shader(), 4 + 4);
-//////		BytesWriter.set(byte_array, this.lig_b, 4 + 4 + 4);
-//////		BytesWriter.set(byte_array, this.lig_s, 4 + 4 + 4 + 4);
+//////		BytesWriter.set(byte_array, this.light_b, 4 + 4 + 4);
+//////		BytesWriter.set(byte_array, this.light_s, 4 + 4 + 4 + 4);
 //////		BytesWriter.set(byte_array, ((SkinningClientData)this.clientdata).AnimationID(), 4 + 4 + 4 + 4 + 4);
 ////		byte_array[4 + 4 + 4] = (byte)(this.getTransparent(rg) ? 1 : 0);
 ////		byte_array[4 + 4 + 4] += this.getExtraBit(rg);
@@ -329,8 +329,8 @@
 //
 //	public void draw(int index)
 //	{
-//		float lig_b = this.lig_b;
-//		float lig_s = this.lig_s;
+//		float light_b = this.light_b;
+//		float light_s = this.light_s;
 ////		OpenGLObjectMemo openglobjectmemo = this.dataloader.openglobjectmemo_array[index];
 //		MemoG rg = G_LIST.get(index);
 ////		OpenGLObjectShaderMemo openglobjectshadermemo = this.dataloader.openglobjectshadermemo_array[openglobjectmemo.shader_id];
@@ -355,16 +355,16 @@
 ////		OpenGlHelper.glPopAttrib();
 //		disableBuffer(rs);
 //		free();
-//		this.lig_b = lig_b;
-//		this.lig_s = lig_s;
+//		this.light_b = light_b;
+//		this.light_s = light_s;
 //	}
 //
 //	public void updateLight(MemoG rg)
 //	{
 //		if (this.getGlow(rg))
 //		{
-//			this.lig_b = -1.0F;
-//			this.lig_s = -1.0F;
+//			this.light_b = -1.0F;
+//			this.light_s = -1.0F;
 //		}
 //	}
 //
@@ -373,7 +373,7 @@
 //		this.setFixedPipe(rs);
 //		this.setTextureUniform(rg, rs);
 ////		this.setFrameBufferUniform(openglobjectmemo, openglobjectshadermemo);
-//		if (this.lig_b != -1.0F)
+//		if (this.light_b != -1.0F)
 //		{
 //			this.setLightMapUniform(rs);
 //		}
@@ -390,13 +390,13 @@
 //		if (world.isBlockLoaded(blockpos))
 //		{
 //			int brightness = world.getCombinedLight(blockpos, 0);
-//			this.lig_b = (brightness % 65536) / 255.0F;
-//			this.lig_s = (brightness / 65536.0F) / 255.0F;
+//			this.light_b = (brightness % 65536) / 255.0F;
+//			this.light_s = (brightness / 65536.0F) / 255.0F;
 //		}
 //
-//		if (this.lig_b < 0.1875F)
+//		if (this.light_b < 0.1875F)
 //		{
-//			this.lig_b = 0.1875F;
+//			this.light_b = 0.1875F;
 //		}
 //	}
 //

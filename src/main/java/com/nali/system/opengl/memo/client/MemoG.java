@@ -140,5 +140,10 @@ public class MemoG
 
 			A2_MAP.put(G_LIST.size(), memoa2);
 		}
+
+		for (MemoA memoa : this.memoa_array)
+		{
+			memoa.o = null;
+		}
 	}
 }

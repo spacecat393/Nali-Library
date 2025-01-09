@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -177,7 +176,7 @@ public class DrawWorld
 
 			RenderO.enableBuffer(rg, rs);
 
-			OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[5/*+1*/], 1);
+			OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[2], 1);
 			if ((byte_array[4 + 4 + 4] & 4) == 4)//color
 			{
 				int color = ByteReader.getInt(byte_array, 4);
@@ -187,11 +186,11 @@ public class DrawWorld
 				RenderO.FLOATBUFFER.put((color & 0xFF) / 255.0F);
 				RenderO.FLOATBUFFER.put(((color >> 24) & 0xFF) / 255.0F);
 				RenderO.FLOATBUFFER.flip();
-				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[4/*+1*/], RenderO.FLOATBUFFER);
+				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[5], RenderO.FLOATBUFFER);
 			}
 			else
 			{
-				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+//				OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
 //				Nali.warn("texture " + ByteReader.getInt(byte_array, 4));
 //				Nali.warn("texture_state " + (rg.state & 1));
 				RenderO.setTextureBuffer(ByteReader.getInt(byte_array, 4), (byte)(rg.flag & 1+2));
@@ -209,31 +208,30 @@ public class DrawWorld
 				OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, RenderO.FLOATBUFFER);
 				RenderO.FLOATBUFFER.limit(4);
 				MemoA.put(RenderO.FLOATBUFFER, drawworlddata.color_v4_float, 4);
-				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[3/*+1*/], RenderO.FLOATBUFFER);
-				MemoA.put(RenderO.FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
-				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2/*+1*/], RenderO.FLOATBUFFER);
+				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[4], RenderO.FLOATBUFFER);
+//				MemoA.put(RenderO.FLOATBUFFER, drawworlddata.light0position_v4_float, 4);
+//				OpenGlHelper.glUniform4(rs.uniformlocation_int_array[2], RenderO.FLOATBUFFER);
 
+				RenderO.FLOATBUFFER.clear();
 				if ((rg.flag & 16) == 16)
 				{
-					RenderO.FLOATBUFFER.clear();
-					RenderO.FLOATBUFFER.put(-1.0f);
-					RenderO.FLOATBUFFER.put(-1.0f);
-					RenderO.FLOATBUFFER.flip();
-					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], RenderO.FLOATBUFFER);
+					RenderO.FLOATBUFFER.put(-1.0F);
+					RenderO.FLOATBUFFER.put(-1.0F);
 				}
 				else
 				{
-					RenderO.FLOATBUFFER.clear();
-					RenderO.FLOATBUFFER.put(drawworlddata.lig_b);
-					RenderO.FLOATBUFFER.put(drawworlddata.lig_s);
-					RenderO.FLOATBUFFER.flip();
-					OpenGlHelper.glUniform2(rs.uniformlocation_int_array[6/*+1*/], RenderO.FLOATBUFFER);
+					RenderO.FLOATBUFFER.put(drawworlddata.light_b);
+					RenderO.FLOATBUFFER.put(drawworlddata.light_s);
 				}
+				RenderO.FLOATBUFFER.flip();
+				OpenGlHelper.glUniform2(rs.uniformlocation_int_array[3], RenderO.FLOATBUFFER);
+
+				OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, drawworlddata.light_b, drawworlddata.light_s);
 
 				if ((byte_array[4 + 4 + 4] & 2) == 2)
 				{
 					RenderS.setFloatBuffer(drawworlddata.skinning_float_array);
-					OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[7/*+1*/], false, RenderS.BONE_FLOATBUFFER);
+					OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[6], false, RenderS.BONE_FLOATBUFFER);
 				}
 
 				if (NaliConfig.VAO)

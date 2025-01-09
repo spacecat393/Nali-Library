@@ -77,6 +77,24 @@
 	j or max_joint is around 1-4 when bone has children can be found in model-animation_Name_Doc
 	i is max_bytes from index.bin / 4
 ## Extra
+>run/nali/modid/shader/gl_part/attrib.dat
+
+	Object
+		[line]attribute_name(String) size(Byte)
+		vertex 3
+		texcoord 2
+		normal 3
+
+	Skinning
+		[line]attribute_name(String) size(Byte)
+		...
+		[line]attribute_name(String)
+		joint
+		weight
+>run/nali/modid/shader/gl_part/uniform.dat
+
+	[line]uniform_name(String)
+	... ==> uniform_id
 >run/nali/nali
 
 	*c

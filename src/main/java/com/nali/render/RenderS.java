@@ -2,7 +2,6 @@ package com.nali.render;
 
 import com.nali.da.IBothDaO;
 import com.nali.da.IBothDaS;
-import com.nali.draw.DrawWorldData;
 import com.nali.system.BothLoader;
 import com.nali.system.opengl.memo.client.MemoG;
 import com.nali.system.opengl.memo.client.MemoS;
@@ -87,13 +86,6 @@ public class RenderS
 		setFloatBuffer(this.skinning_float_array);
 		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[6], false, BONE_FLOATBUFFER);
 		super.setUniform(rg, rs, index);
-	}
-
-	@Override
-	public void startDrawLater(BD bd, DrawWorldData drawworlddata)
-	{
-		super.startDrawLater(bd, drawworlddata);
-		drawworlddata.skinning_float_array = this.skinning_float_array;
 	}
 
 	@Override

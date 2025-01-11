@@ -268,7 +268,7 @@
 //			this.drawLater(i);
 //		}
 //
-//		DrawWorld.DRAWWORLDDATA_LIST.add(drawworlddata);
+//		DrawWorld.DRAWDAO_LIST.add(drawworlddata);
 //		++DrawWorld.DATA_SIZE;
 //
 ////		this.light_b = light_b;

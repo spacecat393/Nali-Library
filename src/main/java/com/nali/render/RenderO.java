@@ -3,9 +3,6 @@ package com.nali.render;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
 import com.nali.da.IBothDaO;
-import com.nali.draw.DrawWorld;
-import com.nali.draw.DrawWorldData;
-import com.nali.system.bytes.ByteWriter;
 import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoG;
 import com.nali.system.opengl.memo.client.MemoS;
@@ -23,7 +20,6 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import static com.nali.Nali.error;
-import static com.nali.draw.DrawWorld.KEY_MAP;
 import static com.nali.system.ClientLoader.*;
 
 @SideOnly(Side.CLIENT)
@@ -155,51 +151,6 @@ public class RenderO
 	public boolean getTransparent(MemoG rg)
 	{
 		return (rg.flag & 8) == 8;
-	}
-
-	public void startDrawLater(BD bd, DrawWorldData drawworlddata)
-	{
-		for (int i = bd.O_StartPart(); i < bd.O_EndPart(); ++i)
-		{
-			this.drawLater(i);
-		}
-
-		FLOATBUFFER.limit(16);
-		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, FLOATBUFFER);
-		DrawWorld.add(drawworlddata.projection_m4x4_float, FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, FLOATBUFFER);
-		DrawWorld.add(drawworlddata.modelview_m4x4_float, FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, FLOATBUFFER);
-		FLOATBUFFER.limit(4);
-		DrawWorld.add(drawworlddata.color_v4_float, FLOATBUFFER);
-		GL11.glGetLight(GL11.GL_LIGHT0, GL11.GL_POSITION, FLOATBUFFER);
-		DrawWorld.add(drawworlddata.light0position_v4_float, FLOATBUFFER);
-		drawworlddata.light_b = light_b;
-		drawworlddata.light_s = light_s;
-	}
-
-	public void endDrawLater(DrawWorldData drawworlddata)
-	{
-		DrawWorld.DRAWWORLDDATA_LIST.add(drawworlddata);
-		++DrawWorld.DATA_SIZE;
-	}
-
-	public void drawLater(int index)
-	{
-		MemoG rg = G_LIST.get(index);
-		DrawWorld.add(KEY_MAP.computeIfAbsent(index + " " + this.getTextureBuffer(rg) + " " + this.getShaderID(rg) + " " + (byte)((this.getTransparent(rg) ? 1 : 0) | this.getExtraBit(rg)), k -> this.createByteArray(index)));
-	}
-
-	public byte[] createByteArray(int index)
-	{
-		MemoG rg = G_LIST.get(index);
-		byte[] byte_array = new byte[4 + 4 + 4 + 1];
-		ByteWriter.set(byte_array, index, 0);
-		ByteWriter.set(byte_array, this.getTextureBuffer(rg), 4);
-		ByteWriter.set(byte_array, this.getShaderID(rg), 4 + 4);
-		byte_array[4 + 4 + 4] = (byte)(this.getTransparent(rg) ? 1 : 0);
-		byte_array[4 + 4 + 4] += this.getExtraBit(rg);
-		return byte_array;
 	}
 
 	public void draw(BD bd)

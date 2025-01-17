@@ -60,12 +60,14 @@ public class KeySelect extends Key
 		else if (this.key == Keyboard.KEY_LEFT)
 		{
 			pageselect.next((byte)-1);
+//			pageselect.scroll = (pageselect.select.intValue() * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
 			pageselect.scroll = (pageselect.select * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
 			Page.WIDTH = -1;
 		}
 		else if (this.key == Keyboard.KEY_RIGHT)
 		{
 			pageselect.next((byte)1);
+//			pageselect.scroll = (pageselect.select.intValue() * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
 			pageselect.scroll = (pageselect.select * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
 			Page.WIDTH = -1;
 		}

@@ -41,10 +41,8 @@ public class PageConfigOpenGL extends PageSelect
 		switch (this.select)
 		{
 			case 2:
-			{
 				NaliConfig.STATE ^= 16;
 				break;
-			}
 			case 3:
 				NaliConfig.STATE ^= 1;
 				break;

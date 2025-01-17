@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.io.File;
 
 @SideOnly(Side.CLIENT)
-public class PageCheck extends PageSelect
+public class PageCheck/*<N extends Byte>*/ extends PageSelect/*<N>*/
 {
 	public byte state;//display_yt-dlp display_ffmpeg SmallPointer NaliGL NaliAL
 
@@ -57,6 +57,7 @@ public class PageCheck extends PageSelect
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
+//		this.select = this.createN(9);
 		this.select = 9;
 	}
 
@@ -70,4 +71,16 @@ public class PageCheck extends PageSelect
 	{
 		this.back();
 	}
+
+//	@Override
+//	public N createN(int i)
+//	{
+//		return (N)Byte.valueOf((byte)i);
+//	}
+//
+//	@Override
+//	public N pN(N n, int i)
+//	{
+//		return this.createN(n.byteValue() + (byte)i);
+//	}
 }

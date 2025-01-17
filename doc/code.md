@@ -46,7 +46,7 @@
 >O-Object S-Skinning
 
 	Object has only model
-	Skinning has animation
+	Skinning has model and animation
 >Static Field
 
 	Should always include it because need for auto read / auto register
@@ -56,8 +56,8 @@
 	1 Transparent
 	2 Skinning
 	4 Color/NoTexture
-	8 EntityGlow
-	16 TileEntity
+	--8-EntityGlow--
+	--16-TileEntity--
 >[Build](../README.md)
 
 </span>

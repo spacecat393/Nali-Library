@@ -6,7 +6,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class PageEdit extends PageSelect
+public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 {
 	public StringBuilder input_stringbuilder = new StringBuilder();
 	public BoxTextAllMax boxtextallmax;

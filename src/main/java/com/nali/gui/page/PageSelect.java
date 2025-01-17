@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 @SideOnly(Side.CLIENT)
-public abstract class PageSelect extends Page
+public abstract class PageSelect/*<N extends Number>*/ extends Page
 {
 	public byte state;//enter_mode loop set_select
 	public float scroll;
@@ -22,6 +22,8 @@ public abstract class PageSelect extends Page
 	public BoxColor boxcolor = new BoxColor();
 	public byte select;
 	public byte min_select = 2;
+//	public N select;
+//	public N min_select;//2
 
 	public byte[] group_byte_array;
 	public BoxTextAll[] boxtextall_array;
@@ -37,8 +39,10 @@ public abstract class PageSelect extends Page
 		rs0,
 		rs1;
 
-	public PageSelect()
+	public PageSelect(/*N min_select*/)
 	{
+//		this.min_select = min_select;
+//		this.min_select = this.createN(2);
 		this.rs0 = ClientLoader.S_LIST.get(NaliData.SHADER_STEP);
 		this.rs1 = ClientLoader.S_LIST.get(NaliData.SHADER_STEP + 1);
 	}
@@ -53,17 +57,22 @@ public abstract class PageSelect extends Page
 			this.wh20, this.wh10, WIDTH, HEIGHT
 		);
 
-		int max_length = 0;
+//		int max_length = 0;
+		byte max_length = 0;
+//		for (int i = 1; i < this.boxtextall_array.length; ++i)
 		for (byte i = 1; i < this.boxtextall_array.length; ++i)
 		{
-			max_length = Math.max(max_length, this.boxtextall_array[i].char_array.length);
+//			max_length = Math.max(max_length, this.boxtextall_array[i].char_array.length);
+			max_length = (byte)Math.max(max_length, this.boxtextall_array[i].char_array.length);
 		}
 
 		this.x = WIDTH / 2.0F - (this.wh20 + this.wh10) * max_length / 2;
 		this.y = ((1.0F - 0.041666668F) * HEIGHT) + this.h20;
 
+//		for (int i = 1; i < this.boxtextall_array.length; ++i)
 		for (byte i = 1; i < this.boxtextall_array.length; ++i)
 		{
+//			int index = i - 1;
 			byte index = (byte)(i - 1);
 			byte bit = (byte)(1 << index % 8);
 
@@ -84,6 +93,7 @@ public abstract class PageSelect extends Page
 
 	public void genBoxColor()
 	{
+//		float y = this.y - this.wh40 * this.select.intValue();
 		float y = this.y - this.wh40 * this.select;
 		this.boxcolor.x0 = this.wh20;
 		this.boxcolor.y0 = y;
@@ -207,19 +217,25 @@ public abstract class PageSelect extends Page
 	{
 		while (true)
 		{
+//			if (this.select.equals(this.min_select) && step < 0)
 			if (this.select == this.min_select && step < 0)
 			{
+//				this.select = this.createN(this.boxtextall_array.length - 1);
 				this.select = (byte)(this.boxtextall_array.length - 1);
 			}
+//			else if (this.select.equals(this.createN(this.boxtextall_array.length - 1)) && step > 0)
 			else if (this.select == this.boxtextall_array.length - 1 && step > 0)
 			{
 				this.select = this.min_select;
 			}
 			else
 			{
+//				this.select = this.pN(this.select, step);
 				this.select += step;
 			}
 
+//			int index = this.select.intValue() - 1;
+//			int index = this.select - 1;
 			byte index = (byte)(this.select - 1);
 			byte bit = (byte)(1 << index % 8);
 			if ((this.group_byte_array[index / 8] & bit) != bit)
@@ -239,7 +255,8 @@ public abstract class PageSelect extends Page
 		}
 		else
 		{
-			int index = PAGE_LIST.size() - 1;
+//			int index = PAGE_LIST.size() - 1;
+			byte index = (byte)(PAGE_LIST.size() - 1);
 			this.set(PAGE_LIST.get(index), KEY_LIST.get(index));
 			PAGE_LIST.remove(index);
 			KEY_LIST.remove(index);
@@ -251,4 +268,7 @@ public abstract class PageSelect extends Page
 	{
 		this.state |= 2;
 	}
+
+//	public abstract N createN(int i);
+//	public abstract N pN(N n, int i);
 }

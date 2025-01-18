@@ -32,7 +32,7 @@ public class RenderO
 	public static IntBuffer INTBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
 	public static FloatBuffer FLOATBUFFER = ByteBuffer.allocateDirect(16 << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
-	public static float R_GL_ALPHA_TEST_REF;
+//	public static float R_GL_ALPHA_TEST_REF;
 	public static int
 	//	R_GL_RENDERBUFFER_BINDING,
 	//	R_GL_DEPTH_ATTACHMENT,
@@ -246,10 +246,10 @@ public class RenderO
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glEnable(GL11.GL_BLEND);
 
-		RenderO.FLOATBUFFER.limit(16);
-		GL11.glGetFloat(GL11.GL_ALPHA_TEST_REF, RenderO.FLOATBUFFER);
-		R_GL_ALPHA_TEST_REF = RenderO.FLOATBUFFER.get(0);
-		GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);
+//		RenderO.FLOATBUFFER.limit(16);
+//		GL11.glGetFloat(GL11.GL_ALPHA_TEST_REF, RenderO.FLOATBUFFER);
+//		R_GL_ALPHA_TEST_REF = RenderO.FLOATBUFFER.get(0);
+//		GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);
 
 		GL11.glGetBoolean(GL11.GL_DEPTH_WRITEMASK, BYTEBUFFER);
 		R_GL_DEPTH_WRITEMASK = BYTEBUFFER.get(0);
@@ -312,6 +312,9 @@ public class RenderO
 		GL11.glGetInteger(GL14.GL_BLEND_DST_ALPHA, INTBUFFER);
 		R_GL_BLEND_DST_ALPHA = INTBUFFER.get(0);
 
+//		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//		GL14.glBlendEquation(GL14.GL_FUNC_ADD);
+//		GL14.glBlendFuncSeparate(GL11.GL_DST_ALPHA, GL11.GL_ONE, GL11.GL_ZERO, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL20.glBlendEquationSeparate(GL14.GL_FUNC_ADD, GL14.GL_FUNC_ADD);
 		GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 	}
@@ -353,7 +356,7 @@ public class RenderO
 			OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, R_GL_ARRAY_BUFFER_BINDING);
 		}
 
-		GL11.glAlphaFunc(GL11.GL_GREATER, R_GL_ALPHA_TEST_REF);
+//		GL11.glAlphaFunc(GL11.GL_GREATER, R_GL_ALPHA_TEST_REF);
 
 		GL20.glBlendEquationSeparate(R_GL_BLEND_EQUATION_RGB, R_GL_BLEND_EQUATION_ALPHA);
 		GL14.glBlendFuncSeparate(R_GL_BLEND_SRC_RGB, R_GL_BLEND_DST_RGB, R_GL_BLEND_SRC_ALPHA, R_GL_BLEND_DST_ALPHA);

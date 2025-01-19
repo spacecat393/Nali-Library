@@ -215,7 +215,7 @@ public abstract class MixinMinecraft
 	}
 
 	@Inject(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/OpenGlHelper;initializeTextures()V", shift = At.Shift.AFTER))
-	private void nali_debugLayer_init(CallbackInfo callbackinfo)
+	private void nali_init_debugLayer(CallbackInfo callbackinfo)
 	{
 		if (NaliConfig.GL_DEBUG)
 		{

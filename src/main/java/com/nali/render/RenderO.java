@@ -231,7 +231,7 @@ public class RenderO
 //			this.light_b = 0.1875F;
 //		}
 
-		this.light_b = world.getLightFromNeighborsFor(EnumSkyBlock.BLOCK, blockpos) / 16.0F;
+		this.light_b = world.getLightFromNeighborsFor(EnumSkyBlock.BLOCK, blockpos) / 16.0F;//0-15
 		this.light_s = world.getLightFromNeighborsFor(EnumSkyBlock.SKY, blockpos) / 16.0F;
 
 		if (this.light_b < 0.0625F)//1/16

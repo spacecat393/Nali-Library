@@ -12,14 +12,16 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-import static com.nali.Nali.error;
 import static com.nali.system.ClientLoader.*;
 
 @SideOnly(Side.CLIENT)
@@ -50,40 +52,40 @@ public class RenderO
 		R_GL_BLEND_DST_RGB,
 		R_GL_BLEND_DST_ALPHA,
 
-		R_GL_ACTIVE_TEXTURE,
+//		R_GL_ACTIVE_TEXTURE,
 	//	GL_ACTIVE_TEXTURE_0;
 	//	GL_ACTIVE_TEXTURE_1;
 	//	GL_ACTIVE_TEXTURE_2;
-//		R_GL_TEXTURE_BINDING_2D,
-		R_GL_TEXTURE_BINDING_2D_0,
+		R_GL_TEXTURE_BINDING_2D,
+//		R_GL_TEXTURE_BINDING_2D_0,
 //		R_GL_TEXTURE_BINDING_2D_1,
 	//	R_GL_TEXTURE_BINDING_2D_2,
 	//	R_GL_TEXTURE_BINDING_2D_3,
 
 	//	GL_FRONT_FACE;
 
-		R_GL_DEPTH_WRITEMASK,
+		R_GL_DEPTH_WRITEMASK;//after use extra this should be removed
 	//	GL_DEPTH_FUNC;
 
 	//	R_GL_MATRIX_MODE,
 
 	//	GL_TEXTURE_WRAP_S,
-		R_GL_TEXTURE_WRAP_S_0,
+//		R_GL_TEXTURE_WRAP_S_0,
 //		R_GL_TEXTURE_WRAP_S_1,
 	//	R_GL_TEXTURE_WRAP_S_2,
 	//	R_GL_TEXTURE_WRAP_S_3,
 	//	GL_TEXTURE_WRAP_T,
-		R_GL_TEXTURE_WRAP_T_0,
+//		R_GL_TEXTURE_WRAP_T_0,
 //		R_GL_TEXTURE_WRAP_T_1,
 	//	R_GL_TEXTURE_WRAP_T_2,
 	//	R_GL_TEXTURE_WRAP_T_3,
 	//	GL_TEXTURE_MIN_FILTER,
-		R_GL_TEXTURE_MIN_FILTER_0,
+//		R_GL_TEXTURE_MIN_FILTER_0,
 //		R_GL_TEXTURE_MIN_FILTER_1,
 	//	R_GL_TEXTURE_MIN_FILTER_2,
 	//	R_GL_TEXTURE_MIN_FILTER_3,
 	//	GL_TEXTURE_MAG_FILTER,
-		R_GL_TEXTURE_MAG_FILTER_0;
+//		R_GL_TEXTURE_MAG_FILTER_0;
 //		R_GL_TEXTURE_MAG_FILTER_1;
 	//	R_GL_TEXTURE_MAG_FILTER_2;
 	//	R_GL_TEXTURE_MAG_FILTER_3;
@@ -108,7 +110,8 @@ public class RenderO
 	public void setTextureUniform(MemoG rg, MemoS rs)
 	{
 //		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.flag & 1+2));
+//		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.flag & 1+2));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getTextureBuffer(rg));
 	}
 
 	public void setMapUniform(MemoS rs)
@@ -276,16 +279,20 @@ public class RenderO
 			R_GL_ARRAY_BUFFER_BINDING = INTBUFFER.get(0);
 		}
 
-		GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE, INTBUFFER);
-		R_GL_ACTIVE_TEXTURE = INTBUFFER.get(0);
-
-		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+		//unsafe current texture buffer
 		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, INTBUFFER);
-		R_GL_TEXTURE_BINDING_2D_0 = INTBUFFER.get(0);
-		R_GL_TEXTURE_WRAP_S_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
-		R_GL_TEXTURE_WRAP_T_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
-		R_GL_TEXTURE_MIN_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
-		R_GL_TEXTURE_MAG_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
+		R_GL_TEXTURE_BINDING_2D = INTBUFFER.get(0);
+
+//		GL11.glGetInteger(GL13.GL_ACTIVE_TEXTURE, INTBUFFER);
+//		R_GL_ACTIVE_TEXTURE = INTBUFFER.get(0);
+//
+//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+//		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, INTBUFFER);
+//		R_GL_TEXTURE_BINDING_2D_0 = INTBUFFER.get(0);
+//		R_GL_TEXTURE_WRAP_S_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S);
+//		R_GL_TEXTURE_WRAP_T_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T);
+//		R_GL_TEXTURE_MIN_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER);
+//		R_GL_TEXTURE_MAG_FILTER_0 = GL11.glGetTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER);
 
 //		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //		GL11.glGetInteger(GL11.GL_TEXTURE_BINDING_2D, INTBUFFER);
@@ -326,12 +333,12 @@ public class RenderO
 
 	public static void free()
 	{
-		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GL_TEXTURE_BINDING_2D_0);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, R_GL_TEXTURE_WRAP_S_0);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, R_GL_TEXTURE_WRAP_T_0);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_0);
-		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_0);
+//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GL_TEXTURE_BINDING_2D_0);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, R_GL_TEXTURE_WRAP_S_0);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, R_GL_TEXTURE_WRAP_T_0);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_0);
+//		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_0);
 
 //		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE1);
 //		GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GL_TEXTURE_BINDING_2D_1);
@@ -347,7 +354,8 @@ public class RenderO
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, R_GL_TEXTURE_MIN_FILTER_2);
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, R_GL_TEXTURE_MAG_FILTER_2);
 
-		OpenGlHelper.setActiveTexture(R_GL_ACTIVE_TEXTURE);
+//		OpenGlHelper.setActiveTexture(R_GL_ACTIVE_TEXTURE);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, R_GL_TEXTURE_BINDING_2D);
 
 		OpenGlHelper.glUseProgram(R_GL_CURRENT_PROGRAM);
 
@@ -438,43 +446,43 @@ public class RenderO
 		}
 	}
 
-	public static void setTextureBuffer(int buffer, byte texture_state)
-	{
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer);
-
-		switch (texture_state)
-		{
-			case 0:
-			{
-//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
-//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-				break;
-			}
-			case 1:
-			{
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-				break;
-			}
-			case 2:
-			{
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
-				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
-				break;
-			}
-			default:
-			{
-				error("TEXTURE_LEAK " + texture_state);
-			}
-		}
-	}
+//	public static void setTextureBuffer(int buffer, byte texture_state)
+//	{
+//		GL11.glBindTexture(GL11.GL_TEXTURE_2D, buffer);
+//
+//		switch (texture_state)
+//		{
+//			case 0:
+//			{
+////				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+////				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
+////				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+//				break;
+//			}
+//			case 1:
+//			{
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+//				break;
+//			}
+//			case 2:
+//			{
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_CLAMP);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_CLAMP);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+//				GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+//				break;
+//			}
+//			default:
+//			{
+//				error("TEXTURE_LEAK " + texture_state);
+//			}
+//		}
+//	}
 }

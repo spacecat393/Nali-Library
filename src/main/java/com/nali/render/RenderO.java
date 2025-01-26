@@ -251,8 +251,8 @@ public class RenderO
 	public static void take()
 	{
 		GL_STATE = (byte)((GL11.glIsEnabled(GL11.GL_DEPTH_TEST) ? 1 : 0) | (GL11.glIsEnabled(GL11.GL_CULL_FACE) ? 2 : 0) | (GL11.glIsEnabled(GL11.GL_BLEND) ? 4 : 0));
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_BLEND);
+//		GL11.glEnable(GL11.GL_DEPTH_TEST);
+//		GL11.glEnable(GL11.GL_BLEND);
 
 //		RenderO.FLOATBUFFER.limit(16);
 //		GL11.glGetFloat(GL11.GL_ALPHA_TEST_REF, RenderO.FLOATBUFFER);

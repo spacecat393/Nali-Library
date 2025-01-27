@@ -3,15 +3,13 @@ package com.nali.system.opengl.memo;
 import com.nali.Nali;
 import com.nali.da.IBothDaS;
 import com.nali.math.M4x4;
-import com.nali.math.Quaternion;
+import com.nali.math.V4;
 import com.nali.system.BothLoader;
 import com.nali.system.file.FileDataReader;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import static com.nali.math.M4x4.multiplyVec4Mat4;
 
 //need test
 public class MemoF2
@@ -21,7 +19,7 @@ public class MemoF2
 
 	//inv bindpose
 	public float[] bind_pose_float_array;
-	public float[] inv_bind_pose_float_array;
+	public float[] i_bind_pose_float_array;
 	public byte[][] bone_2d_byte_array;
 
 	public float[] transforms_float_array;
@@ -37,7 +35,7 @@ public class MemoF2
 		String bone_folder_path = frame_folder_path + "/bone/";
 		for (int i = 0; i < this.bone; ++i)
 		{
-//			M4x4.inverse(this.bind_pose_float_array, i * 16);
+			M4x4.i(this.bind_pose_float_array, i * 16);
 			try
 			{
 				this.bone_2d_byte_array[i] = Files.readAllBytes(Paths.get(bone_folder_path + i + ".bin"));
@@ -47,6 +45,7 @@ public class MemoF2
 				Nali.error(e);
 			}
 		}
+//		Nali.error("" + Arrays.toString(this.bind_pose_float_array));
 
 		this.transforms_float_array = FileDataReader.getFloatArray(frame_folder_path + "/transform.bin");
 		this.max_key = (short)(this.transforms_float_array.length / 16 / this.bone);
@@ -59,182 +58,113 @@ public class MemoF2
 		this.max_key = (short)(this.transforms_float_array.length / 16 / this.bone);
 
 		this.bind_pose_float_array = bind_pose_float_array;
+//		Nali.error("" + Arrays.toString(this.bind_pose_float_array));
 		int length = this.bind_pose_float_array.length;
-		this.inv_bind_pose_float_array = new float[length];
-		System.arraycopy(this.bind_pose_float_array, 0, this.inv_bind_pose_float_array, 0, length);
+		this.i_bind_pose_float_array = new float[length];
+		System.arraycopy(this.bind_pose_float_array, 0, this.i_bind_pose_float_array, 0, length);
 		for (int i = 0; i < this.bone; ++i)
 		{
-			M4x4.inverse(this.inv_bind_pose_float_array, i * 16);
+			M4x4.i(this.i_bind_pose_float_array, i * 16);
 		}
 		this.bone_2d_byte_array = bone_2d_byte_array;
 	}
 
-	public float[] get3DSkinning(float[] skinning_float_array, float x, float y, float z, float x0, float y0, float z0, int i, int v)
-	{
-		MemoA2 ra2 = BothLoader.A2_MAP.get(i);
+//	public float[] get3DSkinning(float[] skinning_float_array, float x, float y, float z, float x0, float y0, float z0, int i, int v)
+//	{
+//		MemoA2 ra2 = BothLoader.A2_MAP.get(i);
+//
+//		int[] index_int_array = ra2.index_int_array;
+//		float[] vertex_float_array = ra2.vertex_float_array;
+//
+//		int vi = index_int_array[v] * 3;
+//
+//		byte max_joint = ra2.max_joint;
+//		float[] main_vec4_float_array = new float[4];
+//		float[] temp_vec4_float_array = new float[4];
+//
+//		for (int j = 0; j < max_joint; ++j)
+//		{
+//			int ji = index_int_array[v] * max_joint + j;
+//			short joint = ra2.joint_short_array[ji];
+//
+//			if (joint != -1)
+//			{
+//				temp_vec4_float_array[0] = vertex_float_array[vi] + x0;
+//				temp_vec4_float_array[1] = vertex_float_array[vi + 1] + y0;
+//				temp_vec4_float_array[2] = vertex_float_array[vi + 2] + z0;
+//				temp_vec4_float_array[3] = 1.0F;
+//
+//				for (int b = 0; b < this.bone_2d_byte_array[joint].length; ++b)
+//				{
+//					int index = (this.bone_2d_byte_array[joint][b] & 0xFF) * 16;
+//					float[] bindpose_mat4 = new float[16], skinning_mat4 = new float[16];
+//					System.arraycopy(this.bind_pose_float_array, index, bindpose_mat4, 0, 16);
+//					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
+//
+//					M4x4.i(bindpose_mat4, 0);
+//					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
+//
+//					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, skinning_mat4);
+//
+//					M4x4.i(bindpose_mat4, 0);
+//					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
+//				}
+//
+//				float weights = ra2.weight_float_array[ji];
+//
+//				temp_vec4_float_array[0] *= weights;
+//				temp_vec4_float_array[1] *= weights;
+//				temp_vec4_float_array[2] *= weights;
+//				temp_vec4_float_array[3] *= weights;
+//
+//				main_vec4_float_array[0] += temp_vec4_float_array[0];
+//				main_vec4_float_array[1] += temp_vec4_float_array[1];
+//				main_vec4_float_array[2] += temp_vec4_float_array[2];
+//				main_vec4_float_array[3] += temp_vec4_float_array[3];
+//			}
+//		}
+//
+//		main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new V4(-1.571F, 0.0F, 0.0F).getM4X4().m4x4_float_array);
+//		main_vec4_float_array[0] += x;
+//		main_vec4_float_array[1] += y;
+//		main_vec4_float_array[2] += z;
+//
+//		return main_vec4_float_array;
+//	}
 
-		int[] index_int_array = ra2.index_int_array;
-		float[] vertex_float_array = ra2.vertex_float_array;
-
-		int vi = index_int_array[v] * 3;
-
-		byte max_joint = ra2.max_joint;
-		float[] main_vec4_float_array = new float[4];
-		float[] temp_vec4_float_array = new float[4];
-
-		for (int j = 0; j < max_joint; ++j)
-		{
-			int ji = index_int_array[v] * max_joint + j;
-			short joint = ra2.joint_short_array[ji];
-
-			if (joint != -1)
-			{
-				temp_vec4_float_array[0] = vertex_float_array[vi] + x0;
-				temp_vec4_float_array[1] = vertex_float_array[vi + 1] + y0;
-				temp_vec4_float_array[2] = vertex_float_array[vi + 2] + z0;
-				temp_vec4_float_array[3] = 1.0F;
-
-				for (int b = 0; b < this.bone_2d_byte_array[joint].length; ++b)
-				{
-					int index = (this.bone_2d_byte_array[joint][b] & 0xFF) * 16;
-					float[] bindpose_mat4 = new float[16], skinning_mat4 = new float[16];
-					System.arraycopy(this.bind_pose_float_array, index, bindpose_mat4, 0, 16);
-					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
-
-					M4x4.inverse(bindpose_mat4, 0);
-					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
-
-					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, skinning_mat4);
-
-					M4x4.inverse(bindpose_mat4, 0);
-					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
-				}
-
-				float weights = ra2.weight_float_array[ji];
-
-				temp_vec4_float_array[0] *= weights;
-				temp_vec4_float_array[1] *= weights;
-				temp_vec4_float_array[2] *= weights;
-				temp_vec4_float_array[3] *= weights;
-
-				main_vec4_float_array[0] += temp_vec4_float_array[0];
-				main_vec4_float_array[1] += temp_vec4_float_array[1];
-				main_vec4_float_array[2] += temp_vec4_float_array[2];
-				main_vec4_float_array[3] += temp_vec4_float_array[3];
-			}
-		}
-
-		main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4x4().mat);
-		main_vec4_float_array[0] += x;
-		main_vec4_float_array[1] += y;
-		main_vec4_float_array[2] += z;
-
-		return main_vec4_float_array;
-	}
-
-	public float[] getScale3DSkinning(float scale, float[] skinning_float_array, float x, float y, float z, float x0, float y0, float z0, int i, int v)
-	{
-		MemoA2 ra2 = BothLoader.A2_MAP.get(i);
-
-		int[] index_int_array = ra2.index_int_array;
-		float[] vertex_float_array = ra2.vertex_float_array;
-
-		int vi = index_int_array[v] * 3;
-
-		byte max_joint = ra2.max_joint;
-		float[] main_vec4_float_array = new float[4];
-		float[] temp_vec4_float_array = new float[4];
-
-		for (int j = 0; j < max_joint; ++j)
-		{
-			int ji = index_int_array[v] * max_joint + j;
-			short joint = ra2.joint_short_array[ji];
-
-			if (joint != -1)
-			{
-				temp_vec4_float_array[0] = vertex_float_array[vi] + x0;
-				temp_vec4_float_array[1] = vertex_float_array[vi + 1] + y0;
-				temp_vec4_float_array[2] = vertex_float_array[vi + 2] + z0;
-				temp_vec4_float_array[3] = 1.0F;
-
-				for (int b = 0; b < this.bone_2d_byte_array[joint].length; ++b)
-				{
-					int index = (this.bone_2d_byte_array[joint][b] & 0xFF) * 16;
-					float[] bindpose_mat4 = new float[16], skinning_mat4 = new float[16];
-					System.arraycopy(this.bind_pose_float_array, index, bindpose_mat4, 0, 16);
-					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
-
-					M4x4.inverse(bindpose_mat4, 0);
-					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
-
-					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, skinning_mat4);
-
-					M4x4.inverse(bindpose_mat4, 0);
-					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
-				}
-
-				float weights = ra2.weight_float_array[ji];
-
-				temp_vec4_float_array[0] *= weights;
-				temp_vec4_float_array[1] *= weights;
-				temp_vec4_float_array[2] *= weights;
-				temp_vec4_float_array[3] *= weights;
-
-				main_vec4_float_array[0] += temp_vec4_float_array[0];
-				main_vec4_float_array[1] += temp_vec4_float_array[1];
-				main_vec4_float_array[2] += temp_vec4_float_array[2];
-				main_vec4_float_array[3] += temp_vec4_float_array[3];
-			}
-		}
-
-		main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new float[]
-		{
-			scale, 0.0F, 0.0F, 0.0F,
-			0.0F, scale, 0.0F, 0.0F,
-			0.0F, 0.0F, scale, 0.0F,
-			0.0F, 0.0F, 0.0F, 1.0F,
-		});
-		main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4x4().mat);
-		main_vec4_float_array[0] += x;
-		main_vec4_float_array[1] += y;
-		main_vec4_float_array[2] += z;
-//		main_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4x4().mat);
-
-		return main_vec4_float_array;
-	}
-
-	public float[] getMat43DSkinning(float[] skinning_float_array, int i, int v)
+	public float[] getSM4X4FloatArray(float[] skinning_float_array, int i, int v)
 	{
 		MemoA2 ra2 = BothLoader.A2_MAP.get(i);
 
 		byte max_joint = ra2.max_joint;
 		float[] mat4_float_array = new float[16];
-		System.arraycopy(M4x4.IDENTITY, 0, mat4_float_array, 0, 16);
+		System.arraycopy(M4x4.DM4X4_FLOAT_ARRAY, 0, mat4_float_array, 0, 16);
 
 		int ji = ra2.index_int_array[v] * max_joint;// + j;
-		short joint = ra2.joint_short_array[ji];
+		short joint = (short)(ra2.joint_byte_array[ji] & 0xFF);
 
 		if (joint != -1)
 		{
-			for (int b = 0; b < this.bone_2d_byte_array[joint].length; ++b)
+			byte[] bone_byte_array = this.bone_2d_byte_array[joint];
+			for (int b = 0; b < bone_byte_array.length; ++b)
 			{
-				M4x4.multiply(skinning_float_array, mat4_float_array, (this.bone_2d_byte_array[joint][b] & 0xFF) * 16, 0);
+				M4x4.m(skinning_float_array, mat4_float_array, (bone_byte_array[b] & 0xFF) * 16, 0);
 			}
 		}
 		return mat4_float_array;
 	}
 
-	public void initSkinning(IBothDaS bd, float[] skinning_float_array)
+	public void initS(IBothDaS bd, float[] skinning_float_array)
 	{
 		int max_bones = BothLoader.F2_LIST.get(bd.S_FrameID()).bone;
 
 		for (int i = 0; i < max_bones; ++i)
 		{
-			System.arraycopy(M4x4.IDENTITY, 0, skinning_float_array, i * 16, 16);
+			System.arraycopy(M4x4.DM4X4_FLOAT_ARRAY, 0, skinning_float_array, i * 16, 16);
 		}
 	}
 
-	public void setSkinning(IBothDaS bd, float[] skinning_float_array, short[] key_short_array)
+	public void setS(IBothDaS bd, float[] skinning_float_array, short[] key_short_array)
 	{
 		int frame_id = bd.S_FrameID();
 		MemoF2 bf2 = BothLoader.F2_LIST.get(frame_id);
@@ -293,12 +223,123 @@ public class MemoF2
 //					M4x4.lerp(this.current_mat4, bf2.transforms_float_array, 0, (end_key_frame + max_key * i) * 16, new_end_frame);
 //
 //					M4x4.lerp(this.current_mat4, this.current_mat4, 0, 16, Minecraft.getMinecraft().getRenderPartialTicks());
-//					M4x4.multiply(this.current_mat4, this.skinning_float_array, 0, i * 16);
-				M4x4.multiply(bf2.transforms_float_array, skinning_float_array, (key_short_array[l] + max_key * i) * 16, i * 16);
+//					M4x4.m(this.current_mat4, this.skinning_float_array, 0, i * 16);
+				M4x4.m(bf2.transforms_float_array, skinning_float_array, (key_short_array[l] + max_key * i) * 16, i * 16);
 //				}
 			}
 
-			M4x4.inverse(skinning_float_array, i * 16);
+			M4x4.i(skinning_float_array, i * 16);
 		}
+	}
+
+	public float[] getSV4FloatArray(float scale, float[] skinning_float_array, float x, float y, float z, float x0, float y0, float z0, int o, int i)
+	{
+		MemoA2 ra2 = BothLoader.A2_MAP.get(o);
+
+		int[] index_int_array = ra2.index_int_array;
+		float[] vertex_float_array = ra2.vertex_float_array;
+
+		int n = index_int_array[i];
+		int vi = n * 3;
+
+		byte max_joint = ra2.max_joint;
+		float[] main_v4_float_array = new float[4];
+		float[] temp_v4_float_array = new float[4];
+
+//		float weights_debug = 0;
+		int nj = n * max_joint;
+		for (int j = 0; j < max_joint; ++j)
+		{
+			int ji = nj + j;
+			float weights = ra2.weight_float_array[ji];
+
+			if (weights != 0)
+			{
+//				short joint = ra2.joint_short_array[ji];
+//				short joint = (short)(ra2.joint_byte_array[ji] & 0xFF);
+
+				temp_v4_float_array[0] = vertex_float_array[vi] + x0;
+				temp_v4_float_array[1] = vertex_float_array[vi + 1] + y0;
+				temp_v4_float_array[2] = vertex_float_array[vi + 2] + z0;
+				temp_v4_float_array[3] = 1.0F;
+
+//				byte[] bone_byte_array = this.bone_2d_byte_array[joint];
+				byte[] bone_byte_array = this.bone_2d_byte_array[ra2.joint_byte_array[ji] & 0xFF];
+				//				for (int b = f2.bone_2d_byte_array[joint].length - 1; b > -1; --b)
+				for (byte b : bone_byte_array)
+				{
+					int index = (b & 0xFF) * 16;
+//					float[] bindpose_mat4 = new float[16], skinning_mat4 = new float[16];
+//					System.arraycopy(f2.bind_pose_float_array, index, bindpose_mat4, 0, 16);
+//					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
+
+//					M4x4.inverse(bindpose_mat4, 0);
+					//start with inv should check server and client same values
+					temp_v4_float_array = M4x4.mV4M4x4(temp_v4_float_array, this.i_bind_pose_float_array, index);
+
+//					M4x4.inverse(skinning_mat4, 0);
+					temp_v4_float_array = M4x4.mV4M4x4(temp_v4_float_array, skinning_float_array, index);
+
+//					M4x4.inverse(bindpose_mat4, 0);
+					temp_v4_float_array = M4x4.mV4M4x4(temp_v4_float_array, this.bind_pose_float_array, index);
+				}
+
+				temp_v4_float_array[0] *= weights;
+				temp_v4_float_array[1] *= weights;
+				temp_v4_float_array[2] *= weights;
+				temp_v4_float_array[3] *= weights;
+//				weights_debug += weights;
+
+				main_v4_float_array[0] += temp_v4_float_array[0];
+				main_v4_float_array[1] += temp_v4_float_array[1];
+				main_v4_float_array[2] += temp_v4_float_array[2];
+				main_v4_float_array[3] += temp_v4_float_array[3];
+
+//				{
+//					float ix = main_v4_float_array[0];
+//					float iy = main_v4_float_array[1];
+//					float iz = main_v4_float_array[2];
+//					float iw = main_v4_float_array[3];
+//					main_v4_float_array[0] = (ix != 0) ? 1 / ix : Float.POSITIVE_INFINITY;
+//					main_v4_float_array[1] = (iy != 0) ? 1 / iy : Float.POSITIVE_INFINITY;
+//					main_v4_float_array[2] = (iz != 0) ? 1 / iz : Float.POSITIVE_INFINITY;
+//					main_v4_float_array[3] = (iw != 0) ? 1 / iw : Float.POSITIVE_INFINITY;
+//				}
+//				break;
+			}
+			else
+			{
+				break;
+			}
+		}
+//		if (weights_debug < 1)
+//		{
+//			Nali.warn("weights_debug < 1");
+//		}
+//		if (weights_debug > 1)
+//		{
+//			Nali.warn("weights_debug > 1");
+//		}
+
+		if (scale != 1.0F)
+		{
+			main_v4_float_array = M4x4.mV4M4x4(main_v4_float_array, new float[]
+			{
+				scale, 0.0F, 0.0F, 0.0F,
+				0.0F, scale, 0.0F, 0.0F,
+				0.0F, 0.0F, scale, 0.0F,
+				0.0F, 0.0F, 0.0F, 1.0F,
+			}, 0);
+		}
+
+		V4.q(temp_v4_float_array, -1.571F, 0.0F, 0.0F);
+//		V4.q(temp_v4_float_array, 0.0F, 0.0F, -1.571F);
+		main_v4_float_array = M4x4.mV4M4x4(main_v4_float_array, V4.getM4X4(temp_v4_float_array), 0);
+
+		main_v4_float_array[0] += x;
+		main_v4_float_array[1] += y;
+		main_v4_float_array[2] += z;
+
+		return main_v4_float_array;
 	}
 }

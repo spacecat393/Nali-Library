@@ -19,7 +19,7 @@
 //		 this.z += v3.z;
 //	 }
 
-//	 public void multiply(float v)
+//	 public void m(float v)
 //	 {
 //		 this.x *= v;
 //		 this.y *= v;

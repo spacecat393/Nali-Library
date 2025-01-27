@@ -73,7 +73,7 @@ public class MemoHVs extends MemoH
 
 		for (int j = 0; j < bindpose_size; ++j)
 		{
-			M4x4.inverse(this.bind_pose_float_array, j * 16);
+			M4x4.i(this.bind_pose_float_array, j * 16);
 			int bindpose_index = (j + 1) * 16;
 			for (int b = j * 16; b < bindpose_index; ++b)
 			{

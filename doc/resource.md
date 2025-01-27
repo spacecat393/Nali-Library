@@ -34,7 +34,7 @@
 	FFmpeg.getSounds(file)
 >run/nali/modid/model.dat
 
-	model_Name(String) texture(Signed Int) modid(String) shader_line(Signed Int) texture_state(2Bit/Byte) culling(1Bit/Byte) transparent(1Bit/Byte) glow(1Bit/Byte)
+	model_Name(String) texture(Signed Int) modid(String) shader_line(Signed Int) culling(1Bit/Byte) transparent(1Bit/Byte) glow(1Bit/Byte)
 >run/nali/modid/shader.dat
 
 	modid(String) gl_part(String) modid(String) o/s(String)vert_id(Signed Int) modid(String) frag_id(Signed Int) ==> shader_line(Signed Int)
@@ -46,11 +46,6 @@
 
 	model-animation_Name(String)
 ## Data
->texture_state(2Bit/Byte)
-
-	0 GL_NEAREST
-	1 GL_LINEAR
-	2 GL_LINEAR_MIPMAP_LINEAR
 >Raw Data
 
 	*model-animation_Name(String)

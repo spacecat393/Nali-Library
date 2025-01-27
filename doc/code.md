@@ -57,7 +57,7 @@
 	2 Skinning
 	4 Color/NoTexture
 	--8-EntityGlow--
-	--16-TileEntity--
+	16-TileEntity
 >[Build](../README.md)
 
 </span>

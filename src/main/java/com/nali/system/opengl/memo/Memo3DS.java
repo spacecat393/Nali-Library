@@ -61,7 +61,7 @@
 //
 //		for (int i = 0; i < max_bones; ++i)
 //		{
-//			System.arraycopy(M4x4.IDENTITY, 0, this.skinning_float_array, i * 16, 16);
+//			System.arraycopy(M4x4.DM4X4_FLOAT_ARRAY, 0, this.skinning_float_array, i * 16, 16);
 //		}
 //	}
 //
@@ -75,15 +75,15 @@
 //			{
 //				if ((this.frame_byte_array[f / 8] >> f % 8 & 1) == 1)
 //				{
-//					M4x4.multiply(memoanimation.transforms_float_array, this.skinning_float_array, (this.frame_int_array[f] + max_key * i) * 16, i * 16);
+//					M4x4.m(memoanimation.transforms_float_array, this.skinning_float_array, (this.frame_int_array[f] + max_key * i) * 16, i * 16);
 //				}
 //			}
 //
-//			M4x4.inverse(this.skinning_float_array, i * 16);
+//			M4x4.i(this.skinning_float_array, i * 16);
 //		}
 //	}
 //
-//	public float[] getScale3DSkinning(float[] skinning_float_array, float scale, float x, float y, float z, float x0, float y0, float z0, int i, int v)
+//	public float[] getSV4FloatArray(float[] skinning_float_array, float scale, float x, float y, float z, float x0, float y0, float z0, int i, int v)
 //	{
 //		Memo3DS memo3ds = I.bothloader.memo3d_list.get(i);
 //		int vi = memo3ds.index_int_array[v] * 3;
@@ -110,12 +110,12 @@
 //					System.arraycopy(this.bind_poses_float_array, index, bindpose_mat4, 0, 16);
 //					System.arraycopy(skinning_float_array, index, skinning_mat4, 0, 16);
 //
-//					M4x4.inverse(bindpose_mat4, 0);
+//					M4x4.i(bindpose_mat4, 0);
 //					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
 //
 //					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, skinning_mat4);
 //
-//					M4x4.inverse(bindpose_mat4, 0);
+//					M4x4.i(bindpose_mat4, 0);
 //					temp_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, bindpose_mat4);
 //				}
 //
@@ -140,11 +140,11 @@
 //			0.0F, 0.0F, scale, 0.0F,
 //			0.0F, 0.0F, 0.0F, 1.0F,
 //		});
-//		main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4x4().mat);
+//		main_vec4_float_array = multiplyVec4Mat4(main_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4X4().m4x4_float_array);
 //		main_vec4_float_array[0] += x;
 //		main_vec4_float_array[1] += y;
 //		main_vec4_float_array[2] += z;
-////		main_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4x4().mat);
+////		main_vec4_float_array = multiplyVec4Mat4(temp_vec4_float_array, new Quaternion(-1.571F, 0.0F, 0.0F).getM4X4().m4x4_float_array);
 //
 //		return main_vec4_float_array;
 //	}

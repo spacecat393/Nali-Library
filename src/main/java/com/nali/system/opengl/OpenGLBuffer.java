@@ -100,11 +100,11 @@
 //
 //	//	 for (int i = 0; i < m4x4_arraylist.size(); ++i)
 //	//	 {
-//	//		 // for (int x = 0; x < m4x4_arraylist.get(i).mat.length; ++x)
+//	//		 // for (int x = 0; x < m4x4_arraylist.get(i).m4x4_float_array.length; ++x)
 //	//		 // {
-//	//		 //	 float_array[i * 16 + x] = m4x4_arraylist.get(i).mat[x];
+//	//		 //	 float_array[i * 16 + x] = m4x4_arraylist.get(i).m4x4_float_array[x];
 //	//		 // }
-//	//		 System.arraycopy(m4x4_arraylist.get(i).mat, 0, float_array, i * 16, 16);
+//	//		 System.arraycopy(m4x4_arraylist.get(i).m4x4_float_array, 0, float_array, i * 16, 16);
 //	//	 }
 //
 //	//	 FloatBuffer floatbuffer = null;

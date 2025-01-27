@@ -38,7 +38,7 @@ public class MemoA
 		int length = attriblocation_string_2d_array.length;
 		byte offset = 0;
 		MemoA[] memoa0_array = new MemoA[length];
-		if (model_string_array.length == 9)
+		if (model_string_array.length == 8)
 		{
 			String[] attriblocation_string_array;
 			for (int i = 0; i < length - 2; ++i)
@@ -52,7 +52,7 @@ public class MemoA
 
 			length -= 2;
 			String[] shader_string_array = shader_string_2d_array[shader_id];
-			byte max_joint = Byte.parseByte(model_string_array[8]);
+			byte max_joint = Byte.parseByte(model_string_array[7]);
 			byte limit_max_joint = Byte.parseByte(shader_string_array[8]);
 			try
 			{

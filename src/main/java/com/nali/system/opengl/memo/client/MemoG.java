@@ -12,8 +12,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static com.nali.system.ClientLoader.A2_MAP;
 import static com.nali.system.ClientLoader.G_LIST;
@@ -43,7 +46,8 @@ public class MemoG
 		this.texture_id = Integer.parseInt(model_string_array[1]);
 		this.shader_id = shader_id;
 //		this.state = (byte)(Byte.parseByte(model_string_array[4]) | 2 * Byte.parseByte(model_string_array[5]) | 4 * Byte.parseByte(model_string_array[6]) | 8 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
-		this.flag = (byte)(Byte.parseByte(model_string_array[4]) | 4 * Byte.parseByte(model_string_array[5]) | 8 * Byte.parseByte(model_string_array[6]) | 16 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
+//		this.flag = (byte)(Byte.parseByte(model_string_array[4]) | 4 * Byte.parseByte(model_string_array[5]) | 8 * Byte.parseByte(model_string_array[6]) | 16 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
+		this.flag = (byte)(4 * Byte.parseByte(model_string_array[4]) | 8 * Byte.parseByte(model_string_array[5]) | 16 * Byte.parseByte(model_string_array[6]));//culling transparent glow
 
 		this.memoa_array = MemoA.gen(this, shader_string_2d_array, model_string_array, attriblocation_string_2d_array, folder_path, shader_id);
 		int buffer_size = 0;
@@ -118,25 +122,45 @@ public class MemoG
 		OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, this.ebo);
 		OpenGlHelper.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, MemoA.createIntByteBuffer(index_int_array), OpenGlHelper.GL_STATIC_DRAW);
 
-		if (model_string_array.length == 9)
+		if (model_string_array.length == 8)
 		{
-			int size = this.memoa_array.length;
+//			int size = this.memoa_array.length;
 
 			MemoA2 memoa2 = new MemoA2();
 
 			memoa2.index_int_array = index_int_array;
 
 			memoa2.vertex_float_array = (float[])this.memoa_array[0].o;
-			byte[] joint_byte_array = (byte[])this.memoa_array[size - 2].o;
-			int joint_byte_array_length = joint_byte_array.length;
-			memoa2.joint_short_array = new short[joint_byte_array_length];
-			for (int i = 0; i < joint_byte_array_length; ++i)
+
+//			byte[] joint_byte_array = (byte[])this.memoa_array[size - 2].o;
+//			int joint_byte_array_length = joint_byte_array.length;
+//			memoa2.joint_short_array = new short[joint_byte_array_length];
+//			for (int i = 0; i < joint_byte_array_length; ++i)
+//			{
+//				memoa2.joint_short_array[i] = (short)(joint_byte_array[i] & 0xFF);
+//			}
+//
+//			memoa2.weight_float_array = (float[])this.memoa_array[size - 1].o;
+
+			try
 			{
-				memoa2.joint_short_array[i] = (short)(joint_byte_array[i] & 0xFF);
+//				byte[] joint_byte_array = Files.readAllBytes(Paths.get(model_folder_string + "joint.bin"));
+//				int joint_byte_array_length = joint_byte_array.length;
+//				memoa2.joint_short_array = new short[joint_byte_array_length];
+//				for (int i = 0; i < joint_byte_array_length; ++i)
+//				{
+//					memoa2.joint_short_array[i] = (short)(joint_byte_array[i] & 0xFF);
+//				}
+				memoa2.joint_byte_array = Files.readAllBytes(Paths.get(model_folder_string + "joint.bin"));
+			}
+			catch (IOException e)
+			{
+				Nali.error(e);
 			}
 
-			memoa2.weight_float_array = (float[])this.memoa_array[size - 1].o;
-			memoa2.max_joint = Byte.parseByte(model_string_array[8]);
+			memoa2.weight_float_array = FileDataReader.getFloatArray(model_folder_string + "weight.bin");
+
+			memoa2.max_joint = Byte.parseByte(model_string_array[7]);
 
 			A2_MAP.put(G_LIST.size(), memoa2);
 		}

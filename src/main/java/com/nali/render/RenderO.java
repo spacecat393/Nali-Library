@@ -7,9 +7,6 @@ import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoG;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -105,147 +102,15 @@ public class RenderO
 
 //	public static float[] GL_CURRENT_COLOR = new float[4];
 
-	public float light_b = -1.0F, light_s;
+//	public float light_b = -1.0F, light_s;
+	public int i;
+	public MemoG rg;
+	public MemoS rs;
+	public BD bd;
 
-	public void setTextureUniform(MemoG rg, MemoS rs)
+	public RenderO(BD bd)
 	{
-//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-//		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.flag & 1+2));
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getTextureBuffer(rg));
-	}
-
-	public void setMapUniform(MemoS rs)
-	{
-		if (this.light_b != -1.0F)
-		{
-			OpenGlHelper.glUniform1i(rs.uniformlocation_int_array[2], 1);
-		}
-	}
-
-	public void setLightUniform(MemoS rs)
-	{
-		FLOATBUFFER.clear();
-		FLOATBUFFER.put(this.light_b);
-		FLOATBUFFER.put(this.light_s);
-		FLOATBUFFER.flip();
-		OpenGlHelper.glUniform2(rs.uniformlocation_int_array[3], FLOATBUFFER);
-	}
-
-	public int getTextureID(MemoG rg)
-	{
-		return rg.texture_id;
-	}
-
-	public int getTextureBuffer(MemoG rg)
-	{
-		return TEXTURE_INTEGER_LIST.get(getTextureID(rg))/*.texture_buffer*/;
-	}
-
-	public int getShaderID(MemoG rg)
-	{
-		return rg.shader_id;
-	}
-
-	public boolean getGlow(MemoG rg)
-	{
-		return (rg.flag & 16) == 16;
-	}
-
-	public boolean getTransparent(MemoG rg)
-	{
-		return (rg.flag & 8) == 8;
-	}
-
-	public void draw(BD bd)
-	{
-		for (int i = bd.O_StartPart(); i < bd.O_EndPart(); ++i)
-		{
-			this.draw(i);
-		}
-	}
-
-	public void draw(int index)
-	{
-		float light_b = this.light_b;
-		float light_s = this.light_s;
-		MemoG rg = G_LIST.get(index);
-		MemoS rs = S_LIST.get(this.getShaderID(rg));
-
-		//this.updateLight(rg);
-		if (this.getGlow(rg))
-		{
-			this.light_b = -1.0F;
-			this.light_s = -1.0F;
-		}
-
-		enableBuffer(rg, rs);
-
-		this.setUniform(rg, rs, index);
-
-		if (NaliConfig.VAO)
-		{
-			NaliGL.glDrawElementsTUi0(rg.index_length);
-		}
-		else
-		{
-			GL11.glDrawElements(GL11.GL_TRIANGLES, rg.index_length, GL11.GL_UNSIGNED_INT, 0);
-		}
-
-		if (!NaliConfig.VAO)
-		{
-			disableBuffer(rs);
-		}
-		this.light_b = light_b;
-		this.light_s = light_s;
-	}
-
-	public void setUniform(MemoG rg, MemoS rs, int index)
-	{
-		FLOATBUFFER.limit(16);
-		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, FLOATBUFFER);
-		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[0], false, FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, FLOATBUFFER);
-		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[1], false, FLOATBUFFER);
-		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, FLOATBUFFER);
-		FLOATBUFFER.limit(4);
-		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[4], FLOATBUFFER);
-
-		this.setTextureUniform(rg, rs);
-		this.setMapUniform(rs);
-		this.setLightUniform(rs);
-	}
-
-	public byte getExtraBit(MemoG rg)
-	{
-		return 0;
-	}
-
-	public void updateLight(World world, BlockPos blockpos)
-	{
-//		if (world.isBlockLoaded(blockpos))
-//		{
-//			int brightness = world.getCombinedLight(blockpos, 0);
-//			this.light_b = (brightness % 65536) / 255.0F;
-//			this.light_s = (brightness / 65536.0F) / 255.0F;
-//		}
-//
-//		if (this.light_b < 0.1875F)
-//		{
-//			this.light_b = 0.1875F;
-//		}
-
-		this.light_b = world.getLightFromNeighborsFor(EnumSkyBlock.BLOCK, blockpos) / 16.0F;//0-15
-		this.light_s = world.getLightFromNeighborsFor(EnumSkyBlock.SKY, blockpos) / 16.0F;
-
-		if (this.light_b < 0.0625F)//1/16
-		{
-			this.light_b = 0.0625F;
-		}
-
-		if (this.light_s < 0.0625F)//1/16
-		{
-			this.light_s = 0.0625F;
-		}
+		this.bd = bd;
 	}
 
 	public static void take()
@@ -485,4 +350,101 @@ public class RenderO
 //			}
 //		}
 //	}
+
+	public void setTextureUniform()
+	{
+	//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
+	//		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.flag & 1+2));
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getTextureBuffer());
+	}
+
+	public int getTextureID()
+	{
+		return this.rg.texture_id;
+	}
+
+	public int getTextureBuffer()
+	{
+		return TEXTURE_INTEGER_LIST.get(this.getTextureID())/*.texture_buffer*/;
+	}
+
+	public int getShaderID()
+	{
+		return this.rg.shader_id;
+	}
+
+//	public boolean getGlow(MemoG rg)
+//	{
+//		return (rg.flag & 16) == 16;
+//	}
+//
+//	public boolean getTransparent(MemoG rg)
+//	{
+//		return (rg.flag & 8) == 8;
+//	}
+
+//	public void draw(BD bd)
+	public void doDraw()
+	{
+//		for (int i = bd.O_StartPart(); i < bd.O_EndPart(); ++i)
+		for (this.i = this.bd.O_StartPart(); this.i < this.bd.O_EndPart(); ++this.i)
+		{
+			this.rg = G_LIST.get(this.i);
+			this.rs = S_LIST.get(this.getShaderID());
+//			this.draw(/*i, */rg, rs);
+			this.draw();
+		}
+	}
+
+//	public void draw(/*int index, */MemoG rg, MemoS rs)
+	public void draw()
+	{
+//		float light_b = this.light_b;
+//		float light_s = this.light_s;
+//
+//		//this.updateLight(rg);
+//		if (this.getGlow(rg))
+//		{
+//			this.light_b = -1.0F;
+//			this.light_s = -1.0F;
+//		}
+		enableBuffer(this.rg, this.rs);
+
+//		this.setUniform(rg, rs/*, index*/);
+		this.setUniform();
+
+		if (NaliConfig.VAO)
+		{
+			NaliGL.glDrawElementsTUi0(this.rg.index_length);
+		}
+		else
+		{
+			GL11.glDrawElements(GL11.GL_TRIANGLES, this.rg.index_length, GL11.GL_UNSIGNED_INT, 0);
+		}
+
+		if (!NaliConfig.VAO)
+		{
+			disableBuffer(this.rs);
+		}
+//		this.light_b = light_b;
+//		this.light_s = light_s;
+	}
+
+//	public void setUniform(MemoG rg, MemoS rs/*, int index*/)
+	public void setUniform()
+	{
+		FLOATBUFFER.limit(16);
+		GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, FLOATBUFFER);
+		OpenGlHelper.glUniformMatrix4(this.rs.uniformlocation_int_array[0], false, FLOATBUFFER);
+		GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, FLOATBUFFER);
+		OpenGlHelper.glUniformMatrix4(this.rs.uniformlocation_int_array[1], false, FLOATBUFFER);
+		GL11.glGetFloat(GL11.GL_CURRENT_COLOR, FLOATBUFFER);
+		FLOATBUFFER.limit(4);
+		OpenGlHelper.glUniform4(this.rs.uniformlocation_int_array[4], FLOATBUFFER);
+
+//		this.setTextureUniform(rg, rs);
+		this.setTextureUniform();
+//		this.setMapUniform(rs);
+//		this.setLightUniform(rs);
+	}
 }

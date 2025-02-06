@@ -1,7 +1,6 @@
 package com.nali.mixin;
 
 import com.nali.NaliConfig;
-import com.nali.da.IBothDaO;
 import com.nali.gui.page.Page;
 import com.nali.gui.page.PageLoad;
 import com.nali.render.RenderO;
@@ -87,21 +86,21 @@ public abstract class MixinFMLClientHandler
 			RenderO.take();
 
 			List<Class> render_class_list = Reflect.getClasses("com.nali.list.render");
-			List<Class> da_class_list = Reflect.getClasses("com.nali.list.da");
+//			List<Class> da_class_list = Reflect.getClasses("com.nali.list.da");
 			render_class_list.sort(Comparator.comparing(Class::getName));
-			da_class_list.sort(Comparator.comparing(Class::getName));
+//			da_class_list.sort(Comparator.comparing(Class::getName));
 
 			for (int i = 0; i < render_class_list.size(); ++i)
 			{
 				Class render_class = render_class_list.get(i);
-				Class da_class = da_class_list.get(i);
+//				Class da_class = da_class_list.get(i);
 
 				try
 				{
-					IBothDaO bd = (IBothDaO)da_class.getField("IDA").get(null);
-					((RenderO)render_class.newInstance()).draw(bd);
+//					IBothDaO bd = (IBothDaO)da_class.getField("IDA").get(null);
+					((RenderO)render_class.newInstance()).doDraw(/*bd*/);
 				}
-				catch (IllegalAccessException | InstantiationException | NoSuchFieldException e)
+				catch (IllegalAccessException | InstantiationException/* | NoSuchFieldException*/ e)
 				{
 					error(e);
 				}

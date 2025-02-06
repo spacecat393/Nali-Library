@@ -3,8 +3,6 @@ package com.nali.render;
 import com.nali.da.IBothDaO;
 import com.nali.da.IBothDaS;
 import com.nali.system.BothLoader;
-import com.nali.system.opengl.memo.client.MemoG;
-import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -53,7 +51,8 @@ public class RenderS
 
 	public RenderS(BD bd)
 	{
-		byte max_frame = bd.S_MaxFrame();
+		super(bd);
+		byte max_frame = this.bd.S_MaxFrame();
 
 //		short mix_max_frame = (short)(max_frame * 2);
 //		this.key_index_byte_array = new byte[mix_max_frame];
@@ -63,7 +62,7 @@ public class RenderS
 
 //		this.frame_byte_array = new byte[(int)Math.ceil(max_frame / 8.0D)];
 
-		this.skinning_float_array = new float[BothLoader.F2_LIST.get(bd.S_FrameID()).bone * 16];
+		this.skinning_float_array = new float[BothLoader.F2_LIST.get(this.bd.S_FrameID()).bone * 16];
 
 //		this.setFrame();
 	}
@@ -81,18 +80,20 @@ public class RenderS
 //	}
 
 	@Override
-	public void setUniform(MemoG rg, MemoS rs, int index)
+//	public void setUniform(MemoG rg, MemoS rs, int index)
+	public void setUniform()
 	{
 		setFloatBuffer(this.skinning_float_array);
 		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[6], false, BONE_FLOATBUFFER);
-		super.setUniform(rg, rs, index);
+//		super.setUniform(rg, rs, index);
+		super.setUniform();
 	}
 
-	@Override
-	public byte getExtraBit(MemoG rg)
-	{
-		return 2;//skinning
-	}
+//	@Override
+//	public byte getExtraBit(MemoG rg)
+//	{
+//		return 2;//skinning
+//	}
 
 	public void apply3DSkinningVec4(float[] vec4)
 	{

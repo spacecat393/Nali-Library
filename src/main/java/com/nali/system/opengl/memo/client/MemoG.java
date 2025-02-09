@@ -31,12 +31,16 @@ public class MemoG
 		buffer;
 
 //	public byte state;//texture_state culling transparent glow
-	public byte flag;//texture_state1-2 culling4 transparent8 glow16
+	public byte state;
 	public int
 		texture_id,
 		shader_id,
 		vao;
 	public byte stride;
+
+	public final static byte B_TRANSPARENT = 1;
+	public final static byte B_CULL = 2;
+	public final static byte B_GLOW = 4;
 
 	public MemoG(String[][] shader_string_2d_array, String[][] attriblocation_string_2d_array, int shader_id, String[] model_string_array, String folder_path)
 	{
@@ -47,7 +51,7 @@ public class MemoG
 		this.shader_id = shader_id;
 //		this.state = (byte)(Byte.parseByte(model_string_array[4]) | 2 * Byte.parseByte(model_string_array[5]) | 4 * Byte.parseByte(model_string_array[6]) | 8 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
 //		this.flag = (byte)(Byte.parseByte(model_string_array[4]) | 4 * Byte.parseByte(model_string_array[5]) | 8 * Byte.parseByte(model_string_array[6]) | 16 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
-		this.flag = (byte)(4 * Byte.parseByte(model_string_array[4]) | 8 * Byte.parseByte(model_string_array[5]) | 16 * Byte.parseByte(model_string_array[6]));//culling transparent glow
+		this.state = (byte)(Byte.parseByte(model_string_array[5]) | Byte.parseByte(model_string_array[4]) << 1 | Byte.parseByte(model_string_array[6]) << 2);//culling transparent glow
 
 		this.memoa_array = MemoA.gen(this, shader_string_2d_array, model_string_array, attriblocation_string_2d_array, folder_path, shader_id);
 		int buffer_size = 0;

@@ -301,13 +301,13 @@ public class RenderO
 			OpenGlHelper.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, rg.ebo);
 		}
 
-		if ((rg.flag & 4) == 4)
+		if ((rg.state & MemoG.B_CULL) == 0)
 		{
-			GL11.glEnable(GL11.GL_CULL_FACE);
+			GL11.glDisable(GL11.GL_CULL_FACE);
 		}
 		else
 		{
-			GL11.glDisable(GL11.GL_CULL_FACE);
+			GL11.glEnable(GL11.GL_CULL_FACE);
 		}
 	}
 

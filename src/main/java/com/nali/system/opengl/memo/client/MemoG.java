@@ -50,7 +50,7 @@ public class MemoG
 		this.texture_id = Integer.parseInt(model_string_array[1]);
 		this.shader_id = shader_id;
 //		this.state = (byte)(Byte.parseByte(model_string_array[4]) | 2 * Byte.parseByte(model_string_array[5]) | 4 * Byte.parseByte(model_string_array[6]) | 8 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
-//		this.flag = (byte)(Byte.parseByte(model_string_array[4]) | 4 * Byte.parseByte(model_string_array[5]) | 8 * Byte.parseByte(model_string_array[6]) | 16 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
+//		this.fl = (byte)(Byte.parseByte(model_string_array[4]) | 4 * Byte.parseByte(model_string_array[5]) | 8 * Byte.parseByte(model_string_array[6]) | 16 * Byte.parseByte(model_string_array[7]));//texture_state culling transparent glow
 		this.state = (byte)(Byte.parseByte(model_string_array[5]) | Byte.parseByte(model_string_array[4]) << 1 | Byte.parseByte(model_string_array[6]) << 2);//culling transparent glow
 
 		this.memoa_array = MemoA.gen(this, shader_string_2d_array, model_string_array, attriblocation_string_2d_array, folder_path, shader_id);

@@ -2,6 +2,7 @@ package com.nali.gui.key;
 
 import com.nali.gui.page.Page;
 import com.nali.gui.page.PageEdit;
+import com.nali.gui.page.PageSelect;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,7 +15,7 @@ public class KeyEdit extends KeySelect
 	public void enter()
 	{
 		PageEdit pageedit = (PageEdit)Page.PAGE;
-		if ((pageedit.state & 1) == 1)
+		if ((pageedit.fl & PageSelect.BF_ENTER_MODE) == PageSelect.BF_ENTER_MODE)
 		{
 			char c = Keyboard.getEventCharacter();
 			if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_C))
@@ -85,7 +86,7 @@ public class KeyEdit extends KeySelect
 			}
 			else if (key == Keyboard.KEY_ESCAPE)
 			{
-				pageedit.state ^= 1;
+				pageedit.fl ^= PageSelect.BF_ENTER_MODE;
 				pageedit.scroll = ((float) pageedit.select * pageedit.wh40 * 2 - pageedit.wh40 * 2) / Page.HEIGHT;
 				Page.WIDTH = -1;
 			}

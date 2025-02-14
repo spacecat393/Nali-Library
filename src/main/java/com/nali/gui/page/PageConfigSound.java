@@ -13,12 +13,6 @@ public class PageConfigSound extends PageEdit
 	{
 		super.init();
 
-		String bgm_id = "BGM_ID " + NaliConfig.BGM_ID;
-		if (bgm_id.length() > 20)
-		{
-			bgm_id = bgm_id.substring(0, 20) + "...";
-		}
-
 		this.boxtextall_array = new BoxTextAll[]
 		{
 			new BoxTextAll("SOUND-CONFIG".toCharArray()),
@@ -28,21 +22,21 @@ public class PageConfigSound extends PageEdit
 			new BoxTextAll(((NaliConfig.STATE & 8) == 8 ? "USE_FFMPEG YES" : "USE_FFMPEG NO").toCharArray()),
 
 			new BoxTextAll("AL_GAIN".toCharArray()),
-			new BoxTextAll(("AL_GAIN_ALL " + NaliConfig.FLOAT_ARRAY[0]).toCharArray()),
-			new BoxTextAll(("AL_GAIN_BGM " + NaliConfig.FLOAT_ARRAY[1]).toCharArray()),
-			new BoxTextAll(("AL_GAIN_ENTITY " + NaliConfig.FLOAT_ARRAY[2]).toCharArray()),
-			new BoxTextAll(("AL_GAIN_BLOCK " + NaliConfig.FLOAT_ARRAY[3]).toCharArray()),
-			new BoxTextAll(("AL_GAIN_EFFECT " + NaliConfig.FLOAT_ARRAY[4]).toCharArray()),
+			new BoxTextAll(this.getChar("AL_GAIN_ALL " + NaliConfig.FLOAT_ARRAY[0])),
+			new BoxTextAll(this.getChar("AL_GAIN_BGM " + NaliConfig.FLOAT_ARRAY[1])),
+			new BoxTextAll(this.getChar("AL_GAIN_ENTITY " + NaliConfig.FLOAT_ARRAY[2])),
+			new BoxTextAll(this.getChar("AL_GAIN_BLOCK " + NaliConfig.FLOAT_ARRAY[3])),
+			new BoxTextAll(this.getChar("AL_GAIN_EFFECT " + NaliConfig.FLOAT_ARRAY[4])),
 
 			new BoxTextAll("AL_PITCH".toCharArray()),
-			new BoxTextAll(("AL_PITCH_ALL " + NaliConfig.FLOAT_ARRAY[5]).toCharArray()),
-			new BoxTextAll(("AL_PITCH_BGM " + NaliConfig.FLOAT_ARRAY[6]).toCharArray()),
-			new BoxTextAll(("AL_PITCH_ENTITY " + NaliConfig.FLOAT_ARRAY[7]).toCharArray()),
-			new BoxTextAll(("AL_PITCH_BLOCK " + NaliConfig.FLOAT_ARRAY[8]).toCharArray()),
-			new BoxTextAll(("AL_PITCH_EFFECT " + NaliConfig.FLOAT_ARRAY[9]).toCharArray()),
+			new BoxTextAll(this.getChar("AL_PITCH_ALL " + NaliConfig.FLOAT_ARRAY[5])),
+			new BoxTextAll(this.getChar("AL_PITCH_BGM " + NaliConfig.FLOAT_ARRAY[6])),
+			new BoxTextAll(this.getChar("AL_PITCH_ENTITY " + NaliConfig.FLOAT_ARRAY[7])),
+			new BoxTextAll(this.getChar("AL_PITCH_BLOCK " + NaliConfig.FLOAT_ARRAY[8])),
+			new BoxTextAll(this.getChar("AL_PITCH_EFFECT " + NaliConfig.FLOAT_ARRAY[9])),
 
 			new BoxTextAll("EXTRA".toCharArray()),
-			new BoxTextAll(bgm_id.toCharArray()),
+			new BoxTextAll(this.getChar("BGM_ID " + NaliConfig.BGM_ID)),
 
 			new BoxTextAll("ACTION".toCharArray()),
 			new BoxTextAll("BACK".toCharArray())
@@ -55,10 +49,10 @@ public class PageConfigSound extends PageEdit
 		this.group_byte_array[15 / 8] |= 1 << 15 % 8;
 		this.group_byte_array[17 / 8] |= 1 << 17 % 8;
 
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
 			this.select = 2;
-			this.state |= 4;
+			this.fl |= BF_SET_SELECT;
 		}
 	}
 
@@ -78,7 +72,7 @@ public class PageConfigSound extends PageEdit
 				index = (byte)(this.select - 5);
 			}
 
-			if ((this.state & 1) == 1)
+			if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 			{
 				try
 				{
@@ -94,7 +88,7 @@ public class PageConfigSound extends PageEdit
 				this.input_stringbuilder.append(NaliConfig.FLOAT_ARRAY[index]);
 				this.select_box = this.input_stringbuilder.length();
 			}
-			this.state ^= 1;
+			this.fl ^= BF_ENTER_MODE;
 			this.scroll = 0;
 		}
 		else
@@ -113,7 +107,7 @@ public class PageConfigSound extends PageEdit
 				}
 				case 17:
 				{
-					if ((this.state & 1) == 1)
+					if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 					{
 						NaliConfig.BGM_ID = this.input_stringbuilder.toString();
 					}
@@ -123,7 +117,7 @@ public class PageConfigSound extends PageEdit
 						this.input_stringbuilder.append(NaliConfig.BGM_ID);
 						this.select_box = this.input_stringbuilder.length();
 					}
-					this.state ^= 1;
+					this.fl ^= BF_ENTER_MODE;
 					this.scroll = 0;
 					break;
 				}

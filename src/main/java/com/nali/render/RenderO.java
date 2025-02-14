@@ -354,7 +354,7 @@ public class RenderO
 	public void setTextureUniform()
 	{
 	//		OpenGlHelper.setActiveTexture(GL13.GL_TEXTURE0);
-	//		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.flag & 1+2));
+	//		setTextureBuffer(this.getTextureBuffer(rg), (byte)(rg.fl & 1+2));
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getTextureBuffer());
 	}
 
@@ -375,12 +375,12 @@ public class RenderO
 
 //	public boolean getGlow(MemoG rg)
 //	{
-//		return (rg.flag & 16) == 16;
+//		return (rg.fl & 16) == 16;
 //	}
 //
 //	public boolean getTransparent(MemoG rg)
 //	{
-//		return (rg.flag & 8) == 8;
+//		return (rg.fl & 8) == 8;
 //	}
 
 //	public void draw(BD bd)

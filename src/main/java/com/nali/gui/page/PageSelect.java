@@ -16,7 +16,10 @@ import org.lwjgl.opengl.GL20;
 @SideOnly(Side.CLIENT)
 public abstract class PageSelect/*<N extends Number>*/ extends Page
 {
-	public byte state;//enter_mode loop set_select
+	public final static byte BF_ENTER_MODE = 1;
+	public final static byte BF_EXIT_LOOP = 2;
+	public final static byte BF_SET_SELECT = 4;
+	public byte fl;//enter_mode loop set_select
 	public float scroll;
 
 	public BoxColor boxcolor = new BoxColor();
@@ -266,7 +269,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 	@Override
 	public void exit()
 	{
-		this.state |= 2;
+		this.fl |= BF_EXIT_LOOP;
 	}
 
 //	public abstract N createN(int i);

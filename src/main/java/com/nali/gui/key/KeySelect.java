@@ -25,7 +25,7 @@ public class KeySelect extends Key
 				if (this.key == Keyboard.KEY_RETURN)
 				{
 					pageselect.enter();
-					if ((pageselect.state & 1) == 0)
+					if ((pageselect.fl & PageSelect.BF_ENTER_MODE) == 0)
 					{
 						pageselect.scroll = ((float) pageselect.select * pageselect.wh40 * 2 - pageselect.wh40 * 2) / Page.HEIGHT;
 					}

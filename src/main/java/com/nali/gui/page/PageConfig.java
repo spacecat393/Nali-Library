@@ -40,10 +40,10 @@ public class PageConfig extends PageSelect
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
 
-		if ((this.state & 4) == 0)
+		if ((this.fl & BF_SET_SELECT) == 0)
 		{
 			this.select = 2;
-			this.state |= 4;
+			this.fl |= BF_SET_SELECT;
 		}
 	}
 

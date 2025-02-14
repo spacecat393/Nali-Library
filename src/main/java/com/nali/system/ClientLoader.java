@@ -173,7 +173,7 @@ public class ClientLoader extends BothLoader
 			Page.PAGE = new PageConfig();
 			Page.PAGE.init();
 			Key.KEY = new KeySelect();
-			while ((((PageSelect)Page.PAGE).state & 2) == 0)
+			while ((((PageSelect)Page.PAGE).fl & PageSelect.BF_EXIT_LOOP) == 0)
 			{
 				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 				Page.PAGE.render();

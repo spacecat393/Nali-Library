@@ -37,7 +37,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 	@Override
 	public void genBoxColor()
 	{
-		if ((this.state & 1) == 1)
+		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 		{
 			this.boxcolor.x0 = 0;
 			this.boxcolor.y0 = 0;
@@ -59,7 +59,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 	@Override
 	public void drawBoxColor()
 	{
-		if ((this.state & 1) == 1)
+		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 		{
 			float nl_ss = this.wh20 + this.wh10;
 			float nl_x = this.wh20, nl_y = 0;
@@ -92,7 +92,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 	@Override
 	public void drawBoxTextAll()
 	{
-		if ((this.state & 1) == 1)
+		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 		{
 			this.boxtextallmax.draw(this.rs0, this.v_float_array, this.c_float_array);
 		}

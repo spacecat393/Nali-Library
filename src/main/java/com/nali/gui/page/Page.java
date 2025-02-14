@@ -79,4 +79,13 @@ public abstract class Page
 			page.exit();
 		}
 	}
+
+	public char[] getChar(String string)
+	{
+		if (string.length() > 20)
+		{
+			string = string.substring(0, 20) + "...";
+		}
+		return string.toCharArray();
+	}
 }

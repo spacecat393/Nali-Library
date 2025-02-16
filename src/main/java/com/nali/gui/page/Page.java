@@ -69,6 +69,22 @@ public abstract class Page
 		Key.KEY = key;
 	}
 
+	public void back()
+	{
+		if (PAGE_LIST.isEmpty())
+		{
+			this.exit();
+		}
+		else
+		{
+//			int index = PAGE_LIST.size() - 1;
+			byte index = (byte)(PAGE_LIST.size() - 1);
+			this.set(PAGE_LIST.get(index), KEY_LIST.get(index));
+			PAGE_LIST.remove(index);
+			KEY_LIST.remove(index);
+		}
+	}
+
 	public abstract void exit();
 
 	public static void exitAll()

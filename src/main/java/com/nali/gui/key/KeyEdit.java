@@ -53,7 +53,7 @@ public class KeyEdit extends KeySelect
 				this.setScrollEdit(pageedit);
 				Page.WIDTH = -1;
 			}
-			else if (key == Keyboard.KEY_BACK)
+			else if (this.key == Keyboard.KEY_BACK)
 			{
 				if (pageedit.select_box > 0)
 				{
@@ -66,7 +66,7 @@ public class KeyEdit extends KeySelect
 				this.setScrollEdit(pageedit);
 				Page.WIDTH = -1;
 			}
-			else if (key == Keyboard.KEY_LEFT)
+			else if (this.key == Keyboard.KEY_LEFT)
 			{
 				if (pageedit.select_box > 0)
 				{
@@ -75,7 +75,7 @@ public class KeyEdit extends KeySelect
 
 				this.setScrollEdit(pageedit);
 			}
-			else if (key == Keyboard.KEY_RIGHT)
+			else if (this.key == Keyboard.KEY_RIGHT)
 			{
 				if (pageedit.select_box < pageedit.input_stringbuilder.length())
 				{
@@ -84,7 +84,7 @@ public class KeyEdit extends KeySelect
 
 				this.setScrollEdit(pageedit);
 			}
-			else if (key == Keyboard.KEY_ESCAPE)
+			else if (this.key == Keyboard.KEY_ESCAPE)
 			{
 				pageedit.fl ^= PageSelect.BF_ENTER_MODE;
 				pageedit.scroll = ((float) pageedit.select * pageedit.wh40 * 2 - pageedit.wh40 * 2) / Page.HEIGHT;
@@ -109,6 +109,8 @@ public class KeyEdit extends KeySelect
 				}
 				this.setScrollEdit(pageedit);
 			}
+
+			this.enterReturn(pageedit);
 		}
 		else
 		{

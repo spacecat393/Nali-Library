@@ -13,6 +13,8 @@ public class NaliConfig
 	public final static boolean VAO = false;
 	public final static String ATTRIBUTE = "attribute";
 
+	public final static boolean NEED_EXTRA = true;
+
 	//0 STATE
 	//1-4 AL_GAIN
 	//5-8 AL_PITCH

@@ -6,7 +6,6 @@ import com.nali.system.BothLoader;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
@@ -41,11 +40,9 @@ public class RenderS
 //	public short[] time_short_array;
 	public short[] key_short_array;
 
-	public float[]
+	public float[] skinning_float_array;
 //		frame_float_array,
-
-		skinning_float_array,
-		current_mat4 = new float[32];
+//		current_mat4 = new float[32];
 //		timeline_float_array,
 //		future_timeline_float_array,
 
@@ -67,12 +64,12 @@ public class RenderS
 //		this.setFrame();
 	}
 
-	public static void setFloatBuffer(float[] float_array)
-	{
-		BONE_FLOATBUFFER.clear();
-		BONE_FLOATBUFFER.put(float_array);
-		BONE_FLOATBUFFER.flip();
-	}
+//	public static void setFloatBuffer(float[] float_array)
+//	{
+//		BONE_FLOATBUFFER.clear();
+//		BONE_FLOATBUFFER.put(float_array);
+//		BONE_FLOATBUFFER.flip();
+//	}
 
 //	public void setFrame()
 //	{
@@ -83,20 +80,23 @@ public class RenderS
 //	public void setUniform(MemoG rg, MemoS rs, int index)
 	public void setUniform()
 	{
-		setFloatBuffer(this.skinning_float_array);
-		OpenGlHelper.glUniformMatrix4(rs.uniformlocation_int_array[6], false, BONE_FLOATBUFFER);
+//		setFloatBuffer(this.skinning_float_array);
+		BONE_FLOATBUFFER.clear();
+		BONE_FLOATBUFFER.put(this.skinning_float_array);
+		BONE_FLOATBUFFER.flip();
+		OpenGlHelper.glUniformMatrix4(this.rs.uniformlocation_int_array[6], false, BONE_FLOATBUFFER);
 //		super.setUniform(rg, rs, index);
 		super.setUniform();
 	}
 
-//	@Override
-//	public byte getExtraBit(MemoG rg)
+////	@Override
+////	public byte getExtraBit(MemoG rg)
+////	{
+////		return 2;//skinning
+////	}
+//
+//	public void apply3DSkinningVec4(float[] vec4)
 //	{
-//		return 2;//skinning
+//		GL11.glTranslatef(vec4[0] / vec4[3], vec4[1] / vec4[3], vec4[2] / vec4[3]);
 //	}
-
-	public void apply3DSkinningVec4(float[] vec4)
-	{
-		GL11.glTranslatef(vec4[0] / vec4[3], vec4[1] / vec4[3], vec4[2] / vec4[3]);
-	}
 }

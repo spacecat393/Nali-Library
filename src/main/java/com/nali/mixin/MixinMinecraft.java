@@ -9,6 +9,7 @@ import com.nali.render.RenderO;
 import com.nali.sound.Sound;
 import com.nali.system.ClientLoader;
 import com.nali.system.Reflect;
+import com.nali.system.Time;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -54,7 +55,7 @@ public abstract class MixinMinecraft
 	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
 	private void nali_runGameLoop(CallbackInfo callbackinfo)
 	{
-//		Timing.count();
+		Time.update();
 
 		EntityPlayerSP entityplayersp = Minecraft.getMinecraft().player;
 		if ((NaliConfig.STATE & 8) == 8 && entityplayersp != null)

@@ -114,10 +114,10 @@ public class PageLoad extends Page
 	@Override
 	public void clear()
 	{
-		OpenGlHelper.glDeleteBuffers(this.config_date_boxtext09.array_buffer);
+		this.config_date_boxtext09.clear();
 		for (BoxTextAZ boxtextaz : this.boxtextaz_array)
 		{
-			OpenGlHelper.glDeleteBuffers(boxtextaz.array_buffer);
+			boxtextaz.clear();
 		}
 	}
 

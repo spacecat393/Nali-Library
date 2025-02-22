@@ -29,10 +29,7 @@ public class BoxText09 extends BoxVT
 
 	public void gen(int x, int y, int size, int space, int width, int height)
 	{
-		if (this.array_buffer != -1)
-		{
-			OpenGlHelper.glDeleteBuffers(this.array_buffer);
-		}
+		this.clear();
 
 		int length = this.char_array.length;
 		float[] float_array = new float[length * 24];
@@ -93,5 +90,14 @@ public class BoxText09 extends BoxVT
 		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[1], RenderO.FLOATBUFFER);
 
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.char_array.length * 6);
+	}
+
+	public void clear()
+	{
+		if (this.array_buffer != -1)
+		{
+			OpenGlHelper.glDeleteBuffers(this.array_buffer);
+			this.array_buffer = -1;
+		}
 	}
 }

@@ -16,11 +16,7 @@ public class BoxColor extends BoxV
 
 	public void gen(/*int sx, int sy, int ex, int ey, int width, int height*/)
 	{
-		if (this.array_buffer != -1)
-		{
-			OpenGlHelper.glDeleteBuffers(this.array_buffer);
-		}
-
+		this.clear();
 //		this.x0 = sx;
 //		this.y0 = sy;
 //		this.x1 = ex;
@@ -46,5 +42,14 @@ public class BoxColor extends BoxV
 		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[1], RenderO.FLOATBUFFER);
 
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+	}
+
+	public void clear()
+	{
+		if (this.array_buffer != -1)
+		{
+			OpenGlHelper.glDeleteBuffers(this.array_buffer);
+			this.array_buffer = -1;
+		}
 	}
 }

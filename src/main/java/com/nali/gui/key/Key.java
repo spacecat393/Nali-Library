@@ -32,7 +32,7 @@ public class Key
 		}
 		else if (this.key == Keyboard.KEY_ESCAPE)
 		{
-			Page.PAGE.exit();
+//			Page.PAGE.exit();
 			Page.exitAll();
 		}
 	}

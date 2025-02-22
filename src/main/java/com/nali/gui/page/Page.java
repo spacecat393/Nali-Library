@@ -1,5 +1,6 @@
 package com.nali.gui.page;
 
+import com.nali.Nali;
 import com.nali.gui.key.Key;
 import com.nali.render.RenderO;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -19,8 +20,8 @@ public abstract class Page
 	public static int WIDTH, HEIGHT;
 	public static int QUAD2D_ARRAY_BUFFER;
 
-	public static List<Page> PAGE_LIST = new ArrayList();
-	public static List<Key> KEY_LIST = new ArrayList();
+	public static List<Page> TEMP_PAGE_LIST = new ArrayList();
+	public static List<Key> TEMP_KEY_LIST = new ArrayList();
 
 	public float[] v_float_array = new float[]{0.0F, 0.0F};
 	public float[] c_float_array = new float[]{1.0F, 1.0F, 1.0F, 1.0F};
@@ -62,26 +63,42 @@ public abstract class Page
 
 	public void set(Page page, Key key)
 	{
-		this.clear();
+		TEMP_PAGE_LIST.add(this);
+		TEMP_KEY_LIST.add(Key.KEY);
+
 		PAGE = page;
+		Key.KEY = key;
+
+		this.clear();
 		PAGE.init();
 		WIDTH = -1;
-		Key.KEY = key;
 	}
 
 	public void back()
 	{
-		if (PAGE_LIST.isEmpty())
+//		Nali.warn("TEMP_PAGE_LIST " + TEMP_PAGE_LIST);
+//		Nali.warn("TEMP_KEY_LIST " + TEMP_KEY_LIST);
+
+		if (TEMP_PAGE_LIST.isEmpty())
 		{
 			this.exit();
 		}
 		else
 		{
-//			int index = PAGE_LIST.size() - 1;
-			byte index = (byte)(PAGE_LIST.size() - 1);
-			this.set(PAGE_LIST.get(index), KEY_LIST.get(index));
-			PAGE_LIST.remove(index);
-			KEY_LIST.remove(index);
+			this.clear();
+			int index = TEMP_PAGE_LIST.size() - 1;
+//			this.set(TEMP_PAGE_LIST.get(index), TEMP_KEY_LIST.get(index));
+//			TEMP_PAGE_LIST.remove(index);
+//			TEMP_KEY_LIST.remove(index);
+
+			PAGE = TEMP_PAGE_LIST.get(index);
+			Key.KEY = TEMP_KEY_LIST.get(index);
+
+			TEMP_PAGE_LIST.remove(index);
+			TEMP_KEY_LIST.remove(index);
+
+			PAGE.init();
+			WIDTH = -1;
 		}
 	}
 
@@ -89,9 +106,10 @@ public abstract class Page
 
 	public static void exitAll()
 	{
-		for (int i = PAGE_LIST.size() - 1; i > -1; --i)
+//		for (int i = TEMP_PAGE_LIST.size() - 1; i > -1; --i)
+		for (int i = TEMP_PAGE_LIST.size() - 1; i > 0 || (i == 0 && TEMP_PAGE_LIST.size() == 1); --i)
 		{
-			Page page = PAGE_LIST.get(i);
+			Page page = TEMP_PAGE_LIST.get(i);
 			page.exit();
 		}
 	}

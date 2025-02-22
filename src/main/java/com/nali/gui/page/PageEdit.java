@@ -1,7 +1,6 @@
 package com.nali.gui.page;
 
 import com.nali.gui.box.text.BoxTextAllMax;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -106,6 +105,6 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 	public void clear()
 	{
 		super.clear();
-		OpenGlHelper.glDeleteBuffers(this.boxtextallmax.array_buffer);
+		this.boxtextallmax.clear();
 	}
 }

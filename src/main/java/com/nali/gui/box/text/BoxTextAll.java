@@ -25,10 +25,7 @@ public class BoxTextAll extends BoxVT
 
 	public void gen(float x, float y, float size, float space, float width, float height)
 	{
-		if (this.array_buffer != -1)
-		{
-			OpenGlHelper.glDeleteBuffers(this.array_buffer);
-		}
+		this.clear();
 
 		this.length = this.char_array.length;
 		float[] float_array = new float[this.length * 24];
@@ -204,4 +201,13 @@ public class BoxTextAll extends BoxVT
 //		GL20.glDisableVertexAttribArray(v);
 //		//set
 //	}
+
+	public void clear()
+	{
+		if (this.array_buffer != -1)
+		{
+			OpenGlHelper.glDeleteBuffers(this.array_buffer);
+			this.array_buffer = -1;
+		}
+	}
 }

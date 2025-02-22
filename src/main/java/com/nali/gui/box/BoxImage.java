@@ -16,10 +16,7 @@ public class BoxImage extends BoxVT
 
 	public void gen(/*int v_sx, int v_sy, int v_ex, int v_ey, int v_width, int v_height, int t_sx, int t_sy, int t_ex, int t_ey, int t_width, int t_height*/)
 	{
-		if (this.array_buffer != -1)
-		{
-			OpenGlHelper.glDeleteBuffers(this.array_buffer);
-		}
+		this.clear();
 
 		this.array_buffer = MemoA.genBuffer(MemoA.createFloatByteBuffer(this.createQuad()));
 	}
@@ -44,5 +41,14 @@ public class BoxImage extends BoxVT
 		OpenGlHelper.glUniform4(rs.uniformlocation_int_array[1], RenderO.FLOATBUFFER);
 
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+	}
+
+	public void clear()
+	{
+		if (this.array_buffer != -1)
+		{
+			OpenGlHelper.glDeleteBuffers(this.array_buffer);
+			this.array_buffer = -1;
+		}
 	}
 }

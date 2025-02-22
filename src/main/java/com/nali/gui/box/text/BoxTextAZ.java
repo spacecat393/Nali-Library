@@ -29,10 +29,7 @@ public class BoxTextAZ extends BoxVT
 
 	public void gen(int x, int y, int size, int space, int width, int height)
 	{
-		if (this.array_buffer != -1)
-		{
-			OpenGlHelper.glDeleteBuffers(this.array_buffer);
-		}
+		this.clear();
 
 		int length = this.char_array.length;
 		float[] float_array = new float[length * 24];
@@ -102,4 +99,13 @@ public class BoxTextAZ extends BoxVT
 //		GL20.glDisableVertexAttribArray(v);
 //		//set
 //	}
+
+	public void clear()
+	{
+		if (this.array_buffer != -1)
+		{
+			OpenGlHelper.glDeleteBuffers(this.array_buffer);
+			this.array_buffer = -1;
+		}
+	}
 }

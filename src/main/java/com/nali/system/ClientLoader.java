@@ -170,9 +170,10 @@ public class ClientLoader extends BothLoader
 		}
 		catch (Exception e)
 		{
-			Page.PAGE = new PageConfig();
+			PageSelect ps = new PageConfig();
+			Page.PAGE = ps;
 			Page.PAGE.init();
-			Key.KEY = new KeySelect();
+			Key.KEY = new KeySelect(ps);
 			while ((((PageSelect)Page.PAGE).fl & PageSelect.BF_EXIT_LOOP) == 0)
 			{
 				GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
@@ -182,8 +183,8 @@ public class ClientLoader extends BothLoader
 			}
 			Page.PAGE.clear();
 
-			Page.PAGE_LIST.clear();
-			Page.KEY_LIST.clear();
+			Page.TEMP_PAGE_LIST.clear();
+			Page.TEMP_KEY_LIST.clear();
 			Page.PAGE = null;
 			Key.KEY = null;
 

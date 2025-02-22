@@ -185,9 +185,9 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 	{
 		for (BoxTextAll boxtextall : this.boxtextall_array)
 		{
-			OpenGlHelper.glDeleteBuffers(boxtextall.array_buffer);
+			boxtextall.clear();
 		}
-		OpenGlHelper.glDeleteBuffers(this.boxcolor.array_buffer);
+		this.boxcolor.clear();
 	}
 
 	@Override

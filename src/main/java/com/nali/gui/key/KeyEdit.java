@@ -9,108 +9,115 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 
 @SideOnly(Side.CLIENT)
-public class KeyEdit extends KeySelect
+public class KeyEdit
+<
+	P extends PageEdit
+> extends KeySelect<P>
 {
+	public KeyEdit(P p)
+	{
+		super(p);
+	}
+
 	@Override
 	public void enter()
 	{
-		PageEdit pageedit = (PageEdit)Page.PAGE;
-		if ((pageedit.fl & PageSelect.BF_ENTER_MODE) == PageSelect.BF_ENTER_MODE)
+		if ((this.p.fl & PageSelect.BF_ENTER_MODE) == PageSelect.BF_ENTER_MODE)
 		{
 			char c = Keyboard.getEventCharacter();
 			if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_C))
 			{
-				GuiScreen.setClipboardString(pageedit.input_stringbuilder.toString());
+				GuiScreen.setClipboardString(this.p.input_stringbuilder.toString());
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_V))
 			{
 				String string = GuiScreen.getClipboardString();
-				pageedit.input_stringbuilder.insert(pageedit.select_box, string);
-				pageedit.select_box += string.length();
+				this.p.input_stringbuilder.insert(this.p.select_box, string);
+				this.p.select_box += string.length();
 
-				pageedit.clear();
-				pageedit.init();
-				this.setScrollEdit(pageedit);
+				this.p.clear();
+				this.p.init();
+				this.setScrollEdit(this.p);
 				Page.WIDTH = -1;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_X))
 			{
-				pageedit.input_stringbuilder.setLength(0);
-				pageedit.select_box = 0;
+				this.p.input_stringbuilder.setLength(0);
+				this.p.select_box = 0;
 
-				pageedit.clear();
-				pageedit.init();
-				this.setScrollEdit(pageedit);
+				this.p.clear();
+				this.p.init();
+				this.setScrollEdit(this.p);
 				Page.WIDTH = -1;
 			}
 			else if (Character.isLetterOrDigit(c) || c == '.' || c == '-' || c == '_'/* || Character.isSpaceChar(c)*/)
 			{
-				pageedit.input_stringbuilder.insert(pageedit.select_box, c);
-				++pageedit.select_box;
+				this.p.input_stringbuilder.insert(this.p.select_box, c);
+				++this.p.select_box;
 
-				pageedit.clear();
-				pageedit.init();
-				this.setScrollEdit(pageedit);
+				this.p.clear();
+				this.p.init();
+				this.setScrollEdit(this.p);
 				Page.WIDTH = -1;
 			}
 			else if (this.key == Keyboard.KEY_BACK)
 			{
-				if (pageedit.select_box > 0)
+				if (this.p.select_box > 0)
 				{
-					pageedit.input_stringbuilder.deleteCharAt(pageedit.select_box - 1);
-					--pageedit.select_box;
+					this.p.input_stringbuilder.deleteCharAt(this.p.select_box - 1);
+					--this.p.select_box;
 				}
 
-				pageedit.clear();
-				pageedit.init();
-				this.setScrollEdit(pageedit);
+				this.p.clear();
+				this.p.init();
+				this.setScrollEdit(this.p);
 				Page.WIDTH = -1;
 			}
 			else if (this.key == Keyboard.KEY_LEFT)
 			{
-				if (pageedit.select_box > 0)
+				if (this.p.select_box > 0)
 				{
-					--pageedit.select_box;
+					--this.p.select_box;
 				}
 
-				this.setScrollEdit(pageedit);
+				this.setScrollEdit(this.p);
 			}
 			else if (this.key == Keyboard.KEY_RIGHT)
 			{
-				if (pageedit.select_box < pageedit.input_stringbuilder.length())
+				if (this.p.select_box < this.p.input_stringbuilder.length())
 				{
-					++pageedit.select_box;
+					++this.p.select_box;
 				}
 
-				this.setScrollEdit(pageedit);
+				this.setScrollEdit(this.p);
 			}
 			else if (this.key == Keyboard.KEY_ESCAPE)
 			{
-				pageedit.fl ^= PageSelect.BF_ENTER_MODE;
-				pageedit.scroll = ((float) pageedit.select * pageedit.wh40 * 2 - pageedit.wh40 * 2) / Page.HEIGHT;
+				this.p.fl ^= PageSelect.BF_ENTER_MODE;
+				this.p.scroll = ((float) this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Page.HEIGHT;
 				Page.WIDTH = -1;
 			}
 			else if (this.key == Keyboard.KEY_UP)
 			{
-				pageedit.select_box -= 15;
-				if (pageedit.select_box < 0)
+				this.p.select_box -= 15;
+				if (this.p.select_box < 0)
 				{
-					pageedit.select_box = 0;
+					this.p.select_box = 0;
 				}
-				this.setScrollEdit(pageedit);
+				this.setScrollEdit(this.p);
 			}
 			else if (this.key == Keyboard.KEY_DOWN)
 			{
-				pageedit.select_box += 15;
-				int length = pageedit.input_stringbuilder.length();
-				if (pageedit.select_box > length)
+				this.p.select_box += 15;
+				int length = this.p.input_stringbuilder.length();
+				if (this.p.select_box > length)
 				{
-					pageedit.select_box = length;
+					this.p.select_box = length;
 				}
-				this.setScrollEdit(pageedit);
+				this.setScrollEdit(this.p);
 			}
 
-			this.enterReturn(pageedit);
+			this.enterReturn(this.p);
 		}
 		else
 		{

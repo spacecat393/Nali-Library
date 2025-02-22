@@ -3,7 +3,6 @@ package com.nali.gui.page;
 import com.nali.Nali;
 import com.nali.NaliConfig;
 import com.nali.gui.box.text.BoxTextAll;
-import com.nali.gui.key.Key;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import net.minecraftforge.fml.relauncher.Side;
@@ -65,22 +64,21 @@ public class PageConfig extends PageSelect
 	public void enter()
 	{
 //		Nali.warn("S " + this.select);
+		PageSelect ps;
+		PageEdit pe;
 		switch (this.select)
 		{
 			case 2:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageCheck(), new KeySelect());
+				ps = new PageCheck();
+				this.set(ps, new KeySelect(ps));
 				break;
 			case 3:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageConfigSound(), new KeyEdit());
+				pe = new PageConfigSound();
+				this.set(pe, new KeyEdit(pe));
 				break;
 			case 4:
-				PAGE_LIST.add(this);
-				KEY_LIST.add(Key.KEY);
-				this.set(new PageConfigOpenGL(), new KeySelect());
+				ps = new PageConfigOpenGL();
+				this.set(ps, new KeySelect(ps));
 				break;
 			case 6:
 				NaliConfig.STATE ^= 32;

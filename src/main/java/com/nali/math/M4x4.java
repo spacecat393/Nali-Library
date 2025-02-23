@@ -547,14 +547,14 @@ public class M4x4
 //		return m4x4;
 //	}
 
-//	public static void lerp(float[] s_o_mat4, float[] e_mat4, int s_index, int e_index, float blend_factor)
-//	{
-//		for (int i = 0; i < 16; i++)
-//		{
-//			float s = s_o_mat4[i + s_index];
-//			s_o_mat4[i + s_index] = s + (e_mat4[i + e_index] - s) * blend_factor;
-//		}
-//	}
+	public static void lerp(float[] w_mat4, float[] r_mat4, int w_index, int r_index, float f)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			float w = w_mat4[i + w_index];
+			w_mat4[i + w_index] = w + (r_mat4[i + r_index] - w) * f;
+		}
+	}
 
 	public static float[] mV4M4x4(float[] v4_float_array, float[] m4x4_float_array, int m4x4_index)
 	{

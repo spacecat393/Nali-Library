@@ -8,6 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 
 //back to simple
 //server will handle how frame_byte_array work
@@ -22,6 +23,12 @@ public class RenderS
 
 	//use on cpu
 	public float scale;
+//	public short[]
+//		a_key_short_array,
+//		b_key_short_array;
+	public byte[] action_byte_array;
+	public float[] line_float_array;
+	public short[] mix_key_short_array;
 
 	//key(byte) time(short)
 	//time shouldn't warp
@@ -38,7 +45,7 @@ public class RenderS
 //		time_short_array,
 //		future_time_short_array;
 //	public short[] time_short_array;
-	public short[] key_short_array;
+//	public short[] key_short_array;
 
 	public float[] skinning_float_array;
 //		frame_float_array,
@@ -55,7 +62,13 @@ public class RenderS
 //		this.key_index_byte_array = new byte[mix_max_frame];
 //		this.frame_float_array = new float[mix_max_frame];
 //		this.time_short_array = new short[mix_max_frame];
-		this.key_short_array = new short[max_frame];
+//		this.key_short_array = new short[max_frame];
+//		this.a_key_short_array = new short[max_frame];
+//		this.b_key_short_array = new short[max_frame];
+		this.action_byte_array = new byte[max_frame * 3];
+		Arrays.fill(this.action_byte_array, (byte)-1);
+		this.line_float_array = new float[max_frame * 3];
+		this.mix_key_short_array = new short[max_frame * 2];
 
 //		this.frame_byte_array = new byte[(int)Math.ceil(max_frame / 8.0D)];
 

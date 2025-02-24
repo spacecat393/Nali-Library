@@ -5,6 +5,7 @@ import com.nali.da.IBothDaS;
 import com.nali.math.M4x4;
 import com.nali.math.V4;
 import com.nali.system.BothLoader;
+import com.nali.system.Time;
 import com.nali.system.file.FileDataReader;
 
 import java.io.IOException;
@@ -242,83 +243,84 @@ public class MemoF2
 					short l3_1 = (short)(l3 + 1);
 					short l3_2 = (short)(l3 + 2);
 
-					//!frame
-//					Nali.warn("C line_float_array[l] "  + line_float_array[l3]);
-					key = (short)(key_short_array[l2] + line_float_array[l3]);
-					M4x4.m(bf2.transforms_float_array, skinning_float_array, (key + max_key * i) * 16, i * 16);
+//					//!frame
+//					key = (short)(key_short_array[l2] + line_float_array[l3]);
+//					M4x4.m(bf2.transforms_float_array, skinning_float_array, (key + max_key * i) * 16, i * 16);
 
-//					key = key_short_array[l2];
-//
-//					byte action = action_byte_array[l3];
-//					float line;
-//					if (action != action_byte_array[l3_1])
+					key = key_short_array[l2];
+
+					byte action = action_byte_array[l3];
+					float line;
+					if (action != action_byte_array[l3_1])
+					{
+						action_byte_array[l3_1] = action;
+						line_float_array[l3_1] = 0;
+						line = 0;
+					}
+					else
+					{
+						line = line_float_array[l3_1];
+					}
+
+					short b_key;
+					if (line > 0)
+					{
+						b_key = (short)(key + Math.ceil(line));
+					}
+					else
+					{
+						b_key = (short)(key + Math.floor(line));
+					}
+
+					short a_key;
+
+					short end = key_short_array[l2_1];
+//					byte state = state_byte_array[l];
+					float[] new_transforms_float_array = new float[16];
+//					if ((state & 1) == 1 && line_float_array[l3_1] > line_float_array[l3] && b_key == end)
+					if
+					(
+						(
+							action_byte_array[l3_2] == 1 && line_float_array[l3_1] > line_float_array[l3] ||
+							action_byte_array[l3_2] == 0 && line_float_array[l3_1] < line_float_array[l3]
+						) && b_key == end
+					)
+					{
+						if (line_float_array[l3_2] == 0)
+						{
+							line_float_array[l3_2] = line_float_array[l3_1] - line_float_array[l3];
+						}
+
+						a_key = key;
+						b_key = end;
+						line = line_float_array[l3_1] / line_float_array[l3_2];
+					}
+//					else if ((state & 1) == 0 && line_float_array[l3_1] < line_float_array[l3] && b_key == end)
 //					{
-//						action_byte_array[l3_1] = action;
-//						line_float_array[l3_1] = 0;
-//						line = 0;
+//						if (line_float_array[l3_2] == 0)
+//						{
+//							line_float_array[l3_2] = line_float_array[l3_1] - line_float_array[l3];
+//						}
+//
+//						a_key = key;
+//						b_key = end;
+//						line = line_float_array[l3_1] / line_float_array[l3_2];
 //					}
-//					else
-//					{
-//						line = line_float_array[l3_1];
-//					}
-//
-//					short b_key;
-//					if (line > 0)
-//					{
-//						b_key = (short)(key + Math.ceil(line));
-//					}
-//					else
-//					{
-//						b_key = (short)(key + Math.floor(line));
-//					}
-//
-//					short a_key;
-//
-//					short end = key_short_array[l2_1];
-////					byte state = state_byte_array[l];
-//					float[] new_transforms_float_array = new float[16];
-////					if ((state & 1) == 1 && line_float_array[l3_1] > line_float_array[l3] && b_key == end)
-////					if
-////					(
-////						(
-////							action_byte_array[l3_2] == 1 && line_float_array[l3_1] > line_float_array[l3] ||
-////							action_byte_array[l3_2] == 0 && line_float_array[l3_1] < line_float_array[l3]
-////						) && b_key == end
-////					)
-////					{
-////						if (line_float_array[l3_2] == 0)
-////						{
-////							line_float_array[l3_2] = line_float_array[l3_1] - line_float_array[l3];
-////						}
-////
-////						a_key = key;
-////						b_key = end;
-////						line = line_float_array[l3_1] / line_float_array[l3_2];
-////					}
-//////					else if ((state & 1) == 0 && line_float_array[l3_1] < line_float_array[l3] && b_key == end)
-//////					{
-//////						if (line_float_array[l3_2] == 0)
-//////						{
-//////							line_float_array[l3_2] = line_float_array[l3_1] - line_float_array[l3];
-//////						}
-//////
-//////						a_key = key;
-//////						b_key = end;
-//////						line = line_float_array[l3_1] / line_float_array[l3_2];
-//////					}
-////					else
-//					{
-//						line_float_array[l3_2] = 0;
-//
-//						a_key = (short)(key + line);
-//						line -= (int)line;
-//					}
-//
-//					System.arraycopy(bf2.transforms_float_array, (a_key + max_key * i) * 16, new_transforms_float_array, 0, 16);
-//					M4x4.lerp(new_transforms_float_array, bf2.transforms_float_array, 0, b_key, line);
-//					M4x4.m(new_transforms_float_array, skinning_float_array, 0, i * 16);
-//
-//					line_float_array[l3_1] += (line_float_array[l3] - line_float_array[l3_1]) * (float)Time.LINE;
+					else
+					{
+						line_float_array[l3_2] = 0;
+
+						a_key = (short)(key + line);
+						line -= (int)line;
+					}
+
+//					Nali.warn("a_key " + a_key);
+//					Nali.warn("b_key " + b_key);
+					System.arraycopy(bf2.transforms_float_array, (a_key + max_key * i) * 16, new_transforms_float_array, 0, 16);
+					M4x4.lerp(new_transforms_float_array, bf2.transforms_float_array, 0, (b_key + max_key * i) * 16, line/* % 1*/);
+					M4x4.m(new_transforms_float_array, skinning_float_array, 0, i * 16);
+
+					line_float_array[l3_1] += (line_float_array[l3] - line_float_array[l3_1]) * (float)Time.LINE;
 				}
 //				}
 			}

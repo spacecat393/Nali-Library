@@ -166,6 +166,8 @@ public class MemoF2
 		}
 	}
 
+//	public static short debug;
+
 	public void setS(IBothDaS bd, float[] skinning_float_array, short[] key_short_array, byte[] action_byte_array, float[] line_float_array/*, byte[] state_byte_array*/)
 	{
 		int frame_id = bd.S_FrameID();
@@ -283,7 +285,7 @@ public class MemoF2
 						(
 							action_byte_array[l3_2] == 1 && line_float_array[l3_1] > line_float_array[l3] ||
 							action_byte_array[l3_2] == 0 && line_float_array[l3_1] < line_float_array[l3]
-						) && b_key == end
+						)/* && b_key == end*/
 					)
 					{
 						if (line_float_array[l3_2] == 0)
@@ -294,6 +296,9 @@ public class MemoF2
 						a_key = key;
 						b_key = end;
 						line = line_float_array[l3_1] / line_float_array[l3_2];
+//						Nali.warn("a_key " + a_key);
+//						Nali.warn("b_key " + b_key);
+//						Nali.warn("line " + line);
 					}
 //					else if ((state & 1) == 0 && line_float_array[l3_1] < line_float_array[l3] && b_key == end)
 //					{
@@ -312,10 +317,18 @@ public class MemoF2
 
 						a_key = (short)(key + line);
 						line -= (int)line;
+//						Nali.warn("a_key " + a_key);
+//						Nali.warn("b_key " + b_key);
+//						Nali.warn("line " + line);
 					}
 
-//					Nali.warn("a_key " + a_key);
-//					Nali.warn("b_key " + b_key);
+//					if (debug != a_key)
+//					{
+//						debug = a_key;
+//						Nali.warn("key " + key);
+//						Nali.warn("a_key " + a_key);
+//						Nali.warn("b_key " + b_key);
+//					}
 					System.arraycopy(bf2.transforms_float_array, (a_key + max_key * i) * 16, new_transforms_float_array, 0, 16);
 					M4x4.lerp(new_transforms_float_array, bf2.transforms_float_array, 0, (b_key + max_key * i) * 16, line/* % 1*/);
 					M4x4.m(new_transforms_float_array, skinning_float_array, 0, i * 16);

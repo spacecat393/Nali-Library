@@ -264,37 +264,29 @@ public class MemoF2
 						line = line_float_array[l3_1];
 					}
 
-					short b_key;
-					if (line > 0)
-					{
-						b_key = (short)(key + Math.ceil(line));
-					}
-					else
-					{
-						b_key = (short)(key + Math.floor(line));
-					}
-
 					short a_key;
+					short b_key;
 
-					short end = key_short_array[l2_1];
 //					byte state = state_byte_array[l];
 					float[] new_transforms_float_array = new float[16];
 //					if ((state & 1) == 1 && line_float_array[l3_1] > line_float_array[l3] && b_key == end)
 					if
 					(
-						(
-							action_byte_array[l3_2] == 1 && line_float_array[l3_1] > line_float_array[l3] ||
-							action_byte_array[l3_2] == 0 && line_float_array[l3_1] < line_float_array[l3]
-						)/* && b_key == end*/
+//						(
+						action_byte_array[l3_2] == 1 && line_float_array[l3_1] > line_float_array[l3] ||
+						action_byte_array[l3_2] == 0 && line_float_array[l3_1] < line_float_array[l3]
+//						)/* && b_key == end*/
 					)
 					{
+//						short end = key_short_array[l2_1];
 						if (line_float_array[l3_2] == 0)
 						{
 							line_float_array[l3_2] = line_float_array[l3_1] - line_float_array[l3];
 						}
 
 						a_key = key;
-						b_key = end;
+//						b_key = end;
+						b_key = key_short_array[l2_1];
 						line = line_float_array[l3_1] / line_float_array[l3_2];
 //						Nali.warn("a_key " + a_key);
 //						Nali.warn("b_key " + b_key);
@@ -316,6 +308,16 @@ public class MemoF2
 						line_float_array[l3_2] = 0;
 
 						a_key = (short)(key + line);
+
+						if (line > 0)
+						{
+							b_key = (short)(key + Math.ceil(line));
+						}
+						else
+						{
+							b_key = (short)(key + Math.floor(line));
+						}
+
 						line -= (int)line;
 //						Nali.warn("a_key " + a_key);
 //						Nali.warn("b_key " + b_key);

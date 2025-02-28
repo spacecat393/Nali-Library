@@ -1,10 +1,13 @@
 package com.nali.gui.page;
 
-import com.nali.gui.box.BoxColor;
+import com.nali.gui.box.Box;
+import com.nali.gui.box.BoxV;
+import com.nali.gui.box.BoxVT;
 import com.nali.gui.box.text.BoxTextAll;
 import com.nali.list.data.NaliData;
 import com.nali.render.RenderO;
 import com.nali.system.ClientLoader;
+import com.nali.system.opengl.memo.client.MemoA;
 import com.nali.system.opengl.memo.client.MemoS;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,14 +25,26 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 	public byte fl;//enter_mode loop set_select
 	public float scroll;
 
-	public BoxColor boxcolor = new BoxColor();
+	public float[] gc_float_array = new float[]{0.0F, 1.0F, 0.0F, 1.0F};
+
+//	public BoxColor boxcolor = new BoxColor();
 	public byte select;
 	public byte min_select = 2;
 //	public N select;
 //	public N min_select;//2
+	public float[]
+		float_array = new float[18],
+		w_float_array;
+	public char[][] char_2d_array;
+	public int
+		ca0_t_count,
+		ta_t_count,
+		array_buffer = -1;
+//		color_buffer_array = -1,
+//		text_buffer_array = -1;
 
 	public byte[] group_byte_array;
-	public BoxTextAll[] boxtextall_array;
+//	public BoxTextAll[] boxtextall_array;
 
 	public float
 		wh10,
@@ -48,60 +63,74 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 //		this.min_select = this.createN(2);
 		this.rs0 = ClientLoader.S_LIST.get(NaliData.SHADER_STEP);
 		this.rs1 = ClientLoader.S_LIST.get(NaliData.SHADER_STEP + 1);
+
+		this.float_array[BoxVT.B_FA_T_WIDTH] = 170;
+		this.float_array[BoxVT.B_FA_T_HEIGHT] = 5;
+	}
+
+	@Override
+	public void init()
+	{
+		this.ca0_t_count = this.char_2d_array[0].length * 6;
+		this.ta_t_count = 0;
+
+		for (int i = 1; i < this.char_2d_array.length; ++i)
+		{
+			this.ta_t_count += this.char_2d_array[i].length * 6;
+		}
 	}
 
 	@Override
 	public void gen()
 	{
-		this.boxtextall_array[0].gen
-		(
-			this.wh20,
-			this.wh20,
-			this.wh20, this.wh10, WIDTH, HEIGHT
-		);
+		this.float_array[BoxV.B_FA_V_WIDTH] = Box.WIDTH;
+		this.float_array[BoxV.B_FA_V_HEIGHT] = Box.HEIGHT;
+
+		this.float_array[BoxTextAll.B_FA_X] = this.wh20;
+		this.float_array[BoxTextAll.B_FA_Y] = this.wh20;
+		this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
+		this.float_array[BoxTextAll.B_FA_SPACE] = this.wh10;
+		BoxTextAll.set(this.float_array, this.w_float_array, this.char_2d_array[0], 12);
 
 //		int max_length = 0;
 		byte max_length = 0;
 //		for (int i = 1; i < this.boxtextall_array.length; ++i)
-		for (byte i = 1; i < this.boxtextall_array.length; ++i)
+		for (byte i = 1; i < this.char_2d_array.length; ++i)
 		{
 //			max_length = Math.max(max_length, this.boxtextall_array[i].char_array.length);
-			max_length = (byte)Math.max(max_length, this.boxtextall_array[i].char_array.length);
+			max_length = (byte)Math.max(max_length, this.char_2d_array[i].length);
 		}
 
-		this.x = WIDTH / 2.0F - (this.wh20 + this.wh10) * max_length / 2;
-		this.y = ((1.0F - 0.041666668F) * HEIGHT) + this.h20;
+		this.x = Box.WIDTH / 2.0F - (this.wh20 + this.wh10) * max_length / 2;
+		this.y = ((1.0F - 0.041666668F) * Box.HEIGHT) + this.h20;
 
 //		for (int i = 1; i < this.boxtextall_array.length; ++i)
-		for (byte i = 1; i < this.boxtextall_array.length; ++i)
+		for (byte i = 1; i < this.char_2d_array.length; ++i)
 		{
 //			int index = i - 1;
 			byte index = (byte)(i - 1);
 			byte bit = (byte)(1 << index % 8);
 
-			this.boxtextall_array[i].gen
-			(
-				this.x - ((this.group_byte_array[index / 8] & bit) == bit ? this.wh20 : 0),
-				this.y - this.wh40 * i,
-				this.wh20, this.wh10, WIDTH, HEIGHT
-			);
+			this.float_array[BoxTextAll.B_FA_X] = this.x - ((this.group_byte_array[index / 8] & bit) == bit ? this.wh20 : 0);
+			this.float_array[BoxTextAll.B_FA_Y] = this.y - this.wh40 * i;
+//			this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
+//			this.float_array[BoxTextAll.B_FA_SPACE] = this.wh10;
+			BoxTextAll.set(this.float_array, this.w_float_array, this.char_2d_array[0], 12 + this.char_2d_array[0].length * 24);
 		}
 
 		this.genBoxColor();
-
-		this.boxcolor.v_width = WIDTH;
-		this.boxcolor.v_height = HEIGHT;
-		this.boxcolor.gen();
+		BoxV.set(this.float_array, this.w_float_array, 0, (byte)0);
+		this.array_buffer = MemoA.genBuffer(MemoA.createFloatByteBuffer(this.w_float_array));
 	}
 
 	public void genBoxColor()
 	{
 //		float y = this.y - this.wh40 * this.select.intValue();
 		float y = this.y - this.wh40 * this.select;
-		this.boxcolor.x0 = this.wh20;
-		this.boxcolor.y0 = y;
-		this.boxcolor.x1 = this.x - this.wh10;
-		this.boxcolor.y1 = y + this.wh20;
+		this.float_array[BoxV.B_FA_X0] = this.wh20;
+		this.float_array[BoxV.B_FA_Y0] = y;
+		this.float_array[BoxV.B_FA_X1] = this.x - this.wh10;
+		this.float_array[BoxV.B_FA_Y1] = y + this.wh20;
 	}
 
 	@Override
@@ -117,7 +146,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-		this.boxtextall_array[0].draw(this.rs0, this.v_float_array, this.c_float_array);
+		Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, 4, 3, this.ca0_t_count);
 
 		//s0-shader
 		GL20.glDisableVertexAttribArray(v0);
@@ -127,7 +156,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 		GL11.glGetInteger(GL11.GL_SCISSOR_BOX, RenderO.INTBUFFER);
 
 		GL11.glEnable(GL11.GL_SCISSOR_TEST);
-		GL11.glScissor(0, (int)(this.wh20 * 3), WIDTH, (int)(HEIGHT - this.wh20 * 4));
+		GL11.glScissor(0, (int)(this.wh20 * 3), Box.WIDTH, (int)(Box.HEIGHT - this.wh20 * 4));
 
 		//s0-shader
 		OpenGlHelper.glUseProgram(this.rs1.program);
@@ -169,25 +198,25 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 
 	public void drawBoxColor()
 	{
-		this.boxcolor.draw(this.rs1, this.v_float_array, new float[]{0.0F, 1.0F, 0.0F, 1.0F});
+		Box.draw(this.rs1, this.v_float_array, this.gc_float_array, this.array_buffer, 2, 0, 6);
 	}
 
 	public void drawBoxTextAll()
 	{
-		for (byte i = 1; i < this.boxtextall_array.length; ++i)
-		{
-			this.boxtextall_array[i].draw(this.rs0, this.v_float_array, this.c_float_array);
-		}
+		Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, 4, 3 + this.ca0_t_count, this.ta_t_count);
+//		for (byte i = 1; i < this.boxtextall_array.length; ++i)
+//		{
+//			this.boxtextall_array[i].draw(this.rs0, this.v_float_array, this.c_float_array);
+//		}
 	}
 
 	@Override
 	public void clear()
 	{
-		for (BoxTextAll boxtextall : this.boxtextall_array)
+		if (this.array_buffer != -1)
 		{
-			boxtextall.clear();
+			OpenGlHelper.glDeleteBuffers(this.array_buffer);
 		}
-		this.boxcolor.clear();
 	}
 
 	@Override
@@ -203,10 +232,10 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 		this.wh20 = Math.min((0.0234192037470726F * width), this.h20);
 		this.wh40 = Math.min((0.0234192037470726F * 2 * width), (0.041666668F * 2 * height));
 
-		if (WIDTH != width || HEIGHT != height)
+		if (Box.WIDTH != width || Box.HEIGHT != height)
 		{
-			WIDTH = width;
-			HEIGHT = height;
+			Box.WIDTH = width;
+			Box.HEIGHT = height;
 			GL11.glViewport(0, 0, width, height);
 			this.gen();
 		}
@@ -224,10 +253,10 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 			if (this.select == this.min_select && step < 0)
 			{
 //				this.select = this.createN(this.boxtextall_array.length - 1);
-				this.select = (byte)(this.boxtextall_array.length - 1);
+				this.select = (byte)(this.char_2d_array.length - 1);
 			}
 //			else if (this.select.equals(this.createN(this.boxtextall_array.length - 1)) && step > 0)
-			else if (this.select == this.boxtextall_array.length - 1 && step > 0)
+			else if (this.select == this.char_2d_array.length - 1 && step > 0)
 			{
 				this.select = this.min_select;
 			}

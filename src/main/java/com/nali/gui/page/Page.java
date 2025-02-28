@@ -1,6 +1,6 @@
 package com.nali.gui.page;
 
-import com.nali.Nali;
+import com.nali.gui.box.Box;
 import com.nali.gui.key.Key;
 import com.nali.render.RenderO;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -17,7 +17,6 @@ import java.util.List;
 public abstract class Page
 {
 	public static Page PAGE;
-	public static int WIDTH, HEIGHT;
 	public static int QUAD2D_ARRAY_BUFFER;
 
 	public static List<Page> TEMP_PAGE_LIST = new ArrayList();
@@ -71,7 +70,7 @@ public abstract class Page
 
 		this.clear();
 		PAGE.init();
-		WIDTH = -1;
+		Box.WIDTH = -1;
 	}
 
 	public void back()
@@ -98,7 +97,7 @@ public abstract class Page
 			TEMP_KEY_LIST.remove(index);
 
 			PAGE.init();
-			WIDTH = -1;
+			Box.WIDTH = -1;
 		}
 	}
 

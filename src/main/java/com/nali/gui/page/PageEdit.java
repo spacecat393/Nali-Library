@@ -1,5 +1,8 @@
 package com.nali.gui.page;
 
+import com.nali.gui.box.Box;
+import com.nali.gui.box.BoxV;
+import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.box.text.BoxTextAllMax;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -8,13 +11,17 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 {
 	public StringBuilder input_stringbuilder = new StringBuilder();
-	public BoxTextAllMax boxtextallmax;
-	public int select_box;
+//	public BoxTextAllMax boxtextallmax;
+
+	public int
+		select_box,
+		ca1_t_count;
 
 	@Override
 	public void init()
 	{
-		this.boxtextallmax = new BoxTextAllMax(this.input_stringbuilder.toString().toCharArray());
+		super.init();
+//		this.boxtextallmax = new BoxTextAllMax(this.input_stringbuilder.toString().toCharArray());
 	}
 
 	@Override
@@ -25,12 +32,14 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 //		int wh20 = Math.min((int)(0.0234192037470726F * width), h20);
 //		int wh5 = Math.min((int)(0.005854801F * width), (int)(0.010416667F * height));
 		super.gen();
-		this.boxtextallmax.gen
-		(
-			this.wh20,
-			this.y - this.wh40,
-			this.wh20, this.wh10, this.wh20, WIDTH, HEIGHT
-		);
+		this.float_array[BoxTextAll.B_FA_X] = this.wh20;
+		this.float_array[BoxTextAll.B_FA_Y] = this.y - this.wh40;
+		this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
+		this.float_array[BoxTextAll.B_FA_SPACE] = this.wh10;
+		this.float_array[BoxTextAllMax.B_FA_NEW_LINE] = this.wh20;
+		char[] char_array = this.char_2d_array[this.char_2d_array.length - 1];
+		this.ca1_t_count = char_array.length * 6;
+		BoxTextAllMax.set(this.float_array, this.w_float_array, char_array, this.ca0_t_count + this.ta_t_count);
 	}
 
 	@Override
@@ -38,10 +47,10 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 	{
 		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 		{
-			this.boxcolor.x0 = 0;
-			this.boxcolor.y0 = 0;
-			this.boxcolor.x1 = this.wh10;
-			this.boxcolor.y1 = this.wh20;
+			this.float_array[BoxV.B_FA_X0] = 0;
+			this.float_array[BoxV.B_FA_Y0] = 0;
+			this.float_array[BoxV.B_FA_X1] = this.wh10;
+			this.float_array[BoxV.B_FA_Y1] = this.wh20;
 		}
 		else
 		{
@@ -65,7 +74,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 
 			for (int i = 0; i < this.select_box; ++i)
 			{
-				if (nl_x > WIDTH - nl_ss)
+				if (nl_x > Box.WIDTH - nl_ss)
 				{
 					nl_x = this.wh20;
 					nl_y -= nl_ss;
@@ -74,11 +83,11 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 			}
 
 			nl_x -= this.wh10;
-			float x = nl_x / WIDTH * 2;
-			float y = (1.0F - 0.041666668F + (this.h20 - this.wh40 + nl_y) / HEIGHT) * 2;
+			float x = nl_x / Box.WIDTH * 2;
+			float y = (1.0F - 0.041666668F + (this.h20 - this.wh40 + nl_y) / Box.HEIGHT) * 2;
 			this.v_float_array[0] += x;
 			this.v_float_array[1] += y;
-			this.boxcolor.draw(this.rs1, this.v_float_array, new float[]{0.0F, 1.0F, 0.0F, 1.0F});
+			super.drawBoxColor();
 			this.v_float_array[0] -= x;
 			this.v_float_array[1] -= y;
 		}
@@ -93,7 +102,8 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 	{
 		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 		{
-			this.boxtextallmax.draw(this.rs0, this.v_float_array, this.c_float_array);
+//			this.boxtextallmax.draw(this.rs0, this.v_float_array, this.c_float_array);
+			Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, 4, 3 + this.ca0_t_count + this.ta_t_count, this.ca1_t_count);
 		}
 		else
 		{
@@ -101,10 +111,10 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 		}
 	}
 
-	@Override
-	public void clear()
-	{
-		super.clear();
-		this.boxtextallmax.clear();
-	}
+//	@Override
+//	public void clear()
+//	{
+//		super.clear();
+//		this.boxtextallmax.clear();
+//	}
 }

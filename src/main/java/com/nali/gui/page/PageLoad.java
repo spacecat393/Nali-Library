@@ -24,8 +24,8 @@ import static com.nali.Nali.error;
 @SideOnly(Side.CLIENT)
 public class PageLoad extends Page
 {
-	public BoxText09 config_date_boxtext09;
-	public BoxTextAZ[] boxtextaz_array;
+//	public BoxText09 config_date_boxtext09;
+//	public BoxTextAZ[] boxtextaz_array;
 
 	@Override
 	public void init()

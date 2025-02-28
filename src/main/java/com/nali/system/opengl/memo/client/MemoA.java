@@ -146,19 +146,19 @@ public class MemoA
 		return bytebuffer;
 	}
 
-	public static ByteBuffer createFloatByteBuffer(float[] float_array, int size)
-	{
-		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(size << 2).order(ByteOrder.nativeOrder());
-
-		for (int i = 0; i < size; ++i)
-		{
-			bytebuffer.putFloat(float_array[i]);
-		}
-
-		bytebuffer.flip();
-
-		return bytebuffer;
-	}
+//	public static ByteBuffer createFloatByteBuffer(float[] float_array, int size)
+//	{
+//		ByteBuffer bytebuffer = ByteBuffer.allocateDirect(size << 2).order(ByteOrder.nativeOrder());
+//
+//		for (int i = 0; i < size; ++i)
+//		{
+//			bytebuffer.putFloat(float_array[i]);
+//		}
+//
+//		bytebuffer.flip();
+//
+//		return bytebuffer;
+//	}
 
 	public static void put(FloatBuffer floatbuffer, float[] float_array, int max)
 	{

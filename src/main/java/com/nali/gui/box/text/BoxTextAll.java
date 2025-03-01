@@ -15,6 +15,7 @@ public class BoxTextAll
 
 	public final static byte B_FA_X0 = 16;
 	public final static byte B_FA_X1 = 17;
+	public final static byte B_FAL = 6;
 //	public char[] char_array;
 //	public int
 //		array_buffer = -1,

@@ -12,6 +12,11 @@ public class BoxV
 	public final static byte B_FA_Y1 = 3;
 	public final static byte B_FA_V_WIDTH = 4;
 	public final static byte B_FA_V_HEIGHT = 5;
+	public final static byte B_FAL = 6;
+
+	public final static byte B_WFAL = 12;
+
+	public final static byte B_AP_SIZE = 2;
 
 	public static void set(float[] float_array, float[] w_float_array, int index, byte step)
 	{

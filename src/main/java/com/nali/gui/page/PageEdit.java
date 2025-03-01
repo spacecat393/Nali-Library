@@ -2,6 +2,7 @@ package com.nali.gui.page;
 
 import com.nali.gui.box.Box;
 import com.nali.gui.box.BoxV;
+import com.nali.gui.box.BoxVT;
 import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.box.text.BoxTextAllMax;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,12 +18,12 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 		select_box,
 		ca1_t_count;
 
-	@Override
-	public void init()
-	{
-		super.init();
-//		this.boxtextallmax = new BoxTextAllMax(this.input_stringbuilder.toString().toCharArray());
-	}
+//	@Override
+//	public void init()
+//	{
+//		super.init();
+////		this.boxtextallmax = new BoxTextAllMax(this.input_stringbuilder.toString().toCharArray());
+//	}
 
 	@Override
 	public void gen()
@@ -58,11 +59,11 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 		}
 	}
 
-	@Override
-	public void draw()
-	{
-		super.draw();
-	}
+//	@Override
+//	public void draw()
+//	{
+//		super.draw();
+//	}
 
 	@Override
 	public void drawBoxColor()
@@ -103,7 +104,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 		{
 //			this.boxtextallmax.draw(this.rs0, this.v_float_array, this.c_float_array);
-			Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, 4, 3 + this.ca0_t_count + this.ta_t_count, this.ca1_t_count);
+			Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, 3 + this.ca0_t_count + this.ta_t_count, this.ca1_t_count);
 		}
 		else
 		{

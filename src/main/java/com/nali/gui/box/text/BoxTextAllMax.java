@@ -8,6 +8,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BoxTextAllMax
 {
 	public final static byte B_FA_NEW_LINE = 16;
+//	public final static byte B_FAL = 1;
 
 //	public char[] char_array;
 //	public int

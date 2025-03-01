@@ -2,7 +2,6 @@ package com.nali.gui.page;
 
 import com.nali.Nali;
 import com.nali.NaliConfig;
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.gui.key.KeyEdit;
 import com.nali.gui.key.KeySelect;
 import net.minecraftforge.fml.relauncher.Side;
@@ -18,23 +17,23 @@ public class PageConfig extends PageSelect
 	@Override
 	public void init()
 	{
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("CONFIG".toCharArray()),
+			"CONFIG".toCharArray(),
 
-			new BoxTextAll("MENU".toCharArray()),//0
-			new BoxTextAll("CHECK".toCharArray()),
-			new BoxTextAll("SOUND-CONFIG".toCharArray()),
-			new BoxTextAll("OPENGL-CONFIG".toCharArray()),
+			"MENU".toCharArray(),//0
+			"CHECK".toCharArray(),
+			"SOUND-CONFIG".toCharArray(),
+			"OPENGL-CONFIG".toCharArray(),
 
-			new BoxTextAll("EXTRA".toCharArray()),
-			new BoxTextAll(((NaliConfig.STATE & 32) == 32 ? "DISABLE_SP_LOAD YES" : "DISABLE_SP_LOAD NO").toCharArray()),
+			"EXTRA".toCharArray(),
+			((NaliConfig.STATE & 32) == 32 ? "DISABLE_SP_LOAD YES" : "DISABLE_SP_LOAD NO").toCharArray(),
 
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("DONE".toCharArray())
+			"ACTION".toCharArray(),
+			"DONE".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 		this.group_byte_array[6 / 8] |= 1 << 6 % 8;
@@ -44,6 +43,8 @@ public class PageConfig extends PageSelect
 			this.select = 2;
 			this.fl |= BF_SET_SELECT;
 		}
+
+		super.init();
 	}
 
 	@Override

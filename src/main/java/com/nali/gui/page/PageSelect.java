@@ -33,7 +33,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 //	public N select;
 //	public N min_select;//2
 	public float[]
-		float_array = new float[18],
+		float_array,
 		w_float_array;
 	public char[][] char_2d_array;
 	public int
@@ -64,6 +64,9 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 		this.rs0 = ClientLoader.S_LIST.get(NaliData.SHADER_STEP);
 		this.rs1 = ClientLoader.S_LIST.get(NaliData.SHADER_STEP + 1);
 
+//		this.float_array = new float[18];
+		this.float_array = new float[BoxV.B_FAL + BoxVT.B_FAL + BoxTextAll.B_FAL];
+
 		this.float_array[BoxVT.B_FA_T_WIDTH] = 170;
 		this.float_array[BoxVT.B_FA_T_HEIGHT] = 5;
 	}
@@ -71,18 +74,24 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 	@Override
 	public void init()
 	{
-		this.ca0_t_count = this.char_2d_array[0].length * 6;
-		this.ta_t_count = 0;
+		this.ca0_t_count = this.char_2d_array[0].length;
 
+		this.ta_t_count = 0;
 		for (int i = 1; i < this.char_2d_array.length; ++i)
 		{
-			this.ta_t_count += this.char_2d_array[i].length * 6;
+			this.ta_t_count += this.char_2d_array[i].length;
 		}
+
+		this.w_float_array = new float[BoxV.B_WFAL + (this.ca0_t_count + this.ta_t_count) * BoxVT.B_WFAL];
+
+		this.ca0_t_count *= 6;
+		this.ta_t_count *= 6;
 	}
 
 	@Override
 	public void gen()
 	{
+		this.clear();
 		this.float_array[BoxV.B_FA_V_WIDTH] = Box.WIDTH;
 		this.float_array[BoxV.B_FA_V_HEIGHT] = Box.HEIGHT;
 
@@ -90,7 +99,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 		this.float_array[BoxTextAll.B_FA_Y] = this.wh20;
 		this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
 		this.float_array[BoxTextAll.B_FA_SPACE] = this.wh10;
-		BoxTextAll.set(this.float_array, this.w_float_array, this.char_2d_array[0], 12);
+		BoxTextAll.set(this.float_array, this.w_float_array, this.char_2d_array[0], BoxV.B_WFAL);
 
 //		int max_length = 0;
 		byte max_length = 0;
@@ -105,6 +114,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 		this.y = ((1.0F - 0.041666668F) * Box.HEIGHT) + this.h20;
 
 //		for (int i = 1; i < this.boxtextall_array.length; ++i)
+		int bta_index = BoxV.B_WFAL + this.char_2d_array[0].length * BoxVT.B_WFAL;
 		for (byte i = 1; i < this.char_2d_array.length; ++i)
 		{
 //			int index = i - 1;
@@ -115,7 +125,9 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 			this.float_array[BoxTextAll.B_FA_Y] = this.y - this.wh40 * i;
 //			this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
 //			this.float_array[BoxTextAll.B_FA_SPACE] = this.wh10;
-			BoxTextAll.set(this.float_array, this.w_float_array, this.char_2d_array[0], 12 + this.char_2d_array[0].length * 24);
+			char[] char_array = this.char_2d_array[i];
+			BoxTextAll.set(this.float_array, this.w_float_array, char_array, bta_index);
+			bta_index += char_array.length * BoxVT.B_WFAL;
 		}
 
 		this.genBoxColor();
@@ -146,7 +158,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
 //		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-		Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, 4, 3, this.ca0_t_count);
+		Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, 3, this.ca0_t_count);
 
 		//s0-shader
 		GL20.glDisableVertexAttribArray(v0);
@@ -198,12 +210,12 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 
 	public void drawBoxColor()
 	{
-		Box.draw(this.rs1, this.v_float_array, this.gc_float_array, this.array_buffer, 2, 0, 6);
+		Box.draw(this.rs1, this.v_float_array, this.gc_float_array, this.array_buffer, BoxV.B_AP_SIZE, 0, 6);
 	}
 
 	public void drawBoxTextAll()
 	{
-		Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, 4, 3 + this.ca0_t_count, this.ta_t_count);
+		Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, 3 + this.ca0_t_count, this.ta_t_count);
 //		for (byte i = 1; i < this.boxtextall_array.length; ++i)
 //		{
 //			this.boxtextall_array[i].draw(this.rs0, this.v_float_array, this.c_float_array);

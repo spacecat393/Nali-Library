@@ -12,6 +12,11 @@ public class BoxVT
 	public final static byte B_FA_V1 = 9;
 	public final static byte B_FA_T_WIDTH = 10;
 	public final static byte B_FA_T_HEIGHT = 11;
+	public final static byte B_FAL = 6;
+
+	public final static byte B_WFAL = 24;
+
+	public final static byte B_AP_SIZE = 4;
 
 //	public float u0, v0, u1, v1 = 5, t_width = 170, t_height = 5;//font 170x5
 

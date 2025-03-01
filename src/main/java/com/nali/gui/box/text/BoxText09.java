@@ -12,6 +12,7 @@ public class BoxText09
 	public final static byte B_IA_Y = 1;
 	public final static byte B_IA_SIZE = 2;
 	public final static byte B_IA_SPACE = 3;
+	public final static byte B_IAL = 4;
 //	public char[] char_array;
 //	public int array_buffer = -1;
 

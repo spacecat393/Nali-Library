@@ -1,6 +1,5 @@
 package com.nali.gui.page;
 
-import com.nali.gui.box.text.BoxTextAll;
 import com.nali.system.Command;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -35,30 +34,31 @@ public class PageCheck/*<N extends Byte>*/ extends PageSelect/*<N>*/
 			}
 		}
 
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("CHECK".toCharArray()),
+			"CHECK".toCharArray(),
 
-			new BoxTextAll("POINTER".toCharArray()),
-			new BoxTextAll(((this.state & 4) == 4 ? "SMALL-POINTER ABLE" : "SMALL-POINTER UNABLE").toCharArray()),
-			new BoxTextAll(((this.state & 8) == 8 ? "NALI-GL ABLE" : "NALI-GL UNABLE").toCharArray()),
-			new BoxTextAll(((this.state & 16) == 16 ? "NALI-AL ABLE" : "NALI-AL UNABLE").toCharArray()),
+			"POINTER".toCharArray(),
+			((this.state & 4) == 4 ? "SMALL-POINTER ABLE" : "SMALL-POINTER UNABLE").toCharArray(),
+			((this.state & 8) == 8 ? "NALI-GL ABLE" : "NALI-GL UNABLE").toCharArray(),
+			((this.state & 16) == 16 ? "NALI-AL ABLE" : "NALI-AL UNABLE").toCharArray(),
 
-			new BoxTextAll("COMMAND".toCharArray()),
-			new BoxTextAll(((this.state & 2) == 2 ? "FFMPEG ABLE" : "FFMPEG UNABLE").toCharArray()),
-			new BoxTextAll(((this.state & 1) == 1 ? "YT-DLP ABLE" : "YT-DLP UNABLE").toCharArray()),
-//			new BoxTextAll("7ZIP".toCharArray()),
+			"COMMAND".toCharArray(),
+			((this.state & 2) == 2 ? "FFMPEG ABLE" : "FFMPEG UNABLE").toCharArray(),
+			((this.state & 1) == 1 ? "YT-DLP ABLE" : "YT-DLP UNABLE").toCharArray(),
 
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"ACTION".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[4 / 8] |= 1 << 4 % 8;
 		this.group_byte_array[7 / 8] |= 1 << 7 % 8;
 //		this.select = this.createN(9);
 		this.select = 9;
+
+		super.init();
 	}
 
 	@Override

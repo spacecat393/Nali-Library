@@ -1,7 +1,6 @@
 package com.nali.gui.page;
 
 import com.nali.NaliConfig;
-import com.nali.gui.box.text.BoxTextAll;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -11,38 +10,36 @@ public class PageConfigSound extends PageEdit
 	@Override
 	public void init()
 	{
-		super.init();
-
-		this.boxtextall_array = new BoxTextAll[]
+		this.char_2d_array = new char[][]
 		{
-			new BoxTextAll("SOUND-CONFIG".toCharArray()),
+			"SOUND-CONFIG".toCharArray(),
 
-			new BoxTextAll("START PROCESS".toCharArray()),
-			new BoxTextAll(((NaliConfig.STATE & 4) == 4 ? "USE_YT-DLP YES" : "USE_YT-DLP NO").toCharArray()),
-			new BoxTextAll(((NaliConfig.STATE & 8) == 8 ? "USE_FFMPEG YES" : "USE_FFMPEG NO").toCharArray()),
+			"START PROCESS".toCharArray(),
+			((NaliConfig.STATE & 4) == 4 ? "USE_YT-DLP YES" : "USE_YT-DLP NO").toCharArray(),
+			((NaliConfig.STATE & 8) == 8 ? "USE_FFMPEG YES" : "USE_FFMPEG NO").toCharArray(),
 
-			new BoxTextAll("AL_GAIN".toCharArray()),
-			new BoxTextAll(this.getChar("AL_GAIN_ALL " + NaliConfig.FLOAT_ARRAY[0])),
-			new BoxTextAll(this.getChar("AL_GAIN_BGM " + NaliConfig.FLOAT_ARRAY[1])),
-			new BoxTextAll(this.getChar("AL_GAIN_ENTITY " + NaliConfig.FLOAT_ARRAY[2])),
-			new BoxTextAll(this.getChar("AL_GAIN_BLOCK " + NaliConfig.FLOAT_ARRAY[3])),
-			new BoxTextAll(this.getChar("AL_GAIN_EFFECT " + NaliConfig.FLOAT_ARRAY[4])),
+			"AL_GAIN".toCharArray(),
+			this.getChar("AL_GAIN_ALL " + NaliConfig.FLOAT_ARRAY[0]),
+			this.getChar("AL_GAIN_BGM " + NaliConfig.FLOAT_ARRAY[1]),
+			this.getChar("AL_GAIN_ENTITY " + NaliConfig.FLOAT_ARRAY[2]),
+			this.getChar("AL_GAIN_BLOCK " + NaliConfig.FLOAT_ARRAY[3]),
+			this.getChar("AL_GAIN_EFFECT " + NaliConfig.FLOAT_ARRAY[4]),
 
-			new BoxTextAll("AL_PITCH".toCharArray()),
-			new BoxTextAll(this.getChar("AL_PITCH_ALL " + NaliConfig.FLOAT_ARRAY[5])),
-			new BoxTextAll(this.getChar("AL_PITCH_BGM " + NaliConfig.FLOAT_ARRAY[6])),
-			new BoxTextAll(this.getChar("AL_PITCH_ENTITY " + NaliConfig.FLOAT_ARRAY[7])),
-			new BoxTextAll(this.getChar("AL_PITCH_BLOCK " + NaliConfig.FLOAT_ARRAY[8])),
-			new BoxTextAll(this.getChar("AL_PITCH_EFFECT " + NaliConfig.FLOAT_ARRAY[9])),
+			"AL_PITCH".toCharArray(),
+			this.getChar("AL_PITCH_ALL " + NaliConfig.FLOAT_ARRAY[5]),
+			this.getChar("AL_PITCH_BGM " + NaliConfig.FLOAT_ARRAY[6]),
+			this.getChar("AL_PITCH_ENTITY " + NaliConfig.FLOAT_ARRAY[7]),
+			this.getChar("AL_PITCH_BLOCK " + NaliConfig.FLOAT_ARRAY[8]),
+			this.getChar("AL_PITCH_EFFECT " + NaliConfig.FLOAT_ARRAY[9]),
 
-			new BoxTextAll("EXTRA".toCharArray()),
-			new BoxTextAll(this.getChar("BGM_ID " + NaliConfig.BGM_ID)),
+			"EXTRA".toCharArray(),
+			this.getChar("BGM_ID " + NaliConfig.BGM_ID),
 
-			new BoxTextAll("ACTION".toCharArray()),
-			new BoxTextAll("BACK".toCharArray())
+			"ACTION".toCharArray(),
+			"BACK".toCharArray()
 		};
 
-		this.group_byte_array = new byte[(byte)Math.ceil((this.boxtextall_array.length - 1) / 8.0F)];
+		this.group_byte_array = new byte[(byte)Math.ceil((this.char_2d_array.length - 1) / 8.0F)];
 		this.group_byte_array[0 / 8] |= 1 << 0 % 8;
 		this.group_byte_array[3 / 8] |= 1 << 3 % 8;
 		this.group_byte_array[9 / 8] |= 1 << 9 % 8;
@@ -54,6 +51,8 @@ public class PageConfigSound extends PageEdit
 			this.select = 2;
 			this.fl |= BF_SET_SELECT;
 		}
+
+		super.init();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.nali.gui.key;
 
-import com.nali.gui.page.Page;
+import com.nali.gui.box.Box;
 import com.nali.gui.page.PageEdit;
 import com.nali.gui.page.PageSelect;
 import net.minecraft.client.gui.GuiScreen;
@@ -38,7 +38,7 @@ public class KeyEdit
 				this.p.clear();
 				this.p.init();
 				this.setScrollEdit(this.p);
-				Page.WIDTH = -1;
+				Box.WIDTH = -1;
 			}
 			else if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL) && Keyboard.isKeyDown(Keyboard.KEY_X))
 			{
@@ -48,7 +48,7 @@ public class KeyEdit
 				this.p.clear();
 				this.p.init();
 				this.setScrollEdit(this.p);
-				Page.WIDTH = -1;
+				Box.WIDTH = -1;
 			}
 			else if (Character.isLetterOrDigit(c) || c == '.' || c == '-' || c == '_'/* || Character.isSpaceChar(c)*/)
 			{
@@ -58,7 +58,7 @@ public class KeyEdit
 				this.p.clear();
 				this.p.init();
 				this.setScrollEdit(this.p);
-				Page.WIDTH = -1;
+				Box.WIDTH = -1;
 			}
 			else if (this.key == Keyboard.KEY_BACK)
 			{
@@ -71,7 +71,7 @@ public class KeyEdit
 				this.p.clear();
 				this.p.init();
 				this.setScrollEdit(this.p);
-				Page.WIDTH = -1;
+				Box.WIDTH = -1;
 			}
 			else if (this.key == Keyboard.KEY_LEFT)
 			{
@@ -94,8 +94,8 @@ public class KeyEdit
 			else if (this.key == Keyboard.KEY_ESCAPE)
 			{
 				this.p.fl ^= PageSelect.BF_ENTER_MODE;
-				this.p.scroll = ((float) this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Page.HEIGHT;
-				Page.WIDTH = -1;
+				this.p.scroll = ((float) this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Box.HEIGHT;
+				Box.WIDTH = -1;
 			}
 			else if (this.key == Keyboard.KEY_UP)
 			{
@@ -132,7 +132,7 @@ public class KeyEdit
 
 		for (int i = 0; i < pageconfig.select_box; ++i)
 		{
-			if (nl_x > Page.WIDTH - nl_ss)
+			if (nl_x > Box.WIDTH - nl_ss)
 			{
 				nl_x = pageconfig.wh20;
 				nl_y += nl_ss;
@@ -140,6 +140,6 @@ public class KeyEdit
 			nl_x += nl_ss;
 		}
 
-		pageconfig.scroll = 2.0F * nl_y / Page.HEIGHT;
+		pageconfig.scroll = 2.0F * nl_y / Box.HEIGHT;
 	}
 }

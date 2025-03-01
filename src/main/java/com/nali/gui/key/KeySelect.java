@@ -1,6 +1,6 @@
 package com.nali.gui.key;
 
-import com.nali.gui.page.Page;
+import com.nali.gui.box.Box;
 import com.nali.gui.page.PageSelect;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,25 +26,25 @@ public class KeySelect
 
 		if (this.key == Keyboard.KEY_UP)
 		{
-			this.p.scroll -= this.p.wh40 * 2 / Page.HEIGHT;
+			this.p.scroll -= this.p.wh40 * 2 / Box.HEIGHT;
 		}
 		else if (this.key == Keyboard.KEY_DOWN)
 		{
-			this.p.scroll += this.p.wh40 * 2 / Page.HEIGHT;
+			this.p.scroll += this.p.wh40 * 2 / Box.HEIGHT;
 		}
 		else if (this.key == Keyboard.KEY_LEFT)
 		{
 			this.p.next((byte)-1);
 //			p.scroll = (p.select.intValue() * p.wh40 * 2 - p.wh40 * 2) / Page.HEIGHT;
-			this.p.scroll = (this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Page.HEIGHT;
-			Page.WIDTH = -1;
+			this.p.scroll = (this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Box.HEIGHT;
+			Box.WIDTH = -1;
 		}
 		else if (this.key == Keyboard.KEY_RIGHT)
 		{
 			this.p.next((byte)1);
 //			p.scroll = (p.select.intValue() * p.wh40 * 2 - p.wh40 * 2) / Page.HEIGHT;
-			this.p.scroll = (this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Page.HEIGHT;
-			Page.WIDTH = -1;
+			this.p.scroll = (this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Box.HEIGHT;
+			Box.WIDTH = -1;
 		}
 
 		this.enterReturn(this.p);
@@ -57,11 +57,11 @@ public class KeySelect
 			this.p.enter();
 			if ((this.p.fl & PageSelect.BF_ENTER_MODE) == 0)
 			{
-				this.p.scroll = ((float)this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Page.HEIGHT;
+				this.p.scroll = ((float)this.p.select * this.p.wh40 * 2 - this.p.wh40 * 2) / Box.HEIGHT;
 			}
 			this.p.clear();
 			this.p.init();
-			Page.WIDTH = -1;
+			Box.WIDTH = -1;
 		}
 	}
 }

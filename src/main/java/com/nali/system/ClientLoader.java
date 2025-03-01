@@ -4,6 +4,7 @@ import com.nali.Nali;
 import com.nali.NaliAL;
 import com.nali.NaliConfig;
 import com.nali.NaliGL;
+import com.nali.gui.box.Box;
 import com.nali.gui.key.Key;
 import com.nali.gui.key.KeySelect;
 import com.nali.gui.page.Page;
@@ -237,7 +238,7 @@ public class ClientLoader extends BothLoader
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		PageLoad pageload = new PageLoad();
 		pageload.init();
-		Page.WIDTH = -1;
+		Box.WIDTH = -1;
 		pageload.render();
 		pageload.clear();
 		Display.update();

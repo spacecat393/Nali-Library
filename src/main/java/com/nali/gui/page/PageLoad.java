@@ -38,7 +38,7 @@ public class PageLoad extends Page
 	public int
 		t_count,
 
-		array_buffer;
+		array_buffer = -1;
 
 	@Override
 	public void init()

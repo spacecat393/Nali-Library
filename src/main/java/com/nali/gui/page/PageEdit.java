@@ -14,6 +14,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 	public StringBuilder input_stringbuilder = new StringBuilder();
 //	public BoxTextAllMax boxtextallmax;
 
+	public char[] input_char_array;
 	public int
 		select_box,
 		ca1_t_count;
@@ -26,21 +27,42 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 //	}
 
 	@Override
-	public void gen()
+	public void init()
 	{
-		//854 x 480
+		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
+		{
+			this.input_char_array = this.input_stringbuilder.toString().toCharArray();
+			this.ca1_t_count = this.input_char_array.length;
+			this.w_float_array = new float[BoxV.B_WFAL + this.ca1_t_count * BoxVT.B_WFAL];
+			this.ca1_t_count *= 6;
+		}
+		else
+		{
+			this.input_char_array = null;
+			super.init();
+		}
+	}
+
+	@Override
+	public void genP()
+	{
+		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
+		{
+			//854 x 480
 //		int h20 = (int)(0.041666668F * height);
 //		int wh20 = Math.min((int)(0.0234192037470726F * width), h20);
 //		int wh5 = Math.min((int)(0.005854801F * width), (int)(0.010416667F * height));
-		super.gen();
-		this.float_array[BoxTextAll.B_FA_X] = this.wh20;
-		this.float_array[BoxTextAll.B_FA_Y] = this.y - this.wh40;
-		this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
-		this.float_array[BoxTextAll.B_FA_SPACE] = this.wh10;
-		this.float_array[BoxTextAllMax.B_FA_NEW_LINE] = this.wh20;
-		char[] char_array = this.char_2d_array[this.char_2d_array.length - 1];
-		this.ca1_t_count = char_array.length * 6;
-		BoxTextAllMax.set(this.float_array, this.w_float_array, char_array, this.ca0_t_count + this.ta_t_count);
+			this.float_array[BoxTextAll.B_FA_X] = this.wh20;
+			this.float_array[BoxTextAll.B_FA_Y] = this.y - this.wh40;
+			this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
+			this.float_array[BoxTextAll.B_FA_SPACE] = this.wh10;
+			this.float_array[BoxTextAllMax.B_FA_NEW_LINE] = this.wh20;
+			BoxTextAllMax.set(this.float_array, this.w_float_array, this.input_char_array, BoxV.B_WFAL);
+		}
+		else
+		{
+			super.genP();
+		}
 	}
 
 	@Override
@@ -52,6 +74,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 			this.float_array[BoxV.B_FA_Y0] = 0;
 			this.float_array[BoxV.B_FA_X1] = this.wh10;
 			this.float_array[BoxV.B_FA_Y1] = this.wh20;
+			BoxV.set(this.float_array, this.w_float_array, 0, (byte)0);
 		}
 		else
 		{
@@ -59,7 +82,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 		}
 	}
 
-//	@Override
+	//	@Override
 //	public void draw()
 //	{
 //		super.draw();
@@ -104,7 +127,7 @@ public abstract class PageEdit/*<N extends Number>*/ extends PageSelect/*<N>*/
 		if ((this.fl & BF_ENTER_MODE) == BF_ENTER_MODE)
 		{
 //			this.boxtextallmax.draw(this.rs0, this.v_float_array, this.c_float_array);
-			Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, 3 + this.ca0_t_count + this.ta_t_count, this.ca1_t_count);
+			Box.draw(this.rs0, this.v_float_array, this.c_float_array, this.array_buffer, BoxVT.B_AP_SIZE, 3, this.ca1_t_count);
 		}
 		else
 		{

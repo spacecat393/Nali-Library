@@ -95,6 +95,14 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 		this.float_array[BoxV.B_FA_V_WIDTH] = Box.WIDTH;
 		this.float_array[BoxV.B_FA_V_HEIGHT] = Box.HEIGHT;
 
+		this.genP();
+
+		this.genBoxColor();
+		this.array_buffer = MemoA.genBuffer(MemoA.createFloatByteBuffer(this.w_float_array));
+	}
+
+	public void genP()
+	{
 		this.float_array[BoxTextAll.B_FA_X] = this.wh20;
 		this.float_array[BoxTextAll.B_FA_Y] = this.wh20;
 		this.float_array[BoxTextAll.B_FA_SIZE] = this.wh20;
@@ -129,10 +137,6 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 			BoxTextAll.set(this.float_array, this.w_float_array, char_array, bta_index);
 			bta_index += char_array.length * BoxVT.B_WFAL;
 		}
-
-		this.genBoxColor();
-		BoxV.set(this.float_array, this.w_float_array, 0, (byte)0);
-		this.array_buffer = MemoA.genBuffer(MemoA.createFloatByteBuffer(this.w_float_array));
 	}
 
 	public void genBoxColor()
@@ -143,6 +147,7 @@ public abstract class PageSelect/*<N extends Number>*/ extends Page
 		this.float_array[BoxV.B_FA_Y0] = y;
 		this.float_array[BoxV.B_FA_X1] = this.x - this.wh10;
 		this.float_array[BoxV.B_FA_Y1] = y + this.wh20;
+		BoxV.set(this.float_array, this.w_float_array, 0, (byte)0);
 	}
 
 	@Override

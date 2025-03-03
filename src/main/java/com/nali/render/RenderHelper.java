@@ -8,6 +8,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.io.IOException;
+
 @SideOnly(Side.CLIENT)
 public class RenderHelper
 {
@@ -26,23 +28,25 @@ public class RenderHelper
 //		tessellator.draw();
 //	}
 
-	public static int getTextureBuffer(/*TextureManager texturemanager, */ResourceLocation resourcelocation)
+	public static int getTextureBuffer(ResourceLocation resourcelocation)
 	{
-//		Nali.LOGGER.info("start T");
+		try
+		{
+			Minecraft.getMinecraft().getResourceManager().getResource(resourcelocation);
+		}
+		catch (IOException e)
+		{
+			return -1;
+		}
+
 		TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-//		Nali.LOGGER.info("texturemanager " + texturemanager);
 		ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
-//		Nali.LOGGER.info("F itextureobject " + itextureobject);
 
 		if (itextureobject == null)
 		{
-//			Nali.LOGGER.info("load!");
 			itextureobject = new SimpleTexture(resourcelocation);
-//			Nali.LOGGER.info("SimpleTexture " + itextureobject);
 			texturemanager.loadTexture(resourcelocation, itextureobject);
-//			itextureobject = texturemanager.getTexture(resourcelocation);
 		}
-//		Nali.LOGGER.info("itextureobject " + itextureobject);
 
 		return itextureobject.getGlTextureId();
 	}
